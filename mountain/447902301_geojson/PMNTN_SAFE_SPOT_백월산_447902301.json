@@ -1,0 +1,660 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4866,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175523.76800000016,
+        "y" : 420214.14650000073
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4867,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175498.49450000003,
+        "y" : 420090.92090000398
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4868,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175473.13310000021,
+        "y" : 419936.87140000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4869,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175472.69710000139,
+        "y" : 419782.75140000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4870,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175273.02390000224,
+        "y" : 419690.8460000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4871,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175099.15859999973,
+        "y" : 419907.11329999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4872,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174950.31620000023,
+        "y" : 420154.13629999943
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4873,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174826.04870000109,
+        "y" : 420277.79340000264
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4874,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174701.60490000062,
+        "y" : 420339.80430000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4875,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174602.17750000115,
+        "y" : 420432.56789999828
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4876,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174477.82820000034,
+        "y" : 420525.40609999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4877,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174378.67870000191,
+        "y" : 420710.64450000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4878,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174229.77920000162,
+        "y" : 420926.85620000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4879,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174056.14940000046,
+        "y" : 421204.79340000264
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4880,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174181.40299999993,
+        "y" : 421420.18970000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4881,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174306.74170000013,
+        "y" : 421666.41190000251
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4882,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175153.25250000041,
+        "y" : 421386.52380000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4883,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175228.54600000009,
+        "y" : 421571.25420000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4884,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175129.03880000114,
+        "y" : 421633.18789999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4885,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175179.49870000128,
+        "y" : 421848.81350000389
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4886,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175105.18090000004,
+        "y" : 422003.1484999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4887,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174980.75989999995,
+        "y" : 422065.15570000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4888,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174781.49270000216,
+        "y" : 422096.55790000223
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4889,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174656.71470000129,
+        "y" : 422035.2733000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4890,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174556.85480000079,
+        "y" : 421973.91730000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 4891,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175334.02470000088,
+        "y" : 423605.3617000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 4892,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175283.40240000095,
+        "y" : 423328.08630000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 4893,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175258.13410000037,
+        "y" : 423204.8609000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 4894,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175133.19840000104,
+        "y" : 423081.92119999975
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 4895,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 175033.17610000074,
+        "y" : 422958.9114000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 4896,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174883.4056000011,
+        "y" : 422866.87130000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 4897,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174857.77240000106,
+        "y" : 422620.35050000437
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 4898,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174787.68599999882,
+        "y" : 424223.42440000176
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 4899,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174634.95469999965,
+        "y" : 423114.19070000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 4900,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174808.74330000207,
+        "y" : 422897.91249999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 4901,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174952.89980000071,
+        "y" : 421048.03319999948
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 4902,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174803.27490000054,
+        "y" : 421017.64270000346
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 4903,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174653.82919999864,
+        "y" : 421048.90279999934
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 4904,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174504.56599999964,
+        "y" : 421141.81370000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 4905,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백월산"
+      },
+      "geometry" : {
+        "x" : 174404.69479999971,
+        "y" : 421080.45950000174
+      }
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3541,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 247444.52040000074,
+        "y" : 447741.12209999934
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3542,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 247639.46190000046,
+        "y" : 447916.57129999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3543,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "03",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 247757.8515000008,
+        "y" : 448222.32210000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3544,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 247977.51370000187,
+        "y" : 448540.5391000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3545,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "05",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 248339.50310000125,
+        "y" : 448392.77040000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3546,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 248512.20060000196,
+        "y" : 447926.94330000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3547,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "07",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 248325.85939999949,
+        "y" : 447342.39560000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3548,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "08",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 247455.02360000089,
+        "y" : 446587.12300000153
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3549,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : "낙가산정자",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 246238.26620000135,
+        "y" : 446036.86950000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3556,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-03",
+        "MGC" : "청주동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "낙가산"
+      },
+      "geometry" : {
+        "x" : 247996.03840000182,
+        "y" : 449430.19340000115
+      }
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1686,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "보문산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 237557.6997000007,
+        "y" : 410988.53820000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1687,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "보문산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238294.44159999955,
+        "y" : 411504.2006000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1688,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "보문산3",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238042.10120000131,
+        "y" : 410894.99020000361
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1689,
+        "SAFE_SPOT2" : "산악구급합",
+        "SAFE_SPOT3" : "보문산4",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238218.93020000029,
+        "y" : 410761.93889999948
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1690,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "보문산5",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 237060.69540000148,
+        "y" : 410943.4609999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1691,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "보문산6",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238405.91779999994,
+        "y" : 411767.02000000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1873,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 1",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(이사동전망대와 보문사지방향 분기점)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238176.94610000029,
+        "y" : 410646.79210000113
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1874,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 2",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(시루봉과 고촉사 분기점)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 237900.5008000005,
+        "y" : 411107.98430000059
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1875,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 3",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(보문산성에서 전망대 방향 200m)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238396.70870000124,
+        "y" : 411757.43610000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1876,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 4",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(보문산성에서 석교동 봉명중학교 가는길 300m)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238646.54490000196,
+        "y" : 411666.10720000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1877,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 5",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(산악구급함 2호에서 호동(범골가는길) 300m)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 238373.78000000026,
+        "y" : 411295.04350000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1878,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 6",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(시루봉 밑 송학사 내려가는 표지판에서 송학사 길 300m)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 237923.85860000178,
+        "y" : 411477.94110000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1879,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "보문산 7",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(시루봉 밑 송학사 내려가는 표지판에서 청년광장 길 400m)",
+        "MNTN_NM" : "보문산"
+      },
+      "geometry" : {
+        "x" : 237799.36490000039,
+        "y" : 411415.81179999933
+      }
+    }
+  ]
+}

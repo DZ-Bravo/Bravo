@@ -1,0 +1,900 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1707,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239349.17400000058,
+        "y" : 420763.8048000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1708,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산3",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240319.77120000124,
+        "y" : 422167.03900000453
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1709,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산4",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239320.61150000151,
+        "y" : 420374.7276000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1710,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산5",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240182.88030000217,
+        "y" : 420500.97069999948
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1711,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산6",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240691.190200001,
+        "y" : 422031.50610000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1712,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산7",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240066.95150000043,
+        "y" : 422886.61490000412
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1713,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산8",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240072.05110000074,
+        "y" : 422831.37549999729
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1714,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산9",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239718.44749999885,
+        "y" : 421145.11600000225
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1747,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "계족산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240618.53010000102,
+        "y" : 420077.32230000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1789,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 4-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(선비1단지에서 능선방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239029.32629999984,
+        "y" : 419780.94630000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1791,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(청원농장에서 능선방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240961.77550000045,
+        "y" : 418612.2546000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1792,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 4-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(선비1단지에서 능선방향 1.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239191.55980000086,
+        "y" : 420299.46070000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1793,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 8-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(산디마을입구에서 계족산성 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240242.53589999955,
+        "y" : 422107.53300000168
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1796,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-40",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(가양공원에서 계족산성 방향 2.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240768.51169999968,
+        "y" : 419955.29409999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1797,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 2-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(절고개)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240603.40590000059,
+        "y" : 420068.59579999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1798,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 5-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(용화사에서 봉황정방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239482.04460000154,
+        "y" : 420550.46010000072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1799,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 9-35",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(계족산성에서 장동산림욕장 방향 0.3KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240516.60390000138,
+        "y" : 422108.8105000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1802,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 4-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(선비지1단에서 능선방향 0.7KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 238910.45630000066,
+        "y" : 419613.95820000395
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1835,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(청원농장에서 능선방향 0.3KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240752.82620000094,
+        "y" : 418500.30090000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1836,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(남도약수터)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240935.26890000142,
+        "y" : 418941.93029999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1837,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(가양공원에서 절고개방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 241043.68130000122,
+        "y" : 419207.54860000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1838,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-35",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(가양공원에서 절고개방향 2KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240916.64450000133,
+        "y" : 419712.52500000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1839,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-45",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(절고개에서 계족산성방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240620.8881000001,
+        "y" : 420608.10070000403
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1840,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1-50",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(절고개에서 계족산성방향 1.7KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240819.73859999981,
+        "y" : 421253.32490000315
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1841,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 2-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(임도만나는 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240432.02819999959,
+        "y" : 419411.18879999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1842,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 2-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(비례사)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240490.91610000189,
+        "y" : 419599.55670000054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1843,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 2-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(비례사에서 절고개방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240617.36630000081,
+        "y" : 419751.17760000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1844,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 3-10",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(법동소류지)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239444.51779999956,
+        "y" : 419489.97770000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1845,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 3-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(법동소류지에서 임도3거리 방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239771.80170000065,
+        "y" : 419861.33350000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1846,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 3-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(법동소류지에서 임도3거리 방향 0.7KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239830.83320000023,
+        "y" : 420040.37620000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1847,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 3-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(법동소류지에서 임동3거리 방향 1.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239998.34670000058,
+        "y" : 420472.70760000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1848,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 3-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(임도3거리)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240170.11290000007,
+        "y" : 420525.87960000336
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 1849,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 4-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(임도삼거리에서 선비마을1단지 방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239510.240600002,
+        "y" : 420368.70980000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 1850,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 4-35",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(임도삼거리선비마을1단지 방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239758.64560000133,
+        "y" : 420557.93890000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 1851,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 5-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(현대@입구에서 용화사방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 238942.6360000018,
+        "y" : 420221.32610000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 1852,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 5-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(현대@입구에서 용화사방향 1.3KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239091.60560000222,
+        "y" : 420357.60110000335
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 1853,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 5-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(현대@입구에서 용화사방향 2KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239348.11110000033,
+        "y" : 420405.03600000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 1854,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 5-35",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(봉황정에서 용화사방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239473.60060000047,
+        "y" : 420769.25330000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 1855,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 6-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(회덕정수장에서 죽림정사방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 238840.80180000048,
+        "y" : 421259.65289999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 1856,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 6-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(회덕정수장에서 봉황정방향 1.3KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 238876.35310000088,
+        "y" : 421114.88630000129
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 1857,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 6-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(회덕정수장에서 용화사방향 2KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 238882.04810000118,
+        "y" : 420945.4616000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 1858,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 6-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(회덕정수장에서 봉황정방향 2.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239578.03650000039,
+        "y" : 420809.90060000308
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 1859,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 6-35",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(회덕정수장에서 봉황정방향 3KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239314.04120000079,
+        "y" : 420774.74230000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 1860,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 7-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(수자원공사후문에서 봉황정방향 1KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 238765.5923000006,
+        "y" : 422467.66280000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 1861,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 7-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(수자원공사후문에서 봉황정방향 1.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239085.37110000197,
+        "y" : 422296.43119999953
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 1862,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 7-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(수자원공사후문에서 봉황정방향 2KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239224.05170000158,
+        "y" : 421942.62120000273
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 1863,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 7-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(수자원공사후문에서 봉황정방향 2.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239260.62030000053,
+        "y" : 421554.39340000227
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 1864,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 7-35",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(수자원공사후문에서 봉황정방향 3KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239356.29950000066,
+        "y" : 421348.31330000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 1865,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 8-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(산디마을입구)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239826.095900001,
+        "y" : 422164.20030000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 1866,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 8-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(산디마을입구에서 계족산성방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240065.53950000182,
+        "y" : 422125.24450000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 1867,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 9-15",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(장동산림욕장입구에서 계족산성 방향 0.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 239976.39429999981,
+        "y" : 423071.18310000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 1868,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 9-20",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(장동산림욕장입구에서 계족산성 방향 1.5KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240369.75160000101,
+        "y" : 422607.48920000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 1869,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 9-25",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(장동산림욕장입구에서 계족산성 방향 2KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240408.23740000091,
+        "y" : 422376.51840000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 1870,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 9-30",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(계족산성에서 장동산림욕장 방향 0.7KM 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240319.51910000108,
+        "y" : 422163.3758000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 1871,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 1",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(3번 게이트 출입하여 남도약수터 지나 80m 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 241042.55769999977,
+        "y" : 419444.90699999966
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 1872,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "계족산 2",
+        "MGC" : "대전동부소방서",
+        "ETC_MATTER" : "(6번 게이트 출입하여 첫 번째 임도 접경지점 지나 50m 지점)",
+        "MNTN_NM" : "계족산"
+      },
+      "geometry" : {
+        "x" : 240069.06260000076,
+        "y" : 419733.20120000094
+      }
+    }
+  ]
+}

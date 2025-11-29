@@ -1,0 +1,2460 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3643,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203525.76310000103,
+        "y" : 453286.01540000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3644,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203451.25030000042,
+        "y" : 453347.6360000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3645,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203376.73859999981,
+        "y" : 453409.25730000064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3646,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203252.55869999994,
+        "y" : 453501.6855999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3647,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203178.03840000089,
+        "y" : 453594.13410000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3648,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203103.50850000139,
+        "y" : 453717.40870000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3649,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203053.79739999957,
+        "y" : 453871.51820000075
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3650,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202979.29310000129,
+        "y" : 453933.14299999736
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3651,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202929.627700001,
+        "y" : 453963.95130000077
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3652,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202904.78990000114,
+        "y" : 453994.76840000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3653,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202879.93160000071,
+        "y" : 454087.23650000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3654,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202805.42030000035,
+        "y" : 454179.68820000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3655,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202681.27699999977,
+        "y" : 454210.47399999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3656,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202631.61430000048,
+        "y" : 454241.28409999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3657,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202581.95189999975,
+        "y" : 454272.09449999966
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3658,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202482.6193000013,
+        "y" : 454364.54169999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3659,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203649.54229999986,
+        "y" : 454149.18060000427
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3660,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203575.03610000014,
+        "y" : 454210.80020000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3661,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203525.30670000054,
+        "y" : 454395.73260000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3662,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203500.37990000099,
+        "y" : 454642.32650000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 3663,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203475.51699999999,
+        "y" : 454734.79300000146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 3664,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203475.49200000055,
+        "y" : 454796.444000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 3665,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203450.64220000058,
+        "y" : 454858.08500000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 3666,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202606.72210000083,
+        "y" : 454457.0549999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 3667,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202730.82230000105,
+        "y" : 454549.57019999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 3668,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202805.26900000032,
+        "y" : 454642.07080000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 3669,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202954.17880000174,
+        "y" : 454765.42290000059
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 3670,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203276.83350000065,
+        "y" : 454950.49340000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 3671,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203376.14369999897,
+        "y" : 454919.70640000328
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 3672,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203450.6174000008,
+        "y" : 454919.73610000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 3673,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203450.6174000008,
+        "y" : 454919.73610000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 3674,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203624.40260000061,
+        "y" : 454888.98230000213
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 3675,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203698.91650000121,
+        "y" : 454796.53749999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 3676,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203922.43979999982,
+        "y" : 454580.8582000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 3677,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203947.29370000213,
+        "y" : 454519.21859999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 3678,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203947.3646999998,
+        "y" : 454365.09110000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 3679,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203922.59490000084,
+        "y" : 454241.77770000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 3680,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203972.36230000202,
+        "y" : 453995.19660000317
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 3681,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204022.01690000109,
+        "y" : 453995.21979999915
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 3682,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204196.06420000084,
+        "y" : 453471.27000000328
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 3683,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204196.00390000083,
+        "y" : 453594.57190000452
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 3684,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204146.3172000004,
+        "y" : 453656.1986999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 3685,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204096.61650000047,
+        "y" : 453748.65120000206
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 3686,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204071.75920000114,
+        "y" : 453810.29030000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 3687,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204096.5576000018,
+        "y" : 453871.95310000144
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 3688,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204096.52810000069,
+        "y" : 453933.60410000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 3803,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203649.54229999986,
+        "y" : 454149.18060000427
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 3804,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202904.78990000114,
+        "y" : 453994.76840000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 3805,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 211668.5231999997,
+        "y" : 454217.99700000323
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 4046,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202060.00320000108,
+        "y" : 456737.99760000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 4047,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202680.48610000126,
+        "y" : 456738.16940000281
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 4048,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203350.53530000057,
+        "y" : 456923.3590000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 4049,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204070.52900000103,
+        "y" : 456399.63550000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 4050,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204343.69299999997,
+        "y" : 456122.33929999918
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 4051,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204120.45130000077,
+        "y" : 455813.97309999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 4052,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203872.34280000068,
+        "y" : 455567.25280000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 4053,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203573.89149999991,
+        "y" : 456954.27490000054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 4054,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203326.49450000003,
+        "y" : 454919.68700000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 4055,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203078.27080000006,
+        "y" : 454857.94320000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 4056,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202830.08420000039,
+        "y" : 454672.9045000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 4057,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202681.190200001,
+        "y" : 454487.90350000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 4058,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202581.37610000093,
+        "y" : 456183.27810000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 4059,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202954.42320000008,
+        "y" : 454056.43630000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 4060,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203202.09509999957,
+        "y" : 455659.45280000381
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 4061,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203376.03430000041,
+        "y" : 455197.1361999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 4062,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 203351.28289999999,
+        "y" : 455012.17320000194
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 4063,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 204120.88130000047,
+        "y" : 454920.03219999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 4064,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202258.81780000124,
+        "y" : 455751.62890000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 4065,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202482.33349999972,
+        "y" : 455350.95840000175
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 4066,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202383.10879999958,
+        "y" : 455104.32589999773
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 4067,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202457.61629999988,
+        "y" : 454981.04480000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 4068,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202556.95070000086,
+        "y" : 454857.77180000022
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 4069,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202656.32620000001,
+        "y" : 454611.19779999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 4070,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201439.53590000048,
+        "y" : 456645.39399999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 4071,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201538.85850000195,
+        "y" : 456398.80650000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 4072,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201588.56769999955,
+        "y" : 456028.90850000456
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 4073,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201712.39719999954,
+        "y" : 457416.08490000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 4074,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201638.39320000075,
+        "y" : 455073.3256000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 4075,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202035.60140000004,
+        "y" : 454980.93420000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 4076,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202308.73630000092,
+        "y" : 454734.39919999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 4077,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202457.75770000089,
+        "y" : 454487.83650000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 4078,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200074.46540000103,
+        "y" : 455874.63370000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 4079,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200471.91470000148,
+        "y" : 450418.5428999979
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 4080,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200471.91299999971,
+        "y" : 450449.36820000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 4081,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200993.4226000011,
+        "y" : 451127.57010000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 4082,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201167.21280000173,
+        "y" : 451559.14700000361
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 4083,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201291.35659999959,
+        "y" : 451744.11700000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 4084,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201390.64670000039,
+        "y" : 452021.56100000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 4085,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201415.39319999982,
+        "y" : 452545.59690000303
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 4086,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201663.63600000087,
+        "y" : 452915.54660000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 4087,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201961.50200000126,
+        "y" : 453347.16580000147
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 4088,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200869.0167000005,
+        "y" : 453377.81090000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 4089,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200993.16910000052,
+        "y" : 453316.17349999957
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 4090,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201017.98000000138,
+        "y" : 453470.30360000208
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 4091,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201092.45070000086,
+        "y" : 453593.6147000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 4092,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201241.43460000027,
+        "y" : 453501.15860000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 4093,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201340.74459999986,
+        "y" : 453531.99900000356
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 4094,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201415.22530000098,
+        "y" : 453562.8364000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 4095,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200322.82520000171,
+        "y" : 452113.93050000072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 4096,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200223.49680000078,
+        "y" : 452021.45120000467
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 4097,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200173.83400000073,
+        "y" : 451867.32310000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 4098,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200273.1726000011,
+        "y" : 451713.19880000129
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 4099,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200422.18340000138,
+        "y" : 451559.07800000161
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 4100,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200521.53190000076,
+        "y" : 451374.13120000064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 4101,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 200670.54820000008,
+        "y" : 451281.66550000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 4102,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202482.6193000013,
+        "y" : 454364.54169999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 6443,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201258.48060000129,
+        "y" : 423714.04400000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 6444,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202000.16390000191,
+        "y" : 422881.04649999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 6445,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201873.21320000105,
+        "y" : 422987.98980000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 6446,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201907.28090000059,
+        "y" : 423885.93900000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 6447,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201940.27960000001,
+        "y" : 423920.23509999923
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 6448,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202033.26440000068,
+        "y" : 423642.50690000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 6449,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201258.48060000129,
+        "y" : 423714.04400000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 6450,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201873.21320000105,
+        "y" : 422987.98980000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 6451,
+        "SAFE_SPOT2" : "조난위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202113.66889999993,
+        "y" : 422747.46979999915
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 6452,
+        "SAFE_SPOT2" : "안전난간",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201366.75069999974,
+        "y" : 423645.26110000163
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 6453,
+        "SAFE_SPOT2" : "안전난간",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201961.22580000013,
+        "y" : 422914.88240000233
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 6454,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202006.08600000013,
+        "y" : 422873.39110000245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 6455,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201977.37700000126,
+        "y" : 422893.24760000221
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 119,
+        "SAFE_SPOT1" : 6456,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201936.73550000042,
+        "y" : 422923.64320000261
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 120,
+        "SAFE_SPOT1" : 6457,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201896.45260000229,
+        "y" : 422956.03650000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 121,
+        "SAFE_SPOT1" : 6458,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201873.21320000105,
+        "y" : 422987.98980000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 122,
+        "SAFE_SPOT1" : 6459,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201843.51099999994,
+        "y" : 423041.13639999926
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 123,
+        "SAFE_SPOT1" : 6460,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201828.69480000064,
+        "y" : 423540.70480000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 124,
+        "SAFE_SPOT1" : 6461,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201800.97680000123,
+        "y" : 423551.57370000146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 125,
+        "SAFE_SPOT1" : 6462,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201419.86220000219,
+        "y" : 423566.70529999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 126,
+        "SAFE_SPOT1" : 6463,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201419.86020000186,
+        "y" : 423579.13350000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 127,
+        "SAFE_SPOT1" : 6464,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201400.5708000008,
+        "y" : 423610.97780000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 128,
+        "SAFE_SPOT1" : 6465,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201376.79740000051,
+        "y" : 423639.15949999914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 129,
+        "SAFE_SPOT1" : 6466,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201349.88750000019,
+        "y" : 423650.9178000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 130,
+        "SAFE_SPOT1" : 6467,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201336.88060000073,
+        "y" : 423659.57110000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 131,
+        "SAFE_SPOT1" : 6468,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201317.50550000183,
+        "y" : 423668.00160000101
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 132,
+        "SAFE_SPOT1" : 6469,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201294.27190000005,
+        "y" : 423688.0831000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 133,
+        "SAFE_SPOT1" : 6470,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201258.48060000129,
+        "y" : 423714.04400000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 134,
+        "SAFE_SPOT1" : 6471,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201339.01550000068,
+        "y" : 423774.19999999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 135,
+        "SAFE_SPOT1" : 6472,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201347.62349999882,
+        "y" : 423790.06960000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 136,
+        "SAFE_SPOT1" : 6473,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201373.00219999999,
+        "y" : 423816.03979999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 137,
+        "SAFE_SPOT1" : 6474,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201429.85900000017,
+        "y" : 423863.32080000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 138,
+        "SAFE_SPOT1" : 6475,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201883.68429999985,
+        "y" : 423922.10899999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 139,
+        "SAFE_SPOT1" : 6476,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201940.27960000001,
+        "y" : 423920.23509999923
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 140,
+        "SAFE_SPOT1" : 6477,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201962.97720000055,
+        "y" : 423894.27400000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 141,
+        "SAFE_SPOT1" : 6478,
+        "SAFE_SPOT2" : "조난위치표시목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202033.26440000068,
+        "y" : 423642.50690000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 142,
+        "SAFE_SPOT1" : 6479,
+        "SAFE_SPOT2" : "급경사",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201870.51960000116,
+        "y" : 423000.08460000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 143,
+        "SAFE_SPOT1" : 6480,
+        "SAFE_SPOT2" : "급경사",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201281.35480000172,
+        "y" : 423697.18040000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 144,
+        "SAFE_SPOT1" : 6481,
+        "SAFE_SPOT2" : "급경사",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201308.88190000132,
+        "y" : 423754.44339999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 145,
+        "SAFE_SPOT1" : 6482,
+        "SAFE_SPOT2" : "급경사",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201923.16100000124,
+        "y" : 423864.41500000283
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 146,
+        "SAFE_SPOT1" : 6483,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 202033.26440000068,
+        "y" : 423642.50690000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 147,
+        "SAFE_SPOT1" : 6484,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201410.3526000008,
+        "y" : 423579.13200000115
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 148,
+        "SAFE_SPOT1" : 6485,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 201258.48060000129,
+        "y" : 423714.04400000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 149,
+        "SAFE_SPOT1" : 6486,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214577.75580000132,
+        "y" : 429596.63300000317
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 150,
+        "SAFE_SPOT1" : 6487,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214634.0120000001,
+        "y" : 430356.8599000033
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 151,
+        "SAFE_SPOT1" : 6488,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214694.47570000123,
+        "y" : 430428.86990000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 152,
+        "SAFE_SPOT1" : 6489,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214757.83060000185,
+        "y" : 430486.68139999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 153,
+        "SAFE_SPOT1" : 6490,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214777.96460000053,
+        "y" : 430504.91460000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 154,
+        "SAFE_SPOT1" : 6491,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214803.22380000167,
+        "y" : 430565.65750000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 155,
+        "SAFE_SPOT1" : 6492,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214789.86280000117,
+        "y" : 430412.83140000328
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 156,
+        "SAFE_SPOT1" : 6493,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214787.35780000035,
+        "y" : 430357.89780000225
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 157,
+        "SAFE_SPOT1" : 6494,
+        "SAFE_SPOT2" : "정자",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214634.90410000086,
+        "y" : 430359.30270000175
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 158,
+        "SAFE_SPOT1" : 6495,
+        "SAFE_SPOT2" : "정자",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214710.41019999981,
+        "y" : 429597.52360000461
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 159,
+        "SAFE_SPOT1" : 6496,
+        "SAFE_SPOT2" : "안전난간/로프",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "광덕산"
+      },
+      "geometry" : {
+        "x" : 214688.93039999995,
+        "y" : 429684.15309999883
+      }
+    }
+  ]
+}

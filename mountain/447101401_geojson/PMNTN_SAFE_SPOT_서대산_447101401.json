@@ -1,0 +1,870 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4535,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248421.46150000021,
+        "y" : 403792.70090000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4536,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248496.89390000049,
+        "y" : 403700.64680000395
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4537,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248622.10230000038,
+        "y" : 403639.69550000317
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4538,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248697.5381000014,
+        "y" : 403547.64310000092
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4539,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248722.85610000044,
+        "y" : 403486.13559999876
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4540,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248723.20069999993,
+        "y" : 403424.48849999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4541,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248823.78600000031,
+        "y" : 403301.75340000167
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4542,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248823.95870000031,
+        "y" : 403270.9299000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4543,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248824.30400000047,
+        "y" : 403209.28280000389
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4544,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248799.67480000108,
+        "y" : 403147.49590000324
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4545,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248809.66460000072,
+        "y" : 403147.55180000141
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4546,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248196.70799999963,
+        "y" : 403791.4550000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4547,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248322.08380000107,
+        "y" : 403699.67579999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4548,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248447.63360000122,
+        "y" : 403577.07490000129
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4549,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248498.26609999966,
+        "y" : 403454.05850000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4550,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248574.21750000026,
+        "y" : 403269.534500001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4551,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248574.38930000085,
+        "y" : 403238.71100000292
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4552,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248674.63040000107,
+        "y" : 403177.62120000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4553,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248775.56270000152,
+        "y" : 402993.23849999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4554,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248701.32679999992,
+        "y" : 402869.52549999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4555,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248624.41930000018,
+        "y" : 402776.62280000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4556,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248547.04660000093,
+        "y" : 402766.94430000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4557,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248539.79420000035,
+        "y" : 402723.74960000068
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4558,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 247745.22730000131,
+        "y" : 403693.41400000267
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4559,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 247855.6157999998,
+        "y" : 403601.54599999823
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 4560,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 247969.25030000228,
+        "y" : 403374.06970000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 4561,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248112.74089999963,
+        "y" : 403168.33680000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 4562,
+        "SAFE_SPOT2" : "헬리포트",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248245.85580000095,
+        "y" : 403033.44490000233
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 4563,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248300.90280000027,
+        "y" : 403015.25510000251
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 4564,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248343.71900000051,
+        "y" : 402950.76110000163
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 4565,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248339.27089999989,
+        "y" : 402852.09809999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 4566,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248282.42520000134,
+        "y" : 402743.89750000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 4567,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248352.35700000077,
+        "y" : 402744.28510000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 4568,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248542.18630000018,
+        "y" : 402787.56959999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 4569,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248537.26400000229,
+        "y" : 402729.59220000356
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 4570,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248491.13280000072,
+        "y" : 402716.08100000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 4571,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248354.8545000013,
+        "y" : 402744.29900000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 4572,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 249247.76460000034,
+        "y" : 402080.40609999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 4573,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 249134.63609999977,
+        "y" : 402209.23070000112
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 4574,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248978.72150000092,
+        "y" : 402396.38270000368
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 4575,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248896.0393000003,
+        "y" : 402442.15530000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 4576,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248810.8776000021,
+        "y" : 402484.83239999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 4577,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248723.02970000077,
+        "y" : 402561.40210000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 4578,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248690.00980000012,
+        "y" : 402659.85590000264
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 4579,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248602.33650000207,
+        "y" : 402705.6034000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 4580,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248602.33650000207,
+        "y" : 402705.6034000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 4581,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 249247.76460000034,
+        "y" : 402080.40609999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 4582,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 249134.63609999977,
+        "y" : 402209.23070000112
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 4583,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248978.72150000092,
+        "y" : 402396.38270000368
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 4584,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248896.0393000003,
+        "y" : 402442.15530000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 4585,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248810.8776000021,
+        "y" : 402484.83239999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 4586,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248723.02970000077,
+        "y" : 402561.40210000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 4587,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248690.00980000012,
+        "y" : 402659.85590000264
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 4588,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "서대산"
+      },
+      "geometry" : {
+        "x" : 248602.33650000207,
+        "y" : 402705.6034000013
+      }
+    }
+  ]
+}

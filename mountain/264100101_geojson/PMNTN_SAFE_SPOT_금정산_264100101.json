@@ -1,0 +1,4380 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1920,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산동래소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388579.09129999951,
+        "y" : 294455.2835000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1921,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산동래소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388277.28860000055,
+        "y" : 293637.94930000231
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1922,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산동래소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388310.50490000192,
+        "y" : 293987.11180000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1923,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산동래소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387825.4385000011,
+        "y" : 294192.88670000248
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1924,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387212.56120000035,
+        "y" : 293973.55900000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1925,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385957.31460000109,
+        "y" : 293611.52119999938
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1926,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383526.98029999901,
+        "y" : 293413.84320000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1927,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383627.62190000061,
+        "y" : 293566.98840000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1928,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383782.3004999999,
+        "y" : 293924.75860000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1929,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384109.10740000103,
+        "y" : 294030.08750000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1930,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384892.76840000041,
+        "y" : 295427.59909999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1931,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384463.54250000138,
+        "y" : 294765.07400000282
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1932,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384913.95920000132,
+        "y" : 294391.8943000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1933,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385114.52200000081,
+        "y" : 294235.64479999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1934,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385582.50229999982,
+        "y" : 294242.15700000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1935,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384456.78359999973,
+        "y" : 295468.02800000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1936,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384987.48440000135,
+        "y" : 295620.73020000197
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1937,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386238.09229999967,
+        "y" : 295581.66290000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1938,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383463.94280000124,
+        "y" : 296144.73469999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1939,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384091.7742000008,
+        "y" : 296743.41720000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1940,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384055.8247000007,
+        "y" : 296893.78759999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1941,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385173.74960000161,
+        "y" : 297641.32430000417
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1942,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385823.60890000034,
+        "y" : 298265.26390000246
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1943,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383869.57439999934,
+        "y" : 297593.08540000394
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1944,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384204.0549999997,
+        "y" : 297439.54830000177
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1945,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384024.27249999996,
+        "y" : 297821.35009999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1946,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384528.52280000225,
+        "y" : 297652.78460000455
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1947,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384595.7638000017,
+        "y" : 297456.79900000058
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1948,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384600.18379999977,
+        "y" : 298477.61190000363
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1949,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384836.87710000109,
+        "y" : 298528.71200000308
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1950,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384462.26449999865,
+        "y" : 298295.93470000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1951,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384722.27890000027,
+        "y" : 298196.40389999934
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 1952,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385010.10819999967,
+        "y" : 297974.09979999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 1953,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385885.89580000006,
+        "y" : 294131.20800000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 1954,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385758.17980000097,
+        "y" : 293696.85650000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 1955,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 385597.69090000074,
+        "y" : 293379.01769999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 1956,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386729.74349999987,
+        "y" : 293214.21540000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 1957,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384922.33880000003,
+        "y" : 292868.6986999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 1958,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384748.18090000004,
+        "y" : 292969.98600000329
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 1999,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388135.91440000199,
+        "y" : 301321.72060000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 2000,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388165.53320000228,
+        "y" : 301324.23199999891
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 2001,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389172.6221000012,
+        "y" : 301681.67779999971
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 2002,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389277.71970000118,
+        "y" : 301609.70079999976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 2003,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389553.57899999991,
+        "y" : 301298.85850000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 2004,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389617.50330000091,
+        "y" : 301126.55540000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 2005,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389682.4841,
+        "y" : 300841.71649999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 2006,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389055.38090000022,
+        "y" : 299750.29400000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 2007,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389277.3329999987,
+        "y" : 299639.80510000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 2008,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389300.44160000049,
+        "y" : 299550.87640000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 2009,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389314.97520000022,
+        "y" : 299364.41339999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 2010,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389327.63870000094,
+        "y" : 299086.27130000293
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 2011,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389044.36710000131,
+        "y" : 298671.60539999977
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 2012,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389159.35860000085,
+        "y" : 298487.47230000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 2013,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389222.95410000067,
+        "y" : 298373.56770000048
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 2014,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389264.80879999977,
+        "y" : 298247.1314000003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 2015,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389360.53370000049,
+        "y" : 298205.39430000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 2016,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389446.30439999979,
+        "y" : 298047.44700000435
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 2017,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389479.0437000012,
+        "y" : 297861.41269999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 2018,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389539.46150000114,
+        "y" : 297826.95740000345
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 2019,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389510.12369999941,
+        "y" : 297248.27590000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 2020,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389444.15270000044,
+        "y" : 297197.58699999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 2021,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389342.99590000045,
+        "y" : 297110.60720000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 2022,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389361.2770000007,
+        "y" : 297088.07440000214
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 2023,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389354.3889000006,
+        "y" : 297065.5073000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 2024,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389482.34960000124,
+        "y" : 297042.07719999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 2025,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389529.81520000007,
+        "y" : 296993.42310000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 2026,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389592.14040000085,
+        "y" : 296861.15110000223
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 2027,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389552.61780000012,
+        "y" : 296440.86519999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 2028,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389551.03330000117,
+        "y" : 296407.87170000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 2029,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389576.94160000142,
+        "y" : 296386.04519999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 2030,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389579.06960000098,
+        "y" : 296361.79830000177
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 2031,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389595.34370000102,
+        "y" : 296249.36040000059
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 2032,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389610.42750000022,
+        "y" : 296169.53999999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 2033,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389599.02680000197,
+        "y" : 296122.09310000204
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 2034,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389494.57210000139,
+        "y" : 296096.4980999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 2035,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389438.28190000169,
+        "y" : 295993.92070000432
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 2036,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389351.87590000033,
+        "y" : 295903.78480000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 2037,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389278.24130000081,
+        "y" : 295844.00040000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 2038,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389266.04990000091,
+        "y" : 295773.80340000056
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 2039,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389151.03859999962,
+        "y" : 295599.64660000056
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 2040,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389045.69840000011,
+        "y" : 295555.58190000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 2041,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388954.60130000114,
+        "y" : 295592.58510000445
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 2042,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388734.8283000011,
+        "y" : 295587.15289999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 2043,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388779.65600000229,
+        "y" : 295525.62330000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 2044,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389004.72509999946,
+        "y" : 295494.44810000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 2045,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388772.97070000041,
+        "y" : 295204.972000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 2046,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388695.2742000008,
+        "y" : 295119.93480000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 2047,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388790.91050000209,
+        "y" : 294829.46520000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 2048,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388826.18710000068,
+        "y" : 294606.39960000105
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 2049,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388781.24210000224,
+        "y" : 294456.48430000059
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 2050,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388741.15409999993,
+        "y" : 294388.95940000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 2051,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388778.01120000053,
+        "y" : 294353.96900000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 2052,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388848.34460000135,
+        "y" : 294333.08050000295
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 2053,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388830.51319999993,
+        "y" : 294241.85540000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 2054,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388815.43530000001,
+        "y" : 294152.04790000059
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 2055,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388764.86950000096,
+        "y" : 294089.38629999943
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 2056,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388729.35090000182,
+        "y" : 294057.43640000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 2057,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388716.90240000188,
+        "y" : 294011.30470000394
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 2058,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388716.99980000034,
+        "y" : 293982.39590000361
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 2059,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389788.78920000046,
+        "y" : 300414.94840000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 2060,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389188.59550000075,
+        "y" : 300703.24890000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 2061,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388742.38949999958,
+        "y" : 301081.7052000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 2062,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388644.27400000114,
+        "y" : 301251.37989999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 2063,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388136.49810000136,
+        "y" : 300347.59909999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 2064,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386882.23840000015,
+        "y" : 299003.57230000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 2065,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386948.95500000007,
+        "y" : 298505.37729999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 2066,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386946.6138000004,
+        "y" : 298215.41100000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 2067,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386672.10219999962,
+        "y" : 297702.12800000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 2068,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387032.12849999964,
+        "y" : 297115.21590000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 2069,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387196.98440000135,
+        "y" : 296781.90200000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 2070,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388901.91899999976,
+        "y" : 298857.90050000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 2071,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388540.26810000185,
+        "y" : 298866.86779999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 2072,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388174.74300000072,
+        "y" : 298902.2248999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 2073,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387965.65549999941,
+        "y" : 298481.72070000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 2074,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389317.15400000103,
+        "y" : 298493.71319999918
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 2075,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389024.14670000039,
+        "y" : 298567.11429999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 2076,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388649.48400000017,
+        "y" : 298438.09650000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 2077,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388455.40170000121,
+        "y" : 298345.44690000452
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 2078,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388285.78900000174,
+        "y" : 298363.6361999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 119,
+        "SAFE_SPOT1" : 2079,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387877.57240000088,
+        "y" : 298194.46040000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 120,
+        "SAFE_SPOT1" : 2080,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387801.90850000083,
+        "y" : 297965.2722000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 121,
+        "SAFE_SPOT1" : 2081,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387790.81410000101,
+        "y" : 297951.43870000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 122,
+        "SAFE_SPOT1" : 2082,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389694.65470000077,
+        "y" : 297303.84200000204
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 123,
+        "SAFE_SPOT1" : 2083,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389154.48819999956,
+        "y" : 297174.58780000173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 124,
+        "SAFE_SPOT1" : 2084,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388962.49639999866,
+        "y" : 297198.49560000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 125,
+        "SAFE_SPOT1" : 2085,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388820.08310000133,
+        "y" : 297151.88350000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 126,
+        "SAFE_SPOT1" : 2086,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388064.6660000002,
+        "y" : 297396.59210000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 127,
+        "SAFE_SPOT1" : 2087,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389657.96060000081,
+        "y" : 296227.56140000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 128,
+        "SAFE_SPOT1" : 2088,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389476.13649999909,
+        "y" : 296312.03940000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 129,
+        "SAFE_SPOT1" : 2089,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388177.5616000006,
+        "y" : 296756.68820000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 130,
+        "SAFE_SPOT1" : 2090,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388100.75250000041,
+        "y" : 296744.89000000246
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 131,
+        "SAFE_SPOT1" : 2091,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387652.60120000038,
+        "y" : 295874.86400000378
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 132,
+        "SAFE_SPOT1" : 2092,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387475.03480000142,
+        "y" : 294873.22240000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 133,
+        "SAFE_SPOT1" : 2093,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387261.26980000082,
+        "y" : 294566.08530000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 134,
+        "SAFE_SPOT1" : 2094,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387673.45700000133,
+        "y" : 295418.89380000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 135,
+        "SAFE_SPOT1" : 2095,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387625.03789999988,
+        "y" : 298577.01400000043
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 136,
+        "SAFE_SPOT1" : 2096,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387492.75879999995,
+        "y" : 299179.77630000375
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 137,
+        "SAFE_SPOT1" : 2097,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387419.33519999962,
+        "y" : 299335.94849999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 138,
+        "SAFE_SPOT1" : 2098,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387189.70630000066,
+        "y" : 299584.58860000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 139,
+        "SAFE_SPOT1" : 2099,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386684.38489999995,
+        "y" : 294522.17269999906
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 140,
+        "SAFE_SPOT1" : 2100,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386518.34810000099,
+        "y" : 294653.31160000153
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 141,
+        "SAFE_SPOT1" : 2101,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386290.29609999992,
+        "y" : 294742.93150000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 142,
+        "SAFE_SPOT1" : 2102,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386518.71750000026,
+        "y" : 295481.24930000119
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 143,
+        "SAFE_SPOT1" : 2103,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386674.90479999967,
+        "y" : 295642.46330000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 144,
+        "SAFE_SPOT1" : 2104,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386630.91310000047,
+        "y" : 296004.74730000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 145,
+        "SAFE_SPOT1" : 2105,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386302.37700000126,
+        "y" : 295009.8067000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 146,
+        "SAFE_SPOT1" : 2106,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386352.5803000005,
+        "y" : 299497.1416000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 147,
+        "SAFE_SPOT1" : 2107,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386583.45280000009,
+        "y" : 300117.90870000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 148,
+        "SAFE_SPOT1" : 2108,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387050.02769999951,
+        "y" : 299656.94019999914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 149,
+        "SAFE_SPOT1" : 2109,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387357.08509999979,
+        "y" : 299690.96650000289
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 150,
+        "SAFE_SPOT1" : 2110,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386768.53740000073,
+        "y" : 299556.61820000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 151,
+        "SAFE_SPOT1" : 2111,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386377.85529999994,
+        "y" : 299326.4018000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 152,
+        "SAFE_SPOT1" : 2112,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388282.29629999958,
+        "y" : 300894.27050000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 153,
+        "SAFE_SPOT1" : 2113,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388128.09580000024,
+        "y" : 301032.91569999978
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 154,
+        "SAFE_SPOT1" : 2114,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388124.06650000066,
+        "y" : 301297.58900000155
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 155,
+        "SAFE_SPOT1" : 2115,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387544.54120000172,
+        "y" : 301122.95100000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 156,
+        "SAFE_SPOT1" : 2116,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386939.58510000072,
+        "y" : 300675.88419999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 157,
+        "SAFE_SPOT1" : 2117,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386555.23430000152,
+        "y" : 300266.98849999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 158,
+        "SAFE_SPOT1" : 2118,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386734.02889999934,
+        "y" : 300192.91090000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 159,
+        "SAFE_SPOT1" : 2119,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387856.94190000091,
+        "y" : 296280.1267000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 160,
+        "SAFE_SPOT1" : 2120,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386376.09880000073,
+        "y" : 299750.58530000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 161,
+        "SAFE_SPOT1" : 2201,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384086.30770000163,
+        "y" : 298363.81180000119
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 162,
+        "SAFE_SPOT1" : 2202,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 384075.2295000013,
+        "y" : 298262.13070000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 163,
+        "SAFE_SPOT1" : 2203,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383980.82990000024,
+        "y" : 298116.19550000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 164,
+        "SAFE_SPOT1" : 2204,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 383770.6911000004,
+        "y" : 297965.12940000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 165,
+        "SAFE_SPOT1" : 2222,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387192.23670000117,
+        "y" : 299591.82640000433
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 166,
+        "SAFE_SPOT1" : 5802,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388135.91440000199,
+        "y" : 301321.72060000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 167,
+        "SAFE_SPOT1" : 5803,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388165.54830000084,
+        "y" : 301324.23230000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 168,
+        "SAFE_SPOT1" : 5804,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389172.63480000012,
+        "y" : 301681.67800000124
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 169,
+        "SAFE_SPOT1" : 5805,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389277.96480000112,
+        "y" : 301609.70590000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 170,
+        "SAFE_SPOT1" : 5806,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389553.57899999991,
+        "y" : 301298.85850000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 171,
+        "SAFE_SPOT1" : 5807,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389617.5159,
+        "y" : 301126.55570000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 172,
+        "SAFE_SPOT1" : 5808,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389682.49420000054,
+        "y" : 300841.71670000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 173,
+        "SAFE_SPOT1" : 5809,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389055.39100000076,
+        "y" : 299750.29419999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 174,
+        "SAFE_SPOT1" : 5810,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389277.54280000087,
+        "y" : 299639.80950000323
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 175,
+        "SAFE_SPOT1" : 5811,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389300.57310000062,
+        "y" : 299550.87920000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 176,
+        "SAFE_SPOT1" : 5812,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389315.12680000067,
+        "y" : 299364.41660000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 177,
+        "SAFE_SPOT1" : 5813,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389327.78280000109,
+        "y" : 299086.27430000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 178,
+        "SAFE_SPOT1" : 5814,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389044.38230000064,
+        "y" : 298671.60570000112
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 179,
+        "SAFE_SPOT1" : 5815,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389159.57350000087,
+        "y" : 298487.4768000003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 180,
+        "SAFE_SPOT1" : 5816,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389223.10580000002,
+        "y" : 298373.57090000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 181,
+        "SAFE_SPOT1" : 5817,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389264.87200000044,
+        "y" : 298247.13270000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 182,
+        "SAFE_SPOT1" : 5818,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389360.63489999995,
+        "y" : 298205.39640000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 183,
+        "SAFE_SPOT1" : 5819,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389446.4207000006,
+        "y" : 298047.44940000214
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 184,
+        "SAFE_SPOT1" : 5820,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389479.23840000201,
+        "y" : 297861.41669999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 185,
+        "SAFE_SPOT1" : 5821,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389539.68910000194,
+        "y" : 297826.96220000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 186,
+        "SAFE_SPOT1" : 5822,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389510.13389999978,
+        "y" : 297248.27610000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 187,
+        "SAFE_SPOT1" : 5823,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389444.23110000044,
+        "y" : 297197.58870000206
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 188,
+        "SAFE_SPOT1" : 5824,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389343.018600001,
+        "y" : 297110.60770000331
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 189,
+        "SAFE_SPOT1" : 5825,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389361.29719999991,
+        "y" : 297088.07480000146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 190,
+        "SAFE_SPOT1" : 5826,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389354.40920000151,
+        "y" : 297065.50770000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 191,
+        "SAFE_SPOT1" : 5827,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389482.36730000004,
+        "y" : 297042.0775000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 192,
+        "SAFE_SPOT1" : 5828,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389529.82019999996,
+        "y" : 296993.42320000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 193,
+        "SAFE_SPOT1" : 5829,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389592.14040000085,
+        "y" : 296861.15110000223
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 194,
+        "SAFE_SPOT1" : 5830,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389552.78729999904,
+        "y" : 296440.86870000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 195,
+        "SAFE_SPOT1" : 5831,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389551.16229999997,
+        "y" : 296407.87439999916
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 196,
+        "SAFE_SPOT1" : 5832,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389576.94409999996,
+        "y" : 296386.04519999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 197,
+        "SAFE_SPOT1" : 5833,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389579.30470000021,
+        "y" : 296361.80330000445
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 198,
+        "SAFE_SPOT1" : 5834,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389595.38410000224,
+        "y" : 296249.36120000109
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 199,
+        "SAFE_SPOT1" : 5835,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389610.49830000103,
+        "y" : 296169.54150000401
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 200,
+        "SAFE_SPOT1" : 5836,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389599.14809999987,
+        "y" : 296122.09570000321
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 201,
+        "SAFE_SPOT1" : 5837,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389494.73900000006,
+        "y" : 296096.50160000101
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 202,
+        "SAFE_SPOT1" : 5838,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389438.42100000102,
+        "y" : 295993.9235999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 203,
+        "SAFE_SPOT1" : 5839,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389352.01999999955,
+        "y" : 295903.78780000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 204,
+        "SAFE_SPOT1" : 5840,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389278.47640000097,
+        "y" : 295844.00530000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 205,
+        "SAFE_SPOT1" : 5841,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389266.14599999972,
+        "y" : 295773.80540000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 206,
+        "SAFE_SPOT1" : 5842,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389151.19790000096,
+        "y" : 295599.64990000054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 207,
+        "SAFE_SPOT1" : 5843,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389045.90070000105,
+        "y" : 295555.58620000258
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 208,
+        "SAFE_SPOT1" : 5844,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388954.73790000007,
+        "y" : 295592.58799999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 209,
+        "SAFE_SPOT1" : 5845,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388734.83339999989,
+        "y" : 295587.15300000273
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 210,
+        "SAFE_SPOT1" : 5846,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388779.81280000042,
+        "y" : 295525.62660000101
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 211,
+        "SAFE_SPOT1" : 5847,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389004.95019999985,
+        "y" : 295494.45280000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 212,
+        "SAFE_SPOT1" : 5848,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388772.97319999989,
+        "y" : 295204.97210000455
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 213,
+        "SAFE_SPOT1" : 5849,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388695.29700000025,
+        "y" : 295119.93530000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 214,
+        "SAFE_SPOT1" : 5850,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388791.0876000002,
+        "y" : 294829.46890000068
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 215,
+        "SAFE_SPOT1" : 5851,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388826.19210000057,
+        "y" : 294606.39970000461
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 216,
+        "SAFE_SPOT1" : 5852,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388781.39390000049,
+        "y" : 294456.48739999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 217,
+        "SAFE_SPOT1" : 5853,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388741.32110000215,
+        "y" : 294388.96290000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 218,
+        "SAFE_SPOT1" : 5854,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388778.01120000053,
+        "y" : 294353.96900000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 219,
+        "SAFE_SPOT1" : 5855,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388848.35480000079,
+        "y" : 294333.08070000075
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 220,
+        "SAFE_SPOT1" : 5856,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388830.6372000007,
+        "y" : 294241.85799999908
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 221,
+        "SAFE_SPOT1" : 5857,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388815.65029999893,
+        "y" : 294152.05230000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 222,
+        "SAFE_SPOT1" : 5858,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388765.01880000066,
+        "y" : 294089.38940000348
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 223,
+        "SAFE_SPOT1" : 5859,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388729.58360000141,
+        "y" : 294057.44119999744
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 224,
+        "SAFE_SPOT1" : 5860,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388717.12249999959,
+        "y" : 294011.30930000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 225,
+        "SAFE_SPOT1" : 5861,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388717.03270000033,
+        "y" : 293982.39660000429
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 226,
+        "SAFE_SPOT1" : 5862,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389788.80430000089,
+        "y" : 300414.9486999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 227,
+        "SAFE_SPOT1" : 5863,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389188.59550000075,
+        "y" : 300703.24890000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 228,
+        "SAFE_SPOT1" : 5864,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388742.45519999973,
+        "y" : 301081.70649999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 229,
+        "SAFE_SPOT1" : 5865,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388644.27400000114,
+        "y" : 301251.37989999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 230,
+        "SAFE_SPOT1" : 5866,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388136.51830000151,
+        "y" : 300347.59950000234
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 231,
+        "SAFE_SPOT1" : 5867,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386882.24340000004,
+        "y" : 299003.57239999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 232,
+        "SAFE_SPOT1" : 5868,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386949.19010000024,
+        "y" : 298505.38209999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 233,
+        "SAFE_SPOT1" : 5869,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386946.6138000004,
+        "y" : 298215.41100000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 234,
+        "SAFE_SPOT1" : 5870,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386672.10980000161,
+        "y" : 297702.12810000405
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 235,
+        "SAFE_SPOT1" : 5871,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387032.19170000032,
+        "y" : 297115.21719999984
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 236,
+        "SAFE_SPOT1" : 5872,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387196.99949999992,
+        "y" : 296781.90230000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 237,
+        "SAFE_SPOT1" : 5873,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388901.93670000043,
+        "y" : 298857.90080000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 238,
+        "SAFE_SPOT1" : 5874,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388540.26810000185,
+        "y" : 298866.86779999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 239,
+        "SAFE_SPOT1" : 5875,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388174.74300000072,
+        "y" : 298902.2248999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 240,
+        "SAFE_SPOT1" : 5876,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387965.65549999941,
+        "y" : 298481.72070000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 241,
+        "SAFE_SPOT1" : 5877,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389317.15649999958,
+        "y" : 298493.71319999918
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 242,
+        "SAFE_SPOT1" : 5878,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389024.37170000188,
+        "y" : 298567.11900000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 243,
+        "SAFE_SPOT1" : 5879,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388649.59520000219,
+        "y" : 298438.09889999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 244,
+        "SAFE_SPOT1" : 5880,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388455.44969999976,
+        "y" : 298345.44790000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 245,
+        "SAFE_SPOT1" : 5881,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388285.80169999972,
+        "y" : 298363.63650000095
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 246,
+        "SAFE_SPOT1" : 5882,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387877.67860000022,
+        "y" : 298194.4626000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 247,
+        "SAFE_SPOT1" : 5883,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387802.07030000072,
+        "y" : 297965.27550000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 248,
+        "SAFE_SPOT1" : 5884,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387790.83179999981,
+        "y" : 297951.43900000304
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 249,
+        "SAFE_SPOT1" : 5885,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389694.66730000079,
+        "y" : 297303.84229999781
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 250,
+        "SAFE_SPOT1" : 5886,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389154.60450000223,
+        "y" : 297174.59019999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 251,
+        "SAFE_SPOT1" : 5887,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388962.56210000068,
+        "y" : 297198.49699999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 252,
+        "SAFE_SPOT1" : 5888,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388820.08310000133,
+        "y" : 297151.88350000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 253,
+        "SAFE_SPOT1" : 5889,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388064.68879999965,
+        "y" : 297396.59260000102
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 254,
+        "SAFE_SPOT1" : 5890,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389657.97829999961,
+        "y" : 296227.56170000136
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 255,
+        "SAFE_SPOT1" : 5891,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 389476.20480000135,
+        "y" : 296312.04090000317
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 256,
+        "SAFE_SPOT1" : 5892,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388177.56420000084,
+        "y" : 296756.6883000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 257,
+        "SAFE_SPOT1" : 5893,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388100.95480000041,
+        "y" : 296744.89420000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 258,
+        "SAFE_SPOT1" : 5894,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387652.82120000105,
+        "y" : 295874.86860000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 259,
+        "SAFE_SPOT1" : 5895,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387475.23200000077,
+        "y" : 294873.22650000267
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 260,
+        "SAFE_SPOT1" : 5896,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387261.44429999962,
+        "y" : 294566.08889999986
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 261,
+        "SAFE_SPOT1" : 5897,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387673.51770000067,
+        "y" : 295418.89509999938
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 262,
+        "SAFE_SPOT1" : 5898,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387625.06570000108,
+        "y" : 298577.01450000331
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 263,
+        "SAFE_SPOT1" : 5899,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387492.77910000086,
+        "y" : 299179.77680000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 264,
+        "SAFE_SPOT1" : 5900,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387419.52480000071,
+        "y" : 299335.95240000263
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 265,
+        "SAFE_SPOT1" : 5901,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387189.71640000213,
+        "y" : 299584.58880000375
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 266,
+        "SAFE_SPOT1" : 5902,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386684.4076000005,
+        "y" : 294522.17310000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 267,
+        "SAFE_SPOT1" : 5903,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386518.35819999967,
+        "y" : 294653.31179999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 268,
+        "SAFE_SPOT1" : 5904,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386290.37449999992,
+        "y" : 294742.93310000375
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 269,
+        "SAFE_SPOT1" : 5905,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386518.79590000026,
+        "y" : 295481.25090000033
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 270,
+        "SAFE_SPOT1" : 5906,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386674.92760000192,
+        "y" : 295642.4637000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 271,
+        "SAFE_SPOT1" : 5907,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386630.9207000006,
+        "y" : 296004.74750000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 272,
+        "SAFE_SPOT1" : 5908,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386302.37700000126,
+        "y" : 295009.8067000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 273,
+        "SAFE_SPOT1" : 5909,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386352.60060000047,
+        "y" : 299497.14200000092
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 274,
+        "SAFE_SPOT1" : 5910,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386583.45529999863,
+        "y" : 300117.90880000219
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 275,
+        "SAFE_SPOT1" : 5911,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387050.08079999965,
+        "y" : 299656.94129999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 276,
+        "SAFE_SPOT1" : 5912,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387357.2014000006,
+        "y" : 299690.96890000068
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 277,
+        "SAFE_SPOT1" : 5913,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386768.53740000073,
+        "y" : 299556.61820000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 278,
+        "SAFE_SPOT1" : 5914,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386378.03230000008,
+        "y" : 299326.40540000424
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 279,
+        "SAFE_SPOT1" : 5915,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388282.30890000146,
+        "y" : 300894.27070000209
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 280,
+        "SAFE_SPOT1" : 5916,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388128.10590000078,
+        "y" : 301032.91599999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 281,
+        "SAFE_SPOT1" : 5917,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 388124.08920000121,
+        "y" : 301297.5895000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 282,
+        "SAFE_SPOT1" : 5918,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387544.66249999963,
+        "y" : 301122.95350000262
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 283,
+        "SAFE_SPOT1" : 5919,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386939.58510000072,
+        "y" : 300675.88419999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 284,
+        "SAFE_SPOT1" : 5920,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386555.25200000219,
+        "y" : 300266.98880000412
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 285,
+        "SAFE_SPOT1" : 5921,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386734.04150000215,
+        "y" : 300192.9112000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 286,
+        "SAFE_SPOT1" : 5922,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 387857.1668999996,
+        "y" : 296280.13130000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 287,
+        "SAFE_SPOT1" : 5923,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산금정소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금정산"
+      },
+      "geometry" : {
+        "x" : 386376.11649999954,
+        "y" : 299750.58560000174
+      }
+    }
+  ]
+}

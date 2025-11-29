@@ -1,0 +1,180 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5659,
+        "SAFE_SPOT2" : "돼지굴(sk연수원하산길,구급함옆)",
+        "SAFE_SPOT3" : "1-1",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 234899.00470000133,
+        "y" : 518687.24780000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5660,
+        "SAFE_SPOT2" : "제1등산로영보사부근",
+        "SAFE_SPOT3" : "1-1",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 235319.91610000003,
+        "y" : 518576.91340000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5661,
+        "SAFE_SPOT2" : "정상2봉(정상1,3봉사이)",
+        "SAFE_SPOT3" : "1-2",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 234899.00470000133,
+        "y" : 518687.24780000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5662,
+        "SAFE_SPOT2" : "정상4봉(2봉으로부터좌측으로0.6km)",
+        "SAFE_SPOT3" : "1-3",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 234778.68429999985,
+        "y" : 518825.47990000248
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5663,
+        "SAFE_SPOT2" : "돼지굴제5봉(정상효자봉인근)",
+        "SAFE_SPOT3" : "1-4",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 234702.93230000045,
+        "y" : 518911.73480000161
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5664,
+        "SAFE_SPOT2" : "연와정사",
+        "SAFE_SPOT3" : "1-5",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 235102.52259999979,
+        "y" : 518381.77710000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5665,
+        "SAFE_SPOT2" : "약수터 인근",
+        "SAFE_SPOT3" : "1-7",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 235164.24310000055,
+        "y" : 518470.8236999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5666,
+        "SAFE_SPOT2" : "제2등산로 입구(체육공원 옆)",
+        "SAFE_SPOT3" : "2-1",
+        "MGC" : "경기도 이천시",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "도드람산"
+      },
+      "geometry" : {
+        "x" : 235127.03910000063,
+        "y" : 518458.45950000174
+      }
+    }
+  ]
+}

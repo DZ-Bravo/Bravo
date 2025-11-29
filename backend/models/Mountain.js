@@ -40,4 +40,3 @@ const Mountain = mongoose.model('Mountain', mountainSchema)
 export default Mountain
 
 
-

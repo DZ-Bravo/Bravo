@@ -1,0 +1,600 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5970,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산청소년수련원가는길",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 391099.81890000124,
+        "y" : 286558.29600000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5971,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산성암사",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389576.87170000095,
+        "y" : 285410.81369999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5972,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산바람고개",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389397.77390000131,
+        "y" : 285764.87680000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5973,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산본부약수터",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389337.70519999973,
+        "y" : 285711.55519999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5974,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산안창약수터",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390296.48440000042,
+        "y" : 286549.60720000416
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5975,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산동남아파트",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390600.01779999956,
+        "y" : 284905.26659999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5976,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산경성대가는길",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390698.91569999978,
+        "y" : 285137.15210000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5977,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산정보고",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390099.20660000201,
+        "y" : 284713.5736999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 5978,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산동천고(임도아래)",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390190.76610000059,
+        "y" : 285296.00180000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 5979,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산동천고(임도위)",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390078.83180000074,
+        "y" : 285594.06650000438
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 5980,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산편백림",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389969.73010000121,
+        "y" : 285944.36969999969
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 5981,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산중앙약수터",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389942.05730000045,
+        "y" : 285863.85750000365
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 5982,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산냉수욕터",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 390014.54540000018,
+        "y" : 286046.55660000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 5983,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산갈미봉",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389538.1818000013,
+        "y" : 285669.45070000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 5995,
+        "SAFE_SPOT2" : "산불감시초소",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산 바람고개",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389846.83930000011,
+        "y" : 285703.99670000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 5996,
+        "SAFE_SPOT2" : "산불감시초소",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산봉수대",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389717.67790000048,
+        "y" : 286324.87450000271
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 5997,
+        "SAFE_SPOT2" : "산불감시초소",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 남구",
+        "ETC_MATTER" : "황령산청소년수련원",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 391099.31649999972,
+        "y" : 286478.35240000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6667,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389702.3519671401,
+        "y" : 286682.23175408505
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6668,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389617.99812307954,
+        "y" : 286259.43422713876
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6669,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389567.42100794893,
+        "y" : 287902.00015388615
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6670,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389530.57521794178,
+        "y" : 286001.62229841202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6671,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389479.08875601646,
+        "y" : 286904.54500534385
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6672,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389478.42710683029,
+        "y" : 285841.98353163525
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6673,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389428.34906869475,
+        "y" : 287566.71200389974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6674,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389385.4746688297,
+        "y" : 287079.82358907908
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6675,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389348.34219327476,
+        "y" : 286801.5131139569
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6676,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389332.1639396362,
+        "y" : 287238.54478867911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6677,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389219.15813924465,
+        "y" : 286292.83598542586
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6678,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389163.64520829264,
+        "y" : 285796.05030218698
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6679,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389119.2179363519,
+        "y" : 287602.29041657224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6680,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389094.54350055475,
+        "y" : 285888.6515743304
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6681,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 389079.39589511789,
+        "y" : 287123.4603393618
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6682,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 388987.23651322722,
+        "y" : 287360.44610040076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6683,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 388922.51909339521,
+        "y" : 286920.88050096855
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6684,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 388806.06294788234,
+        "y" : 286997.16288038343
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6685,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "황령산"
+      },
+      "geometry" : {
+        "x" : 388733.65891115833,
+        "y" : 287157.26184007525
+      }
+    }
+  ]
+}

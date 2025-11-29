@@ -1,0 +1,660 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 589,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-01",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 387704.77379999962,
+        "y" : 388191.86760000326
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 590,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-02",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389031.2267000014,
+        "y" : 388220.38400000148
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 591,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-03",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389106.30910000019,
+        "y" : 388222.00420000032
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 592,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-04",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389331.55619999953,
+        "y" : 388226.86850000173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 593,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-05",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389581.16390000097,
+        "y" : 388263.10879999958
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 594,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-06",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389755.02030000184,
+        "y" : 388328.55870000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 595,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-07",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389853.12520000059,
+        "y" : 388423.2137000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 596,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-08",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389877.48400000017,
+        "y" : 388454.58480000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 597,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-09",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389951.896300002,
+        "y" : 388487.0410999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 598,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-10",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 390025.63930000085,
+        "y" : 388550.32679999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 599,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-11",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 390146.75769999996,
+        "y" : 388738.01470000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 600,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-12",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 390292.89630000014,
+        "y" : 388926.24810000136
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 601,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-13",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 390491.76010000054,
+        "y" : 388992.25709999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 602,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-14",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 390994.95739999972,
+        "y" : 388879.84000000358
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 603,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-15",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391367.65049999952,
+        "y" : 389011.34810000099
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 604,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-16",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391768.05810000002,
+        "y" : 389020.10460000113
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 605,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-17",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391868.83530000132,
+        "y" : 388991.46770000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 606,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-18",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392077.82710000128,
+        "y" : 388595.07890000194
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 607,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-19",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392206.34240000043,
+        "y" : 388443.67850000225
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 608,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-20",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392290.89570000116,
+        "y" : 388013.720900001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 609,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-21",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392249.63090000022,
+        "y" : 387611.84670000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 610,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-22",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392403.19240000006,
+        "y" : 387460.99780000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 611,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-23",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392533.7602000013,
+        "y" : 387217.11480000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 612,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-24",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392639.3032999998,
+        "y" : 386972.68339999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 613,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-25",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392895.72310000099,
+        "y" : 386700.72780000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 614,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "나-05",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389031.89180000126,
+        "y" : 388189.55529999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 615,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "나-04",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389058.91490000114,
+        "y" : 388097.6091000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 616,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "나-03",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389236.10690000001,
+        "y" : 388008.90480000339
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 617,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "나-02",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389212.41009999998,
+        "y" : 387946.70690000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 618,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "나-01",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 389138.65620000102,
+        "y" : 387883.42850000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 619,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-10",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392129.23270000052,
+        "y" : 388534.5185000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 620,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-09",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392103.52979999967,
+        "y" : 388564.79869999923
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 621,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-08",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392104.20579999965,
+        "y" : 388533.96970000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 622,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-07",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392104.88179999962,
+        "y" : 388503.1408000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 623,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-06",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 392031.15220000222,
+        "y" : 388439.83699999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 624,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-05",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391809.28210000228,
+        "y" : 388280.75850000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 625,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-04",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391708.4972000001,
+        "y" : 388309.3964000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 626,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-03",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391611.75799999945,
+        "y" : 388153.06210000068
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 627,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-02",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391514.3415000001,
+        "y" : 388027.55800000206
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 628,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "다-01",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "운주산"
+      },
+      "geometry" : {
+        "x" : 391416.92200000118,
+        "y" : 387902.0549999997
+      }
+    }
+  ]
+}

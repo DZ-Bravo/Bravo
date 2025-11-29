@@ -1,0 +1,615 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4643,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240306.31030000094,
+        "y" : 387291.53550000116
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4644,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240356.20750000048,
+        "y" : 387322.58850000054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4645,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241208.9001000002,
+        "y" : 386895.03040000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4646,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242016.65530000068,
+        "y" : 385419.34559999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4647,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241814.54430000018,
+        "y" : 385819.08240000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4648,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242244.99850000069,
+        "y" : 384773.15350000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 6953,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242279.06483762432,
+        "y" : 384692.38472210802
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 6954,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242191.92294657789,
+        "y" : 384866.68711051717
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 6955,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242108.44890459161,
+        "y" : 385127.98513502441
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 6956,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242047.35439770855,
+        "y" : 385257.08455142751
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 6957,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 242026.36810424272,
+        "y" : 385510.07178802229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 6958,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241998.44929872826,
+        "y" : 385406.21725716442
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 6959,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241934.04949515685,
+        "y" : 385636.34358351119
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 6960,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241829.30512224976,
+        "y" : 385750.02806726098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 6961,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241753.92178125959,
+        "y" : 385856.06499525532
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 6962,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241625.89726660587,
+        "y" : 385853.90254299715
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 6963,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241478.73482037336,
+        "y" : 385924.29630734026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6964,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241394.47407172341,
+        "y" : 386065.09967788495
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6965,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241330.78653145768,
+        "y" : 386599.50353636965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6966,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241331.9988790499,
+        "y" : 386204.32323201001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6967,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241311.2584670065,
+        "y" : 386334.26310314424
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6968,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241279.70040468313,
+        "y" : 386793.58535631746
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6969,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241139.76076440886,
+        "y" : 386947.94047020562
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6970,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241140.04096330702,
+        "y" : 386830.73606050573
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6971,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241062.67853701301,
+        "y" : 386783.40512543917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6972,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 241022.60518022068,
+        "y" : 387049.7027723901
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6973,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240978.81717560068,
+        "y" : 386763.93589742295
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6974,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240925.75625625253,
+        "y" : 387109.4481499549
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6975,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240901.48962257337,
+        "y" : 386741.94214142486
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6976,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240831.13167267479,
+        "y" : 386704.26239065081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6977,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240774.64268275164,
+        "y" : 386710.5899616573
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6978,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240719.9349039346,
+        "y" : 387184.61037225649
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6979,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240609.38423315529,
+        "y" : 387280.72308067977
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6980,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240568.97095109522,
+        "y" : 387547.3419651147
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6981,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240567.65063333604,
+        "y" : 387394.69305135123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6982,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240462.48382669128,
+        "y" : 387646.41177161597
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 6983,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "금산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "진악산"
+      },
+      "geometry" : {
+        "x" : 240305.52004493028,
+        "y" : 387482.87952070124
+      }
+    }
+  ]
+}

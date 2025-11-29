@@ -1,0 +1,405 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1271,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355908.51969999913,
+        "y" : 366565.09259999916
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1272,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355957.65920000058,
+        "y" : 367053.19470000267
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1273,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355818.62640000042,
+        "y" : 367536.59280000068
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1274,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355786.92740000132,
+        "y" : 368443.44090000354
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1275,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356407.95270000212,
+        "y" : 368798.94730000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1276,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356901.2667000005,
+        "y" : 369134.58809999935
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1277,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 357071.53700000141,
+        "y" : 369249.73579999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1278,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 357206.24299999978,
+        "y" : 369648.57679999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1279,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 357115.65600000229,
+        "y" : 369589.41269999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1280,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356734.361800001,
+        "y" : 369502.15530000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1281,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356318.30470000114,
+        "y" : 369511.00599999912
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1282,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356010.70370000135,
+        "y" : 369645.65980000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1283,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355660.21510000061,
+        "y" : 369734.39240000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1645,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355488.64520000014,
+        "y" : 369611.39860000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1646,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356272.74100000132,
+        "y" : 369515.48920000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1647,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 357137.75600000005,
+        "y" : 369567.56039999798
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1648,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 357270.6838999996,
+        "y" : 369695.43260000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1649,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 357090.68929999974,
+        "y" : 369224.44480000064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1650,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356426.61589999963,
+        "y" : 368774.46340000071
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1651,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355809.67300000042,
+        "y" : 368422.19170000032
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1652,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355925.58250000048,
+        "y" : 368450.45050000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1653,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 356013.74540000036,
+        "y" : 368416.2405999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1654,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "초례산"
+      },
+      "geometry" : {
+        "x" : 355965.74340000004,
+        "y" : 367385.17860000208
+      }
+    }
+  ]
+}

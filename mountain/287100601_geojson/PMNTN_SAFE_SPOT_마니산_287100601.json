@@ -1,0 +1,675 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 2896,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천남부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 147668.67669999972,
+        "y" : 558234.60419999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 2897,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 147986.89330000058,
+        "y" : 558140.10440000147
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 2898,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 148157.39790000115,
+        "y" : 557954.04389999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 2899,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 148769.72750000097,
+        "y" : 557826.90780000202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 2900,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 149236.6286000004,
+        "y" : 557978.1940999981
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 2901,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 149576.95730000082,
+        "y" : 557482.80599999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 2902,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 148847.86789999995,
+        "y" : 558566.39200000092
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 2903,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 149603.54479999933,
+        "y" : 557821.7949000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 2904,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 149845.98639999982,
+        "y" : 557357.84610000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 2905,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150041.44620000105,
+        "y" : 557233.33830000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 2906,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150359.54250000045,
+        "y" : 557108.09980000183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 2907,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150433.48959999997,
+        "y" : 557169.32090000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 2908,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150531.96130000055,
+        "y" : 557230.39619999938
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 2909,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150530.48930000141,
+        "y" : 556983.75060000271
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 2910,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150848.60230000038,
+        "y" : 556858.53110000305
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 2911,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150578.6232000012,
+        "y" : 556829.30450000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 2912,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 150649.63460000139,
+        "y" : 556397.2367000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 2913,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 151369.4552000016,
+        "y" : 557842.07530000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 2914,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 151553.2154000001,
+        "y" : 555713.61020000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 2965,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천강화소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 149410.55260000005,
+        "y" : 558347.11340000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6289,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 174715.69280000031,
+        "y" : 541191.50660000369
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6290,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 174899.02190000098,
+        "y" : 540911.31240000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6291,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 175190.74019999988,
+        "y" : 540786.62870000117
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6292,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 175112.00570000149,
+        "y" : 540947.26549999788
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6293,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 174942.53980000224,
+        "y" : 541132.90720000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6294,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 174672.26480000094,
+        "y" : 541615.69560000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6295,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176105.58060000092,
+        "y" : 541056.65490000136
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6296,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 175990.66480000038,
+        "y" : 540988.6323000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6297,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176255.66990000103,
+        "y" : 539104.08819999918
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6298,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176246.56730000023,
+        "y" : 541158.5577000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6299,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176273.06940000039,
+        "y" : 541343.30759999715
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6300,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176376.44940000121,
+        "y" : 541116.00080000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6301,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176462.24000000115,
+        "y" : 541060.85299999826
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6302,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176493.93010000046,
+        "y" : 541151.64090000279
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6303,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176578.60050000064,
+        "y" : 535239.05540000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6304,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176365.27749999985,
+        "y" : 534991.6446000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 6305,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 176063.9542999994,
+        "y" : 534610.16660000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 6306,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 175859.25700000115,
+        "y" : 534520.19080000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 6307,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 147717.9168999996,
+        "y" : 558265.12529999949
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 6308,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 148438.0979000004,
+        "y" : 559709.71690000221
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 6309,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "인천광역시 강화군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "마니산"
+      },
+      "geometry" : {
+        "x" : 147161.36629999988,
+        "y" : 559440.2752000019
+      }
+    }
+  ]
+}

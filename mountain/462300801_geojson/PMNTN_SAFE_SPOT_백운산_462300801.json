@@ -1,0 +1,735 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3083,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-01",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 255044.35230000038,
+        "y" : 280403.8403000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3084,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-02",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256290.66390000097,
+        "y" : 279275.89030000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3085,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-03",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256668.24530000053,
+        "y" : 279054.60510000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3086,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-04",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256663.16899999976,
+        "y" : 278852.96970000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3087,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-05",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256698.86780000106,
+        "y" : 278221.06990000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3088,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-06",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 253698.43780000042,
+        "y" : 279528.75999999791
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3089,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-07",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 252553.34670000058,
+        "y" : 279834.77810000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3090,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-08",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259042.71560000163,
+        "y" : 274844.29140000045
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3091,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-09",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 253384.73720000125,
+        "y" : 280457.41699999943
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3092,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-10",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 255859.88260000106,
+        "y" : 278507.18720000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3093,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-11",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 254013.40479999967,
+        "y" : 280663.63849999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3094,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-12",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259176.88260000106,
+        "y" : 275486.78760000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3095,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-13",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 251492.72179999948,
+        "y" : 276151.40300000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3096,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-14",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 252100.27570000011,
+        "y" : 277475.50240000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3097,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-15",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256468.52730000205,
+        "y" : 278064.61199999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3098,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-16",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 253459.23270000052,
+        "y" : 274294.03960000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3099,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-17",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 251415.03349999897,
+        "y" : 278559.04169999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3100,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-18",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256325.01070000045,
+        "y" : 277827.36629999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3101,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-19",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256591.77000000048,
+        "y" : 278084.43420000374
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3102,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-20",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259033.45610000193,
+        "y" : 271622.06360000372
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 3103,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-21",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 258588.62760000024,
+        "y" : 267925.52910000272
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 3104,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-22",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 258803.82520000078,
+        "y" : 267161.54839999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 3105,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-23",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259442.77610000223,
+        "y" : 280293.69650000148
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 3106,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-24",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 262632.91650000121,
+        "y" : 277118.32489999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 3107,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-25",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 263651.44180000201,
+        "y" : 275081.45940000191
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 3324,
+        "SAFE_SPOT2" : "태양광표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256663.16899999976,
+        "y" : 278852.96970000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 3325,
+        "SAFE_SPOT2" : "태양광표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 252553.34670000058,
+        "y" : 279834.77810000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 3333,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 255023.45560000185,
+        "y" : 280389.71550000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 3334,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256652.50710000191,
+        "y" : 279043.68930000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 3335,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256653.8526000008,
+        "y" : 278827.9635000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 3336,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259035.20180000179,
+        "y" : 274836.62720000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 3337,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 255845.49990000017,
+        "y" : 278483.94749999978
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 3338,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 251477.01060000062,
+        "y" : 276146.73440000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 3339,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 253438.73280000128,
+        "y" : 274278.1061000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 3340,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259430.45460000075,
+        "y" : 280263.3973999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 3341,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 262617.61710000131,
+        "y" : 277110.40369999968
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 3342,
+        "SAFE_SPOT2" : "등산로 119구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 262617.61710000131,
+        "y" : 277110.40369999968
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 3364,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 268465.29900000058,
+        "y" : 260787.39200000465
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 3365,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 258673.25020000152,
+        "y" : 260195.36380000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 3366,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 251950.59570000041,
+        "y" : 277505.4550999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 3367,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 251996.36020000093,
+        "y" : 269492.86969999969
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 3368,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259026.85400000028,
+        "y" : 272216.95090000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 3369,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 264398.98650000058,
+        "y" : 268801.60480000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 3370,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 259056.13650000188,
+        "y" : 275514.78470000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 3371,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백운산"
+      },
+      "geometry" : {
+        "x" : 256707.39049999975,
+        "y" : 278366.01000000164
+      }
+    }
+  ]
+}

@@ -1,0 +1,600 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 2735,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "212",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386727.98570000101,
+        "y" : 330368.62629999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 2736,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "213",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386202.84649999999,
+        "y" : 329808.71950000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 2737,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "214",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386035.43440000061,
+        "y" : 329496.83709999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 2738,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "215",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 385855.53220000025,
+        "y" : 329542.43569999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 2739,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "216",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 385752.45490000024,
+        "y" : 329287.40910000354
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 2740,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "217",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 385750.79229999986,
+        "y" : 329003.65240000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 2741,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "218",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386886.17580000125,
+        "y" : 330396.60669999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 2742,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "219",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387321.66119999997,
+        "y" : 330541.42480000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 2743,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "220",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387326.12469999958,
+        "y" : 330208.44910000078
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 2744,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "221",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387322.25390000083,
+        "y" : 329912.30649999902
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 2745,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "222",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386984.74029999971,
+        "y" : 330142.70039999858
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 2746,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "223",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387109.92200000025,
+        "y" : 329701.2304999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 2747,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "224",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387003.64640000183,
+        "y" : 329239.49460000172
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 2748,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "225",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386986.07110000029,
+        "y" : 329115.76830000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 2749,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "226",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386746.45400000084,
+        "y" : 329002.81850000285
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 2750,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "227",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386285.43140000105,
+        "y" : 328869.83730000071
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 2751,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "228",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 388776.09570000134,
+        "y" : 329455.64020000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 2752,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "229",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 388398.14829999954,
+        "y" : 329210.19470000267
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 2753,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "230",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387863.43330000155,
+        "y" : 329226.69160000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 2754,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "231",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387525.0504999999,
+        "y" : 329136.31580000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 2755,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "232",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387301.20270000026,
+        "y" : 329113.11679999903
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 2756,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "233",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 387150.67810000014,
+        "y" : 329079.12300000153
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 2757,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "234",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 388018.60830000043,
+        "y" : 328440.45630000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 2758,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "235",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 388576.74689999968,
+        "y" : 328510.81179999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 2759,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "236",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 388786.77290000208,
+        "y" : 328592.34590000287
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 2760,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "237",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386785.06470000092,
+        "y" : 328602.71130000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 2761,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "238",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386515.37739999965,
+        "y" : 328359.61449999921
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 2762,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "239",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 383850.2659,
+        "y" : 327533.42050000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 2763,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "240",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 383969.88949999958,
+        "y" : 327600.64320000261
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 2764,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "241",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 384289.30260000005,
+        "y" : 327514.70540000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 2765,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "242",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 384728.85940000135,
+        "y" : 327714.97969999909
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 2766,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "243",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 385136.34229999967,
+        "y" : 327880.68940000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 2767,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "244",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 385505.41359999962,
+        "y" : 327953.10359999724
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 2768,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "245",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 385838.81820000149,
+        "y" : 328043.29539999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 2769,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "246",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386229.91450000089,
+        "y" : 328147.03759999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 2770,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "247",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "신불산"
+      },
+      "geometry" : {
+        "x" : 386470.85880000051,
+        "y" : 328318.59420000203
+      }
+    }
+  ]
+}

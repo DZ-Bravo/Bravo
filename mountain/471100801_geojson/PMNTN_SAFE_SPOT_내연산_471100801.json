@@ -1,0 +1,1830 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 57,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403998.95669999998,
+        "y" : 408853.42339999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 58,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404275.07600000128,
+        "y" : 408798.20480000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 59,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "14",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403794.14149999991,
+        "y" : 409064.55740000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 60,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "15",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403641.43840000033,
+        "y" : 409184.37250000052
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 61,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "17",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403437.36030000169,
+        "y" : 409364.6838000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 62,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "19",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403235.45100000128,
+        "y" : 409452.50770000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 63,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "21",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402980.73280000035,
+        "y" : 409662.49330000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 64,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "22",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403146.86799999978,
+        "y" : 410036.53940000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 65,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403565.53000000212,
+        "y" : 410293.10569999926
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 66,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403953.41909999959,
+        "y" : 410795.75330000371
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 67,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "35",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404124.5307,
+        "y" : 408825.52020000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 68,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "38",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404524.70500000007,
+        "y" : 410932.55970000289
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 69,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "44",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405156.81159999967,
+        "y" : 410608.12060000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 70,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "50",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405534.73090000078,
+        "y" : 409413.97210000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 71,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "56",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405115.34920000006,
+        "y" : 409188.14140000381
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 72,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "57",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405437.03949999996,
+        "y" : 409319.12140000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 73,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "60",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405779.31450000126,
+        "y" : 409635.68870000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 74,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "62",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406178.07459999993,
+        "y" : 409675.97690000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 75,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "64",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406526.89609999955,
+        "y" : 409715.09790000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 76,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "65",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406654.66530000139,
+        "y" : 409594.73890000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 77,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "66",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406809.60500000045,
+        "y" : 409382.48250000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 78,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "67",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407111.43470000103,
+        "y" : 409297.11639999971
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 79,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "69",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407522.70639999956,
+        "y" : 408813.34050000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 80,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "70",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407752.59450000152,
+        "y" : 408602.88609999977
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 81,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "72",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406499.08300000057,
+        "y" : 410886.66960000247
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 82,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "75",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405738.47380000073,
+        "y" : 411362.21289999783
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 83,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "76",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405540.95450000092,
+        "y" : 411264.9979000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 84,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "77",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405489.57050000224,
+        "y" : 411325.47960000113
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 85,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "86",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406134.84260000102,
+        "y" : 410446.15520000271
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 86,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "87",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406299.25980000105,
+        "y" : 409833.09000000358
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 87,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "95",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406451.26050000079,
+        "y" : 409744.15110000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 88,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "105",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406814.78550000023,
+        "y" : 410215.50860000402
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 89,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "109",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403395.1062000012,
+        "y" : 406895.90760000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 90,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "112",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402856.96980000008,
+        "y" : 407469.45210000314
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 91,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "115",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403080.816300001,
+        "y" : 408585.17220000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 92,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "116",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403197.75239999965,
+        "y" : 408927.22210000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 93,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "121",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402222.75540000014,
+        "y" : 405727.26720000431
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 94,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "122",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402092.13910000212,
+        "y" : 405971.01180000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 95,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "123",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 401860.19070000015,
+        "y" : 406274.10280000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 96,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "127",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402196.27350000013,
+        "y" : 406867.99069999903
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 97,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "128",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402396.79530000035,
+        "y" : 406841.80169999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 98,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "131",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403561.28770000022,
+        "y" : 407269.95849999785
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 99,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "133",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404054.27850000001,
+        "y" : 407559.12470000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 100,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "134",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404674.27759999968,
+        "y" : 407758.7631000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 101,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "141",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407618.94330000132,
+        "y" : 407921.03290000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 102,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "142",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407175.29320000112,
+        "y" : 407663.67799999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 103,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "143",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407304.56750000082,
+        "y" : 407481.66550000384
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 104,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "144",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406062.57320000045,
+        "y" : 408223.38320000097
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 105,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "146",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405770.92250000034,
+        "y" : 407877.15699999966
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 106,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "147",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404229.0234000003,
+        "y" : 405434.74660000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 107,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "148",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404395.58320000023,
+        "y" : 406857.63680000417
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 108,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-5",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406576.10020000022,
+        "y" : 409747.11420000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 109,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-6",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406603.26440000068,
+        "y" : 409655.21460000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 110,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-8",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406005.487900001,
+        "y" : 409579.34470000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 111,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-9",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405680.1707000006,
+        "y" : 409602.49650000222
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 112,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-10",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405534.73090000078,
+        "y" : 409413.97210000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 113,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-11",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404617.4123000009,
+        "y" : 409114.72350000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 114,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-12",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404941.28990000021,
+        "y" : 409153.19260000437
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 115,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-13",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404791.47330000158,
+        "y" : 409149.66569999978
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 116,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-15",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404421.27729999926,
+        "y" : 408955.87570000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 117,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-18",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404028.98610000033,
+        "y" : 408638.19460000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 118,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-19",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404031.87690000143,
+        "y" : 408514.87220000289
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 119,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-21",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403713.74590000045,
+        "y" : 408229.79370000213
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 120,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-22",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403566.79820000194,
+        "y" : 408102.9664000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 121,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-23",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403320.67590000108,
+        "y" : 407942.97780000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 122,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-24",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403154.4998000022,
+        "y" : 407568.9309000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 123,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-25",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403259.4327999996,
+        "y" : 407355.44900000095
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 124,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-1",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407965.54910000134,
+        "y" : 409101.54750000127
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 125,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-2",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407617.39709999971,
+        "y" : 410080.38450000435
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 126,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-3",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407089.41850000061,
+        "y" : 410222.04199999757
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 127,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-4",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406910.25200000126,
+        "y" : 410402.86849999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 128,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-5",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406833.15440000128,
+        "y" : 410493.57990000397
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 129,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-6",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406298.63459999952,
+        "y" : 410912.76090000197
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 130,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-7",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405989.56640000083,
+        "y" : 411306.46090000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 131,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-8",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405153.9028000012,
+        "y" : 410731.44360000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 132,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-9",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404500.46570000052,
+        "y" : 410901.14190000296
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 133,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-10",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403862.23180000205,
+        "y" : 410423.44430000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 134,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-11",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403193.92090000212,
+        "y" : 410161.02790000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 135,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-12",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403184.79430000111,
+        "y" : 409482.17210000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 136,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-1",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402044.27380000148,
+        "y" : 406957.00390000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 137,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-2",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402789.94579999987,
+        "y" : 407128.57200000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 138,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-4",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403169.18360000104,
+        "y" : 409080.79180000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 139,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-5",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403946.84889999963,
+        "y" : 408944.74469999969
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 140,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-6",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404101.72950000037,
+        "y" : 408732.44270000234
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 141,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-7",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403787.21810000017,
+        "y" : 408293.20830000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 142,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-8",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403704.64410000201,
+        "y" : 407550.93749999814
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 143,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-9",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404177.70199999958,
+        "y" : 407623.71319999732
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 144,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-10",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404299.29559999984,
+        "y" : 406701.1400000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 145,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-11",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404147.58160000015,
+        "y" : 405710.4645000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 146,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-1",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406913.91869999934,
+        "y" : 410248.71420000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 147,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-2",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406692.1500000013,
+        "y" : 410120.04920000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 148,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-3",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406621.6428000005,
+        "y" : 409933.28490000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 149,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-4",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406203.16200000141,
+        "y" : 410725.4077999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 150,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-5",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406137.03440000117,
+        "y" : 410353.66279999912
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 151,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-6",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406120.83410000149,
+        "y" : 409983.10160000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 152,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-7",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406099.64880000148,
+        "y" : 410877.19510000385
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 153,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-8",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406081.98900000006,
+        "y" : 410568.29530000314
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 154,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-9",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406109.14620000031,
+        "y" : 410476.39440000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 155,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-10",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 406072.3602,
+        "y" : 409920.25710000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 156,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-12",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404802.94200000074,
+        "y" : 410784.86810000427
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 157,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-13",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405159.72039999999,
+        "y" : 410484.79759999923
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 158,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-14",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405246.25570000056,
+        "y" : 409993.27250000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 159,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-15",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405724.27520000003,
+        "y" : 409850.32310000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 160,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-16",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404333.33620000072,
+        "y" : 409509.06790000387
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 161,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-17",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404220.07100000139,
+        "y" : 409012.84710000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 162,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-18",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403412.39169999957,
+        "y" : 409364.10000000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 163,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-19",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403590.05740000028,
+        "y" : 409244.86519999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 164,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔1-1",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403920.87700000033,
+        "y" : 404718.04070000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 165,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔1-3",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405153.85770000145,
+        "y" : 407554.1165000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 166,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔1-4",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407504.3638000004,
+        "y" : 407486.42470000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 167,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔2-1",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402044.27380000148,
+        "y" : 406957.00390000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 168,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔2-2",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 402789.94579999987,
+        "y" : 407128.57200000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 169,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔2-3",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403128.59929999989,
+        "y" : 408678.82909999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 170,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔2-4",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 403862.23180000205,
+        "y" : 410423.44430000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 171,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔2-5",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 404019.25630000047,
+        "y" : 410118.64970000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 172,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "솔2-6",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 405492.48460000101,
+        "y" : 411202.15640000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 1119,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : "거즈1박스,붕대2,밴드1통,우황청심환,진통제,\n면봉1통,스프레이파스1,\n포비돈,후시딘,가위,반창고,비상후레쉬,물파스,\n위생장갑",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407136.40390000027,
+        "y" : 409297.7106999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 1120,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "포항북부소방서",
+        "ETC_MATTER" : "거즈1박스,붕대2,밴드1통,우황청심환,진통제,\n면봉1통,스프레이파스1,\n포비돈,후시딘,가위,반창고,비상후레쉬,물파스,\n위생장갑",
+        "MNTN_NM" : "내연산"
+      },
+      "geometry" : {
+        "x" : 407546.94190000091,
+        "y" : 408844.76680000126
+      }
+    }
+  ]
+}

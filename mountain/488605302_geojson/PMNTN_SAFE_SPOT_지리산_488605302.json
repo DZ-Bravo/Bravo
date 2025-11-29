@@ -1,0 +1,1155 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3003,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 248552.00619999971,
+        "y" : 300009.29849999957
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3004,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 249085.01610000059,
+        "y" : 300033.75730000064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3005,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 249557.23140000086,
+        "y" : 300085.6510000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3006,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 249871.61420000065,
+        "y" : 300349.35190000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3007,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250259.23010000121,
+        "y" : 300616.55390000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3008,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-06",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250693.11330000125,
+        "y" : 300739.17980000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3009,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-07",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 251108.82820000034,
+        "y" : 300944.9375
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3010,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-08",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 253032.09049999993,
+        "y" : 301273.48990000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3011,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-09",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 251805.22750000004,
+        "y" : 301543.73610000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3012,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-10",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 252100.26430000179,
+        "y" : 301637.8962000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3013,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-11",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 252421.39950000029,
+        "y" : 301587.36400000192
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3014,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "25-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 252040.06159999967,
+        "y" : 302001.22400000319
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3015,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "25-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 251823.88820000179,
+        "y" : 302252.70220000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3016,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "24-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246466.53959999979,
+        "y" : 301166.37600000389
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3017,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "24-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247107.12160000019,
+        "y" : 300414.61919999868
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3018,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "24-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247389.05860000104,
+        "y" : 300132.55580000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3019,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "24-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247541.33870000113,
+        "y" : 300003.91480000317
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3020,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "24-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247813.77780000027,
+        "y" : 300088.56790000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3021,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246912.26410000026,
+        "y" : 305810.13790000416
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3022,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246726.46700000018,
+        "y" : 305605.76070000418
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 3023,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246574.70000000112,
+        "y" : 305167.33280000463
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 3024,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246652.75580000132,
+        "y" : 304723.93179999851
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 3025,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246809.04409999959,
+        "y" : 304293.26579999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 3026,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-06",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246908.41999999993,
+        "y" : 304124.27400000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 3027,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-07",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246977.61899999995,
+        "y" : 303446.59990000352
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 3028,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-08",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246830.71710000187,
+        "y" : 303039.01459999941
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 3029,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-09",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246744.67960000131,
+        "y" : 302582.43620000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 3030,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-10",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246650.9430000009,
+        "y" : 302147.39300000295
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 3031,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23-11",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246506.94360000081,
+        "y" : 301659.69840000197
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 3032,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 252689.17640000023,
+        "y" : 296830.02840000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 3033,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 252351.01850000117,
+        "y" : 297171.39350000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 3034,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 251997.1185999997,
+        "y" : 297398.03070000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 3035,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 251708.91340000182,
+        "y" : 297542.76909999922
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 3036,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 251307.87609999999,
+        "y" : 297708.44820000231
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 3037,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-06",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250962.09669999965,
+        "y" : 298295.76230000146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 3038,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-07",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250730.58440000005,
+        "y" : 298703.43569999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 3039,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-08",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250619.32070000004,
+        "y" : 299076.34610000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 3040,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-09",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250783.53850000072,
+        "y" : 299487.17180000246
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 3041,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-10",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250769.28780000191,
+        "y" : 299909.01439999975
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 3042,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-11",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250810.86340000108,
+        "y" : 300333.32909999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 3043,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26-12",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 250561.55240000039,
+        "y" : 298787.85760000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 3044,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246954.23190000001,
+        "y" : 299643.64030000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 3045,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245609.9692000011,
+        "y" : 300041.09530000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 3046,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245851.02480000164,
+        "y" : 300487.04350000247
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 3047,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245972.74560000002,
+        "y" : 298912.47740000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 3048,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246261.74100000132,
+        "y" : 299375.01440000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 3049,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-06",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246359.5111999996,
+        "y" : 299870.78630000167
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 3050,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-07",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246554.11259999964,
+        "y" : 300303.5708000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 3051,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-08",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246789.02670000214,
+        "y" : 298805.72320000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 3052,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-09",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247015.90130000096,
+        "y" : 299204.47460000403
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 3053,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-10",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247157.70920000225,
+        "y" : 299630.83300000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 3054,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-11",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247278.85290000122,
+        "y" : 299947.67609999888
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 3055,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27-12",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 247305.0521999998,
+        "y" : 300059.07230000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 3056,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245291.76900000125,
+        "y" : 295374.05200000107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 3057,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245513.78470000066,
+        "y" : 295764.41569999792
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 3058,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245691.7921000002,
+        "y" : 296155.79540000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 3059,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245778.36400000099,
+        "y" : 296181.81390000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 3060,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245869.72320000082,
+        "y" : 296061.46560000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 3061,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-06",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245894.45070000179,
+        "y" : 296518.02589999884
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 3062,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-07",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246022.27419999987,
+        "y" : 296930.11529999971
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 3063,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28-08",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245982.16520000063,
+        "y" : 297063.35889999941
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 3064,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "29-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246582.86130000092,
+        "y" : 301927.91310000233
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 3065,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "29-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245478.80140000023,
+        "y" : 302050.79270000197
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 3066,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "29-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 245841.52060000133,
+        "y" : 301958.63030000217
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 3067,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "29-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246205.72510000132,
+        "y" : 301873.88680000417
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 3068,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "29-05",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246529.60590000078,
+        "y" : 301722.99560000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 3069,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "38-01",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246028.85330000147,
+        "y" : 303908.62120000273
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 3070,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "38-02",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246274.61730000004,
+        "y" : 303953.95260000043
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 3071,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "38-03",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246651.45390000008,
+        "y" : 304097.66719999909
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 3072,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "38-04",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246890.0560000008,
+        "y" : 304110.30950000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 3361,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 246507.05489999987,
+        "y" : 301638.12520000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 3362,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 254823.17709999997,
+        "y" : 296722.84410000406
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 3363,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "순천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "지리산"
+      },
+      "geometry" : {
+        "x" : 254903.24880000018,
+        "y" : 287693.1632000003
+      }
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5387,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산 1.7km , 산제치 1.8km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 297186.77360000182,
+        "y" : 346778.15410000272
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5388,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산 1.2km , 산제치 2.3km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 297451.85180000123,
+        "y" : 347135.55719999969
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5389,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산 0.15km , 산제치 3.4km, 도리 1.9km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 296872.861800001,
+        "y" : 347668.67520000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5390,
+        "SAFE_SPOT2" : "거창휴게소 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산우두산의상봉장군봉 등산안내도",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 295802.27330000047,
+        "y" : 346245.23869999871
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5391,
+        "SAFE_SPOT2" : "휴게소 산길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산 2.9km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 295811.66380000114,
+        "y" : 346306.9915000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5392,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산 1.1km, 돌탑 0.4km, 상수월 3.7km, 창휴게소 1.9km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 295853.57789999992,
+        "y" : 347780.91540000401
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5393,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 4.0km, 마장재 2.0km, 돌탑 0.7km, 거창휴게소 2.2km, 비계산 0.8km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 296062.93820000067,
+        "y" : 347946.55520000122
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5394,
+        "SAFE_SPOT2" : "뒷들재 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 3.5km, 마장재 1.5km, 비계산 1.3km, 상수월 3.7km",
+        "MNTN_NM" : "비계산"
+      },
+      "geometry" : {
+        "x" : 295920.00610000174,
+        "y" : 348379.65389999934
+      }
+    }
+  ]
+}

@@ -1,0 +1,870 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1065,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401804.5932,
+        "y" : 500517.55910000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1066,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401532.84660000075,
+        "y" : 500511.0700000003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1067,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401014.79210000113,
+        "y" : 500467.87190000154
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1068,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400670.39740000106,
+        "y" : 500397.97880000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1069,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400646.42550000083,
+        "y" : 500366.5577000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1070,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400379.06480000075,
+        "y" : 500175.1015000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1071,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400033.19390000124,
+        "y" : 500166.90310000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1072,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399613.20830000099,
+        "y" : 500156.96710000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1073,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399191.04140000138,
+        "y" : 500239.55399999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1074,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399116.92720000073,
+        "y" : 500237.80650000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1075,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "12",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398794.31429999974,
+        "y" : 500291.90920000337
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1076,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "13",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398550.16839999985,
+        "y" : 500162.76209999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1077,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "14",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398360.49430000037,
+        "y" : 499818.94480000064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1078,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "15",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398335.78839999996,
+        "y" : 499818.3647000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1079,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "16",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398335.78839999996,
+        "y" : 499818.3647000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1080,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "18",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398863.32180000003,
+        "y" : 499460.55450000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1081,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "19",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399381.44090000074,
+        "y" : 499503.61760000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1082,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "20",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399960.64639999997,
+        "y" : 499054.53749999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1083,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "21",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400563.71390000079,
+        "y" : 499685.86030000076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1084,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "22",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400804.18230000045,
+        "y" : 499969.23680000193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1085,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401785.78239999991,
+        "y" : 500270.29519999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1086,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-1",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 402679.60130000208,
+        "y" : 500106.58480000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1087,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-2",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 402759.63910000026,
+        "y" : 499861.68960000202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1088,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-3",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 402224.22050000075,
+        "y" : 499509.48429999873
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1089,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-4",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 402151.57430000138,
+        "y" : 499446.0420000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1090,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-5",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401438.00050000008,
+        "y" : 499305.59110000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1091,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-6",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400707.02270000055,
+        "y" : 498856.27380000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1092,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-7",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399443.986800001,
+        "y" : 497900.83379999921
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1093,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2-8",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398517.25609999988,
+        "y" : 497354.55279999971
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1094,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-1",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 402321.611800001,
+        "y" : 497506.44710000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1095,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-2",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401130.24849999975,
+        "y" : 497693.97880000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1096,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-3",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400838.82739999983,
+        "y" : 497471.08989999816
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 1097,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-4",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400425.28480000142,
+        "y" : 497183.61339999922
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 1098,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-5",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401492.38940000068,
+        "y" : 497023.86849999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 1099,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-6",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 401031.90710000228,
+        "y" : 498709.73920000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 1100,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-7",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 399230.29170000087,
+        "y" : 496476.64699999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 1101,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-8",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398868.25619999971,
+        "y" : 496097.91460000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 1102,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-1",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400056.85259999987,
+        "y" : 496033.39319999889
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 1103,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-2",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400107.01640000101,
+        "y" : 496003.72880000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 1104,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-3",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400157.18060000055,
+        "y" : 495974.06460000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 1105,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-4",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398747.57050000131,
+        "y" : 495971.67430000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 1106,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-5",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398868.25619999971,
+        "y" : 496097.91460000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 1107,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-6",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398693.78980000224,
+        "y" : 496155.51569999754
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 1108,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-7",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 400100.45060000103,
+        "y" : 496281.2340000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 1109,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-8",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398588.57780000102,
+        "y" : 498528.56260000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 1110,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-9",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398496.16269999929,
+        "y" : 497199.80320000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 1111,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-10",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398317.38140000124,
+        "y" : 497442.41410000436
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 1112,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-11",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398381.38889999967,
+        "y" : 497875.82790000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 1113,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-12",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398544.22910000198,
+        "y" : 498311.56410000101
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 1114,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-13",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398409.81840000115,
+        "y" : 498771.17110000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 1115,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-14",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398226.00499999989,
+        "y" : 499229.62040000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 1116,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-15",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398001.46900000144,
+        "y" : 499316.90780000202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 1117,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-16",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 398311.08260000031,
+        "y" : 499817.78460000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 1118,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4-17",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "응봉산"
+      },
+      "geometry" : {
+        "x" : 397970.98130000103,
+        "y" : 499563.00020000339
+      }
+    }
+  ]
+}

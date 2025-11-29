@@ -1,0 +1,825 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 447,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-24",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317153.61259999964,
+        "y" : 389321.14940000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 448,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-25",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317203.08890000079,
+        "y" : 389406.94040000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 449,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-26",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317207.06540000066,
+        "y" : 389493.45439999737
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 450,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-27",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317250.43499999959,
+        "y" : 389564.29140000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 451,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-28",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317173.50890000071,
+        "y" : 389577.80130000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 452,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-29",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317079.84910000023,
+        "y" : 389596.52659999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 887,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "금오산 1 - 1",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316666.34220000077,
+        "y" : 386640.7255000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 888,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 2",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316680.2193,
+        "y" : 387194.14220000058
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 889,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 3",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316687.37359999958,
+        "y" : 387675.40570000373
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 890,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 4",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316582.65009999927,
+        "y" : 388137.37350000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 891,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 5",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316610.66200000141,
+        "y" : 388656.27250000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 892,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 6",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316776.26650000177,
+        "y" : 389018.72150000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 893,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 7",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317092.93420000002,
+        "y" : 388798.91050000302
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 894,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 8",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317313.13080000132,
+        "y" : 388474.69109999947
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 895,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 9",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317456.84240000136,
+        "y" : 388102.19590000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 896,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "  1 - 10",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317405.23420000076,
+        "y" : 387706.4288000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 897,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "  1 - 11",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317278.74550000019,
+        "y" : 387243.80929999985
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 898,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "  1 - 12",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317083.08770000003,
+        "y" : 386902.05990000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 899,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 2 - 1",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317702.90250000078,
+        "y" : 387341.98719999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 900,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 2 - 2",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317824.28820000123,
+        "y" : 387621.0922000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 901,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 3 - 1",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317787.24670000002,
+        "y" : 388514.67650000192
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 902,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 3 - 2",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 318135.86210000049,
+        "y" : 388642.69310000166
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 903,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 도수령",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 318535.75760000106,
+        "y" : 388678.92620000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 904,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "효자봉 1 - 1",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319612.24210000038,
+        "y" : 386812.88990000449
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 905,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 2",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319408.91770000104,
+        "y" : 388875.77020000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 906,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 3",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319935.58240000159,
+        "y" : 388790.4739999976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 907,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 4",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319583.20870000124,
+        "y" : 388939.80949999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 908,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 5",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319132.03210000042,
+        "y" : 388995.32230000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 909,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 1 - 6",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319058.65240000095,
+        "y" : 388871.00190000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 910,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 2 - 1",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319836.20150000043,
+        "y" : 386908.4411999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 911,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 2 - 2",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319731.0493999999,
+        "y" : 387276.97179999948
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 912,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 2 - 3",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319825.24220000021,
+        "y" : 387709.88870000467
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 913,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " 2 - 4",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 319422.36420000065,
+        "y" : 387889.37220000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 914,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "헬기장",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317030.88470000122,
+        "y" : 388936.16359999776
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 915,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "정상",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317078.86160000134,
+        "y" : 389090.95670000277
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 5627,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 1",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316666.34220000077,
+        "y" : 386640.7255000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 5628,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 2",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316680.2193,
+        "y" : 387194.14220000058
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 5629,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 3",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316687.37359999958,
+        "y" : 387675.40570000373
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 5630,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 4",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316582.65009999927,
+        "y" : 388137.37350000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 5631,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 5",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316610.66200000141,
+        "y" : 388656.27250000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 5632,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 6",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 316776.26650000177,
+        "y" : 389018.72150000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 5633,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 7",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317092.93420000002,
+        "y" : 388798.91050000302
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 5634,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 8",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317313.13080000132,
+        "y" : 388474.69109999947
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 5635,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 9",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317456.84240000136,
+        "y" : 388102.19590000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 5636,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 10",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317405.23420000076,
+        "y" : 387706.4288000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 5637,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 11",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317294.72170000151,
+        "y" : 387391.74110000022
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 5638,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1 - 12",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317059.14340000227,
+        "y" : 386905.01490000449
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 5639,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2 - 1",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317734.8376000002,
+        "y" : 387308.41840000078
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 5640,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2 - 2",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 318028.87740000151,
+        "y" : 387378.56550000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 5641,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3 - 1",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 317654.91560000088,
+        "y" : 388389.90660000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 5642,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3 - 2",
+        "MGC" : "칠곡군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 318050.65160000138,
+        "y" : 388617.12529999949
+      }
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3231,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-2",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 172838.82650000043,
+        "y" : 195916.7563000042
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3232,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-2",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 171854.58899999969,
+        "y" : 193196.19769999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3233,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-4",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 171637.44699999969,
+        "y" : 193601.52690000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3234,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3-5",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 171410.69299999997,
+        "y" : 194257.48230000213
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3346,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 171759.22580000199,
+        "y" : 194845.16630000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3347,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 170895.94120000023,
+        "y" : 196665.8439000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3348,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 161526.45370000135,
+        "y" : 198702.69050000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3349,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 166418.39620000217,
+        "y" : 209222.38440000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3350,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 166620.77090000082,
+        "y" : 208728.61900000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3351,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 166491.50850000139,
+        "y" : 208266.86230000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3352,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 166105.55450000055,
+        "y" : 207405.44759999961
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3353,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "해남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오봉산"
+      },
+      "geometry" : {
+        "x" : 165542.22140000109,
+        "y" : 206914.48110000044
+      }
+    }
+  ]
+}
