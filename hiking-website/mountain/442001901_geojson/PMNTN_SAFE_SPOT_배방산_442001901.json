@@ -1,0 +1,435 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4210,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204291.53069999907,
+        "y" : 461146.90380000323
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4211,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204489.93450000044,
+        "y" : 461239.4832000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4212,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204663.54470000137,
+        "y" : 461301.22770000435
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4213,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204787.60969999991,
+        "y" : 461239.64460000396
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4214,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204812.76290000137,
+        "y" : 460623.14230000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4215,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204787.8685000008,
+        "y" : 460777.25739999861
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4216,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204812.4160000002,
+        "y" : 461239.65850000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4217,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204911.74730000179,
+        "y" : 461054.76000000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4218,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204837.22219999973,
+        "y" : 461239.67250000127
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4219,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205879.14919999987,
+        "y" : 461147.84790000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4220,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205631.02290000115,
+        "y" : 461240.15839999914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4221,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205581.32990000118,
+        "y" : 461363.4291999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4222,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205333.27070000023,
+        "y" : 461363.27089999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4223,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205581.06830000225,
+        "y" : 461764.1651000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4224,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205432.3573000012,
+        "y" : 461579.11420000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4225,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205308.40739999991,
+        "y" : 461455.73289999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4226,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205085.21160000004,
+        "y" : 461363.11980000138
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4227,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 205409.48140000086,
+        "y" : 458527.34710000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4228,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204985.75430000108,
+        "y" : 461763.79730000161
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4229,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204861.8356999997,
+        "y" : 461578.77079999819
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4230,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204837.08270000014,
+        "y" : 461486.27920000441
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4231,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204812.31190000009,
+        "y" : 461424.61350000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4232,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204166.7918999996,
+        "y" : 462595.65760000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4233,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204390.37700000126,
+        "y" : 461886.7742999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4234,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "배방산"
+      },
+      "geometry" : {
+        "x" : 204787.52340000123,
+        "y" : 461393.77380000055
+      }
+    }
+  ]
+}

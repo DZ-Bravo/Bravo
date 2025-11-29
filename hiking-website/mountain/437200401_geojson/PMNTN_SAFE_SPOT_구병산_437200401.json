@@ -1,0 +1,630 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 6887,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278765.12538477033,
+        "y" : 429904.43373392336
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 6889,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278620.37482788693,
+        "y" : 429552.35088175908
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 6890,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278606.72848307155,
+        "y" : 430242.46825634316
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 6891,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278371.31284822058,
+        "y" : 430317.05811833404
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 6892,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278288.90178134479,
+        "y" : 430327.26267498173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 6893,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278192.72260453645,
+        "y" : 430351.0793091245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 6894,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278151.43797574379,
+        "y" : 430106.71419043094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 6895,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278124.23418098316,
+        "y" : 429915.15917502157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 6896,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278122.89571813028,
+        "y" : 429766.02340856194
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 6897,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278075.73775481246,
+        "y" : 430054.88209803589
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 6898,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278040.40623340569,
+        "y" : 430481.26937902346
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 6899,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 278033.18193727639,
+        "y" : 430128.29332056828
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 6900,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277998.36865325458,
+        "y" : 430473.48171410523
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 6902,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277929.54840534087,
+        "y" : 430421.13402767107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 6903,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277878.76762888022,
+        "y" : 430431.29255127534
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 6904,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277740.89696804993,
+        "y" : 430382.34946749732
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 6906,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277639.42934422567,
+        "y" : 430891.38784316927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6907,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277560.11097959056,
+        "y" : 430585.8616259452
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6908,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277557.4846565919,
+        "y" : 430440.26695312746
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6909,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277430.68038327806,
+        "y" : 430053.39403297566
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6910,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277400.35847818013,
+        "y" : 430192.55980776064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6912,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277389.58068122901,
+        "y" : 430542.55186231062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6914,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277332.85539953131,
+        "y" : 430384.47980065271
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6915,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277311.88743223157,
+        "y" : 430537.03939960152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6916,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277305.85279852524,
+        "y" : 431248.9785814099
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6917,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277174.54332995508,
+        "y" : 430559.21976393834
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6921,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 277042.06869950704,
+        "y" : 430936.40954813547
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6925,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 276901.85181314498,
+        "y" : 430683.67675694451
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6928,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 276765.46197639965,
+        "y" : 430769.5451884307
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6930,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 276598.22514036298,
+        "y" : 430751.16230202839
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6935,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 276304.01221454144,
+        "y" : 430792.38219479658
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6939,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 276081.96965666022,
+        "y" : 430802.71469731629
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6940,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 275604.67197564617,
+        "y" : 430817.98891984671
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6941,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 274891.03282794263,
+        "y" : 430625.42462227866
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6942,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 274622.05848620553,
+        "y" : 430645.40434097312
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6943,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 274184.81983288378,
+        "y" : 430834.74424817972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 6944,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 273967.09361952171,
+        "y" : 431026.38837482221
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 6945,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보은소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구병산"
+      },
+      "geometry" : {
+        "x" : 273025.06577135436,
+        "y" : 430982.47271867655
+      }
+    }
+  ]
+}

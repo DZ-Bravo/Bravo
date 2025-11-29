@@ -1,0 +1,375 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1150,
+        "SAFE_SPOT2" : "표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191257.10200000089,
+        "y" : 280531.46780000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1151,
+        "SAFE_SPOT2" : "표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191534.48010000121,
+        "y" : 280137.91229999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1152,
+        "SAFE_SPOT2" : "표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191855.13750000112,
+        "y" : 279997.3871999979
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1153,
+        "SAFE_SPOT2" : "표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 193141.4243999999,
+        "y" : 280887.19580000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1154,
+        "SAFE_SPOT2" : "표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 192794.83970000036,
+        "y" : 280387.0008000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 6632,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 193009.01646502689,
+        "y" : 281164.99160304852
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 6633,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191222.28379396256,
+        "y" : 280911.3674598746
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 6634,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 193118.1991002094,
+        "y" : 280909.73282288201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 6637,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191222.06305167265,
+        "y" : 280678.3884793818
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 6638,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191376.92331522517,
+        "y" : 280578.39798505604
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 6640,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191185.41560937371,
+        "y" : 280489.82343487814
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 6641,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191249.18699827138,
+        "y" : 280456.48091031238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 6643,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191194.39720767643,
+        "y" : 280356.67829767615
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 6644,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191258.19292390347,
+        "y" : 280334.43007019535
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 6645,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191267.22608964704,
+        "y" : 280256.76610781252
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 6646,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191659.10695043113,
+        "y" : 280156.54490391724
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 6647,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 192552.41135489661,
+        "y" : 280111.39072570577
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6648,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191449.39515671786,
+        "y" : 280101.27163299546
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6649,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 192342.72811131831,
+        "y" : 280078.28594456054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6650,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191330.81954977475,
+        "y" : 280023.72732857987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6651,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "광주광역시 남구청",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "제석산"
+      },
+      "geometry" : {
+        "x" : 191941.51270842273,
+        "y" : 279945.50235036761
+      }
+    }
+  ]
+}
