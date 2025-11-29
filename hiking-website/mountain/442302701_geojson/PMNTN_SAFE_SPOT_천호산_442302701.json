@@ -1,0 +1,510 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4456,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221345.87680000067,
+        "y" : 405903.6117000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4457,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221396.86890000012,
+        "y" : 405472.20790000446
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4458,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221522.46659999993,
+        "y" : 405164.2826000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4459,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221548.50210000016,
+        "y" : 404732.81839999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4460,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221499.32400000002,
+        "y" : 404424.46250000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4461,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221774.61270000134,
+        "y" : 404178.55859999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4462,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 222025.10109999869,
+        "y" : 403870.95380000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4463,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 222374.54820000101,
+        "y" : 403933.49090000242
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4464,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 222748.72050000075,
+        "y" : 404088.57690000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4465,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 223223.17339999974,
+        "y" : 404089.82850000262
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4466,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 223547.13270000089,
+        "y" : 404337.28569999896
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4467,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 223721.00310000218,
+        "y" : 404676.81589999981
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4468,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 224044.75630000141,
+        "y" : 404985.93860000186
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4469,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 224418.94039999973,
+        "y" : 405110.27370000072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4470,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 224493.58530000132,
+        "y" : 405202.95390000194
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4484,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221345.87680000067,
+        "y" : 405903.6117000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4485,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221396.86890000012,
+        "y" : 405472.20790000446
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4486,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221522.46659999993,
+        "y" : 405164.2826000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4487,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221548.50210000016,
+        "y" : 404732.81839999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4488,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221499.32400000002,
+        "y" : 404424.46250000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4489,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 221774.61270000134,
+        "y" : 404178.55859999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4490,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 222025.10109999869,
+        "y" : 403870.95380000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4491,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 222374.54820000101,
+        "y" : 403933.49090000242
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4492,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 222748.72050000075,
+        "y" : 404088.57690000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4493,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 223223.17339999974,
+        "y" : 404089.82850000262
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 4494,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 223547.13270000089,
+        "y" : 404337.28569999896
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 4495,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 223721.00310000218,
+        "y" : 404676.81589999981
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 4496,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 224044.75630000141,
+        "y" : 404985.93860000186
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 4497,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 224418.94039999973,
+        "y" : 405110.27370000072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 4498,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "계룡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천호산"
+      },
+      "geometry" : {
+        "x" : 224493.58530000132,
+        "y" : 405202.95390000194
+      }
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5266,
+        "SAFE_SPOT2" : "지내갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "건흥산 1.4km, 취우령 1.9km, 지내 1.8km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279404.09860000107,
+        "y" : 346690.75020000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5267,
+        "SAFE_SPOT2" : "영승갈림길1 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령 1.8km, 건흥산1.5km, 영승 2.7km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279378.43870000169,
+        "y" : 346749.08660000376
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5268,
+        "SAFE_SPOT2" : "영승갈림길2 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령 0.2km, 건흥산3.1km, 영승 3.7km\n",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279639.29140000138,
+        "y" : 348215.56959999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5269,
+        "SAFE_SPOT2" : "취우령갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "넘터 8.5km, 건흥산 3.3km, 구산 2.8km, 죽림정사 2.8km, 2.3km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279688.08919999935,
+        "y" : 348379.37580000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5270,
+        "SAFE_SPOT2" : "구산갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "구산 2.9km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279623.5700000003,
+        "y" : 348847.32479999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5271,
+        "SAFE_SPOT2" : "상율갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "넘터 7.0km, 취우령 1.5km, 상율 2.8km, 풍계 3.8km, 임실3.0km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279329.83660000097,
+        "y" : 349655.37110000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5272,
+        "SAFE_SPOT2" : "당산갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "넘터4.9km, 취우령 3.6km, 당산농공단지 1.9km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 278982.58270000108,
+        "y" : 351400.00760000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5273,
+        "SAFE_SPOT2" : "원당갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "넘터 3.0km / 취우령 5.5km / 원당 1.2km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 278924.8889000006,
+        "y" : 353082.50169999897
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 5274,
+        "SAFE_SPOT2" : "매봉 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "넘터 2.2km / 취우령 6.3km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 279392.86110000126,
+        "y" : 353561.377700001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 5275,
+        "SAFE_SPOT2" : "넘터 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령 8.5km, 건흥산 11.8km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 278535.32110000215,
+        "y" : 355088.78980000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 5276,
+        "SAFE_SPOT2" : "지내입구 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "건흥산, 취우령",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 280715.87320000026,
+        "y" : 346187.81120000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 5277,
+        "SAFE_SPOT2" : "지내산길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "건흥산 2.5km, 취우령 3.0km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 280187.93010000046,
+        "y" : 346466.61170000397
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 5278,
+        "SAFE_SPOT2" : "죽동 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 281285.18790000118,
+        "y" : 347160.88500000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 5279,
+        "SAFE_SPOT2" : "구산 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 281601.97330000158,
+        "y" : 348248.80770000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 5280,
+        "SAFE_SPOT2" : "구산산길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령 2.3km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 281042.30300000124,
+        "y" : 348709.12780000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 5281,
+        "SAFE_SPOT2" : "원당산길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "취우령 6.2km",
+        "MNTN_NM" : "아홉산"
+      },
+      "geometry" : {
+        "x" : 278606.26539999992,
+        "y" : 353320.099700002
+      }
+    }
+  ]
+}

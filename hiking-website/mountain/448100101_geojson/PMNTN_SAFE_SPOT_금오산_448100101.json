@@ -1,0 +1,945 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 6316,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186311.23369999975,
+        "y" : 454470.67269999906
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 6317,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186522.22750000097,
+        "y" : 454453.38420000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 6318,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186780.38150000013,
+        "y" : 454751.37410000153
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 6319,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187157.72950000223,
+        "y" : 455086.18309999816
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 6320,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187119.9821000006,
+        "y" : 455241.60100000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 6321,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187339.45190000162,
+        "y" : 455428.38550000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 6322,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187372.39300000016,
+        "y" : 455041.47519999743
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 6323,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188013.2435999997,
+        "y" : 455315.21110000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 6324,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187955.5457000006,
+        "y" : 455238.84439999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 6325,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187935.81040000077,
+        "y" : 455150.40269999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 6326,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188425.47120000143,
+        "y" : 454144.81289999932
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 6327,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188207.95180000085,
+        "y" : 455201.50260000117
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 6328,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188026.40440000035,
+        "y" : 455318.2752000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 6329,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188077.50140000135,
+        "y" : 456360.11099999771
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 6330,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188129.49920000136,
+        "y" : 456090.62250000052
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 6331,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188131.86490000039,
+        "y" : 455827.36810000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 6332,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188195.0717000002,
+        "y" : 455402.19519999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6333,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187220.09580000024,
+        "y" : 455623.99730000272
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6334,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187274.39090000093,
+        "y" : 455579.2193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6335,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187341.66680000164,
+        "y" : 455415.4355000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6336,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187213.65160000045,
+        "y" : 455630.48029999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6337,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187269.68549999874,
+        "y" : 455586.62450000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6338,
+        "SAFE_SPOT2" : "정자",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186522.22750000097,
+        "y" : 454453.38420000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6339,
+        "SAFE_SPOT2" : "정자",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 185860.98240000103,
+        "y" : 455730.32330000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6340,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186311.23369999975,
+        "y" : 454470.67269999906
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6341,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187157.72950000223,
+        "y" : 455086.18309999816
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6342,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186847.87289999984,
+        "y" : 453920.82860000245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6343,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186890.33080000058,
+        "y" : 453922.61310000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6344,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186971.23810000066,
+        "y" : 453902.45309999958
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6345,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187237.59950000141,
+        "y" : 454042.92530000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6346,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187367.97169999965,
+        "y" : 454062.76879999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6347,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188000.28330000024,
+        "y" : 454036.8916000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6348,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188798.55059999879,
+        "y" : 454851.76429999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6349,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188754.12200000044,
+        "y" : 455046.94860000163
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6350,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188095.63020000048,
+        "y" : 455295.36779999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6351,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187664.43240000121,
+        "y" : 455287.03830000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 6352,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188022.67989999894,
+        "y" : 457270.162200002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 6353,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188116.81250000093,
+        "y" : 456607.27840000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 6354,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188130.98890000209,
+        "y" : 456090.92870000191
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 6355,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188187.5308000017,
+        "y" : 455514.1026000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 6356,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 185773.16270000208,
+        "y" : 455761.29439999908
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 6357,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186651.00350000057,
+        "y" : 455682.50909999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 6358,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186905.21960000042,
+        "y" : 455704.61950000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 6359,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187067.27359999996,
+        "y" : 455844.93840000033
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 6360,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187861.5635000011,
+        "y" : 454608.28500000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 6361,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186508.5970999999,
+        "y" : 454153.16429999843
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 6362,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186318.16770000011,
+        "y" : 454459.87270000204
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 6363,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186516.51410000119,
+        "y" : 454451.23540000245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 6364,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187157.98060000036,
+        "y" : 455088.03230000287
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 6365,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187120.48550000042,
+        "y" : 455246.22409999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 6366,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187432.25389999989,
+        "y" : 455403.28009999916
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 6367,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188021.18499999959,
+        "y" : 455313.65870000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 6368,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188080.00250000041,
+        "y" : 455303.40420000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 6369,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188190.49680000078,
+        "y" : 455504.85080000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 6370,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188130.22940000053,
+        "y" : 456080.14070000313
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 6371,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 188020.19770000037,
+        "y" : 457269.85740000196
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 6372,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 187709.20010000095,
+        "y" : 454654.12410000339
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 6373,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 186120.4430999998,
+        "y" : 454392.37419999763
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 6374,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금오산"
+      },
+      "geometry" : {
+        "x" : 185773.16270000208,
+        "y" : 455761.29439999908
+      }
+    }
+  ]
+}

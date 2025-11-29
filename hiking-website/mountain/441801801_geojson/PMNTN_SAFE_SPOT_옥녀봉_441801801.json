@@ -1,0 +1,360 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4649,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 174197.65560000017,
+        "y" : 401705.30169999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4650,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 174172.78070000093,
+        "y" : 401772.2621000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4651,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 174121.86629999988,
+        "y" : 401817.21190000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4652,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 174076.99019999988,
+        "y" : 401776.64900000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4653,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173996.29870000016,
+        "y" : 401695.47839999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4654,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173918.65440000221,
+        "y" : 401634.78150000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4655,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173843.18360000104,
+        "y" : 401609.55970000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4656,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173792.49510000087,
+        "y" : 401544.92109999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4657,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173725.24730000086,
+        "y" : 401466.15380000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4658,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173631.80420000106,
+        "y" : 401419.34070000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4659,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173570.63150000013,
+        "y" : 401340.59620000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4660,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173507.08839999977,
+        "y" : 401251.57680000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4661,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173415.42800000217,
+        "y" : 401217.09610000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4662,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173351.61640000064,
+        "y" : 401077.81479999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4663,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173266.4850000022,
+        "y" : 400975.3871000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4664,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173088.95239999983,
+        "y" : 400935.96110000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4665,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 172996.89760000072,
+        "y" : 400908.84670000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4666,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 172901.65950000007,
+        "y" : 400884.07950000279
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4667,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173104.70520000067,
+        "y" : 400881.70030000433
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4668,
+        "SAFE_SPOT2" : "산악 위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부여소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "옥녀봉"
+      },
+      "geometry" : {
+        "x" : 173289.12440000102,
+        "y" : 400836.61230000108
+      }
+    }
+  ]
+}
