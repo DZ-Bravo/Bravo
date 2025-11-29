@@ -1,0 +1,360 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3784,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218447.75439999998,
+        "y" : 465018.9878000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3785,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218447.35500000138,
+        "y" : 465203.94409999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3786,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218496.61089999974,
+        "y" : 465358.1817000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3787,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218496.27699999977,
+        "y" : 465512.31210000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3788,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218471.21640000213,
+        "y" : 465635.5626999978
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3789,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218520.2686999999,
+        "y" : 465882.2789000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3790,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218568.9159000013,
+        "y" : 466313.95210000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3791,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 219017.15629999992,
+        "y" : 465420.97749999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3792,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218917.84280000068,
+        "y" : 465482.40929999948
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3793,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218818.59860000107,
+        "y" : 465513.01630000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3794,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218744.08140000049,
+        "y" : 465574.50490000285
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3795,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218644.90620000195,
+        "y" : 465574.28780000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3796,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218545.59719999973,
+        "y" : 465635.72400000319
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3797,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 219189.33050000202,
+        "y" : 466037.88759999909
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3798,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 219090.09180000145,
+        "y" : 466068.49140000343
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3799,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 219015.57739999983,
+        "y" : 466129.97760000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3800,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218916.27209999971,
+        "y" : 466191.409500001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3801,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218841.69200000167,
+        "y" : 466283.72340000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3802,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218816.62849999964,
+        "y" : 466406.97320000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3809,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "흑성산"
+      },
+      "geometry" : {
+        "x" : 218496.27699999977,
+        "y" : 465512.31210000254
+      }
+    }
+  ]
+}

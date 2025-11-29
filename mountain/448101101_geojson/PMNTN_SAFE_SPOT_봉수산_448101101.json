@@ -1,0 +1,570 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 6409,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180084.93369999994,
+        "y" : 443579.90530000441
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 6410,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180247.97890000045,
+        "y" : 443895.4879999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 6411,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179926.20240000077,
+        "y" : 443946.16990000196
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 6412,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179753.61110000219,
+        "y" : 444015.006500002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 6413,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179476.32210000232,
+        "y" : 444268.73930000328
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 6414,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179719.6819000002,
+        "y" : 444489.17910000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 6415,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180248.47460000031,
+        "y" : 443894.8703000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 6416,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180538.9467000002,
+        "y" : 444398.509200003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 6417,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180577.2285000002,
+        "y" : 444290.53419999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 6418,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180248.47460000031,
+        "y" : 443894.8703000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 6419,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179923.46610000078,
+        "y" : 443945.25150000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 6420,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179754.35100000072,
+        "y" : 444012.53879999928
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 6421,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179568.54700000118,
+        "y" : 444063.83990000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 6422,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179536.87850000057,
+        "y" : 444125.87390000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 6423,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179484.53250000067,
+        "y" : 444272.11040000431
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 6424,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179518.7351000011,
+        "y" : 444335.22070000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 6425,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179965.83000000007,
+        "y" : 444844.94230000116
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6426,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180254.74469999876,
+        "y" : 444460.49930000119
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6427,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179240.31359999999,
+        "y" : 444421.58270000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6428,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180131.612900001,
+        "y" : 444202.4672000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6429,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179578.26650000084,
+        "y" : 443237.08380000107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6430,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180493.04569999967,
+        "y" : 443228.7957000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6431,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 180245.5130000012,
+        "y" : 443904.12470000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6432,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179923.70739999972,
+        "y" : 443942.16840000078
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6433,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179752.36249999981,
+        "y" : 444012.54350000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6434,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 179839.58060000092,
+        "y" : 443788.54729999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6435,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 188321.93630000018,
+        "y" : 457599.58400000259
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6436,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 189458.13769999985,
+        "y" : 457264.57550000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6437,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 189458.13769999985,
+        "y" : 457264.57550000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6438,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 182668.67289999966,
+        "y" : 451726.38639999926
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6439,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 182893.09470000025,
+        "y" : 451811.93930000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6440,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 183045.7678000005,
+        "y" : 451909.96970000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6441,
+        "SAFE_SPOT2" : "대피소(정자)",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 187091.38170000166,
+        "y" : 453393.03300000168
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6442,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 187175.22130000126,
+        "y" : 453337.7295000013
+      }
+    }
+  ]
+}

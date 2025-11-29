@@ -1,0 +1,285 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 822,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 353845.18670000136,
+        "y" : 408747.54480000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 823,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 353596.62540000025,
+        "y" : 408681.47990000248
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 824,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 353892.39070000127,
+        "y" : 408902.56510000303
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 825,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 354312.96060000081,
+        "y" : 409125.87370000221
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 826,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 354508.29239999969,
+        "y" : 409376.03820000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 827,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 358572.81680000015,
+        "y" : 409695.87409999967
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 828,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "7",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 355552.33909999952,
+        "y" : 409641.34170000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 829,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 355925.67250000127,
+        "y" : 409709.70020000078
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 830,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 355952.29280000087,
+        "y" : 409617.66479999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 831,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 355728.18059999868,
+        "y" : 409582.81270000339
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 832,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 354201.2508999994,
+        "y" : 408383.80099999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 833,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "12",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 354095.38219999988,
+        "y" : 408721.13450000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 834,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "13",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 354042.17780000065,
+        "y" : 408905.21540000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 835,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "14",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 353870.6967000002,
+        "y" : 408717.15870000422
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 836,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "15",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "금성산"
+      },
+      "geometry" : {
+        "x" : 353897.29730000068,
+        "y" : 408625.11780000292
+      }
+    }
+  ]
+}

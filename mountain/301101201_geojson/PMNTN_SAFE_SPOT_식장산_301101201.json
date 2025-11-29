@@ -1,0 +1,420 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1696,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243537.99610000104,
+        "y" : 412660.65149999969
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1697,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244693.39950000122,
+        "y" : 412298.65550000221
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1698,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산3",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244187.11480000149,
+        "y" : 411396.55379999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1699,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산4",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243381.8955000015,
+        "y" : 411420.68410000391
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1700,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산5",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244761.7396999998,
+        "y" : 413032.73410000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1701,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산6",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 245027.38130000047,
+        "y" : 413987.66490000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1702,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산7",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243971.38250000123,
+        "y" : 413805.03710000217
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1703,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산8",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244901.44340000115,
+        "y" : 413335.40190000273
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1704,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "식장산9",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243080.46880000085,
+        "y" : 411035.23430000246
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1788,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 12",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산11호에서 쇠정골 마을 방향 0.5km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244712.0633000005,
+        "y" : 414099.44650000148
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1795,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 14",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(3번구급함에서 만인산 방향 0.3km 지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244356.10330000054,
+        "y" : 411021.34170000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1804,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 1",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(세천유원지에서 구절사 방향 2.2km 지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243728.1370000001,
+        "y" : 412337.46649999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1805,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 2",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산1호에서 구절사 방향 1.4km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244882.55059999973,
+        "y" : 411985.69920000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1806,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 3",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산2호에서 구절사 방향 0.4km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 245222.518600001,
+        "y" : 411864.17500000261
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1807,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 4",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산3호에서 독수리봉 경유하여 식장사 방향 0.9km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244891.35280000139,
+        "y" : 411255.2368000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1808,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 5",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산4호에서 식장사 방향 1.5km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243582.07100000046,
+        "y" : 411106.75669999979
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1809,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 6",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산5호에서 식장사 방향 0.4km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243287.94310000073,
+        "y" : 411059.12429999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1810,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 7",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산6호에서 식장사 방향0.6km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243088.33660000004,
+        "y" : 411042.70820000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1811,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 8",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(KT 송신탑 임도 3거리에서 세천유원지 방향 0.5Km 지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243701.59260000009,
+        "y" : 411668.41380000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1812,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 9",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(독수리봉 정상에서 장고개 방향 1.5km 지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244971.13310000114,
+        "y" : 412710.56260000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1813,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 10",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산9호에서 쇠정골 마을방향 0.6km지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244900.51040000096,
+        "y" : 413342.16620000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1814,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 11",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산10호에서 쇠정골 마을 방향 0.5km 지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 245220.70970000047,
+        "y" : 413661.30999999866
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1815,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산 13",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(식장산10호에서 식장호 방향 0.6km 지점)",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 244161.40309999976,
+        "y" : 413486.29930000193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1827,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "식장산",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(대전광역시 동구 낭월동 산2-1번지) 무인감시카메라",
+        "MNTN_NM" : "식장산"
+      },
+      "geometry" : {
+        "x" : 243047.24280000012,
+        "y" : 411359.65240000002
+      }
+    }
+  ]
+}

@@ -1,0 +1,585 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 2158,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 387441.48760000151,
+        "y" : 277429.03890000097
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 2159,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 387288.74519999977,
+        "y" : 277410.78040000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 2160,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 387026.16930000018,
+        "y" : 277506.51960000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 2161,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 386998.40310000069,
+        "y" : 277513.04089999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 2162,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 387064.47400000133,
+        "y" : 278022.59480000287
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 2163,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 386959.91240000073,
+        "y" : 278164.14379999787
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 2164,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 386935.52410000004,
+        "y" : 278191.39550000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 2165,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 386887.36899999902,
+        "y" : 278228.02620000206
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 2166,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 2167,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 2168,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 2169,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 2170,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 386907.7293999996,
+        "y" : 278803.24750000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 2171,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 386913.59360000025,
+        "y" : 278850.8572000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 2172,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 2173,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 2174,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 2175,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 2176,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 2177,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 2178,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 2179,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 2180,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 2181,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 2182,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 2183,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 2184,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 2185,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 2186,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 2187,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 2188,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 2189,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 2190,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392806.70529999956,
+        "y" : 284620.52800000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 2191,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392708.0876000002,
+        "y" : 284254.5364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 2192,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산항만소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉래산"
+      },
+      "geometry" : {
+        "x" : 392689.94750000164,
+        "y" : 284392.92459999956
+      }
+    }
+  ]
+}

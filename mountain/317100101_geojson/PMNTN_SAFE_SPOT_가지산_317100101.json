@@ -1,0 +1,450 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 763,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가지산01",
+        "MGC" : "경산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 379843.66440000106,
+        "y" : 340070.9748999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 764,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가지산02",
+        "MGC" : "경산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 380750.16839999985,
+        "y" : 340058.49510000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 765,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가지산03",
+        "MGC" : "경산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 381030.0998999998,
+        "y" : 339909.98849999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 766,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가지산04",
+        "MGC" : "경산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 381634.03259999957,
+        "y" : 339922.28930000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 767,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가지산05",
+        "MGC" : "경산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 380689.69170000125,
+        "y" : 339317.13560000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 768,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가지산06",
+        "MGC" : "경산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 380754.4123000009,
+        "y" : 338609.15660000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 2704,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "101",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 384628.78650000226,
+        "y" : 339474.42029999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 2705,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "105",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383257.79200000037,
+        "y" : 339371.77580000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 2706,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "106",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 382907.40469999984,
+        "y" : 339270.51190000214
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 2707,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "107",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 382956.32990000118,
+        "y" : 339389.01460000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 2708,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "111",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 381453.10640000086,
+        "y" : 337731.19380000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 2709,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "112",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 381658.72880000155,
+        "y" : 337550.96719999798
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 2710,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "113",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 381866.54260000028,
+        "y" : 337276.11410000175
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 2711,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "114",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 382320.10250000004,
+        "y" : 337225.24660000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 2712,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "115",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 382519.59360000025,
+        "y" : 337321.23100000247
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 2713,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "116",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383179.75800000038,
+        "y" : 337056.91650000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 2714,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "118",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383381.5306000011,
+        "y" : 337029.61030000262
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 2715,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "119",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383708.22870000079,
+        "y" : 337099.25129999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 2716,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "120",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 384334.72900000028,
+        "y" : 337235.54670000076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 2717,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "121",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383827.01690000109,
+        "y" : 338579.52440000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 2718,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "122",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383647.73830000032,
+        "y" : 338763.02130000293
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 2719,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "123",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 383464.23490000051,
+        "y" : 339066.39940000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 2720,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "129",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 384881.75019999966,
+        "y" : 338725.33060000092
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 2721,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "130",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 385016.28170000203,
+        "y" : 338297.29400000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 2722,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "131",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 385096.63170000073,
+        "y" : 338114.23360000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 2723,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "132",
+        "MGC" : "울산중부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가지산"
+      },
+      "geometry" : {
+        "x" : 385325.20510000084,
+        "y" : 337996.24380000122
+      }
+    }
+  ]
+}

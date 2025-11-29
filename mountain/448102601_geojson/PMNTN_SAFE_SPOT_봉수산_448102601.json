@@ -1,0 +1,390 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4132,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 198162.04280000087,
+        "y" : 450542.02800000273
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4133,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197988.24700000137,
+        "y" : 450819.49500000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4134,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 198013.16909999959,
+        "y" : 451189.39330000058
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4135,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197963.57880000118,
+        "y" : 451528.48390000127
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4136,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197963.63740000222,
+        "y" : 451775.08689999953
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4137,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197640.87569999974,
+        "y" : 452052.59810000099
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4138,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197442.30449999962,
+        "y" : 452360.90900000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4139,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197219.01650000084,
+        "y" : 452977.48700000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4140,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197194.25690000132,
+        "y" : 453193.27320000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4141,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197169.47819999978,
+        "y" : 453347.40860000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4142,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197144.720900001,
+        "y" : 453563.19510000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4143,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 195904.28220000118,
+        "y" : 455629.00779999979
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4144,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 196202.08430000022,
+        "y" : 455474.74280000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4145,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 196524.74550000113,
+        "y" : 455382.12920000032
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4146,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 196748.07290000003,
+        "y" : 455166.26270000264
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4147,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197021.04970000032,
+        "y" : 454919.55910000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4148,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197294.04230000172,
+        "y" : 454672.86440000124
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4149,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197144.97760000173,
+        "y" : 454333.8321000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4150,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197045.54490000103,
+        "y" : 453963.95990000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4151,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197865.03189999983,
+        "y" : 454703.52860000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4152,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197815.39719999954,
+        "y" : 454765.19219999947
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4153,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "아산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "봉수산"
+      },
+      "geometry" : {
+        "x" : 197443.02170000132,
+        "y" : 454765.29520000145
+      }
+    }
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3243,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-01",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 158708.17460000049,
+        "y" : 287479.11110000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3244,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-02",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 158873.3515000008,
+        "y" : 288193.35420000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3245,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-03",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 158723.25540000014,
+        "y" : 288012.20650000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3246,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-04",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 158798.28620000184,
+        "y" : 287820.78859999962
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3247,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-05",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 158909.46900000051,
+        "y" : 287789.46470000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3248,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-06",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159232.34640000109,
+        "y" : 287572.27449999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3249,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-08",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159437.45889999997,
+        "y" : 288739.38319999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3250,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-09",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159255.99720000103,
+        "y" : 290016.09580000117
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3251,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-10",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159553.39720000047,
+        "y" : 289774.37510000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3252,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-11",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159901.03610000014,
+        "y" : 289449.23100000247
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3253,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-12",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 160249.88989999983,
+        "y" : 288818.99019999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3254,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-13",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 160185.75110000186,
+        "y" : 288615.86850000359
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3255,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-14",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 160386.88379999995,
+        "y" : 288328.37240000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3256,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-15",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159740.34460000042,
+        "y" : 288013.79129999876
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3355,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "영광소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "불갑산"
+      },
+      "geometry" : {
+        "x" : 159012.01620000042,
+        "y" : 287527.04089999944
+      }
+    }
+  ]
+}

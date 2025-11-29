@@ -1,0 +1,315 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5610,
+        "SAFE_SPOT2" : "신기교 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286047.66110000107,
+        "y" : 331133.92910000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5611,
+        "SAFE_SPOT2" : "신기삼거리 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "신기산촌생태마을안내도",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286227.3498000009,
+        "y" : 330781.18690000102
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5612,
+        "SAFE_SPOT2" : "원만지 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "정상 3.1km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286205.42239999957,
+        "y" : 330182.98990000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5613,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산 2.8km / 3.2km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286068.19080000091,
+        "y" : 330049.12319999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5614,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산2.1km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 285780.2620000001,
+        "y" : 329608.65330000222
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5615,
+        "SAFE_SPOT2" : "삼거리 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산1.1km / 신기마을 2.4km / 추모공원 2.4km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 285481.00880000088,
+        "y" : 329032.46050000191
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5616,
+        "SAFE_SPOT2" : "월여산 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "신기마을 3.5km, 추모공원 3.5km / 소야마을 4.0km, 신기마을 3.9km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286056.13929999992,
+        "y" : 328162.58430000208
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5617,
+        "SAFE_SPOT2" : "안부 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산0.4km/ 신기마을 4.0km / 소야마을 3.6km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286431.24900000077,
+        "y" : 328187.78130000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 5618,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산 1.0km / 신기마을 2.9km / 신기마을 3.4km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286711.72810000088,
+        "y" : 328618.95130000263
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 5619,
+        "SAFE_SPOT2" : "지리재 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산1.7km/재안산 1.5km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286721.80330000166,
+        "y" : 328619.04910000227
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 5620,
+        "SAFE_SPOT2" : "신길산길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산 2.3km / 신기마을 2.7km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 287099.81550000049,
+        "y" : 329377.91430000402
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 5621,
+        "SAFE_SPOT2" : "추모공원안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "거창사건추모공원. 추모공원안내도, 월여산등산안내도",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 283823.06269999966,
+        "y" : 329087.64430000447
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 5622,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산3.5km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 284266.40189999994,
+        "y" : 329085.65059999935
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 5623,
+        "SAFE_SPOT2" : "소야 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산등산안내도",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 284826.14240000024,
+        "y" : 325842.12970000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 5624,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산4.0km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 285325.78030000068,
+        "y" : 325766.74140000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 5625,
+        "SAFE_SPOT2" : "더터 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산 3.6km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 285497.59850000031,
+        "y" : 325981.06589999981
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 5626,
+        "SAFE_SPOT2" : "백기재 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "월여산2.1km",
+        "MNTN_NM" : "월여산"
+      },
+      "geometry" : {
+        "x" : 286287.63260000106,
+        "y" : 326885.62690000236
+      }
+    }
+  ]
+}

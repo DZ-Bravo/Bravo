@@ -1,0 +1,1920 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1382,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341712.83810000122,
+        "y" : 357329.72079999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1383,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341847.71880000085,
+        "y" : 356906.39270000346
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1384,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 342011.99459999986,
+        "y" : 356687.03240000084
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1385,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 342727.6230000006,
+        "y" : 356547.46130000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1386,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341313.58100000117,
+        "y" : 357480.58259999938
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1387,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341092.40550000127,
+        "y" : 357174.89629999921
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1388,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341660.62230000086,
+        "y" : 356511.82420000434
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1389,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341750.04730000068,
+        "y" : 356417.67489999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1390,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340883.21189999953,
+        "y" : 356588.83270000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1391,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341356.21370000113,
+        "y" : 356383.62889999896
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1392,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341971.69799999986,
+        "y" : 355393.27160000242
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1393,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341882.48639999982,
+        "y" : 355833.97929999977
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1394,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341344.9943000013,
+        "y" : 354095.68979999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1395,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340406.86969999969,
+        "y" : 354629.58610000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1396,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339750.22790000029,
+        "y" : 355482.50110000372
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1397,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339473.56750000082,
+        "y" : 355502.80540000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1398,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338987.00300000049,
+        "y" : 355451.99110000208
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1399,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339089.3479000004,
+        "y" : 355493.67949999869
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1400,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339329.49350000173,
+        "y" : 356197.34190000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1401,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336911.64920000173,
+        "y" : 357907.78309999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1402,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336854.94830000121,
+        "y" : 357839.07620000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1403,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336883.90300000086,
+        "y" : 357753.19510000385
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1404,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336900.39890000038,
+        "y" : 357660.95500000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1405,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336876.67220000084,
+        "y" : 357571.17589999922
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1406,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336888.19400000013,
+        "y" : 357475.77570000105
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1407,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336914.82960000075,
+        "y" : 357377.52610000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1408,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 336968.61020000093,
+        "y" : 357310.52840000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1409,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337047.69280000124,
+        "y" : 357231.59000000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1410,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337119.00490000006,
+        "y" : 357167.94780000113
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1411,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337198.18570000026,
+        "y" : 357082.84580000304
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1412,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337269.11760000046,
+        "y" : 357043.86429999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1413,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337347.48780000117,
+        "y" : 357011.16499999911
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 1414,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337406.29600000102,
+        "y" : 356944.24770000204
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 1415,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337452.59730000049,
+        "y" : 356874.05340000056
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 1416,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337486.58270000014,
+        "y" : 356788.25220000185
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 1417,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337543.12160000112,
+        "y" : 356705.88460000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 1418,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337631.63660000172,
+        "y" : 356667.17890000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 1419,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337716.63410000037,
+        "y" : 356693.16630000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 1420,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337768.21810000017,
+        "y" : 356767.9653000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 1421,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337771.75330000091,
+        "y" : 356863.59910000116
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 1422,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337800.5915000001,
+        "y" : 356947.29399999976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 1423,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337811.11600000039,
+        "y" : 356916.62590000033
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 1424,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337820.28110000119,
+        "y" : 356811.94030000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 1425,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337851.51919999998,
+        "y" : 356741.51339999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 1426,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337850.59189999942,
+        "y" : 356639.75390000455
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 1427,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337892.11580000073,
+        "y" : 356554.07140000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 1428,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337911.32710000128,
+        "y" : 356449.54230000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 1429,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337927.8833999997,
+        "y" : 356354.22149999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 1430,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337966.89780000132,
+        "y" : 356268.50020000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 1431,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338006.00910000224,
+        "y" : 356176.61410000362
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 1432,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338106.60750000086,
+        "y" : 356168.93310000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 1433,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338190.39630000014,
+        "y" : 356111.65990000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 1434,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338293.41069999989,
+        "y" : 356110.18510000221
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 1435,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338369.61900000088,
+        "y" : 356055.87820000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 1436,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338453.07330000028,
+        "y" : 356020.18450000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 1437,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338528.41530000139,
+        "y" : 356021.36290000193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 1438,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338661.47130000126,
+        "y" : 356026.5287000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 1439,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338767.04679999966,
+        "y" : 356022.01630000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 1440,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338859.96870000008,
+        "y" : 356023.4729999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 1441,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338934.05330000073,
+        "y" : 356104.79830000363
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 1442,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339051.4104999993,
+        "y" : 356149.80539999902
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 1443,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339138.14590000082,
+        "y" : 356225.164900003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 1444,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339214.72460000031,
+        "y" : 358063.96150000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 1445,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 337595.24469999969,
+        "y" : 357230.83569999784
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 1446,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 338451.21439999994,
+        "y" : 360953.28170000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 1447,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339404.89499999955,
+        "y" : 356035.11870000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 1448,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339462.75439999904,
+        "y" : 356029.86340000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 1449,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339555.38499999978,
+        "y" : 356049.82210000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 1450,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339628.94479999971,
+        "y" : 356004.73370000161
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 1451,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339661.9821000006,
+        "y" : 355980.58900000341
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 1452,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339611.42920000013,
+        "y" : 355841.04729999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 1453,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339615.39860000089,
+        "y" : 355748.61370000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 1454,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339657.08939999994,
+        "y" : 355653.69160000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 1455,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339748.62270000111,
+        "y" : 355584.22169999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 1456,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339782.29440000094,
+        "y" : 355520.00569999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 1457,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339865.90589999966,
+        "y" : 355475.07760000043
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 1458,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339919.62280000094,
+        "y" : 355414.26190000214
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 1459,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340013.81850000098,
+        "y" : 355335.58700000122
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 1460,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340082.36330000125,
+        "y" : 355290.42269999906
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 1461,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340153.71300000139,
+        "y" : 355226.80390000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 1462,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340239.79210000113,
+        "y" : 355185.00150000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 1463,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340303.36470000166,
+        "y" : 355136.67679999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 1464,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340335.45820000023,
+        "y" : 355013.85660000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 1465,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340339.43500000052,
+        "y" : 354921.42310000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 1466,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340350.99600000028,
+        "y" : 354826.02650000155
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 1467,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340429.42379999999,
+        "y" : 353840.64059999958
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 1468,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340480.56209999975,
+        "y" : 354735.58380000107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 1469,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340509.46290000062,
+        "y" : 354655.87850000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 1470,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340565.74970000051,
+        "y" : 354592.02390000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 1471,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340584.11519999988,
+        "y" : 354542.98380000144
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 1472,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340674.44350000005,
+        "y" : 354550.58410000056
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 1473,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340748.77010000218,
+        "y" : 354616.51239999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 1474,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340836.09570000041,
+        "y" : 354654.89890000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 1475,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340931.59350000136,
+        "y" : 354653.33450000174
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 1476,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341016.55340000056,
+        "y" : 354682.4355000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 1477,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341111.85460000113,
+        "y" : 354693.20280000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 1478,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341215.67379999999,
+        "y" : 354642.44230000116
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 1479,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341300.3872000007,
+        "y" : 354686.95839999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 1480,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341379.92860000208,
+        "y" : 354740.64240000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 1481,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341436.3217000002,
+        "y" : 354827.87319999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 1482,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341492.61510000192,
+        "y" : 354921.26930000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 1483,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341539.15610000119,
+        "y" : 354996.01050000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 1484,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341542.55400000047,
+        "y" : 355097.81159999967
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 1485,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341614.30870000087,
+        "y" : 355166.78980000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 1486,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341693.44940000121,
+        "y" : 355245.13650000095
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 1487,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341770.47169999965,
+        "y" : 355298.78420000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 1488,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341787.85060000233,
+        "y" : 355468.64070000127
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 1489,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341758.44680000097,
+        "y" : 355579.16669999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 1490,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341721.31189999916,
+        "y" : 355701.90210000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 1491,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341750.06860000081,
+        "y" : 355788.69319999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 1492,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341771.24080000073,
+        "y" : 355878.44619999826
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 1493,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341795.26960000116,
+        "y" : 355946.66230000183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 1494,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339640.39040000178,
+        "y" : 357359.37510000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 1495,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339403.40980000049,
+        "y" : 356654.18329999968
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 1496,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339404.32220000215,
+        "y" : 355813.16599999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 1497,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339472.31690000091,
+        "y" : 355515.05680000223
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 1498,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 339783.49060000107,
+        "y" : 355268.65350000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 1499,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340198.28390000109,
+        "y" : 354773.43810000084
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 1500,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340666.01660000067,
+        "y" : 354170.51539999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 119,
+        "SAFE_SPOT1" : 1501,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 340745.31109999958,
+        "y" : 353971.13540000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 120,
+        "SAFE_SPOT1" : 1502,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341342.32070000004,
+        "y" : 354110.51139999926
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 121,
+        "SAFE_SPOT1" : 1503,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341526.74960000068,
+        "y" : 354147.88890000433
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 122,
+        "SAFE_SPOT1" : 1504,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341875.81560000032,
+        "y" : 354684.92340000346
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 123,
+        "SAFE_SPOT1" : 1505,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구달서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청룡산"
+      },
+      "geometry" : {
+        "x" : 341974.84850000031,
+        "y" : 355374.92740000039
+      }
+    }
+  ]
+}

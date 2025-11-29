@@ -1,0 +1,195 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 688,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 304728.93680000119,
+        "y" : 417507.32479999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 689,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 305635.86420000065,
+        "y" : 418193.50300000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 690,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 305976.15540000051,
+        "y" : 417692.03639999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 691,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 306202.72840000223,
+        "y" : 417722.55430000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 692,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 306544.39070000034,
+        "y" : 417316.69950000197
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 693,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 306938.26379999984,
+        "y" : 416926.91560000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 694,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "7",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 306855.46040000021,
+        "y" : 416562.09710000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 695,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 306631.47170000058,
+        "y" : 416318.8655000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 696,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9",
+        "MGC" : "상주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑장산"
+      },
+      "geometry" : {
+        "x" : 305695.39610000048,
+        "y" : 416581.80500000156
+      }
+    }
+  ]
+}

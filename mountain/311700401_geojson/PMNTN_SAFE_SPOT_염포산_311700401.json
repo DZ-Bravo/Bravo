@@ -1,0 +1,135 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 2685,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "521",
+        "MGC" : "울산동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "염포산"
+      },
+      "geometry" : {
+        "x" : 418582.46650000103,
+        "y" : 330011.82280000299
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 2686,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "522",
+        "MGC" : "울산동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "염포산"
+      },
+      "geometry" : {
+        "x" : 418487.71150000021,
+        "y" : 325222.07850000076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 2687,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "523",
+        "MGC" : "울산동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "염포산"
+      },
+      "geometry" : {
+        "x" : 418539.26449999958,
+        "y" : 326725.57410000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 2688,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "524",
+        "MGC" : "울산동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "염포산"
+      },
+      "geometry" : {
+        "x" : 418748.02800000086,
+        "y" : 327264.32850000262
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 2689,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "525",
+        "MGC" : "울산동부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "염포산"
+      },
+      "geometry" : {
+        "x" : 419348.43760000076,
+        "y" : 327976.18040000275
+      }
+    }
+  ]
+}

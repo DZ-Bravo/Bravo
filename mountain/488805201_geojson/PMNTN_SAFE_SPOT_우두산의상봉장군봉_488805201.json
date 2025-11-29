@@ -1,0 +1,555 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5354,
+        "SAFE_SPOT2" : "주차장 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산등산안내도",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294143.11670000106,
+        "y" : 349310.06060000136
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5355,
+        "SAFE_SPOT2" : "주차장 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 2.6km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294148.07720000017,
+        "y" : 349316.27840000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5356,
+        "SAFE_SPOT2" : "주갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "고견사 1.2km, 의상봉 2.2km, 마장재 1.6km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294157.76940000057,
+        "y" : 349350.28950000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5357,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "쌀굴 0.6km, 고견사 0.3km, 주차장 0.9km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294072.6118999999,
+        "y" : 350033.71680000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5358,
+        "SAFE_SPOT2" : "고견사갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉 1.0km, 의상봉 1.1km, 주차장 1.2km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294015.43620000035,
+        "y" : 350211.89980000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5359,
+        "SAFE_SPOT2" : "고견사 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉 0.9km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 293999.44529999979,
+        "y" : 350298.04240000434
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5360,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉 0.3km, 고견사 0.7km, 장군봉 2.4km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294061.99300000072,
+        "y" : 350798.08240000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5361,
+        "SAFE_SPOT2" : "갈림길  이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 2.5km, 의상봉 0.2km, 고견사 0.8km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294106.79400000069,
+        "y" : 350838.63110000454
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 5362,
+        "SAFE_SPOT2" : "의상봉갈림길 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "등산안내도",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294192.22069999948,
+        "y" : 350839.53790000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 5363,
+        "SAFE_SPOT2" : "우두산 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉 0.6km, 마장재 2.0km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294448.84700000007,
+        "y" : 351045.7173999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 5364,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 1.75km, 마장재 1.1km, 주차장 0.5km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294545.17829999886,
+        "y" : 349551.69349999912
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 5365,
+        "SAFE_SPOT2" : "마장재 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 2.0km, 비계산 2.8km, 주차장 1.6km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 295496.77860000078,
+        "y" : 349635.86649999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 5366,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 1.2km, 마장재 0.8km, 주차장 1.5km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294985.71270000096,
+        "y" : 350188.32770000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 5367,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 0.3km, 마장재 1.7km, 주차장 2.0km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294564.01260000095,
+        "y" : 350849.65949999914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 5368,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉 0.7km, 고견사 0.5km, 쌀굴 0.5km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294298.48979999963,
+        "y" : 350298.13370000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 5369,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉 1.7km, 고견사 0.7km, 주차장 1.8km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294316.24260000046,
+        "y" : 350282.90960000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 5370,
+        "SAFE_SPOT2" : " 쌀굴 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "의상봉, 주차장, 쌀굴",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294456.52769999951,
+        "y" : 350324.47580000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 5371,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산상봉 1.35km, 마장재 1.4km, 주차장 0.9km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 294606.93169999961,
+        "y" : 349888.35260000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 5372,
+        "SAFE_SPOT2" : "가조면 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "우두산의상봉",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 292291.39219999965,
+        "y" : 346356.02790000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 5373,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉(바리봉) 2.3km, 장군봉 2.2km, 주차장 0.4km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 293870.40779999923,
+        "y" : 349193.11649999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 5374,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 2.0km, 주차장 0.7km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 293701.50800000038,
+        "y" : 349003.29510000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 5375,
+        "SAFE_SPOT2" : "장군재 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 0.3km, 주차장 2.3km, 주차장(바리봉)2.4km, 당동 2.5km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 292643.03280000109,
+        "y" : 349759.73790000193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 5376,
+        "SAFE_SPOT2" : "장군봉갈림길 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산우두산의상봉장군봉 등산안내도",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 292556.72780000139,
+        "y" : 349842.06610000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 5377,
+        "SAFE_SPOT2" : "당동입구 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 290495.46980000008,
+        "y" : 347428.76040000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 5378,
+        "SAFE_SPOT2" : "23당동  안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산우두산의상봉장군봉 등산안내도",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 291524.45010000002,
+        "y" : 347833.87170000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 5379,
+        "SAFE_SPOT2" : "당동산길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 1.9km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 291980.89890000131,
+        "y" : 348661.62760000303
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 5380,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 1.1km, 당동",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 292137.62960000057,
+        "y" : 349301.34029999934
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 5381,
+        "SAFE_SPOT2" : "소림사 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산우두산장군봉등산안내도",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 291084.91909999959,
+        "y" : 348778.77109999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 5382,
+        "SAFE_SPOT2" : "구소림사 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 2.2km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 291229.47589999996,
+        "y" : 348897.39230000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 5383,
+        "SAFE_SPOT2" : "갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 0.5km, 병산마을 3.5km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 292142.4478000002,
+        "y" : 350047.36730000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 5384,
+        "SAFE_SPOT2" : "사병교 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "비계산우두산장군봉등산안내도",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 289988.66940000094,
+        "y" : 348819.99080000259
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 5385,
+        "SAFE_SPOT2" : "병산산길시작",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 3.1km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 290416.46320000198,
+        "y" : 349262.05790000409
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 5386,
+        "SAFE_SPOT2" : "갈림길",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "장군봉 3.1km",
+        "MNTN_NM" : "우두산의상봉장군봉"
+      },
+      "geometry" : {
+        "x" : 290628.74399999995,
+        "y" : 349393.68979999982
+      }
+    }
+  ]
+}

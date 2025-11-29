@@ -1,0 +1,1995 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1899,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384167.08520000149,
+        "y" : 289316.27080000192
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1900,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385123.20020000078,
+        "y" : 290720.36199999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1901,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385433.79840000067,
+        "y" : 291004.25710000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1902,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383393.95019999892,
+        "y" : 286738.04040000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1903,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383633.40240000095,
+        "y" : 287168.43730000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1904,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383981.64950000122,
+        "y" : 287227.92469999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1905,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383677.49650000129,
+        "y" : 287866.24330000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1906,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384173.1520999996,
+        "y" : 288271.02020000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1907,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384333.7519000005,
+        "y" : 288342.128800001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1908,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384004.06960000005,
+        "y" : 288492.69320000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1909,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383619.59590000007,
+        "y" : 288349.20780000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1910,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384257.82859999966,
+        "y" : 288713.71150000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1911,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384346.78300000075,
+        "y" : 289070.14770000242
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1912,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383997.20590000041,
+        "y" : 288955.1080000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1913,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384458.15349999908,
+        "y" : 289195.76400000416
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1914,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386011.9338000007,
+        "y" : 289107.28550000302
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1915,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385927.66360000055,
+        "y" : 288649.16170000285
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1916,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385187.24259999953,
+        "y" : 289198.31160000153
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1917,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384812.89499999955,
+        "y" : 289801.23870000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1918,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385002.57909999974,
+        "y" : 290057.9784000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1919,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385306.50950000156,
+        "y" : 290545.25720000453
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 2195,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386060.06850000005,
+        "y" : 289598.58930000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 2196,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385949.4823000012,
+        "y" : 289559.3123000022
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 2197,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385852.94050000049,
+        "y" : 289452.48289999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 2198,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385827.88729999959,
+        "y" : 289439.63370000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 2199,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385870.02130000107,
+        "y" : 289607.0204000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 2200,
+        "SAFE_SPOT2" : "위험경고표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385826.43159999978,
+        "y" : 289757.22880000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 2215,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385376.6528000012,
+        "y" : 288973.99190000445
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 2216,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385750.45080000069,
+        "y" : 291115.59890000336
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6027,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-162",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 387212.56120000035,
+        "y" : 293973.55900000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6028,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-171",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385957.31460000109,
+        "y" : 293611.52119999938
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6029,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-181",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383526.98029999901,
+        "y" : 293413.84320000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6030,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴19-1",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383782.3004999999,
+        "y" : 293924.75860000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6031,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴19-2",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384109.10740000103,
+        "y" : 294030.08750000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6032,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-192",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383627.62190000061,
+        "y" : 293566.98840000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6033,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴19-3",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384892.76840000041,
+        "y" : 295427.59909999929
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 6034,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴19-4",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384463.54250000138,
+        "y" : 294765.07400000282
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 6035,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-202",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384913.95920000132,
+        "y" : 294391.8943000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 6036,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-205",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385114.52200000081,
+        "y" : 294235.64479999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 6037,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-207",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385582.50229999982,
+        "y" : 294242.15700000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 6038,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-211",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384456.78359999973,
+        "y" : 295468.02800000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 6039,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-213",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384987.48440000135,
+        "y" : 295620.73020000197
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 6040,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-215",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386238.09229999967,
+        "y" : 295581.66290000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 6041,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-221",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383463.94280000124,
+        "y" : 296144.73469999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 6042,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-222",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384091.7742000008,
+        "y" : 296743.41720000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 6043,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-232",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384055.8247000007,
+        "y" : 296893.78759999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 6044,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-236",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385173.74960000161,
+        "y" : 297641.32430000417
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 6045,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-238",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385823.60890000034,
+        "y" : 298265.26390000246
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 6046,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-241",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383869.57439999934,
+        "y" : 297593.08540000394
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 6047,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-242",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384204.0549999997,
+        "y" : 297439.54830000177
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 6048,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-251",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384024.27249999996,
+        "y" : 297821.35009999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 6049,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-253",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384528.52280000225,
+        "y" : 297652.78460000455
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 6050,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-255",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384595.7638000017,
+        "y" : 297456.79900000058
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 6051,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-261",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384600.18379999977,
+        "y" : 298477.61190000363
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 6052,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-26-1",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384462.26449999865,
+        "y" : 298295.93470000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 6053,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-262",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384836.87710000109,
+        "y" : 298528.71200000308
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 6054,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-26-2",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384722.27890000027,
+        "y" : 298196.40389999934
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 6055,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-26-3",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385010.10819999967,
+        "y" : 297974.09979999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 6056,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-820-1",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385885.89580000006,
+        "y" : 294131.20800000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 6057,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-820-2",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385758.17980000097,
+        "y" : 293696.85650000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 6058,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-820-3",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385597.69090000074,
+        "y" : 293379.01769999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 6059,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-820-4",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386729.74349999987,
+        "y" : 293214.21540000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 6060,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-820-5",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384922.33880000003,
+        "y" : 292868.6986999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 6061,
+        "SAFE_SPOT2" : "긴급구조위치표지판",
+        "SAFE_SPOT3" : "긴-820-6",
+        "MGC" : "부산북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384748.18090000004,
+        "y" : 292969.98600000329
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 6686,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386502.52852677554,
+        "y" : 290577.47005983815
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 6688,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386314.82321721129,
+        "y" : 290801.60048513114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 6689,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386280.86928804871,
+        "y" : 287977.94576053508
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 6691,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 386028.55326366983,
+        "y" : 288223.74076990411
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 6695,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385933.05858376157,
+        "y" : 288652.92831884511
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 6697,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385758.24541727174,
+        "y" : 291120.30650279671
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 6700,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385653.48365544993,
+        "y" : 288568.09014805965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 6702,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385446.72743006889,
+        "y" : 291004.12923899479
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 6703,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385380.52203680202,
+        "y" : 288976.8339662347
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 6705,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385226.0205995962,
+        "y" : 290900.46531370096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 6710,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 385040.58388960082,
+        "y" : 288895.87954419106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 6712,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384955.57933400851,
+        "y" : 290622.63371895999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 6714,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384924.87875630613,
+        "y" : 289172.58226185665
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 6716,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384777.45653262734,
+        "y" : 290517.05200162902
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 6720,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384493.86630879436,
+        "y" : 290429.12333001383
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 6721,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384442.19587759487,
+        "y" : 289213.75957940146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 6723,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384345.18764963001,
+        "y" : 289067.71204647236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 6724,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384341.15745543595,
+        "y" : 288337.54717826843
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 6725,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384260.87441717274,
+        "y" : 288695.43805521913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 6727,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384144.59189908206,
+        "y" : 288258.9482877478
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 6728,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384105.40548688453,
+        "y" : 289807.62153461762
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 6729,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 384073.77507376112,
+        "y" : 287361.13636360317
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 6731,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383991.72089331225,
+        "y" : 287148.3506453
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 6732,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383976.72778057214,
+        "y" : 287927.64876032621
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 6733,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383963.18896511942,
+        "y" : 287207.44030534476
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 6734,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383951.33445202559,
+        "y" : 287340.23752677999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 6735,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383926.12300711498,
+        "y" : 288891.08505310491
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 6736,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383925.74021228869,
+        "y" : 288165.22041562758
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 6737,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383868.99267072603,
+        "y" : 288471.51185706072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 6738,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383809.1719574295,
+        "y" : 288844.28024367429
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 6739,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383803.68786786217,
+        "y" : 287729.36425121315
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 6740,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383734.71314333938,
+        "y" : 287587.28525097296
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 6742,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383690.49921370298,
+        "y" : 287858.77102808654
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 6744,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383657.12239365745,
+        "y" : 288683.65346626379
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 6745,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383653.98484801687,
+        "y" : 287250.35062684305
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 6746,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383610.28598505072,
+        "y" : 289294.73135983758
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 6747,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383613.91540091578,
+        "y" : 288353.35635107942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 6749,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383576.29008335341,
+        "y" : 288015.2046687603
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 6750,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383482.21265733056,
+        "y" : 286930.4856066741
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 6751,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383444.15961972252,
+        "y" : 289356.74974996038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 6752,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383399.99592531286,
+        "y" : 288172.47564565577
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 6753,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383402.74845549092,
+        "y" : 287342.94773820415
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 6754,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383392.25223495625,
+        "y" : 286730.53494322672
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 6756,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383317.61973283626,
+        "y" : 286517.67569836788
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 6757,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383247.03379246686,
+        "y" : 286982.5074501019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 6758,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383212.54164530244,
+        "y" : 288214.08391358703
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 6759,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383217.0496366946,
+        "y" : 286678.55262606777
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 6760,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383176.30090694036,
+        "y" : 289490.77220074646
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 6761,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383170.95301934611,
+        "y" : 289889.80173984542
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 6762,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383165.34551744908,
+        "y" : 287834.17753583565
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 6763,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383124.21953392867,
+        "y" : 289572.40465990454
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 6764,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383115.44342704676,
+        "y" : 287803.44747532718
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 6765,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 진구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383100.84417767171,
+        "y" : 288060.77654397488
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 6766,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383087.19213834032,
+        "y" : 288258.48804557882
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 6767,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383086.58760998957,
+        "y" : 286538.81118229777
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 119,
+        "SAFE_SPOT1" : 6770,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 383013.17862227466,
+        "y" : 287225.36196348071
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 120,
+        "SAFE_SPOT1" : 6771,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382977.66565880086,
+        "y" : 289822.16759532876
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 121,
+        "SAFE_SPOT1" : 6772,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382903.8167735571,
+        "y" : 288294.83767360076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 122,
+        "SAFE_SPOT1" : 6773,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382728.57034979668,
+        "y" : 289070.84405700676
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 123,
+        "SAFE_SPOT1" : 6774,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382707.18772941921,
+        "y" : 287773.58954689465
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 124,
+        "SAFE_SPOT1" : 6776,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382533.41266978998,
+        "y" : 289565.84769327193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 125,
+        "SAFE_SPOT1" : 6777,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382520.95294579212,
+        "y" : 286837.42633638531
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 126,
+        "SAFE_SPOT1" : 6778,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382498.90129303839,
+        "y" : 287486.15342243761
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 127,
+        "SAFE_SPOT1" : 6786,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382268.94696900249,
+        "y" : 288387.73486329243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 128,
+        "SAFE_SPOT1" : 6790,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백양산"
+      },
+      "geometry" : {
+        "x" : 382240.65324938763,
+        "y" : 288677.32790688053
+      }
+    }
+  ]
+}

@@ -1,0 +1,690 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 2138,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401582.03120000008,
+        "y" : 304265.35080000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 2139,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401401.19070000015,
+        "y" : 303965.53930000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 2140,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401204.04550000094,
+        "y" : 303640.07829999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 2141,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401211.20940000005,
+        "y" : 303546.7023000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 2142,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401400.99640000146,
+        "y" : 303480.83600000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 2143,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401566.74610000104,
+        "y" : 303537.27460000291
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 2144,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401339.31120000128,
+        "y" : 303396.80250000022
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 2145,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401155.68450000044,
+        "y" : 303320.6101000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 2146,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400253.67559999973,
+        "y" : 303623.54739999957
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 2147,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400418.21040000021,
+        "y" : 303611.39600000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 2148,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400661.89120000135,
+        "y" : 303718.98999999836
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 2149,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400828.61940000206,
+        "y" : 303630.63049999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 2150,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401568.80070000049,
+        "y" : 301889.55209999904
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 2151,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401823.12220000103,
+        "y" : 302105.65120000206
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 2152,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401842.87170000002,
+        "y" : 302437.39300000109
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 2153,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401664.23810000066,
+        "y" : 302937.21300000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 2154,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401414.14010000136,
+        "y" : 303100.51189999841
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 2155,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401313.63219999988,
+        "y" : 303157.88910000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 2156,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401077.91380000114,
+        "y" : 303561.89880000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 2157,
+        "SAFE_SPOT2" : "위치표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401087.09410000127,
+        "y" : 303507.25840000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 2225,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401203.40029999986,
+        "y" : 303652.32950000279
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 2226,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산기장소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401812.64239999931,
+        "y" : 302558.43240000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 5924,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401582.03120000008,
+        "y" : 304265.35080000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 5925,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401401.19070000015,
+        "y" : 303965.53930000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 5926,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401204.04550000094,
+        "y" : 303640.07829999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 5927,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401211.20940000005,
+        "y" : 303546.7023000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 5928,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401400.99640000146,
+        "y" : 303480.83600000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 5929,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401566.74610000104,
+        "y" : 303537.27460000291
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 5930,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401339.31120000128,
+        "y" : 303396.80250000022
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 5931,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401155.68450000044,
+        "y" : 303320.6101000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 5932,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400253.67559999973,
+        "y" : 303623.54739999957
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 5933,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400418.21040000021,
+        "y" : 303611.39600000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 5934,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400661.89120000135,
+        "y" : 303718.98999999836
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 5935,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 400828.61940000206,
+        "y" : 303630.63049999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 5936,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401568.80070000049,
+        "y" : 301889.55209999904
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 5937,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401823.12220000103,
+        "y" : 302105.65120000206
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 5938,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401842.87170000002,
+        "y" : 302437.39300000109
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 5939,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401664.23810000066,
+        "y" : 302937.21300000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 5940,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401414.14010000136,
+        "y" : 303100.51189999841
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 5941,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401313.63219999988,
+        "y" : 303157.88910000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 5942,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401077.91380000114,
+        "y" : 303561.89880000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 5943,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 기장군",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "달음산"
+      },
+      "geometry" : {
+        "x" : 401087.09410000127,
+        "y" : 303507.25840000249
+      }
+    }
+  ]
+}
