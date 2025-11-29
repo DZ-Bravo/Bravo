@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import Header from '../components/Header'
 import Chatbot from '../components/Chatbot'
+import { notices } from '../utils/notices'
 import './Home.css'
 
 function Home() {
@@ -40,13 +41,15 @@ function Home() {
           <h2>지금 인기 있는 산</h2>
           <div className="mountain-tags">
             <Link to="/bukhansan" className="mountain-tag">북한산</Link>
+            <Link to="/seoraksan" className="mountain-tag">설악산</Link>
             <Link to="#" className="mountain-tag">관악산</Link>
             <Link to="#" className="mountain-tag">월악산</Link>
             <Link to="#" className="mountain-tag">계룡산</Link>
             <Link to="#" className="mountain-tag">천마산</Link>
             <Link to="#" className="mountain-tag">소백산</Link>
-            <Link to="/seoraksan" className="mountain-tag">설악산</Link>
             <Link to="#" className="mountain-tag">봉화산</Link>
+            <Link to="#" className="mountain-tag">한라산</Link>
+            <Link to="#" className="mountain-tag">내장산</Link>
           </div>
         </section>
 
@@ -97,18 +100,16 @@ function Home() {
         <section className="notice-section">
           <h2>공지사항</h2>
           <div className="notice-list">
-            <div className="notice-item">
-              <span className="notice-title">공지사항 제목 1</span>
-              <span className="notice-date">2024.11.29</span>
-            </div>
-            <div className="notice-item">
-              <span className="notice-title">공지사항 제목 2</span>
-              <span className="notice-date">2024.11.28</span>
-            </div>
-            <div className="notice-item">
-              <span className="notice-title">공지사항 제목 3</span>
-              <span className="notice-date">2024.11.27</span>
-            </div>
+            {notices.slice(0, 3).map((notice) => (
+              <Link
+                key={notice.id}
+                to={`/notice/${notice.id}`}
+                className="notice-item"
+              >
+                <span className="notice-title">{notice.title}</span>
+                <span className="notice-date">{notice.date}</span>
+              </Link>
+            ))}
           </div>
         </section>
 
