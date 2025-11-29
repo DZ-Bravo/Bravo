@@ -6,7 +6,7 @@ function Header() {
     <header>
       <div className="header-top">
         <Link to="/" className="logo">
-          <span>오늘의 등산</span>
+          <span>내일의 등산</span>
         </Link>
         <div className="header-actions">
           <button className="btn-login">Login</button>
