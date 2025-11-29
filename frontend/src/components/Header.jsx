@@ -9,16 +9,16 @@ function Header() {
           <span>내일의 등산</span>
         </Link>
         <div className="header-actions">
-          <button className="btn-login">Login</button>
-          <button className="btn-signup">회원가입</button>
+          <Link to="/login" className="btn-login">Login</Link>
+          <Link to="/signup" className="btn-signup">회원가입</Link>
         </div>
       </div>
       <nav>
         <ul>
-          <li><Link to="#">공지사항</Link></li>
+          <li><Link to="/notice">공지사항</Link></li>
           <li><Link to="#">AI 등산 코스 추천</Link></li>
           <li><Link to="#">스토어</Link></li>
-          <li><Link to="#">커뮤니티</Link></li>
+          <li><Link to="/community">커뮤니티</Link></li>
           <li><Link to="#">마이페이지</Link></li>
         </ul>
       </nav>

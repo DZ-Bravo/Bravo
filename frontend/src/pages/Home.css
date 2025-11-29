@@ -87,7 +87,7 @@
 }
 
 .mountain-tag {
-  background: var(--card-bg);
+  background: white;
   color: var(--text-main);
   padding: 12px 24px;
   border: 1px solid var(--border);
@@ -98,9 +98,9 @@
 }
 
 .mountain-tag:hover {
-  background: var(--primary);
+  background: #00BF93;
   color: white;
-  border-color: var(--primary);
+  border-color: #00BF93;
 }
 
 /* 테마별 코스 큐레이션 */
