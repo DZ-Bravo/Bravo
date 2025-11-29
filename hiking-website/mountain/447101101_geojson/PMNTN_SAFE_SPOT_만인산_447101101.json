@@ -1,0 +1,195 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1705,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "만인산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 239655.97490000073,
+        "y" : 399797.85950000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1706,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "만인산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 240526.42420000117,
+        "y" : 400190.68390000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1816,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 1",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산 제2주차장으로부터 1.2km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 239572.43140000012,
+        "y" : 400052.59090000391
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1817,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 2",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산1호로부터 0.2km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 239513.58660000004,
+        "y" : 399799.54390000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1830,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 3",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산2호로부터 0.5km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 239968.95299999975,
+        "y" : 399666.01730000414
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1831,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 4",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산3호로부터 0.4km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 239857.45360000152,
+        "y" : 399461.99589999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1832,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 5",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산4호로부터 0.2km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 239985.29590000026,
+        "y" : 399357.82890000194
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1833,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 6",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산5호로부터 0.7km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 240523.87169999909,
+        "y" : 399597.66929999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1834,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "만인산 7",
+        "MGC" : "대전중부소방서",
+        "ETC_MATTER" : "(만인산6호로부터 0.4km 지점)",
+        "MNTN_NM" : "만인산"
+      },
+      "geometry" : {
+        "x" : 240722.55140000023,
+        "y" : 399869.79529999942
+      }
+    }
+  ]
+}

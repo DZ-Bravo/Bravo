@@ -1,0 +1,210 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1683,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "구봉산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 231036.72169999965,
+        "y" : 410099.38370000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1684,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "구봉산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 230451.54729999974,
+        "y" : 409940.74160000309
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1685,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "구봉산3",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 229939.93550000153,
+        "y" : 409702.27439999953
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1744,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "구봉산4",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 228846.46279999986,
+        "y" : 409170.26999999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1818,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "구봉산 5",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(빼올약수터에서 은아아파트 가는 길 200M)",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 231684.63900000229,
+        "y" : 410512.96200000122
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1819,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "구봉산 6",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(구봉농장에서 방동 가는길 1KM)",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 229412.70470000058,
+        "y" : 409398.42579999939
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1880,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "구봉산 1",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(빼울 약수터 300M지점 (괴곡동 등산로와 만나는 지점 첫봉우리))",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 231448.70220000111,
+        "y" : 410200.73359999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1881,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "구봉산 2",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(예비군 훈련장 (1호지점과 구봉정 중간지점 : 헬기장에서 구봉마을 방향 300M))",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 230399.17750000022,
+        "y" : 409913.48260000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1882,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "구봉산 3",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(구봉정 (구봉정에서 대고개 방면 약 10M 지점))",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 229940.7547000004,
+        "y" : 409699.17019999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1883,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "구봉산 4",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(구봉농장위 능선 (구봉농장 주차장에서 등산로로 약 400M 지점))",
+        "MNTN_NM" : "구봉산"
+      },
+      "geometry" : {
+        "x" : 229332.97039999906,
+        "y" : 409358.0978000015
+      }
+    }
+  ]
+}

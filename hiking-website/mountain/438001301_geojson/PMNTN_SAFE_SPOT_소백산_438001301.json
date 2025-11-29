@@ -1,0 +1,1845 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 462,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-01호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329901.81909999996,
+        "y" : 480942.6128000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 463,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-02호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329898.04879999999,
+        "y" : 481189.24889999814
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 464,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-03호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329896.16360000055,
+        "y" : 481312.56690000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 465,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-04호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329892.86440000031,
+        "y" : 481528.37360000424
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 466,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-05호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329887.20820000023,
+        "y" : 481898.32799999975
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 467,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-06호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329881.08020000067,
+        "y" : 482299.11220000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 468,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-07호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329874.95170000009,
+        "y" : 482699.89660000242
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 469,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-08호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 330090.60870000068,
+        "y" : 483165.74960000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 470,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-09호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 330282.44060000032,
+        "y" : 483569.57010000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 471,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-10호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 330372.43110000063,
+        "y" : 484156.85290000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 472,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-11호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 330638.45569999982,
+        "y" : 484561.82350000367
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 473,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-12호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 330857.82130000181,
+        "y" : 484781.06190000288
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 474,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-13호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 331398.82670000102,
+        "y" : 485005.28040000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 475,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-14호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 331371.22070000041,
+        "y" : 485189.87580000423
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 476,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-15호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 331690.4729000004,
+        "y" : 485349.01000000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 477,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-17호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 332253.75970000122,
+        "y" : 485727.81800000183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 478,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-18호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 332719.48640000075,
+        "y" : 486012.62670000084
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 479,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-19호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 333161.89549999963,
+        "y" : 486204.58400000073
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 480,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-20호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 332044.79960000049,
+        "y" : 486433.82110000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 481,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-21호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 333873.48980000056,
+        "y" : 486585.8348000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 482,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-01호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328097.42290000059,
+        "y" : 479095.87510000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 483,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-02호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328267.01790000126,
+        "y" : 479345.12270000204
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 484,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-03호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328459.96300000045,
+        "y" : 479687.23630000092
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 485,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-04호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328577.68929999974,
+        "y" : 480089.88990000263
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 486,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-05호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328671.11480000056,
+        "y" : 480461.3414000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 487,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-06호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328689.33440000191,
+        "y" : 480893.32840000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 488,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-07호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328509.99390000012,
+        "y" : 481291.48889999837
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 489,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-08호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328428.27840000018,
+        "y" : 481783.63760000281
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 490,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-09호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328274.64810000081,
+        "y" : 482120.51810000278
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 491,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-10호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328622.08990000002,
+        "y" : 482064.0987000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 492,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-11호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329015.29270000104,
+        "y" : 482255.08120000176
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 493,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-12호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329434.16780000087,
+        "y" : 482384.8004999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 494,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "02-13호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329676.01819999982,
+        "y" : 482758.53040000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 495,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04-01호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 333913.86490000039,
+        "y" : 484026.95579999872
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 496,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04-02호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 333858.5401000008,
+        "y" : 484396.13299999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 497,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04-03호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 333457.79420000035,
+        "y" : 486270.90890000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 498,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04-04호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 333087.11390000023,
+        "y" : 484661.53940000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 499,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04-05호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 332712.58619999979,
+        "y" : 484871.5362999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 500,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "04-06호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 332386.11909999978,
+        "y" : 485174.81049999967
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 501,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-01호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 335641.61620000005,
+        "y" : 484331.9254999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 502,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-02호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 335585.23200000077,
+        "y" : 484762.75350000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 503,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-03호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 335160.17440000176,
+        "y" : 485033.51350000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 504,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-04호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334785.11760000046,
+        "y" : 485274.24990000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 505,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-05호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334531.3442000011,
+        "y" : 485671.11240000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 506,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-06호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334279.54559999984,
+        "y" : 485944.66240000352
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 507,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-07호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334172.29650000017,
+        "y" : 486467.20540000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 508,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-08호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334142.68240000121,
+        "y" : 486775.11350000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 509,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-01호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329201.44680000003,
+        "y" : 473253.66960000247
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 510,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-02호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329021.94130000193,
+        "y" : 473651.81980000064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 511,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-03호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329089.7257000003,
+        "y" : 474084.55399999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 512,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-04호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329034.57230000012,
+        "y" : 474453.75320000388
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 513,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-05호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 329127.11910000071,
+        "y" : 474886.86390000209
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 514,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-06호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328799.95680000074,
+        "y" : 475221.10749999806
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 515,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-07호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328498.05510000046,
+        "y" : 475524.90770000219
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 516,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-08호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328346.18250000104,
+        "y" : 475738.47010000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 517,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-09호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327970.93720000144,
+        "y" : 475979.50980000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 518,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-10호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327572.33189999964,
+        "y" : 476127.70680000447
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 519,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-11호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327126.04810000025,
+        "y" : 476151.86539999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 520,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-12호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 326997.14829999954,
+        "y" : 476489.13749999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 521,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-13호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327214.51960000116,
+        "y" : 476862.41709999926
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 522,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-14호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327258.05690000113,
+        "y" : 477263.93759999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 523,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-15호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327201.61310000066,
+        "y" : 477725.63540000282
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 524,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-16호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327445.08900000155,
+        "y" : 478006.80519999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 525,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-17호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 327713.77310000081,
+        "y" : 478257.52500000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 526,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-18호",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 328031.96350000054,
+        "y" : 478508.9991999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 527,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-22",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334236.26470000204,
+        "y" : 487115.80850000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 528,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-23",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334652.37930000108,
+        "y" : 487399.94490000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 529,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-24",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334669.77020000014,
+        "y" : 487862.78780000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 530,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-25",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334809.35190000106,
+        "y" : 488420.0867999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 531,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-26",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 334905.33890000172,
+        "y" : 488606.64100000076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 532,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-27",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 335348.05710000079,
+        "y" : 488767.88800000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 533,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-28",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 335765.04030000139,
+        "y" : 488990.42270000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 534,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-29",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 336234.4366000006,
+        "y" : 489028.79270000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 535,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-30",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 336704.32710000128,
+        "y" : 489036.35860000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 536,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-31",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 337122.26159999985,
+        "y" : 489197.30110000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 537,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-32",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 337442.26020000037,
+        "y" : 489294.99950000271
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 538,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 33",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 337636.59829999972,
+        "y" : 489514.02180000208
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 539,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 34",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338102.44450000115,
+        "y" : 489768.30829999968
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 540,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 35",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338418.38210000098,
+        "y" : 490112.68680000119
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 541,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 36",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338435.04949999973,
+        "y" : 490606.37550000288
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 542,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 37",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338629.33089999948,
+        "y" : 490825.42260000296
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 543,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 38",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 339094.5689000003,
+        "y" : 491110.59740000032
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 544,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 39",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 339386.19780000113,
+        "y" : 491423.77889999934
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 545,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01  - 40",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 339727.25170000084,
+        "y" : 491737.78690000065
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 546,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "08-01",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 340367.09060000069,
+        "y" : 488942.03399999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 547,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "08-02",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338863.5111000007,
+        "y" : 488608.88189999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 548,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "08-03",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338910.95519999973,
+        "y" : 488733.01329999976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 549,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "08-04",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338487.48629999999,
+        "y" : 488911.11490000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 550,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "08-05",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 338114.50280000083,
+        "y" : 489028.38260000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 551,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ~ 01",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 340220.18940000143,
+        "y" : 491838.4515999984
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 552,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ~ 02",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 340517.89109999966,
+        "y" : 491781.70860000327
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 553,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ~ 03",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 341034.51510000043,
+        "y" : 491944.49230000377
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 554,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ~ 04",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 341780.33389999904,
+        "y" : 491710.23409999907
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 555,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 05",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 342108.46750000212,
+        "y" : 491314.82480000146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 556,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 06",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 342527.23430000059,
+        "y" : 491414.37940000184
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 557,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 07",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 342794.00690000039,
+        "y" : 491727.26630000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 558,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 08",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 343163.29950000159,
+        "y" : 491826.01960000396
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 559,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 09",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 343529.44859999977,
+        "y" : 492109.77290000208
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 560,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 10",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 343897.14529999997,
+        "y" : 492301.05090000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 561,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 11",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 344295.8526000008,
+        "y" : 492122.79900000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 562,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 12",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 344564.11780000199,
+        "y" : 492343.25250000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 563,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 13",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 345056.97539999988,
+        "y" : 492444.20150000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 564,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 14",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 345473.53860000055,
+        "y" : 492667.2276000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 565,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 15",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 345614.44099999871,
+        "y" : 493101.40800000168
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 566,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 16",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 346034.6808999991,
+        "y" : 493108.64780000225
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 567,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 17",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 346410.28019999992,
+        "y" : 492837.5762000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 568,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 18",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 346801.00130000059,
+        "y" : 493121.90350000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 569,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 19",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 347641.48289999925,
+        "y" : 493136.52189999819
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 570,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 20",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 348039.70000000112,
+        "y" : 492989.27580000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 571,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 21",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 348433.60659999959,
+        "y" : 493088.69490000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 572,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 22",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 348808.74670000095,
+        "y" : 492848.55830000341
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 573,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 23",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 349231.72140000202,
+        "y" : 492701.80179999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 574,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 24",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 349703.06520000007,
+        "y" : 492617.60209999979
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 575,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 25",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 350171.68510000128,
+        "y" : 492687.5829000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 576,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 26",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 350591.9525000006,
+        "y" : 492695.04839999788
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 577,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 27",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 351014.96990000084,
+        "y" : 492548.37980000116
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 578,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 28",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 351339.66379999928,
+        "y" : 492369.13269999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 579,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 29",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 351306.67560000066,
+        "y" : 492831.1558000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 580,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10 ㅡ 30",
+        "MGC" : "영주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "소백산"
+      },
+      "geometry" : {
+        "x" : 351297.85819999967,
+        "y" : 493324.45200000331
+      }
+    }
+  ]
+}

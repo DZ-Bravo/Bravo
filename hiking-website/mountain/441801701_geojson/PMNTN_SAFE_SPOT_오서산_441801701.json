@@ -1,0 +1,1620 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3955,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170566.6706000017,
+        "y" : 428428.90640000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3956,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170466.9598000003,
+        "y" : 428398.42170000263
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3957,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170317.12760000024,
+        "y" : 428275.63570000418
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3958,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170168.14220000058,
+        "y" : 428399.44769999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3959,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170018.94720000215,
+        "y" : 428461.61349999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3960,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169944.56490000058,
+        "y" : 428554.34630000219
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3961,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169770.90450000018,
+        "y" : 428739.90080000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3962,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169621.50150000118,
+        "y" : 428740.4245999977
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3963,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169497.21659999993,
+        "y" : 428802.51209999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3964,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169622.25989999902,
+        "y" : 428956.19590000436
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3965,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170566.6706000017,
+        "y" : 428428.90640000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3966,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168672.93680000026,
+        "y" : 428096.48850000277
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3967,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168772.32360000163,
+        "y" : 428034.47920000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3968,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168846.80910000112,
+        "y" : 427972.56080000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3969,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168896.61450000107,
+        "y" : 427972.38149999827
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3970,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168996.11490000132,
+        "y" : 427941.19930000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3971,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169045.92049999908,
+        "y" : 427941.02080000192
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3972,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169120.95920000132,
+        "y" : 428033.22699999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3973,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169170.98410000186,
+        "y" : 428094.69810000248
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3974,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169221.11810000055,
+        "y" : 428186.99400000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 3975,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169246.23950000107,
+        "y" : 428248.5541999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 3976,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169271.36050000042,
+        "y" : 428310.11450000107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 3977,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169371.51360000111,
+        "y" : 428463.8833000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 3978,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169397.06970000081,
+        "y" : 428648.74180000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 3979,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169472.20739999972,
+        "y" : 428771.77550000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 3980,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168201.71940000076,
+        "y" : 428622.23170000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 3981,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168351.91459999979,
+        "y" : 428837.45470000245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 3982,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168526.55300000124,
+        "y" : 428929.29170000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 3983,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168726.19900000095,
+        "y" : 429051.8665000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 3984,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168876.04070000071,
+        "y" : 429174.62510000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 3985,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168826.68690000009,
+        "y" : 429298.10260000266
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 3986,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168951.40290000103,
+        "y" : 429359.30340000242
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 3987,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169076.11720000021,
+        "y" : 429420.50600000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 3988,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169249.85859999992,
+        "y" : 429265.76160000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 3989,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169423.71520000044,
+        "y" : 429141.84520000406
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 3990,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 167880.07019999996,
+        "y" : 429178.26939999871
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 3991,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 167980.00989999995,
+        "y" : 429270.37329999916
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 3992,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168104.84619999956,
+        "y" : 429362.38640000112
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 3993,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168204.78140000068,
+        "y" : 429454.49290000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 3994,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168255.03120000102,
+        "y" : 429577.60789999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 3995,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168429.54320000205,
+        "y" : 429638.61840000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 3996,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168653.84820000082,
+        "y" : 429699.45160000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 3997,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168878.2611000007,
+        "y" : 429791.11519999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 3998,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169027.20399999991,
+        "y" : 429667.28040000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 3999,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169051.54980000015,
+        "y" : 429513.06860000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 5020,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168356.09130000044,
+        "y" : 429977.96140000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 5021,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168430.44419999979,
+        "y" : 429885.21460000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 5022,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168380.08580000047,
+        "y" : 429731.27400000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 5023,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168404.75800000131,
+        "y" : 429669.53390000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 5024,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168404.5326000005,
+        "y" : 429607.88489999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 5025,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168453.99100000132,
+        "y" : 429515.22940000147
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 5026,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168478.77689999994,
+        "y" : 429484.31409999914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 5027,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168528.46139999945,
+        "y" : 429453.30799999833
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 5028,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168603.0448000012,
+        "y" : 429422.21180000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 5029,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168677.85210000072,
+        "y" : 429452.76530000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 5030,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168554.59379999992,
+        "y" : 429792.2870000042
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 5031,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168679.19290000107,
+        "y" : 429822.65939999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 5032,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168804.01379999891,
+        "y" : 429914.68260000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 5033,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168332.55020000041,
+        "y" : 430347.94710000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 5034,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168406.89970000088,
+        "y" : 430255.20000000112
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 5035,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168381.55229999963,
+        "y" : 430131.99290000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 5036,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168381.21380000003,
+        "y" : 430039.51930000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 5037,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168480.57600000128,
+        "y" : 429977.5064000003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 5038,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168529.9207999995,
+        "y" : 429854.02670000307
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 5039,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170199.31580000091,
+        "y" : 430218.00620000251
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 5040,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168633.9756000014,
+        "y" : 430809.22190000303
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 5041,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168806.4625000013,
+        "y" : 430592.82250000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 5042,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168829.91179999989,
+        "y" : 430192.01349999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 5043,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168829.24450000096,
+        "y" : 430007.06629999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 5044,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168878.70520000067,
+        "y" : 429914.41330000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 5045,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169624.96870000008,
+        "y" : 429726.80810000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 5046,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169499.82760000043,
+        "y" : 429542.29959999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 5047,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169425.56930000056,
+        "y" : 429665.86160000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 5048,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169350.54780000076,
+        "y" : 429573.65269999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 5049,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169225.39869999979,
+        "y" : 429389.1481999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 5050,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169700.31020000111,
+        "y" : 429911.49290000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 5051,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169725.74739999883,
+        "y" : 430065.52830000408
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 5052,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169750.75200000126,
+        "y" : 430096.26560000144
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 5053,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169501.89490000065,
+        "y" : 430127.96539999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 5054,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169897.66170000192,
+        "y" : 429386.78020000271
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 5055,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168453.65350000095,
+        "y" : 429422.75590000115
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 5056,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169972.67889999878,
+        "y" : 429478.99380000122
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 5057,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170047.58770000096,
+        "y" : 429540.38360000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 5058,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170372.42669999879,
+        "y" : 429878.33720000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 5059,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 170024.72140000202,
+        "y" : 430126.13560000435
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 5060,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169874.8049999997,
+        "y" : 429972.53250000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 5061,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168010.61590000056,
+        "y" : 430811.50799999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 5062,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168084.9578999998,
+        "y" : 430718.75799999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 5063,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168159.41509999987,
+        "y" : 430656.83330000192
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 5064,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168560.98930000141,
+        "y" : 431549.28710000217
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 5065,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168610.43800000101,
+        "y" : 431456.63220000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 5066,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168659.88780000061,
+        "y" : 431363.9776000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 5067,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168734.23180000018,
+        "y" : 431271.23310000449
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 5068,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168833.47100000083,
+        "y" : 431178.39939999953
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 5069,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168783.34979999997,
+        "y" : 431086.10550000146
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 5070,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168758.23300000094,
+        "y" : 431024.54640000314
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 5071,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168833.69350000098,
+        "y" : 431240.04860000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 5072,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168784.24110000115,
+        "y" : 431332.70220000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 5073,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168709.89700000081,
+        "y" : 431425.44620000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 5074,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168685.33960000053,
+        "y" : 431518.01019999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 5109,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168677.85210000072,
+        "y" : 429452.76530000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 5110,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 168829.91179999989,
+        "y" : 430192.01349999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 5111,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169500.37160000019,
+        "y" : 429696.42210000381
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 5112,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "홍성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "오서산"
+      },
+      "geometry" : {
+        "x" : 169725.74739999883,
+        "y" : 430065.52830000408
+      }
+    }
+  ]
+}

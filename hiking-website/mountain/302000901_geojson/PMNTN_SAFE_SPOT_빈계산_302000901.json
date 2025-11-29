@@ -1,0 +1,450 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1692,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "빈계산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224762.972000001,
+        "y" : 414857.56550000049
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1693,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "빈계산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225532.75040000025,
+        "y" : 414781.78550000302
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1694,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "빈계산3",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 226053.15730000101,
+        "y" : 415648.64930000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1695,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "빈계산4",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225620.94799999986,
+        "y" : 415533.28909999877
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1760,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 8",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉에서 금수봉 3거리방향 약 500m거리(약 10분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224947.76810000092,
+        "y" : 414695.52869999968
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1761,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 9",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉에서 금수봉 3거리방향 약 660m거리(약 14분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224760.24960000068,
+        "y" : 414867.65570000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1762,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 11",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(자티고개)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224110.34680000227,
+        "y" : 414847.29540000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1763,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 12",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(자티고개에서 가리울3거리 방향)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 223990.46430000197,
+        "y" : 415438.74719999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1764,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 13",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(자티고개에서 가리울3거리 방향)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224258.65110000037,
+        "y" : 415883.35859999806
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1765,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 14",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(가리울3거리)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224574.23859999981,
+        "y" : 416254.20910000056
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1766,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 15",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(도덕봉)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225009.05189999938,
+        "y" : 416828.7053999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1767,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 16",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(도덕봉에서 수통골 관리사무소 방향)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225201.07660000026,
+        "y" : 416823.15780000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1768,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 19",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(성북동3거리에서 수통골 주차장방향 약 500m거리(약 12분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225276.35250000004,
+        "y" : 414924.62600000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1769,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 20",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(가리울3거리에서 수통골폭포 방향)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225310.62930000108,
+        "y" : 416009.64640000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1770,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 21",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉 3거리에서 수통골 주차장방향 약 1180m거리 (약 28분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225261.45070000086,
+        "y" : 415756.83200000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1771,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 22",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉 3거리에서 수통골 주차장방향 약 820m거리 (약 19분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224885.50490000192,
+        "y" : 415555.34040000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1772,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 23",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉 3거리에서 수통골 주차장방향 약 300m거리 (약 6분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224796.45750000048,
+        "y" : 415299.30770000443
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1790,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 7",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉 (성북동 3거리에서 금수봉방향 약 750m거리,약 23분 거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225214.90120000113,
+        "y" : 414597.65110000037
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1794,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 17",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(도덕봉에서 수통골 관리사무소 방향)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225668.11809999961,
+        "y" : 416553.21280000173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1800,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 3",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(수통골 주차장에서 빈계산 정상방향 840m거리(약 28분 거리)-산악구급함 3호)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 226065.46840000059,
+        "y" : 415435.51920000464
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1801,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 18",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(금수봉 3거리에서 수통골 주차장방향 약 1420m거리(약 34분거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225550.44479999878,
+        "y" : 415877.85480000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1803,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 10",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(금수봉3거리에서 자티고개 방향)",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 224413.72819999978,
+        "y" : 414817.29440000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1820,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 1",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(수통골 주차장에서 빈계산 정상방향 360m(약 12분 거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 226073.28589999955,
+        "y" : 416150.61239999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1821,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 2",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(수통골 주차장에서 빈계산 정상방향 630m거리(약 21분 거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 226039.54810000118,
+        "y" : 415756.02420000173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1822,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 4",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(빈계산 정상(수통골 주차장에서 1080m거리, 약 36분 거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 226101.68990000151,
+        "y" : 415004.07870000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1823,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "빈계산 5",
+        "MGC" : "대전남부소방서",
+        "ETC_MATTER" : "(성북동 3거리 (빈계산 정상에서 성북동 3거리방향 약 450m거리, 약 9분 거리))",
+        "MNTN_NM" : "빈계산"
+      },
+      "geometry" : {
+        "x" : 225875.04730000068,
+        "y" : 414892.43380000256
+      }
+    }
+  ]
+}

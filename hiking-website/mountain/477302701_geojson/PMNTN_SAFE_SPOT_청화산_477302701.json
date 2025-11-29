@@ -1,0 +1,210 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 812,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 324751.03690000158,
+        "y" : 412505.8917999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 813,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 324929.6866000006,
+        "y" : 412230.96460000426
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 814,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 324955.96860000119,
+        "y" : 412138.84460000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 815,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 324707.32569999993,
+        "y" : 412073.60840000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 816,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 325742.4346000012,
+        "y" : 411256.03850000165
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 817,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 325995.11500000022,
+        "y" : 411043.86770000122
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 818,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "7",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 326796.40380000137,
+        "y" : 410870.51889999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 819,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 327027.76680000033,
+        "y" : 410411.40320000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 820,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 327908.54619999975,
+        "y" : 409930.98580000177
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 821,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10",
+        "MGC" : "의성소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "청화산"
+      },
+      "geometry" : {
+        "x" : 328045.13930000179,
+        "y" : 409131.33939999901
+      }
+    }
+  ]
+}

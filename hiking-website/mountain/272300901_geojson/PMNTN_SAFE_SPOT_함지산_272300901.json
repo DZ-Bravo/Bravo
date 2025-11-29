@@ -1,0 +1,795 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1284,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341700.27159999963,
+        "y" : 371873.38010000251
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1285,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342060.01800000109,
+        "y" : 372267.67420000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1286,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342311.21400000062,
+        "y" : 372395.06290000305
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1287,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342436.88790000044,
+        "y" : 372221.34450000152
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1288,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342567.71790000051,
+        "y" : 371884.29429999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1289,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342730.53930000123,
+        "y" : 371430.59720000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1290,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342452.75420000032,
+        "y" : 371395.26770000346
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1291,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341689.12500000093,
+        "y" : 370695.37310000136
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1292,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341348.20740000065,
+        "y" : 370998.22900000028
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1301,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 339981.36289999913,
+        "y" : 368808.85860000364
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1302,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340459.62230000086,
+        "y" : 369633.53590000048
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1305,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 339949.41999999993,
+        "y" : 368076.5100000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1306,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 339971.33210000116,
+        "y" : 368257.45009999909
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1307,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 339891.97310000099,
+        "y" : 368647.57420000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1308,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 339991.45820000116,
+        "y" : 368791.2164000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1309,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340055.90410000086,
+        "y" : 368954.28470000066
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1310,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340121.222000001,
+        "y" : 369303.93420000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1311,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340231.24569999985,
+        "y" : 369392.20590000413
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1312,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340483.94220000133,
+        "y" : 369717.90590000339
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1313,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340584.14780000225,
+        "y" : 369985.67810000107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1314,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340665.02680000011,
+        "y" : 370123.974700002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1315,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341010.60709999967,
+        "y" : 370346.89279999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1316,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341465.85860000085,
+        "y" : 370953.46199999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1317,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341785.10350000113,
+        "y" : 370853.31450000219
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1318,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342094.02170000039,
+        "y" : 370935.44700000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1319,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342530.12380000111,
+        "y" : 371393.68300000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1320,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342195.71160000004,
+        "y" : 371745.7311000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1321,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341558.54190000053,
+        "y" : 371630.66070000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1322,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342753.35200000089,
+        "y" : 371711.60290000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1323,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343709.0931000011,
+        "y" : 370321.08310000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1324,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343118.08490000013,
+        "y" : 371655.80199999921
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1325,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343569.85859999992,
+        "y" : 372708.4104999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 1326,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 344209.87370000035,
+        "y" : 373128.95639999956
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 1327,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 344697.08829999994,
+        "y" : 373232.534500001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 1328,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 344970.34850000124,
+        "y" : 373995.54220000282
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 1331,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 344373.73670000117,
+        "y" : 369554.94050000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 1332,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343251.70849999972,
+        "y" : 372536.72820000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 1333,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343399.7304999996,
+        "y" : 370682.96160000376
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 1334,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343850.95729999989,
+        "y" : 370388.14790000394
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 1335,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343942.98470000084,
+        "y" : 370281.73330000415
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 1336,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 344205.79820000101,
+        "y" : 370927.36800000444
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 1337,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343361.22670000233,
+        "y" : 371192.66310000233
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 1338,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 343077.89389999956,
+        "y" : 370710.85840000398
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 1339,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342849.38100000098,
+        "y" : 371229.25190000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 1340,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342737.59029999934,
+        "y" : 371394.0364000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 1655,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342523.10170000046,
+        "y" : 371387.15550000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 1656,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 341784.32890000194,
+        "y" : 370857.23699999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 1658,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구서부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 340600.78560000099,
+        "y" : 370050.17620000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 1659,
+        "SAFE_SPOT2" : "구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구북부소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "함지산"
+      },
+      "geometry" : {
+        "x" : 342996.14960000105,
+        "y" : 370998.42699999921
+      }
+    }
+  ]
+}

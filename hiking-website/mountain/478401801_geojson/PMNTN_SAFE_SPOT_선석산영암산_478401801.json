@@ -1,0 +1,210 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 879,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 317461.36030000076,
+        "y" : 381080.21649999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 880,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 317758.54600000009,
+        "y" : 381330.83760000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 881,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 317956.7985000005,
+        "y" : 381487.6492999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 882,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 318205.95300000068,
+        "y" : 381583.49070000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 883,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 317397.67559999973,
+        "y" : 382096.75680000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 884,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 316386.33950000163,
+        "y" : 382823.20879999921
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 885,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "7호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 316180.74600000028,
+        "y" : 383221.27430000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 886,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8호",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 316075.30530000012,
+        "y" : 383620.66849999875
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1141,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : "붕대,거즈,밴드,생리식염수",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 318205.95300000068,
+        "y" : 381583.49070000276
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1142,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "성주소방서",
+        "ETC_MATTER" : "붕대,거즈,밴드,생리식염수",
+        "MNTN_NM" : "선석산영암산"
+      },
+      "geometry" : {
+        "x" : 316386.33950000163,
+        "y" : 382823.20879999921
+      }
+    }
+  ]
+}
