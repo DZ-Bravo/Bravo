@@ -29,3 +29,4 @@ const Spot = mongoose.model('Spot', spotSchema)
 export default Spot
 
 
+
