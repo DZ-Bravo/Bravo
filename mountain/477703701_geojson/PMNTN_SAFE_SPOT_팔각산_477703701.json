@@ -1,0 +1,360 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 837,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403581.14309999999,
+        "y" : 417874.60410000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 838,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403536.31919999979,
+        "y" : 417923.5262000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 839,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403558.92580000218,
+        "y" : 418151.40560000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 840,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403512.16800000053,
+        "y" : 418378.58320000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 841,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403447.9131000014,
+        "y" : 418553.8347000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 842,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403414.19419999979,
+        "y" : 418629.54680000432
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 843,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "7",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403417.42580000125,
+        "y" : 418683.29800000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 844,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403428.5122000007,
+        "y" : 418731.98920000345
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 845,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403331.98080000188,
+        "y" : 418751.31950000115
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 846,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403301.94590000156,
+        "y" : 418744.44600000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 847,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403186.51480000187,
+        "y" : 418814.23389999941
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 848,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "12",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403100.5318,
+        "y" : 418809.44410000183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 849,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "13",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 402783.92470000032,
+        "y" : 418667.54070000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 850,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "14",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 402732.61440000217,
+        "y" : 418727.42000000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 851,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "15",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 402725.60749999993,
+        "y" : 418482.63370000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 852,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "16",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 402679.72240000032,
+        "y" : 418417.08980000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 853,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "17",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 402941.03940000106,
+        "y" : 418095.90370000154
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 854,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "18",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403020.4654000001,
+        "y" : 417975.91310000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 855,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "19",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403184.59620000143,
+        "y" : 417883.81820000336
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 856,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "20",
+        "MGC" : "영덕소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔각산"
+      },
+      "geometry" : {
+        "x" : 403254.46840000059,
+        "y" : 417745.71400000155
+      }
+    }
+  ]
+}

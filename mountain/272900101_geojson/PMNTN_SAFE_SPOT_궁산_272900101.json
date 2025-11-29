@@ -1,0 +1,540 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1596,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334482.43930000067,
+        "y" : 363891.93050000258
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1597,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334396.65969999973,
+        "y" : 363921.45640000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1598,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334305.81560000032,
+        "y" : 363953.98919999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1599,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334220.31830000039,
+        "y" : 363965.02199999802
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1600,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334139.41820000019,
+        "y" : 364003.8740000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1601,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334085.65060000122,
+        "y" : 364073.97020000033
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1602,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334051.95640000049,
+        "y" : 364144.37140000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1603,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333961.30300000031,
+        "y" : 364164.57780000195
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1604,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333967.42730000056,
+        "y" : 364257.16560000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1605,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 334006.35539999977,
+        "y" : 364337.91850000247
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1606,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333975.87320000026,
+        "y" : 364362.12130000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1607,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333882.90020000096,
+        "y" : 364369.96059999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1608,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333800.33700000122,
+        "y" : 364353.29329999909
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1609,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333730.97209999897,
+        "y" : 364293.66249999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1610,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333681.77190000098,
+        "y" : 364228.17120000347
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1611,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333612.68500000052,
+        "y" : 364150.04670000076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1612,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333583.92860000022,
+        "y" : 364060.20010000281
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1613,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333534.8657000009,
+        "y" : 363985.46240000054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1614,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333503.59869999997,
+        "y" : 363895.57820000127
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1615,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333474.7471000012,
+        "y" : 363811.89700000174
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1616,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333385.76790000126,
+        "y" : 363721.14130000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1617,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333384.42250000034,
+        "y" : 363644.04230000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1618,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333370.53100000042,
+        "y" : 363566.75370000117
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1619,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333313.93560000136,
+        "y" : 363491.90380000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1620,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333264.96010000072,
+        "y" : 363411.00290000439
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1621,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333218.44639999978,
+        "y" : 363333.22259999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1622,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333179.78510000184,
+        "y" : 363233.97890000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1623,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333138.24180000089,
+        "y" : 363159.35720000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1624,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333132.06099999975,
+        "y" : 363069.85290000029
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1625,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333096.09260000009,
+        "y" : 362958.31780000217
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1626,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333086.89089999907,
+        "y" : 362902.68260000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1627,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "대구강서소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "궁산"
+      },
+      "geometry" : {
+        "x" : 333087.77320000064,
+        "y" : 362844.11620000191
+      }
+    }
+  ]
+}

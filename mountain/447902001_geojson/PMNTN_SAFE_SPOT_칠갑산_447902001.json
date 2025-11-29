@@ -1,0 +1,2115 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4729,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190136.67620000057,
+        "y" : 426257.54810000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4730,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190036.86910000164,
+        "y" : 426103.54130000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4731,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190011.78330000117,
+        "y" : 425949.44900000095
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4732,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190036.47860000003,
+        "y" : 425764.47520000115
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4733,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189936.52070000116,
+        "y" : 425487.17290000059
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4734,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189789.10090000089,
+        "y" : 427213.503800001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4735,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189711.9310999997,
+        "y" : 425148.37079999968
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4736,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189661.88900000136,
+        "y" : 424963.48530000076
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4737,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189636.71950000059,
+        "y" : 424747.74610000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4738,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189661.41029999964,
+        "y" : 424562.77150000073
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4739,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189711.0150000006,
+        "y" : 424377.76740000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4740,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189710.61200000066,
+        "y" : 424038.70219999924
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4741,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187543.378800001,
+        "y" : 424226.49450000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4742,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187792.72870000079,
+        "y" : 424380.26020000316
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4743,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187942.11969999969,
+        "y" : 424318.40240000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4744,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188066.47219999973,
+        "y" : 424164.1091999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4745,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188290.6930000009,
+        "y" : 424163.80299999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4746,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188464.92279999889,
+        "y" : 424040.2723999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4747,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188514.62770000007,
+        "y" : 423947.73389999941
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4748,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188664.03120000008,
+        "y" : 423885.88860000297
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4749,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188863.46399999969,
+        "y" : 423978.10219999962
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4750,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188987.95540000126,
+        "y" : 423916.2947000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4751,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189237.02020000201,
+        "y" : 423854.33320000209
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4752,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189510.92830000073,
+        "y" : 423730.70040000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4753,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189635.61230000108,
+        "y" : 423823.02260000445
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 4754,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186620.06390000135,
+        "y" : 423241.49890000373
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 4755,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186769.41920000035,
+        "y" : 423148.79690000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 4756,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186620.06390000135,
+        "y" : 423241.49890000373
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 4757,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186769.41920000035,
+        "y" : 423148.79690000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 4758,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186968.56459999923,
+        "y" : 423025.19840000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 4759,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187118.01900000125,
+        "y" : 422994.15059999935
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 4760,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187267.38390000071,
+        "y" : 422901.45730000176
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 4761,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187466.67590000015,
+        "y" : 422870.34250000119
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 4762,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187616.31099999975,
+        "y" : 422962.59960000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 4763,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187865.43680000119,
+        "y" : 422931.42280000262
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 4764,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188064.64520000108,
+        "y" : 422838.67360000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 4765,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188264.06669999938,
+        "y" : 422900.04930000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 4766,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188388.61070000101,
+        "y" : 422869.05729999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 4767,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188587.94800000079,
+        "y" : 422868.79230000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 4768,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188712.53380000126,
+        "y" : 422868.62900000252
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 4769,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188861.83849999961,
+        "y" : 422714.315200001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 4770,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188936.6305999998,
+        "y" : 422745.04350000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 4771,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189185.80570000131,
+        "y" : 422744.72870000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 4772,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189310.35520000104,
+        "y" : 422713.75
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 4773,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189285.70460000075,
+        "y" : 422929.54910000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 4774,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189335.72829999961,
+        "y" : 423083.60790000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 4775,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189360.60699999984,
+        "y" : 423052.75320000388
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 4776,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189460.68620000128,
+        "y" : 423391.69600000232
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 4777,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189485.7890000008,
+        "y" : 423545.78610000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 4778,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185777.07050000038,
+        "y" : 425770.4288000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 4779,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185627.51510000136,
+        "y" : 425709.02740000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 4780,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185552.4793000007,
+        "y" : 425524.20670000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 4781,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185601.93929999974,
+        "y" : 425308.35440000147
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 4782,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185552.11900000088,
+        "y" : 425308.4374000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 4783,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185750.94350000005,
+        "y" : 425030.68940000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 4784,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 185950.28120000195,
+        "y" : 425061.18780000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 4785,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186074.78589999955,
+        "y" : 425030.16230000369
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 4786,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186174.33130000159,
+        "y" : 424968.35419999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 4787,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186298.7893000003,
+        "y" : 424906.50779999979
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 4788,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186373.32910000067,
+        "y" : 424783.09320000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 4789,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186497.88740000036,
+        "y" : 424782.89800000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 4790,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186647.40500000026,
+        "y" : 424813.49019999988
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 4791,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186821.73910000082,
+        "y" : 424782.39880000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 4792,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186996.21330000088,
+        "y" : 424843.78330000304
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 4793,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187195.64199999999,
+        "y" : 424935.95860000141
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 4794,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187320.24330000114,
+        "y" : 424966.59940000065
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 4795,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187419.75340000074,
+        "y" : 424873.98150000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 4796,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187544.26600000076,
+        "y" : 424842.97719999962
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 4797,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187668.69160000049,
+        "y" : 424750.3264000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 4798,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187718.2964000022,
+        "y" : 424596.13480000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 4799,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187792.8591,
+        "y" : 424472.73260000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 4800,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 192500.7416000003,
+        "y" : 423789.24260000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 4801,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 192351.33640000038,
+        "y" : 423881.84559999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 4802,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 192226.82060000114,
+        "y" : 423943.60470000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 4803,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 192077.36459999997,
+        "y" : 423974.56430000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 4804,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 191952.85210000072,
+        "y" : 424036.32740000077
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 4805,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 191777.98730000108,
+        "y" : 423543.30599999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 4806,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 191654.03540000133,
+        "y" : 424190.73099999875
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 4807,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 191479.64210000169,
+        "y" : 424190.90090000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 4808,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 191330.22380000167,
+        "y" : 424252.69750000164
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 4809,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 191180.74490000028,
+        "y" : 424252.84850000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 4810,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190906.70010000002,
+        "y" : 424253.13210000284
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 4811,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190682.54800000135,
+        "y" : 424315.01879999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 4812,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190458.29719999991,
+        "y" : 424284.43890000321
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 4813,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190283.83650000114,
+        "y" : 424222.98469999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 4814,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190134.25170000177,
+        "y" : 424130.68140000105
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 4815,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190009.5418000007,
+        "y" : 424007.52789999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 4816,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189859.95029999968,
+        "y" : 423915.22939999774
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 4817,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189685.51460000221,
+        "y" : 423884.61129999906
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 4818,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 192276.70370000042,
+        "y" : 424005.20830000378
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 4819,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190232.09770000074,
+        "y" : 422527.71689999849
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 4820,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190282.07230000105,
+        "y" : 422650.9570000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 4821,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190332.0111000007,
+        "y" : 422743.3732999973
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 4822,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190332.18310000096,
+        "y" : 422897.49350000173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 4823,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190307.26610000152,
+        "y" : 422897.5214000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 4824,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190257.57070000097,
+        "y" : 423020.87350000255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 4825,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190257.70940000191,
+        "y" : 423144.16970000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 4826,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190158.14910000097,
+        "y" : 423236.75459999964
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 4827,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 190058.55550000072,
+        "y" : 423298.5166000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 4828,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189983.87909999862,
+        "y" : 423360.2509000022
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 4829,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189909.2396999998,
+        "y" : 423452.80990000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 4830,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189859.48089999985,
+        "y" : 423514.51630000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 4831,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189859.58920000028,
+        "y" : 423606.98850000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 4832,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189809.83169999998,
+        "y" : 423668.69519999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 4833,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189784.9896000009,
+        "y" : 423730.37270000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 4834,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186774.69590000063,
+        "y" : 426601.10209999792
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 4835,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186899.08799999952,
+        "y" : 426508.43989999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 4836,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187073.29670000076,
+        "y" : 426415.70490000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 4837,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187247.55449999962,
+        "y" : 426353.79759999923
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 4838,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187421.63549999986,
+        "y" : 426168.59710000083
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 4839,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187570.99289999995,
+        "y" : 426106.73259999976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 4840,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187720.30870000087,
+        "y" : 426014.04659999907
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 4841,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187944.35290000029,
+        "y" : 425921.25870000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 4842,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187993.95570000075,
+        "y" : 425767.06850000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 4843,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189563.02529999893,
+        "y" : 425610.91220000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 4844,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188267.74380000215,
+        "y" : 425612.57170000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 4845,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188392.20739999972,
+        "y" : 425550.75530000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 4846,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188516.59090000018,
+        "y" : 425427.29240000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 4847,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188690.87890000176,
+        "y" : 425365.41440000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 119,
+        "SAFE_SPOT1" : 4848,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188865.24870000221,
+        "y" : 425365.18830000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 120,
+        "SAFE_SPOT1" : 4849,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189014.59110000078,
+        "y" : 425272.52480000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 121,
+        "SAFE_SPOT1" : 4850,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189188.84720000066,
+        "y" : 425179.83269999921
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 122,
+        "SAFE_SPOT1" : 4851,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189363.22070000134,
+        "y" : 425179.61659999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 123,
+        "SAFE_SPOT1" : 4852,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189562.50470000133,
+        "y" : 425179.37390000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 124,
+        "SAFE_SPOT1" : 4853,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 186492.11910000071,
+        "y" : 421084.01029999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 125,
+        "SAFE_SPOT1" : 4854,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187838.78880000021,
+        "y" : 421698.49660000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 126,
+        "SAFE_SPOT1" : 4855,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187988.48290000018,
+        "y" : 421821.58400000259
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 127,
+        "SAFE_SPOT1" : 4856,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188063.41330000013,
+        "y" : 421944.77670000121
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 128,
+        "SAFE_SPOT1" : 4857,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188262.89720000047,
+        "y" : 422036.97630000114
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 129,
+        "SAFE_SPOT1" : 4858,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188362.74100000225,
+        "y" : 422160.13790000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 130,
+        "SAFE_SPOT1" : 4859,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188462.5820000004,
+        "y" : 422283.30070000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 131,
+        "SAFE_SPOT1" : 4860,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188587.37930000015,
+        "y" : 422437.25569999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 132,
+        "SAFE_SPOT1" : 4861,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 188687.25420000125,
+        "y" : 422591.24510000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 133,
+        "SAFE_SPOT1" : 4862,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 187792.72870000079,
+        "y" : 424380.26020000316
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 134,
+        "SAFE_SPOT1" : 4863,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189285.70460000075,
+        "y" : 422929.54910000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 135,
+        "SAFE_SPOT1" : 4864,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189636.90400000103,
+        "y" : 424901.86680000275
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 136,
+        "SAFE_SPOT1" : 4865,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "청양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "칠갑산"
+      },
+      "geometry" : {
+        "x" : 189547.02870000061,
+        "y" : 423915.6016000025
+      }
+    }
+  ]
+}

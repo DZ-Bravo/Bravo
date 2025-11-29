@@ -1,0 +1,180 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4669,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181751.8517000014,
+        "y" : 387689.41870000213
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4670,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181354.10390000138,
+        "y" : 387708.74970000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4671,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181211.35580000002,
+        "y" : 387641.24500000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4672,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181055.5699000014,
+        "y" : 387330.27230000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4673,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181067.44680000003,
+        "y" : 387037.43209999986
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4674,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181312.63550000079,
+        "y" : 387033.82360000163
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4675,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 181652.88080000132,
+        "y" : 387020.77559999935
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4676,
+        "SAFE_SPOT2" : "산악안전위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "건지산"
+      },
+      "geometry" : {
+        "x" : 182015.8032000009,
+        "y" : 387084.75060000084
+      }
+    }
+  ]
+}

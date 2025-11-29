@@ -1,0 +1,540 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3468,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 343006.57650000043,
+        "y" : 291862.14479999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3469,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 341161.95880000014,
+        "y" : 291709.85290000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3470,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340348.68080000114,
+        "y" : 291943.83080000058
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3471,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340730.2220999999,
+        "y" : 288558.55980000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3472,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340676.26180000044,
+        "y" : 288773.5242999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3473,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340521.57039999962,
+        "y" : 288956.09619999863
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3474,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340290.02229999937,
+        "y" : 289199.13720000163
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3475,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340363.06210000161,
+        "y" : 289385.24320000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3476,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340153.01199999917,
+        "y" : 289875.25219999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3477,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340678.57239999995,
+        "y" : 290253.35419999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3478,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340608.41999999993,
+        "y" : 289882.31530000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3479,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340400.27879999951,
+        "y" : 290249.0326000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3480,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340197.88040000107,
+        "y" : 288611.96010000072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3481,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340091.91460000165,
+        "y" : 290552.54390000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3482,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 341852.18410000112,
+        "y" : 291258.21050000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3483,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 341148.20390000101,
+        "y" : 290969.73730000295
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3484,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340845.11420000065,
+        "y" : 290934.18510000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3485,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340668.98980000056,
+        "y" : 290869.78700000048
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3486,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340085.71140000038,
+        "y" : 290953.22500000335
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3487,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340611.20910000056,
+        "y" : 291331.32550000213
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 3488,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340484.24850000162,
+        "y" : 291360.18230000138
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 3489,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340357.76690000203,
+        "y" : 291358.21910000406
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 3490,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 339999.80280000065,
+        "y" : 291599.30470000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 3491,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 342005.54790000059,
+        "y" : 292771.25570000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 3492,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 341851.37530000135,
+        "y" : 292922.98290000297
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 3493,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 341342.16160000023,
+        "y" : 293130.81399999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 3494,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 342276.97549999971,
+        "y" : 293207.13480000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 3495,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340958.4653000012,
+        "y" : 293402.28740000166
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 3496,
+        "SAFE_SPOT2" : "위치표지목",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 342657.31780000124,
+        "y" : 293151.46890000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 3537,
+        "SAFE_SPOT2" : "구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340625.65469999984,
+        "y" : 288772.73820000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 3538,
+        "SAFE_SPOT2" : "구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340357.76690000203,
+        "y" : 291358.21910000406
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 3539,
+        "SAFE_SPOT2" : "구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "마산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무학산"
+      },
+      "geometry" : {
+        "x" : 340652.79399999976,
+        "y" : 290283.78260000236
+      }
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1718,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "갑하산1",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 225020.06759999972,
+        "y" : 422061.61950000189
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1719,
+        "SAFE_SPOT2" : "산악구급함",
+        "SAFE_SPOT3" : "갑하산2",
+        "MGC" : "대전소방본부",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 224879.28410000168,
+        "y" : 418851.25999999978
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1780,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 1",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(구암산에서 연화봉 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 226398.0560000008,
+        "y" : 422526.11489999853
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1781,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 2",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(연화봉에서 우산봉 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 225526.61620000005,
+        "y" : 422292.35670000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1782,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 3",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(우산봉에서 암봉 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 224942.04690000042,
+        "y" : 421054.58550000377
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1783,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 4",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(박정자고개에서 갑하산 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 225173.33650000207,
+        "y" : 419607.1296999976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1784,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 5",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(계룡휴게소 우측 등산로에서 갑하산 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 225416.72479999997,
+        "y" : 418956.79490000196
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1785,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 6",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(계룡휴게소 좌측 등산로에서 갑하산 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 224991.58320000023,
+        "y" : 418561.07100000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1786,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 7",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(갑하산에서 삽재 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 225757.25130000152,
+        "y" : 419306.12600000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1787,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "갑하산 8",
+        "MGC" : "대전북부소방서",
+        "ETC_MATTER" : "(박정자고개에서 박정자 삼거리 방향)",
+        "MNTN_NM" : "갑하산"
+      },
+      "geometry" : {
+        "x" : 224229.67140000127,
+        "y" : 419122.95439999923
+      }
+    }
+  ]
+}

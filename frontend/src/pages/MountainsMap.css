@@ -1,0 +1,33 @@
+.mountains-map-page main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.mountains-map-page h1 {
+  margin-bottom: 24px;
+  color: var(--primary);
+}
+
+#mountains-map {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.list-view-btn {
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.list-view-btn:hover {
+  background: var(--accent);
+}
+
+

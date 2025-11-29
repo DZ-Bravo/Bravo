@@ -1,0 +1,435 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 319,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-1",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 387618.02309999987,
+        "y" : 356947.10660000332
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 320,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-2",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 388210.3284,
+        "y" : 357453.13980000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 321,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-3",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 388412.56060000043,
+        "y" : 357395.75950000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 322,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-4",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 388485.93680000026,
+        "y" : 357489.84579999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 323,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-5",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 388614.79569999967,
+        "y" : 357338.38370000198
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 324,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-6",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 388842.8068000013,
+        "y" : 357250.72070000321
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 325,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-7",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 388945.24320000131,
+        "y" : 357160.38220000267
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 326,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-8",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389061.505400002,
+        "y" : 356422.66930000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 327,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-9",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389129.6157999998,
+        "y" : 356763.38000000268
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 328,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-10",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389520.92899999954,
+        "y" : 357265.21310000122
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 329,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-11",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389065.55520000122,
+        "y" : 357409.68290000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 330,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-12",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389427.72230000049,
+        "y" : 356923.96089999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 331,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-13",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389362.98050000053,
+        "y" : 357601.09010000341
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 332,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-14",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389378.80800000019,
+        "y" : 356861.23140000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 333,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-15",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389530.16860000044,
+        "y" : 356833.62879999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 334,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-16",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389731.10380000062,
+        "y" : 356837.9327000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 335,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-17",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 389856.02720000036,
+        "y" : 356871.45240000263
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 336,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-18",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390008.71290000062,
+        "y" : 356782.20300000347
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 337,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-19",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390012.68240000028,
+        "y" : 356597.23810000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 338,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-20",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390162.72600000072,
+        "y" : 356631.30110000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 339,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-21",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390285.66349999979,
+        "y" : 356757.30930000357
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 340,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-22",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390334.57240000088,
+        "y" : 356820.04410000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 341,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-23",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390522.90230000112,
+        "y" : 357410.08909999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 342,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-24",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390436.3666000003,
+        "y" : 356760.54960000329
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 343,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "단석산-25",
+        "MGC" : "경주소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "단석산"
+      },
+      "geometry" : {
+        "x" : 390413.81919999979,
+        "y" : 357808.68530000001
+      }
+    }
+  ]
+}
