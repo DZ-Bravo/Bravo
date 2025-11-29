@@ -1,0 +1,765 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 1019,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407922.72790000029,
+        "y" : 460496.3478000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 1020,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "2",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407919.73100000061,
+        "y" : 460619.67980000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 1021,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "3",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407691.84900000133,
+        "y" : 460799.25210000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 1022,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "4",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407566.99740000069,
+        "y" : 460827.07349999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 1023,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "5",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407446.63200000022,
+        "y" : 460669.89880000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 1024,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "6",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407026.91219999921,
+        "y" : 460567.18009999953
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 1025,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "7",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406879.47530000098,
+        "y" : 460501.91230000183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 1026,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "8",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406528.99790000077,
+        "y" : 460616.84919999726
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 1027,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406228.17209999915,
+        "y" : 460732.99650000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 1028,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406102.58310000133,
+        "y" : 460791.67190000042
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 1029,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405979.96490000095,
+        "y" : 460727.01750000194
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 1030,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "12",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405832.52410000004,
+        "y" : 460661.7678999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 1031,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "13",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405669.15290000103,
+        "y" : 460225.93050000258
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 1032,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "14",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407402.22130000032,
+        "y" : 460452.86470000446
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 1033,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "15",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407181.06579999998,
+        "y" : 460354.95419999957
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 1034,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "16",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407082.52410000004,
+        "y" : 460321.71800000034
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 1035,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "17",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406695.05270000175,
+        "y" : 459911.28890000097
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 1036,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "18",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406597.24859999958,
+        "y" : 459847.22570000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 1037,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "19",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406253.43709999975,
+        "y" : 459684.67950000055
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 1038,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "20",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405928.50260000024,
+        "y" : 459769.4075000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 1039,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "21",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405579.49270000122,
+        "y" : 459822.71839999966
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 1040,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "22",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405702.12710000016,
+        "y" : 459887.36620000191
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 1041,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "23",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406213.12639999948,
+        "y" : 458264.57650000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 1042,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "24",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405477.97880000062,
+        "y" : 459912.83229999989
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 1043,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "25",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405377.94689999986,
+        "y" : 459941.28170000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 1044,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "26",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406571.94030000176,
+        "y" : 460895.543700004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 1045,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "27",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406571.19579999987,
+        "y" : 460926.37660000101
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 1046,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "28",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406747.91760000028,
+        "y" : 460807.24160000309
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 1047,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "29",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407093.9132000003,
+        "y" : 460877.31140000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 1048,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "30",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407239.10130000021,
+        "y" : 461035.08220000193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 1049,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "31",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407804.71840000153,
+        "y" : 461264.76050000452
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 1050,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "32",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407911.48909999989,
+        "y" : 460958.84270000458
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 1051,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "33",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407782.14570000023,
+        "y" : 461171.65870000236
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 1052,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "34",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407711.42970000114,
+        "y" : 461015.6855999995
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 1053,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "35",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407613.64580000099,
+        "y" : 460951.60979999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 1054,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "36",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407382.32529999968,
+        "y" : 463321.53729999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 1055,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "37",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407139.42109999992,
+        "y" : 463099.69030000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 1056,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "38",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406864.2293999996,
+        "y" : 463185.58050000295
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 1057,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "39",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406643.14199999999,
+        "y" : 463087.68070000224
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 1058,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 406201.69650000054,
+        "y" : 462861.06599999778
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 1059,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "41",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405954.63449999969,
+        "y" : 462707.02730000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 1060,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "42",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405697.26680000126,
+        "y" : 462568.17370000109
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 1061,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "43",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405700.15940000117,
+        "y" : 462447.92540000193
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 1062,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "44",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 405143.2862999998,
+        "y" : 462372.84669999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 1063,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "45",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 404781.12300000153,
+        "y" : 462357.9963000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 1064,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "46",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 404586.28450000193,
+        "y" : 462199.08040000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 1144,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : "1",
+        "MGC" : "울진소방서",
+        "ETC_MATTER" : "붕대,거즈,밴드,생리식염수",
+        "MNTN_NM" : "백암산"
+      },
+      "geometry" : {
+        "x" : 407691.84900000133,
+        "y" : 460799.25210000016
+      }
+    }
+  ]
+}

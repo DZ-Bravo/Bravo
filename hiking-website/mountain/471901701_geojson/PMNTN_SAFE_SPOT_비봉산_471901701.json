@@ -1,0 +1,195 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 453,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-1",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 316660.53920000046,
+        "y" : 406899.3833000008
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 454,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-2",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 317391.5616000006,
+        "y" : 406021.26870000176
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 455,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-3",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 316377.5410000002,
+        "y" : 407894.52590000071
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 456,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-5",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 316275.80719999969,
+        "y" : 408781.10480000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 457,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-6",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 316184.46310000122,
+        "y" : 408890.87700000033
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 458,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-7",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 315733.68150000088,
+        "y" : 408995.86150000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 459,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-8",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 315194.52210000064,
+        "y" : 408988.70640000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 460,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-9",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 314926.408400001,
+        "y" : 408874.16900000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 461,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-10",
+        "MGC" : "구미소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "비봉산"
+      },
+      "geometry" : {
+        "x" : 314659.75010000076,
+        "y" : 408648.66770000197
+      }
+    }
+  ]
+}

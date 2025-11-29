@@ -1,0 +1,1230 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 931,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-151",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 346732.94630000181,
+        "y" : 381643.91530000418
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 932,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-152",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 346506.02659999952,
+        "y" : 381732.62949999981
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 933,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-153",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 346226.46189999953,
+        "y" : 381974.6445000004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 934,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-154",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 346023.05860000104,
+        "y" : 382156.26560000144
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 935,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-155",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 345773.16730000079,
+        "y" : 382121.27800000086
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 936,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-156",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 345522.25240000151,
+        "y" : 382147.94940000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 937,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-157",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 345147.15759999957,
+        "y" : 382110.90510000288
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 938,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-158",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 347751.36209999956,
+        "y" : 382154.34990000166
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 939,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-159",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 344521.14869999979,
+        "y" : 382100.57689999975
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 940,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-160",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 344345.35940000135,
+        "y" : 382128.51890000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 941,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-161",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 344218.63889999967,
+        "y" : 382218.93859999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 942,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-162",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343989.23380000144,
+        "y" : 382461.84549999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 943,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "헬기장",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343912.09440000076,
+        "y" : 382583.91689999774
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 944,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-163",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343785.38480000105,
+        "y" : 382674.34249999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 945,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "할매할배바위",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343734.80269999988,
+        "y" : 382704.34809999913
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 946,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-164",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343633.63960000221,
+        "y" : 382764.3601000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 947,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-165",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343306.63080000039,
+        "y" : 382851.51670000143
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 948,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-166",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343053.23510000017,
+        "y" : 383032.38660000265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 949,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-167",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342774.81290000025,
+        "y" : 383212.856200004
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 950,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "용바위정상",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342672.15890000109,
+        "y" : 383365.35640000179
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 951,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-168",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342424.29480000027,
+        "y" : 383207.16040000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 952,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "헬기장",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342195.46509999968,
+        "y" : 383419.28650000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 953,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-169",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342170.92819999903,
+        "y" : 383388.05499999784
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 954,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "01-170",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341893.53319999948,
+        "y" : 383506.90030000173
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 955,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40603",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 340953.82580000069,
+        "y" : 384324.26410000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 956,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40604",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341054.45620000176,
+        "y" : 384295.04790000245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 957,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40605",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341230.68530000094,
+        "y" : 384236.21590000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 958,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40606",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341381.38580000121,
+        "y" : 384207.8096000012
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 959,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40607",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341534.07680000085,
+        "y" : 384056.10280000046
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 960,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40608",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341586.6332000019,
+        "y" : 383902.78189999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 961,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40609",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341689.26209999993,
+        "y" : 383750.26970000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 962,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40610",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341790.89809999987,
+        "y" : 383659.41020000353
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 963,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-001",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343325.25210000109,
+        "y" : 381710.96290000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 964,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-002",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343274.1632999992,
+        "y" : 381771.79700000212
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 965,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-003",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343216.92590000108,
+        "y" : 383744.23910000362
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 966,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-004",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343271.14499999955,
+        "y" : 381956.75149999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 967,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-005",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343319.21330000088,
+        "y" : 382080.87199999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 968,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-006",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343342.74350000173,
+        "y" : 382173.75820000097
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 969,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-007",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343266.11420000065,
+        "y" : 382265.00919999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 970,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-008",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343340.73010000028,
+        "y" : 382297.06130000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 971,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-009",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343489.45650000032,
+        "y" : 382391.99330000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 972,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-010",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343663.72340000141,
+        "y" : 382456.51180000231
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 973,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-011",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343713.80190000031,
+        "y" : 382457.33160000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 974,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-012",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343586.5886000013,
+        "y" : 382578.58589999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 975,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-013",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343510.96789999958,
+        "y" : 382608.18320000358
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 976,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-014",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343434.84390000161,
+        "y" : 382668.60690000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 977,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-015",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343310.65739999991,
+        "y" : 382604.91029999964
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 978,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-016",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343159.41909999959,
+        "y" : 382664.11020000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 979,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-017",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 343083.29820000194,
+        "y" : 382724.53690000251
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 980,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-018",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342982.14010000136,
+        "y" : 382784.55629999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 981,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "헬기장",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342932.06350000016,
+        "y" : 382783.74060000107
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 982,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "06-019",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342805.36750000063,
+        "y" : 382874.18000000156
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 983,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "동문",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342905.01760000084,
+        "y" : 382906.6360000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 984,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40714",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342628.09779999964,
+        "y" : 382994.63300000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 985,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40715",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342552.98489999864,
+        "y" : 382993.41259999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 986,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40716",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342425.29540000018,
+        "y" : 383145.50880000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 987,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "42544",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342671.65770000126,
+        "y" : 383396.18209999986
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 988,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40725",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341222.27810000069,
+        "y" : 381646.05120000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 989,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40726",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341222.27810000069,
+        "y" : 381646.05120000057
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 990,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40727",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341217.31970000081,
+        "y" : 381954.30770000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 991,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40728",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341215.33629999962,
+        "y" : 382077.61040000245
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 992,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40729",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341338.55160000082,
+        "y" : 382202.92800000124
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 993,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40730",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341462.75700000115,
+        "y" : 382266.59599999897
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 994,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40731",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341587.45779999997,
+        "y" : 382299.44019999914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 995,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40732",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341662.07890000194,
+        "y" : 382331.47790000401
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 996,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40733",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341711.16240000073,
+        "y" : 382393.93759999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 997,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40734",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341809.82540000044,
+        "y" : 382488.03229999915
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 998,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40735",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341883.94590000156,
+        "y" : 382550.89760000259
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 999,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40736",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342391.25390000083,
+        "y" : 383699.96649999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 1000,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40737",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342514.42910000216,
+        "y" : 383825.30209999904
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 1001,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40738",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342737.74020000082,
+        "y" : 383952.26820000447
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 1002,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40739",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342280.06979999971,
+        "y" : 382834.81450000405
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 1003,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40740",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342329.14610000048,
+        "y" : 382897.27789999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 1004,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40741",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342251.03450000007,
+        "y" : 383081.01459999755
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 1005,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40742",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342223.49920000043,
+        "y" : 383234.73760000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 1006,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40743",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 342147.88910000026,
+        "y" : 383264.34640000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 1007,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "40744",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341869.49390000105,
+        "y" : 383444.84400000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 1008,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가산바위",
+        "MGC" : "칠곡소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "팔공산"
+      },
+      "geometry" : {
+        "x" : 341818.92320000101,
+        "y" : 383474.86030000262
+      }
+    }
+  ]
+}

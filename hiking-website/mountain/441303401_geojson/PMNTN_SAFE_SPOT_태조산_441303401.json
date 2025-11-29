@@ -1,0 +1,1365 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3689,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 214994.53300000075,
+        "y" : 468803.85230000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3690,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215192.36880000029,
+        "y" : 469050.81290000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3691,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215464.70950000081,
+        "y" : 469205.43400000408
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3692,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215613.23950000107,
+        "y" : 469298.18360000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3693,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215786.60600000061,
+        "y" : 469360.15540000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3694,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216232.5784,
+        "y" : 469422.64520000108
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3695,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216455.50270000007,
+        "y" : 469484.72510000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3696,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216628.79930000007,
+        "y" : 469577.54039999843
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3697,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217000.22410000116,
+        "y" : 469732.40460000187
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3698,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217297.41690000147,
+        "y" : 469825.48139999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3699,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217594.79399999976,
+        "y" : 469826.08980000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3700,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217668.94670000114,
+        "y" : 469918.72240000032
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3701,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217767.8786000004,
+        "y" : 470011.40719999745
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3702,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217842.09229999967,
+        "y" : 470073.21500000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3703,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217916.30489999987,
+        "y" : 470135.02340000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3704,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217990.51640000101,
+        "y" : 470196.83250000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 3705,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218015.10140000097,
+        "y" : 470289.36380000412
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 3706,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218064.13910000119,
+        "y" : 470536.07899999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 3707,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218088.32980000041,
+        "y" : 470813.56840000115
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 3708,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218112.71530000214,
+        "y" : 470998.57899999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 3709,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218037.98990000039,
+        "y" : 471183.37939999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 3710,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218334.98819999956,
+        "y" : 471338.14550000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 3711,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218705.83190000057,
+        "y" : 471708.8694000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 3712,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218878.78569999989,
+        "y" : 471925.03650000133
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 3713,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218952.76889999956,
+        "y" : 472079.33340000175
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 3714,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 219051.79960000142,
+        "y" : 472110.38079999946
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 3715,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 219200.30950000044,
+        "y" : 472172.36720000207
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 3716,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 219373.59170000069,
+        "y" : 472234.41249999963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 3717,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 219522.23840000015,
+        "y" : 472234.75180000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 3718,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 219695.51700000092,
+        "y" : 472296.80370000191
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 3719,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217643.91040000133,
+        "y" : 470041.97620000131
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 3720,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217693.34410000127,
+        "y" : 470103.73139999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 3721,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217792.33789999969,
+        "y" : 470165.59030000307
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 3722,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217866.61460000183,
+        "y" : 470196.57200000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 3723,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217940.82600000128,
+        "y" : 470258.38070000336
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 3724,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217768.32820000127,
+        "y" : 469795.62319999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 3725,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217743.41839999985,
+        "y" : 469857.22420000285
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 3726,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217743.41839999985,
+        "y" : 469857.22420000285
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 3727,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217693.85579999909,
+        "y" : 469857.12120000459
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 3728,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217669.01059999969,
+        "y" : 469887.89609999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 3729,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217444.21329999994,
+        "y" : 470750.57320000418
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 3730,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217642.2519000005,
+        "y" : 470843.46009999886
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 3731,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217790.72970000096,
+        "y" : 470936.24799999967
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 3732,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218013.73350000102,
+        "y" : 470936.71629999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 3733,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218088.00270000007,
+        "y" : 470967.70010000095
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 3734,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218358.17150000203,
+        "y" : 472078.03170000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 3735,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218507.02170000132,
+        "y" : 471985.87409999967
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 3736,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218680.65050000045,
+        "y" : 471893.7733000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 3737,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218680.98840000015,
+        "y" : 471739.64149999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 3738,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218117.43020000029,
+        "y" : 468779.0867999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 3739,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217993.89800000004,
+        "y" : 468593.86720000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 3740,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217870.29569999967,
+        "y" : 468439.47560000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 3741,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217845.96160000097,
+        "y" : 468223.64030000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 3742,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217796.7109000003,
+        "y" : 468069.40579999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 3743,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217772.24540000036,
+        "y" : 467915.22320000269
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 3744,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215759.31630000006,
+        "y" : 470716.46560000256
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 3745,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215957.37380000111,
+        "y" : 470809.31330000423
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 3746,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216205.04210000206,
+        "y" : 470871.43330000155
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 3747,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216502.38260000013,
+        "y" : 470872.00370000117
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 3748,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216750.10580000095,
+        "y" : 470903.31330000423
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 3749,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216947.96439999901,
+        "y" : 471088.66310000233
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 3750,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217468.23400000017,
+        "y" : 471120.53979999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 3751,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217467.91820000205,
+        "y" : 471274.67149999738
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 3752,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217666.26370000094,
+        "y" : 471213.42740000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 3753,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217889.26030000113,
+        "y" : 471213.8925000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 3754,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218211.76160000078,
+        "y" : 471029.61649999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 3755,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218162.27139999997,
+        "y" : 470998.68449999765
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 3756,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218137.55900000222,
+        "y" : 470967.80540000089
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 3757,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 218112.71530000214,
+        "y" : 470998.57899999991
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 3758,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217185.23550000135,
+        "y" : 463999.09130000137
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 3759,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217036.01520000026,
+        "y" : 464214.57540000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 3760,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216787.61400000099,
+        "y" : 464429.86659999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 3761,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216563.36419999879,
+        "y" : 464984.29940000176
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 3762,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216689.99120000098,
+        "y" : 463628.19630000181
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 3763,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216561.33150000125,
+        "y" : 466032.38570000231
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 3764,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216535.88230000064,
+        "y" : 466371.42479999922
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 3765,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216559.89639999997,
+        "y" : 466772.21230000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 3766,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 216509.71960000042,
+        "y" : 467080.37760000117
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 3767,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215635.70490000024,
+        "y" : 470562.10600000061
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 3768,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217079.50549999997,
+        "y" : 467266.45640000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 3769,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217202.95270000119,
+        "y" : 467513.31460000016
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 3770,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217277.00510000065,
+        "y" : 467667.59559999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 3771,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217499.77830000035,
+        "y" : 467822.1810999997
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 3772,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217698.07630000077,
+        "y" : 467822.59010000154
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 3806,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 215737.04050000012,
+        "y" : 469360.06379999965
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 3807,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217842.09229999967,
+        "y" : 470073.21500000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 3808,
+        "SAFE_SPOT2" : "간이구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "천안동남소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "태조산"
+      },
+      "geometry" : {
+        "x" : 217079.50549999997,
+        "y" : 467266.45640000142
+      }
+    }
+  ]
+}

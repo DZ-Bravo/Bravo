@@ -1,0 +1,345 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4027,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 163296.63210000098,
+        "y" : 405153.37250000238
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4028,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 163396.11710000131,
+        "y" : 405060.48190000281
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4029,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 163570.12440000009,
+        "y" : 404874.80870000087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4030,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 163751.0671000015,
+        "y" : 406353.60539999977
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4031,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 162953.63110000081,
+        "y" : 406696.02630000003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4032,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164104.00800000131,
+        "y" : 407184.39190000109
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4033,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164130.62180000171,
+        "y" : 407584.99500000104
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4034,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164255.42890000064,
+        "y" : 407584.48150000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4035,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164356.28450000007,
+        "y" : 407830.66039999947
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4036,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164557.22540000081,
+        "y" : 408138.08040000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4037,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164533.64760000072,
+        "y" : 408477.24140000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4038,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164784.35890000034,
+        "y" : 408753.63980000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4039,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 164984.89160000067,
+        "y" : 408968.59910000302
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4040,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 165310.93610000052,
+        "y" : 409368.00610000081
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4041,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 165336.99789999984,
+        "y" : 409645.31920000166
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4042,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 165438.28959999979,
+        "y" : 410014.80550000258
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4043,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 165688.5635000011,
+        "y" : 410198.75919999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4044,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 165690.38780000061,
+        "y" : 410661.11400000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4045,
+        "SAFE_SPOT2" : "산악위치 표시판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "보령소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "잔미산"
+      },
+      "geometry" : {
+        "x" : 165840.70859999862,
+        "y" : 410814.64289999753
+      }
+    }
+  ]
+}

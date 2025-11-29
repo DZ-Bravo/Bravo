@@ -1,0 +1,885 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 2217,
+        "SAFE_SPOT2" : "간이구조구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산사하소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381516.17260000017,
+        "y" : 282626.76590000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 6779,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382506.0646116361,
+        "y" : 281172.54981465265
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 6781,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382407.05163910612,
+        "y" : 281156.68643839657
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 6783,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382377.76814603247,
+        "y" : 281473.07967069745
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 6785,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382333.03001648374,
+        "y" : 281112.62182117067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 6788,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382296.25600864366,
+        "y" : 281772.46762597747
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 6792,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382118.59986143745,
+        "y" : 282420.02875866182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 6795,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 382069.27291867789,
+        "y" : 282591.26636070944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 6800,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381990.21451455541,
+        "y" : 281751.64795600064
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 6806,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381814.35217033233,
+        "y" : 282171.81646962464
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 6809,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381803.98184905201,
+        "y" : 281427.4514280241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 6814,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381706.99147130363,
+        "y" : 282587.737253353
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 6815,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381686.94550258946,
+        "y" : 282424.84334221669
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 6816,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381645.71559166443,
+        "y" : 281215.22757322155
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 6817,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381612.54949306231,
+        "y" : 282431.22658415511
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 6820,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381515.86373404041,
+        "y" : 282620.36187164672
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 6821,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381517.10811329167,
+        "y" : 281133.24459938891
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 6822,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381508.40186815243,
+        "y" : 282150.20766718313
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 6823,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381484.3021899201,
+        "y" : 283772.94123045541
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 6824,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381428.69132476673,
+        "y" : 284021.02946249954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 6827,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381388.36710093915,
+        "y" : 282907.0109999273
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 6829,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381367.27604663558,
+        "y" : 280993.89523677714
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 6830,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381247.77900888491,
+        "y" : 282446.76830884442
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 6831,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381226.33229537215,
+        "y" : 282564.88436625525
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 6832,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381221.94333460461,
+        "y" : 280860.98230390251
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 6833,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381189.73806917854,
+        "y" : 284266.14499847963
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 6834,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381157.41265771072,
+        "y" : 283141.61678969301
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 6835,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381113.6320898151,
+        "y" : 282553.66587852873
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 6836,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381105.98603250273,
+        "y" : 283253.78375395574
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 6837,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381097.59977894556,
+        "y" : 281837.77980805747
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 6838,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381072.40612009075,
+        "y" : 282182.73294146359
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 6839,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381049.32453785464,
+        "y" : 281716.41682640091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 6840,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 381039.41792293917,
+        "y" : 282412.92618558183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 6841,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380993.59366554022,
+        "y" : 283793.60892374255
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 6842,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380945.49737723079,
+        "y" : 281865.19540755451
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 6843,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380940.33143128268,
+        "y" : 282052.61407030188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 6844,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380896.86096389033,
+        "y" : 281862.15044670925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 6845,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380811.47371013183,
+        "y" : 283997.98982461914
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 6846,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380795.66973604821,
+        "y" : 284145.84967315383
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 6847,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380683.07091304194,
+        "y" : 283159.31025902927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 6848,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380650.34897615388,
+        "y" : 284059.45080913976
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 6849,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380513.06520086899,
+        "y" : 283955.08674731478
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 6850,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380502.50024485681,
+        "y" : 283162.73251571693
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 6851,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380357.01768553443,
+        "y" : 281854.96009496227
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 6852,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380341.09706875682,
+        "y" : 282289.03402759135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 6855,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380225.33700545505,
+        "y" : 282230.04507342167
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 6856,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380169.92291389685,
+        "y" : 281554.26466391981
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 6857,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380159.16801553778,
+        "y" : 281842.42446898296
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 6858,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380061.08301523328,
+        "y" : 283400.51295402087
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 6861,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 380011.60162803438,
+        "y" : 282454.20603912883
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 6862,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 379984.89975752868,
+        "y" : 281582.58255876601
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 6863,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사상구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 379971.73802377563,
+        "y" : 282223.58605183847
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 6864,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 379916.71140635666,
+        "y" : 281314.6764759291
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 6869,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 379824.53760629706,
+        "y" : 281151.21654857695
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 6870,
+        "SAFE_SPOT2" : "위치안내표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "부산시 사하구",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "승학산"
+      },
+      "geometry" : {
+        "x" : 379793.27371681482,
+        "y" : 280979.77367291413
+      }
+    }
+  ]
+}

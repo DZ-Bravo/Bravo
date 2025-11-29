@@ -1,0 +1,570 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 5463,
+        "SAFE_SPOT2" : "금원산관리사무소 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산권역현황도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 272214.40460000094,
+        "y" : 348568.17799999751
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 5464,
+        "SAFE_SPOT2" : "계곡이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "관리사무소, 자운폭포",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271995.26650000084,
+        "y" : 348628.04480000399
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 5465,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "현성산 1.5km, 가섭암지마애삼존불상 0.2km, 문바위 0.1km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271884.21740000043,
+        "y" : 348685.70940000191
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 5466,
+        "SAFE_SPOT2" : "지재미이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산 1코스, 현성산",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271282.3245000001,
+        "y" : 349152.45430000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 5467,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산 정상(1코스) 3.2km, 임도사거리 4.3km, 문바위,  마애삼존불 1.0km, 금원산 휴양림 1.8km, 금원산 정상 3.6km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270984.96270000096,
+        "y" : 349254.87050000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 5468,
+        "SAFE_SPOT2" : "갈림길 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산기백산등산안내도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270469.08779999986,
+        "y" : 349343.22900000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 5469,
+        "SAFE_SPOT2" : "능선갈림길",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산 정상(1코스) 1.6km,/금원산 휴양림(1코스) 3.4km/ 서문가바위 현성산,/지재미 2.8km,  휴양림 4.3km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269683.48000000138,
+        "y" : 349540.45900000073
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 5470,
+        "SAFE_SPOT2" : "금원산이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "지재미 6.0km, 1코스 7.4km / 기백산 3.6km, 2 3 4코스",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 268862.58070000075,
+        "y" : 348461.39840000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 5471,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "산림문화휴양관 480m, 자운폭포 800m, 숲속의 집 1km, 야영장 1.3km, 유안청폭포입구 1.5km, 숲속수련장 1.7km, 생태수목원 3.3km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 272231.06329999957,
+        "y" : 348374.12509999983
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 5472,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "산림문화휴양관/관리사무소/자운폭포",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271861.11530000065,
+        "y" : 348124.53410000168
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 5473,
+        "SAFE_SPOT2" : "산막이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "관리사무소/자운폭포",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271470.35250000004,
+        "y" : 348272.41440000385
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 5474,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산4.4km,  유안청폭포 0.5km, 야영장 0.2km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271325.2826000005,
+        "y" : 348184.94170000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 5475,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "유안청폭포/ 작업임도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271297.51380000077,
+        "y" : 348200.130400002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 5476,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산2코스,유안청1폭포 / 관리사무소/숲속의 집",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271028.35680000111,
+        "y" : 348228.79600000009
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 5477,
+        "SAFE_SPOT2" : "유안청1폭포이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "유안청폭포,  금원산2코스, 관리사무소",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270961.09250000212,
+        "y" : 348154.28170000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 5478,
+        "SAFE_SPOT2" : "임도갈림길 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산기백산등산안내도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270319.98429999966,
+        "y" : 348180.00320000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 5479,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산 1.0km/임도 0.8km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269826.11550000031,
+        "y" : 348339.4683000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 5480,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산 0.8km/임도 1.0km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269566.0297000017,
+        "y" : 348174.06240000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 5481,
+        "SAFE_SPOT2" : "동봉이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산(해발1353m)0.25km/ 기백산(해발1331m) 5.0km/유한청폭포(2코스)2.1km, 유한청폭포(3코스)3.2km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269024.64130000118,
+        "y" : 348305.45849999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 5482,
+        "SAFE_SPOT2" : "갈림길 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산기백산등산안내도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270407.53930000216,
+        "y" : 347598.1352000013
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 5483,
+        "SAFE_SPOT2" : "갈림길이정안내판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산2코스, 금원산3코스 2.1km, 임도사거리 휴양림 3.6km, 유한청폭포 1.35k 금원산휴양림3코스",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270125.48440000042,
+        "y" : 347666.79659999907
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 5484,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "기백산 5.4km, 우물 0.5km 금원산정상 1.3km, 임도사거리1.2km 휴양림 4.4km, 유한청폭포 2.1km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269624.05130000133,
+        "y" : 347826.21370000392
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 5485,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산정상 0.68km, 기백산 4.3km, 유한청폭포 (2코스)2.8km, 유한청폭포 (3코스)3.0km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 268945.36979999952,
+        "y" : 348156.89060000144
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 5486,
+        "SAFE_SPOT2" : "산길시작이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "기백산정상 3.15km, 임도사거리 1.2km 숲속수련장 2.3km, 산막 1.2km 유안청폭포 2.2km, 복합산막 0.5km 휴양림 1.5km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271941.50669999979,
+        "y" : 347508.71510000154
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 5487,
+        "SAFE_SPOT2" : "갈림길 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산기백산안내도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 272095.97690000013,
+        "y" : 346748.62790000439
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 5488,
+        "SAFE_SPOT2" : "이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "기백산1.15km/복합산막2.5km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271448.27819999959,
+        "y" : 346330.35979999974
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 5489,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "기백산정상 0.2km, 금원산 5km, 금원산휴양림 4.65km, 유한청폭포 5.75km, 마리고학 식별불가",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270935.30230000149,
+        "y" : 345719.02830000035
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 5490,
+        "SAFE_SPOT2" : "기백산 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "거창군등산안내도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270735.94490000047,
+        "y" : 345812.99100000039
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 5491,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "기백산 1.5km/금원산 2.5km/사평입구 2.9km - 함양군",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269821.15060000122,
+        "y" : 346733.53409999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 5492,
+        "SAFE_SPOT2" : "갈림길이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "기백산 2.4km/금원산 1.6km/수먕령 3.6km - 함양군",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 269233.76839999948,
+        "y" : 347271.42470000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 5493,
+        "SAFE_SPOT2" : "임도사거리이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "3코스 금원산, 3코스 휴양림, 지재미골, 기백산",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 270450.58410000149,
+        "y" : 347558.40630000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 5494,
+        "SAFE_SPOT2" : "미폭 안내도",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산기백산현성산월봉산 등산안내도",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 272572.43950000033,
+        "y" : 348734.46339999884
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 5495,
+        "SAFE_SPOT2" : "현성산갈림길 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "금원산 4.5km, 문바위하산 2.5km, 미폭하산 3km - 교체고려",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271907.37010000087,
+        "y" : 349860.2751000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 5496,
+        "SAFE_SPOT2" : "삼거리 이정표",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "거창군",
+        "ETC_MATTER" : "2011 이정표 신규설치 예정 - 현성산 1.0km, 금원산 3.9km, 수승대 6.5km",
+        "MNTN_NM" : "금원산현성산"
+      },
+      "geometry" : {
+        "x" : 271402.08040000126,
+        "y" : 350509.6537000034
+      }
+    }
+  ]
+}

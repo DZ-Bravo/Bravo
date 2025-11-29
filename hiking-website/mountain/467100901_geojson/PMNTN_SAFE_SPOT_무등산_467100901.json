@@ -1,0 +1,300 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 3161,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-9",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 201129.70680000167,
+        "y" : 282634.15670000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 3162,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "1-10",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 200694.70500000007,
+        "y" : 282394.76239999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 3163,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9-1",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 202432.65690000076,
+        "y" : 282226.12640000321
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 3164,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "9-2",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 201818.99210000224,
+        "y" : 282453.97070000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 3165,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-1",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 204462.64690000005,
+        "y" : 284111.86710000038
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 3166,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-2",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 204729.99750000052,
+        "y" : 283914.70209999941
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 3167,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-3",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 204985.81210000068,
+        "y" : 283515.80969999917
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 3168,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-4",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 204771.58590000123,
+        "y" : 283058.34310000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 3169,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-5",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 204189.28450000007,
+        "y" : 283048.002700001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 3170,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-6",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 203703.16420000046,
+        "y" : 283015.45750000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 3171,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-7",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 203388.76970000006,
+        "y" : 282882.9824000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 3172,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-8",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 202824.2341,
+        "y" : 282545.57110000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 3173,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "10-9",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 202205.28309999965,
+        "y" : 282740.77040000074
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 3174,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-1",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 202550.50980000105,
+        "y" : 283915.89499999955
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 3175,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-2",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 202397.25580000039,
+        "y" : 283728.4699000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 3176,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "11-3",
+        "MGC" : "담양소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "무등산"
+      },
+      "geometry" : {
+        "x" : 202346.56000000052,
+        "y" : 283315.57190000266
+      }
+    }
+  ]
+}
