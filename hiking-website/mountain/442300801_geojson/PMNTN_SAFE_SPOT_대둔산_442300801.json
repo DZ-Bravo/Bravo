@@ -1,0 +1,1425 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4370,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227675.21470000129,
+        "y" : 393961.94440000132
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4371,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227625.70110000111,
+        "y" : 393807.67220000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4372,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227775.99909999967,
+        "y" : 393715.67899999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4373,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227901.20069999993,
+        "y" : 393654.43139999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4374,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228051.60309999995,
+        "y" : 393531.6202000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4375,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228201.91039999947,
+        "y" : 393439.63430000097
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4376,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228327.21869999915,
+        "y" : 393347.56990000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4377,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228527.63719999883,
+        "y" : 393224.92899999954
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4378,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228553.24340000004,
+        "y" : 393040.07380000129
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4379,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227728.34270000085,
+        "y" : 392975.77340000123
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4380,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227929.25320000015,
+        "y" : 392699.00490000099
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4381,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227954.6511000013,
+        "y" : 392575.79380000196
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4382,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228004.85699999984,
+        "y" : 392514.30819999985
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4383,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228154.78420000058,
+        "y" : 392545.61260000244
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4384,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228304.61070000101,
+        "y" : 392607.74229999818
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4385,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228628.85759999976,
+        "y" : 392855.38240000233
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4386,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228829.18989999965,
+        "y" : 392763.57110000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4387,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228979.51860000007,
+        "y" : 392671.59850000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4388,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227703.925400001,
+        "y" : 392790.7575000003
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4389,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227729.6129999999,
+        "y" : 392575.07740000077
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4390,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227930.04060000088,
+        "y" : 392452.42289999872
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4391,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228105.27080000099,
+        "y" : 392391.33799999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4392,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228355.21850000229,
+        "y" : 392422.96770000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4393,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228605.56770000048,
+        "y" : 392331.31359999999
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4394,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228805.60729999933,
+        "y" : 392331.97000000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 4395,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228930.22420000006,
+        "y" : 392455.67359999754
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 4396,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 229005.13580000028,
+        "y" : 392486.74480000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 4397,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 229029.7312000012,
+        "y" : 392610.11879999936
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 4398,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 229105.35900000017,
+        "y" : 392425.43150000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 4399,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 229080.55920000095,
+        "y" : 392363.70279999822
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 4400,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228931.75330000091,
+        "y" : 391993.33240000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 4401,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228856.83720000181,
+        "y" : 391962.26190000214
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 4402,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 229030.54949999973,
+        "y" : 392363.53669999912
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 4403,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228931.44749999978,
+        "y" : 392085.80060000345
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 4404,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227805.60550000053,
+        "y" : 392267.08809999935
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 4405,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227880.32610000204,
+        "y" : 392359.79510000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 4406,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228030.55279999971,
+        "y" : 392298.62910000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 4407,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228180.88080000039,
+        "y" : 392206.64290000126
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 4408,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228356.01779999956,
+        "y" : 392176.38570000231
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 4409,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227805.80140000023,
+        "y" : 392205.44260000065
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 4410,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227981.23280000035,
+        "y" : 392082.7098000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 4411,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228206.78050000034,
+        "y" : 391929.31880000047
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 4412,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228407.02940000035,
+        "y" : 391868.32059999928
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 4413,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228606.97869999986,
+        "y" : 391899.79520000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 4414,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228757.01580000017,
+        "y" : 391900.28710000217
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 4415,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227352.33229999989,
+        "y" : 393282.82010000199
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 4416,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227302.90529999975,
+        "y" : 393097.72720000148
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 4417,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227328.58220000006,
+        "y" : 392882.04590000398
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 4418,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227454.17950000055,
+        "y" : 392697.50080000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 4419,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227579.78200000059,
+        "y" : 392512.95760000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 4420,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227580.55939999968,
+        "y" : 392266.37570000254
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 4421,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227631.54320000112,
+        "y" : 391958.30619999953
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 4422,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227731.86030000169,
+        "y" : 391866.15450000018
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 4423,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227882.19249999989,
+        "y" : 391774.16320000216
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 4424,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227957.60610000137,
+        "y" : 391651.1117000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 4425,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228108.14240000118,
+        "y" : 391497.47890000418
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 4426,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228158.55380000081,
+        "y" : 391374.3487999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 4427,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228308.89900000114,
+        "y" : 391282.36490000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 4428,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228508.66130000073,
+        "y" : 391375.48249999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 4429,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228608.18809999991,
+        "y" : 391529.92250000127
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 4430,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228707.71140000038,
+        "y" : 391684.36370000243
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 4431,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227052.68730000034,
+        "y" : 393158.59570000134
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 4432,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226827.66430000216,
+        "y" : 393157.90250000171
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 4433,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227606.537200002,
+        "y" : 391958.22720000148
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 4434,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227456.01760000084,
+        "y" : 392111.86870000139
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 4435,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227255.49300000072,
+        "y" : 392265.35680000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 4436,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226980.05649999995,
+        "y" : 392387.79510000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 4437,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226904.37860000134,
+        "y" : 392603.32320000418
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 4438,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226878.99560000096,
+        "y" : 392726.5373999998
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 4439,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226828.23160000052,
+        "y" : 392972.96590000205
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 4440,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226752.84520000219,
+        "y" : 393096.02720000036
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 4441,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226652.64650000073,
+        "y" : 393157.36739999987
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 4442,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226552.54270000197,
+        "y" : 393187.88590000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 4443,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226352.15139999986,
+        "y" : 393310.57200000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 4444,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226251.58780000079,
+        "y" : 393495.20790000446
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 4445,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226201.03050000127,
+        "y" : 393679.99459999986
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 4446,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226100.38220000081,
+        "y" : 393895.45510000177
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 4447,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227174.73030000087,
+        "y" : 394114.49010000005
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 4448,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226674.82790000085,
+        "y" : 394082.12740000151
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 4449,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226425.10840000026,
+        "y" : 393988.89980000257
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 4450,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226274.73680000193,
+        "y" : 394111.73890000395
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 4451,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226049.83030000143,
+        "y" : 394080.24280000292
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 4452,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226024.18809999991,
+        "y" : 394295.92800000124
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 4453,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 225923.82540000044,
+        "y" : 394418.92220000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 4454,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 225798.28490000218,
+        "y" : 394603.48930000141
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 4455,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 225623.11539999954,
+        "y" : 394664.6203000024
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 4471,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228105.27080000099,
+        "y" : 392391.33799999952
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 4472,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 229005.13580000028,
+        "y" : 392486.74480000325
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 4473,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 228606.97869999986,
+        "y" : 391899.79520000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 4474,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 227579.78200000059,
+        "y" : 392512.95760000125
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 4475,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "논산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "대둔산"
+      },
+      "geometry" : {
+        "x" : 226049.83030000143,
+        "y" : 394080.24280000292
+      }
+    }
+  ]
+}

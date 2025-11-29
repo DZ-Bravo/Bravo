@@ -1,0 +1,1920 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4278,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163864.61070000008,
+        "y" : 463071.76860000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4279,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163874.69990000129,
+        "y" : 459588.32090000249
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4280,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163924.97259999998,
+        "y" : 459742.24140000157
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4281,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163925.75250000041,
+        "y" : 459927.19720000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4282,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164051.10020000022,
+        "y" : 460234.93490000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4283,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164027.19800000079,
+        "y" : 460450.82110000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4284,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164078.24000000022,
+        "y" : 460789.6986999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4285,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164029.27230000123,
+        "y" : 460944.03730000183
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4286,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163980.17659999989,
+        "y" : 461067.55020000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4287,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163956.01900000032,
+        "y" : 461221.78490000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4288,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163907.0560999997,
+        "y" : 461376.12440000288
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4289,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163833.2892000014,
+        "y" : 461530.569000002
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4290,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163759.39439999964,
+        "y" : 461654.18830000237
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4291,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163784.8526999997,
+        "y" : 461808.21350000054
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4292,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163835.24500000104,
+        "y" : 461992.95999999903
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4293,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163885.11440000124,
+        "y" : 462054.40240000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4294,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163984.72120000049,
+        "y" : 462146.46209999919
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4295,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164109.00010000076,
+        "y" : 462207.59270000085
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4296,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164233.1484000003,
+        "y" : 462237.89900000021
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 4297,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164283.14220000152,
+        "y" : 462330.16990000382
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 4298,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164258.72540000081,
+        "y" : 462422.75180000253
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 4299,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164234.18009999953,
+        "y" : 462484.50770000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 4300,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164234.56710000057,
+        "y" : 462576.98600000143
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 4301,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164309.10410000104,
+        "y" : 462607.50110000186
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 4302,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164735.83790000062,
+        "y" : 463838.79580000229
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 4303,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164834.90749999974,
+        "y" : 463807.56080000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 4304,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164909.05190000217,
+        "y" : 463745.60270000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 27,
+        "SAFE_SPOT1" : 4305,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165032.79640000034,
+        "y" : 463683.4421000015
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 28,
+        "SAFE_SPOT1" : 4306,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165032.2918000007,
+        "y" : 463560.13760000095
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 29,
+        "SAFE_SPOT1" : 4307,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165155.91430000123,
+        "y" : 463467.15269999951
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 30,
+        "SAFE_SPOT1" : 4308,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165279.28889999911,
+        "y" : 463312.51730000414
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 31,
+        "SAFE_SPOT1" : 4309,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165377.99179999996,
+        "y" : 463188.8104000017
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 32,
+        "SAFE_SPOT1" : 4310,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165402.41840000078,
+        "y" : 463096.23160000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 33,
+        "SAFE_SPOT1" : 4311,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165451.52250000089,
+        "y" : 462972.72660000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 34,
+        "SAFE_SPOT1" : 4312,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165426.09740000032,
+        "y" : 462818.69639999978
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 35,
+        "SAFE_SPOT1" : 4313,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165400.92099999916,
+        "y" : 462726.31849999912
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 36,
+        "SAFE_SPOT1" : 4314,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165450.02730000019,
+        "y" : 462602.81350000203
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 37,
+        "SAFE_SPOT1" : 4315,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165523.81369999982,
+        "y" : 462448.38270000182
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 38,
+        "SAFE_SPOT1" : 4316,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165572.79920000024,
+        "y" : 462294.05240000226
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 39,
+        "SAFE_SPOT1" : 4317,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165623.64600000065,
+        "y" : 462602.11349999905
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 40,
+        "SAFE_SPOT1" : 4318,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163126.50459999964,
+        "y" : 458697.54340000078
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 41,
+        "SAFE_SPOT1" : 4319,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163126.77020000201,
+        "y" : 458759.19520000368
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 42,
+        "SAFE_SPOT1" : 4320,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163126.902999999,
+        "y" : 458790.0212000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 43,
+        "SAFE_SPOT1" : 4321,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163102.48790000007,
+        "y" : 458882.60590000264
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 44,
+        "SAFE_SPOT1" : 4322,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163103.15240000095,
+        "y" : 459036.73560000025
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 45,
+        "SAFE_SPOT1" : 4323,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163178.52010000031,
+        "y" : 459252.19669999927
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 46,
+        "SAFE_SPOT1" : 4324,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163377.41540000215,
+        "y" : 459343.82269999944
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 47,
+        "SAFE_SPOT1" : 4325,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163526.02560000028,
+        "y" : 459281.53489999846
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 48,
+        "SAFE_SPOT1" : 4326,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163724.26300000027,
+        "y" : 459219.03930000402
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 49,
+        "SAFE_SPOT1" : 4327,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 163897.69060000032,
+        "y" : 459156.65290000103
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 50,
+        "SAFE_SPOT1" : 4328,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164020.32860000059,
+        "y" : 458817.04510000162
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 51,
+        "SAFE_SPOT1" : 4329,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164118.93709999975,
+        "y" : 458662.49890000001
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 52,
+        "SAFE_SPOT1" : 4330,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164167.4040000001,
+        "y" : 458384.85780000128
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 53,
+        "SAFE_SPOT1" : 4331,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164166.11360000074,
+        "y" : 458076.59880000167
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 54,
+        "SAFE_SPOT1" : 4332,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164239.53100000042,
+        "y" : 457829.68050000072
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 55,
+        "SAFE_SPOT1" : 5113,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165162.38520000037,
+        "y" : 458966.45230000466
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 56,
+        "SAFE_SPOT1" : 5114,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165012.74969999958,
+        "y" : 458782.10419999994
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 57,
+        "SAFE_SPOT1" : 5115,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164887.7957000006,
+        "y" : 458566.83090000227
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 58,
+        "SAFE_SPOT1" : 5116,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164812.71890000068,
+        "y" : 458413.00710000284
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 59,
+        "SAFE_SPOT1" : 5117,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164463.00779999979,
+        "y" : 457859.57640000433
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 60,
+        "SAFE_SPOT1" : 5118,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164463.00779999979,
+        "y" : 457859.57640000433
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 61,
+        "SAFE_SPOT1" : 5119,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164462.75189999957,
+        "y" : 457797.92460000142
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 62,
+        "SAFE_SPOT1" : 5120,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164659.88540000096,
+        "y" : 457458.01840000041
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 63,
+        "SAFE_SPOT1" : 5121,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164855.51660000067,
+        "y" : 456748.20700000413
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 64,
+        "SAFE_SPOT1" : 5122,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165003.55289999954,
+        "y" : 456531.81660000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 65,
+        "SAFE_SPOT1" : 5123,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166176.56020000111,
+        "y" : 458160.89850000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 66,
+        "SAFE_SPOT1" : 5124,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165978.77099999972,
+        "y" : 458346.64039999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 67,
+        "SAFE_SPOT1" : 5125,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165483.83820000105,
+        "y" : 458687.71220000088
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 68,
+        "SAFE_SPOT1" : 5126,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164940.83190000057,
+        "y" : 347662.49270000309
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 69,
+        "SAFE_SPOT1" : 5127,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165829.63489999995,
+        "y" : 458285.58170000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 70,
+        "SAFE_SPOT1" : 5128,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164912.23100000061,
+        "y" : 458474.25150000118
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 71,
+        "SAFE_SPOT1" : 5129,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165829.14270000067,
+        "y" : 458162.27820000052
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 72,
+        "SAFE_SPOT1" : 5130,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165456.90950000007,
+        "y" : 458163.7722000014
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 73,
+        "SAFE_SPOT1" : 5131,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165183.06089999899,
+        "y" : 457949.09689999931
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 74,
+        "SAFE_SPOT1" : 5132,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164587.09009999968,
+        "y" : 457859.06220000051
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 75,
+        "SAFE_SPOT1" : 5133,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165851.74510000087,
+        "y" : 457607.31370000169
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 76,
+        "SAFE_SPOT1" : 5134,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 175409.20800000057,
+        "y" : 423759.26990000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 77,
+        "SAFE_SPOT1" : 5135,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165651.4767000014,
+        "y" : 457176.54609999806
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 78,
+        "SAFE_SPOT1" : 5136,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165180.55370000005,
+        "y" : 457332.57980000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 79,
+        "SAFE_SPOT1" : 5137,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 164833.86179999914,
+        "y" : 457518.95480000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 80,
+        "SAFE_SPOT1" : 5138,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165105.34609999973,
+        "y" : 457147.92780000158
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 81,
+        "SAFE_SPOT1" : 5139,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165003.55289999954,
+        "y" : 456531.81660000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 82,
+        "SAFE_SPOT1" : 5140,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165750.13390000071,
+        "y" : 457022.0194000043
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 83,
+        "SAFE_SPOT1" : 5141,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165724.94490000047,
+        "y" : 456929.64120000228
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 84,
+        "SAFE_SPOT1" : 5142,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165623.8125,
+        "y" : 456467.65210000053
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 85,
+        "SAFE_SPOT1" : 5143,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166345.7862000009,
+        "y" : 457019.65780000202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 86,
+        "SAFE_SPOT1" : 5144,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166122.41660000011,
+        "y" : 457020.53860000148
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 87,
+        "SAFE_SPOT1" : 5145,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165997.3432,
+        "y" : 456774.42390000261
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 88,
+        "SAFE_SPOT1" : 5146,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165822.74519999977,
+        "y" : 456559.33479999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 89,
+        "SAFE_SPOT1" : 5147,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165672.46520000231,
+        "y" : 456220.84659999982
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 90,
+        "SAFE_SPOT1" : 5148,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165622.69910000078,
+        "y" : 456190.22000000067
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 91,
+        "SAFE_SPOT1" : 5149,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168599.78019999992,
+        "y" : 455778.04950000159
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 92,
+        "SAFE_SPOT1" : 5150,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168524.86000000127,
+        "y" : 455655.01989999972
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 93,
+        "SAFE_SPOT1" : 5151,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168350.64529999997,
+        "y" : 455532.3571000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 94,
+        "SAFE_SPOT1" : 5152,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168152.17490000185,
+        "y" : 455563.91870000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 95,
+        "SAFE_SPOT1" : 5153,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167779.48170000035,
+        "y" : 455472.8337000031
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 96,
+        "SAFE_SPOT1" : 5154,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167308.19189999998,
+        "y" : 455567.09750000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 97,
+        "SAFE_SPOT1" : 5155,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167060.1986000007,
+        "y" : 455629.69979999959
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 98,
+        "SAFE_SPOT1" : 5156,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167060.79119999986,
+        "y" : 455783.82850000449
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 99,
+        "SAFE_SPOT1" : 5157,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166291.66020000167,
+        "y" : 455879.29890000261
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 100,
+        "SAFE_SPOT1" : 5158,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166241.16559999995,
+        "y" : 455663.71410000138
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 101,
+        "SAFE_SPOT1" : 5159,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166290.08340000082,
+        "y" : 455478.56410000101
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 102,
+        "SAFE_SPOT1" : 5160,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166216.95060000103,
+        "y" : 455817.94070000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 103,
+        "SAFE_SPOT1" : 5161,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166192.00659999903,
+        "y" : 455787.21289999969
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 104,
+        "SAFE_SPOT1" : 5162,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166018.00510000065,
+        "y" : 455726.24880000204
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 105,
+        "SAFE_SPOT1" : 5163,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165869.80640000198,
+        "y" : 455911.79540000111
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 106,
+        "SAFE_SPOT1" : 5164,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165721.36740000173,
+        "y" : 456035.69320000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 107,
+        "SAFE_SPOT1" : 5165,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168449.59719999973,
+        "y" : 455439.51370000094
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 108,
+        "SAFE_SPOT1" : 5166,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168399.72300000116,
+        "y" : 455378.04520000145
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 109,
+        "SAFE_SPOT1" : 5167,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168374.44440000039,
+        "y" : 455254.83399999887
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 110,
+        "SAFE_SPOT1" : 5168,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168201.13460000139,
+        "y" : 455378.77999999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 111,
+        "SAFE_SPOT1" : 5169,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167207.01219999976,
+        "y" : 455074.26540000178
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 112,
+        "SAFE_SPOT1" : 5170,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167183.01410000119,
+        "y" : 455290.14039999992
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 113,
+        "SAFE_SPOT1" : 5171,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167084.31089999992,
+        "y" : 455444.64990000241
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 114,
+        "SAFE_SPOT1" : 5172,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 167034.9012999991,
+        "y" : 455506.4923000019
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 115,
+        "SAFE_SPOT1" : 5173,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166662.07330000121,
+        "y" : 455384.63000000082
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 116,
+        "SAFE_SPOT1" : 5174,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166514.09559999965,
+        "y" : 455631.81680000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 117,
+        "SAFE_SPOT1" : 5175,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166341.30449999962,
+        "y" : 455879.10370000079
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 118,
+        "SAFE_SPOT1" : 5176,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166859.46970000118,
+        "y" : 455075.60239999928
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 119,
+        "SAFE_SPOT1" : 5177,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 168250.32479999959,
+        "y" : 455255.2929999996
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 120,
+        "SAFE_SPOT1" : 5178,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166488.42880000081,
+        "y" : 455416.13360000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 121,
+        "SAFE_SPOT1" : 5179,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166240.07239999995,
+        "y" : 455386.28240000084
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 122,
+        "SAFE_SPOT1" : 5180,
+        "SAFE_SPOT2" : "산악위치 표지판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 166092.10690000094,
+        "y" : 455633.47650000267
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 123,
+        "SAFE_SPOT1" : 5181,
+        "SAFE_SPOT2" : "헬리포트",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "예산소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "가야산"
+      },
+      "geometry" : {
+        "x" : 165121.37740000151,
+        "y" : 455965.05680000037
+      }
+    }
+  ]
+}

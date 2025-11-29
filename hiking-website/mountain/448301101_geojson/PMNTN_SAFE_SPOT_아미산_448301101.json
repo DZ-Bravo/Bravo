@@ -1,0 +1,240 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4509,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 169503.98990000132,
+        "y" : 472636.88259999827
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4510,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 169775.6230000006,
+        "y" : 472389.29960000329
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4511,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 169948.8247000007,
+        "y" : 472327.03319999948
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4512,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 170096.82160000224,
+        "y" : 472141.55140000023
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4513,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 170096.60530000087,
+        "y" : 472079.89839999937
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4514,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 170095.9561999999,
+        "y" : 471894.93960000202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4515,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 170268.30999999959,
+        "y" : 471586.06820000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4516,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 169897.75150000025,
+        "y" : 471895.63739999942
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4531,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 170095.9561999999,
+        "y" : 471894.93960000202
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4532,
+        "SAFE_SPOT2" : "간이 구급함",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 170268.30999999959,
+        "y" : 471586.06820000149
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4533,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 169872.86690000072,
+        "y" : 471864.89850000106
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4534,
+        "SAFE_SPOT2" : "헬기장",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "당진소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "아미산"
+      },
+      "geometry" : {
+        "x" : 169923.94149999972,
+        "y" : 472296.29409999959
+      }
+    }
+  ]
+}

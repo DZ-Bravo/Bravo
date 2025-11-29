@@ -1,0 +1,465 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 629,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-1",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375056.07250000164,
+        "y" : 395493.02850000188
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 630,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-2",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375218.13910000026,
+        "y" : 395359.82499999925
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 631,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-3",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375495.19940000121,
+        "y" : 395487.51190000214
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 632,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-4",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375419.51620000228,
+        "y" : 395866.25689999945
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 633,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-5",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375753.85360000003,
+        "y" : 395916.60749999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 634,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-6",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 374527.86809999868,
+        "y" : 395346.01549999975
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 635,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-7",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375818.73200000077,
+        "y" : 396308.39240000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 636,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-9",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375787.87249999959,
+        "y" : 396683.04110000096
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 637,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-11",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375793.2695000004,
+        "y" : 396822.04389999993
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 638,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-12",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 375844.49689999875,
+        "y" : 395372.40310000069
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 639,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-14",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 376602.26929999981,
+        "y" : 396970.25950000063
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 640,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-15",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 376922.00789999962,
+        "y" : 397534.64160000347
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 641,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-16",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377073.5466,
+        "y" : 397622.98150000349
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 642,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-17",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377209.66150000133,
+        "y" : 397712.56570000388
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 643,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-18",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377442.29200000037,
+        "y" : 397686.75600000098
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 644,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-19",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377658.59890000056,
+        "y" : 397591.56080000289
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 645,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-20",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377687.14350000117,
+        "y" : 397334.66740000062
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 646,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-21",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377774.50010000076,
+        "y" : 397161.13140000403
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 647,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-22",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 377931.26730000135,
+        "y" : 396882.20040000044
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 19,
+        "SAFE_SPOT1" : 648,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-23",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378074.33420000225,
+        "y" : 396807.61760000326
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 20,
+        "SAFE_SPOT1" : 649,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-24",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378151.76060000062,
+        "y" : 396781.66100000218
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 21,
+        "SAFE_SPOT1" : 650,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-25",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378251.2910000002,
+        "y" : 396753.60239999928
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 22,
+        "SAFE_SPOT1" : 651,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-26",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378328.56840000022,
+        "y" : 396805.58620000258
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 23,
+        "SAFE_SPOT1" : 652,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-27",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378432.46460000053,
+        "y" : 396898.86180000007
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 24,
+        "SAFE_SPOT1" : 653,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-28",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378664.36290000193,
+        "y" : 396980.65499999933
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 25,
+        "SAFE_SPOT1" : 654,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-29",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 378989.9486000007,
+        "y" : 396980.99080000073
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 26,
+        "SAFE_SPOT1" : 655,
+        "SAFE_SPOT2" : "산악위치표지판",
+        "SAFE_SPOT3" : "가-30",
+        "MGC" : "영천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "보현산"
+      },
+      "geometry" : {
+        "x" : 379175.30710000172,
+        "y" : 396855.55250000209
+      }
+    }
+  ]
+}

@@ -1,0 +1,345 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "FID" : "FID",
+    "SAFE_SPOT1" : "SAFE_SPOT1",
+    "SAFE_SPOT2" : "SAFE_SPOT2",
+    "SAFE_SPOT3" : "SAFE_SPOT3",
+    "MGC" : "MGC",
+    "ETC_MATTER" : "ETC_MATTER",
+    "MNTN_NM" : "MNTN_NM"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkt" : "PROJCS[\"PCS_ITRF2000_TM\",GEOGCS[\"GCS_ITRF_2000\",DATUM[\"D_ITRF_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",200000.0],PARAMETER[\"False_Northing\",600000.0],PARAMETER[\"Central_Meridian\",127.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",38.0],UNIT[\"Meter\",1.0]]"
+  },
+  "fields" : [
+    {
+      "name" : "FID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "FID"
+    },
+    {
+      "name" : "SAFE_SPOT1",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "SAFE_SPOT1"
+    },
+    {
+      "name" : "SAFE_SPOT2",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT2",
+      "length" : 50
+    },
+    {
+      "name" : "SAFE_SPOT3",
+      "type" : "esriFieldTypeString",
+      "alias" : "SAFE_SPOT3",
+      "length" : 50
+    },
+    {
+      "name" : "MGC",
+      "type" : "esriFieldTypeString",
+      "alias" : "MGC",
+      "length" : 50
+    },
+    {
+      "name" : "ETC_MATTER",
+      "type" : "esriFieldTypeString",
+      "alias" : "ETC_MATTER",
+      "length" : 200
+    },
+    {
+      "name" : "MNTN_NM",
+      "type" : "esriFieldTypeString",
+      "alias" : "MNTN_NM",
+      "length" : 50
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "FID" : 0,
+        "SAFE_SPOT1" : 4697,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 174950.46000000089,
+        "y" : 394162.61300000362
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 1,
+        "SAFE_SPOT1" : 4698,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 174699.74990000017,
+        "y" : 394008.32270000316
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 2,
+        "SAFE_SPOT1" : 4699,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 174932.51740000024,
+        "y" : 393913.15500000305
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 3,
+        "SAFE_SPOT1" : 4700,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 174945.82210000139,
+        "y" : 393637.2321000006
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 4,
+        "SAFE_SPOT1" : 4701,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175180.5261000013,
+        "y" : 393683.50320000201
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 5,
+        "SAFE_SPOT1" : 4702,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175133.89100000169,
+        "y" : 393405.55650000274
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 6,
+        "SAFE_SPOT1" : 4703,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175400.3702999996,
+        "y" : 393395.91960000433
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 7,
+        "SAFE_SPOT1" : 4704,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175596.2574000014,
+        "y" : 393564.77710000239
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 8,
+        "SAFE_SPOT1" : 4705,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175820.41380000208,
+        "y" : 393484.31660000235
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 9,
+        "SAFE_SPOT1" : 4706,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 176018.62360000052,
+        "y" : 393345.11970000155
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 10,
+        "SAFE_SPOT1" : 4707,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 176233.72130000126,
+        "y" : 393237.17600000091
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 11,
+        "SAFE_SPOT1" : 4708,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 176460.37009999994,
+        "y" : 393322.26630000211
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 12,
+        "SAFE_SPOT1" : 4709,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175986.93760000076,
+        "y" : 393199.18890000135
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 13,
+        "SAFE_SPOT1" : 4710,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175448.98199999984,
+        "y" : 393192.0522000026
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 14,
+        "SAFE_SPOT1" : 4711,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175385.64180000126,
+        "y" : 393021.13800000027
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 15,
+        "SAFE_SPOT1" : 4712,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175573.45559999999,
+        "y" : 393025.79270000011
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 16,
+        "SAFE_SPOT1" : 4713,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 175790.50850000139,
+        "y" : 393053.26590000093
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 17,
+        "SAFE_SPOT1" : 4714,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 176091.32479999866,
+        "y" : 392886.00970000215
+      }
+    },
+    {
+      "attributes" : {
+        "FID" : 18,
+        "SAFE_SPOT1" : 4715,
+        "SAFE_SPOT2" : "국가지점번호판",
+        "SAFE_SPOT3" : " ",
+        "MGC" : "서천소방서",
+        "ETC_MATTER" : " ",
+        "MNTN_NM" : "천방산"
+      },
+      "geometry" : {
+        "x" : 176320.02390000038,
+        "y" : 392964.46380000003
+      }
+    }
+  ]
+}
