@@ -16,10 +16,10 @@ function Header() {
       <nav>
         <ul>
           <li><Link to="/notice">공지사항</Link></li>
-          <li><Link to="#">AI 등산 코스 추천</Link></li>
-          <li><Link to="#">스토어</Link></li>
+          <li><Link to="/ai-course">AI 등산 코스 추천</Link></li>
+          <li><Link to="/store">스토어</Link></li>
           <li><Link to="/community">커뮤니티</Link></li>
-          <li><Link to="#">마이페이지</Link></li>
+          <li><Link to="/mypage">마이페이지</Link></li>
         </ul>
       </nav>
     </header>

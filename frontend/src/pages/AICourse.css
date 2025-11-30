@@ -1,0 +1,176 @@
+.ai-course-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.ai-course-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.ai-course-container {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+}
+
+.ai-course-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.category-tab {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-tab:hover {
+  border-color: #00BF93;
+  color: #00BF93;
+}
+
+.category-tab.active {
+  background: #00BF93;
+  border-color: #00BF93;
+  color: white;
+}
+
+.ai-course-description {
+  text-align: center;
+  margin-bottom: 32px;
+  color: var(--text-muted);
+}
+
+.ai-course-form {
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.ai-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--card-bg);
+  color: var(--text-main);
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.ai-input:focus {
+  border-color: #00BF93;
+}
+
+.ai-submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: #00BF93;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ai-submit-btn:hover {
+  background: #00a67d;
+}
+
+.recommendations-section {
+  margin-top: 40px;
+}
+
+.recommendations-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.course-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+
+.course-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #00BF93;
+  margin-bottom: 12px;
+}
+
+.course-info {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.course-description {
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .ai-course-container {
+    padding: 32px 24px;
+  }
+
+  .ai-course-title {
+    font-size: 1.75rem;
+  }
+}
+

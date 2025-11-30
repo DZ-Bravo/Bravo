@@ -57,42 +57,42 @@ function Home() {
         <section className="themed-courses">
           <h2>테마별 코스 큐레이션</h2>
           <div className="course-grid">
-            <div className="course-card spring">
+            <Link to="#" className="course-card spring">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>봄 산행지</h3>
               </div>
-            </div>
-            <div className="course-card summer">
+            </Link>
+            <Link to="#" className="course-card summer">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>여름 산행지</h3>
               </div>
-            </div>
-            <div className="course-card autumn">
+            </Link>
+            <Link to="#" className="course-card autumn">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>가을 산행지</h3>
               </div>
-            </div>
-            <div className="course-card winter">
+            </Link>
+            <Link to="#" className="course-card winter">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>겨울 산행지</h3>
               </div>
-            </div>
-            <div className="course-card sunrise">
+            </Link>
+            <Link to="#" className="course-card sunrise">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>일출 명소 베스트 코스</h3>
               </div>
-            </div>
-            <div className="course-card beginner">
+            </Link>
+            <Link to="#" className="course-card beginner">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>초보자 추천 코스</h3>
               </div>
-            </div>
+            </Link>
           </div>
         </section>
 
