@@ -108,6 +108,12 @@ function Community() {
             ))}
           </div>
 
+          <div className="write-button-container">
+            <Link to="/community/write" className="write-btn">
+              ✏️ 작성하기
+            </Link>
+          </div>
+
           <div className="post-list">
             {filteredPosts.map((post) => (
               <Link

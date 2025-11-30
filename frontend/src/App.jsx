@@ -7,6 +7,9 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Notice from './pages/Notice'
 import Community from './pages/Community'
+import AICourse from './pages/AICourse'
+import Store from './pages/Store'
+import MyPage from './pages/MyPage'
 import './App.css'
 
 function App() {
@@ -26,6 +29,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/ai-course" element={<AICourse />} />
+        <Route path="/store" element={<Store />} />
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </Router>
   )

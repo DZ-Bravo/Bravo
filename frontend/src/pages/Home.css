@@ -140,9 +140,10 @@
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   position: relative;
-  height: 200px;
+  height: 250px;
   display: flex;
   flex-direction: column;
+  text-decoration: none;
 }
 
 .course-card:hover {
@@ -152,6 +153,7 @@
 
 .course-card-image {
   flex: 1;
+  min-height: 180px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -169,18 +171,23 @@
 }
 
 .course-card-content {
-  padding: 16px;
+  padding: 20px 16px;
   background: var(--card-bg);
   text-align: center;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
 }
 
 .course-card h3 {
   color: var(--text-main);
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
+  line-height: 1.4;
 }
 
 /* 각 테마별 배경 이미지 */

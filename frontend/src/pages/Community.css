@@ -25,6 +25,32 @@
   text-align: center;
 }
 
+.write-button-container {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.write-btn {
+  padding: 12px 24px;
+  background: #00BF93;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.write-btn:hover {
+  background: #00a67d;
+}
+
 .category-tabs {
   display: flex;
   gap: 8px;
