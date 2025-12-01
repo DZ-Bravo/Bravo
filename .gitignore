@@ -1,4 +1,12 @@
 mountain/
 hiking-website/mountain/
 
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Uploads
+backend/uploads/
+uploads/
+
 

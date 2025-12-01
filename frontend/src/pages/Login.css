@@ -75,8 +75,24 @@
   margin-top: 8px;
 }
 
-.login-submit-btn:hover {
+.login-submit-btn:hover:not(:disabled) {
   background: var(--accent);
+}
+
+.login-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin-top: 12px;
+  padding: 12px;
+  background: #fff5f5;
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  color: #ff4444;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .social-login {

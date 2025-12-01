@@ -57,37 +57,37 @@ function Home() {
         <section className="themed-courses">
           <h2>테마별 코스 큐레이션</h2>
           <div className="course-grid">
-            <Link to="#" className="course-card spring">
+            <Link to="/course/spring" className="course-card spring">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>봄 산행지</h3>
               </div>
             </Link>
-            <Link to="#" className="course-card summer">
+            <Link to="/course/summer" className="course-card summer">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>여름 산행지</h3>
               </div>
             </Link>
-            <Link to="#" className="course-card autumn">
+            <Link to="/course/autumn" className="course-card autumn">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>가을 산행지</h3>
               </div>
             </Link>
-            <Link to="#" className="course-card winter">
+            <Link to="/course/winter" className="course-card winter">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>겨울 산행지</h3>
               </div>
             </Link>
-            <Link to="#" className="course-card sunrise">
+            <Link to="/course/sunrise" className="course-card sunrise">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>일출 명소 베스트 코스</h3>
               </div>
             </Link>
-            <Link to="#" className="course-card beginner">
+            <Link to="/course/beginner" className="course-card beginner">
               <div className="course-card-image"></div>
               <div className="course-card-content">
                 <h3>초보자 추천 코스</h3>

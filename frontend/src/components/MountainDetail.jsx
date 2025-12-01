@@ -224,6 +224,8 @@ function MountainDetail({ name, code, height, location, description, center, zoo
     }
   }
 
+
+
   const originText = origin || `${name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
 
   return (

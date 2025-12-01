@@ -8,7 +8,11 @@ function Login() {
     id: '',
     password: ''
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
+  
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
   const handleChange = (e) => {
     setFormData({
@@ -17,13 +21,40 @@ function Login() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // 로그인 로직 구현
-    console.log('Login:', formData)
-    // TODO: API 호출하여 로그인 처리
-    // 성공 시 홈 페이지로 이동
-    // navigate('/')
+    setIsLoading(true)
+    setErrorMessage('')
+    
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok) {
+        // 토큰 저장
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        
+        // 페이지 새로고침하여 Header 컴포넌트 업데이트
+        window.location.href = '/'
+      } else {
+        setErrorMessage(data.error || '로그인에 실패했습니다.')
+        alert(data.error || 'ID 또는 비밀번호가 올바르지 않습니다.')
+      }
+    } catch (error) {
+      console.error('로그인 오류:', error)
+      setErrorMessage('서버 오류가 발생했습니다.')
+      alert('서버 오류가 발생했습니다. 다시 시도해주세요.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSocialLogin = (provider) => {
@@ -60,14 +91,18 @@ function Login() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                autoComplete="current-password"
                 required
                 className="form-input"
               />
             </div>
 
-            <button type="submit" className="login-submit-btn">
-              로그인
+            <button type="submit" className="login-submit-btn" disabled={isLoading}>
+              {isLoading ? '로그인 중...' : '로그인'}
             </button>
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
           </form>
 
           <div className="social-login">
