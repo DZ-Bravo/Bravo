@@ -8,6 +8,7 @@ import connectDB from './config/database.js'
 import { MOUNTAIN_ROUTES, getMountainInfo, getAllMountains } from './utils/mountainRoutes.js'
 import authRoutes from './routes/auth.js'
 import postsRoutes from './routes/posts.js'
+import noticesRoutes from './routes/notices.js'
 
 dotenv.config()
 
@@ -32,6 +33,9 @@ app.use('/api/auth', authRoutes)
 
 // 게시글 라우트
 app.use('/api/posts', postsRoutes)
+
+// 공지사항 라우트
+app.use('/api/notices', noticesRoutes)
 
 // 산 정보 라우트
 app.get('/api/mountains', async (req, res) => {

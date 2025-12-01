@@ -19,6 +19,9 @@ function Header() {
   }, [])
 
   const handleLogout = () => {
+    // 로그아웃 확인 팝업
+    alert('로그아웃되었습니다.')
+    
     // localStorage에서 토큰과 사용자 정보 제거
     localStorage.removeItem('token')
     localStorage.removeItem('user')

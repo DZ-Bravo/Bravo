@@ -48,9 +48,12 @@ function CommunityEdit() {
 
         const data = await response.json()
         
-        // 작성자 확인
+        // 작성자 또는 관리자 확인
         const user = JSON.parse(localStorage.getItem('user') || '{}')
-        if (data.authorId !== user.id) {
+        const isPostAuthor = data.authorId === user.id
+        const isAdmin = user.role === 'admin'
+        
+        if (!isPostAuthor && !isAdmin) {
           alert('게시글을 수정할 권한이 없습니다.')
           navigate('/community')
           return

@@ -296,10 +296,24 @@ function CommunityDetail() {
     }
   }
 
-  // 현재 사용자가 작성자인지 확인
+  // 현재 사용자가 작성자인지 또는 관리자인지 확인
   const isAuthor = () => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-    return post && post.authorId === user.id
+    if (!post) return false
+    
+    const userData = localStorage.getItem('user')
+    if (!userData) return false
+    
+    try {
+      const user = JSON.parse(userData)
+      // 작성자이거나 관리자인 경우 true 반환
+      const isPostAuthor = post.authorId && post.authorId === user.id
+      const isAdmin = user.role === 'admin'
+      
+      return isPostAuthor || isAdmin
+    } catch (error) {
+      console.error('사용자 정보 파싱 오류:', error)
+      return false
+    }
   }
 
   if (isLoading) {
@@ -347,20 +361,24 @@ function CommunityDetail() {
               ← 목록으로
             </Link>
             
-            {isAuthor() && (
+            {localStorage.getItem('token') && (
               <div className="post-actions">
-                <button
-                  onClick={() => navigate(`/community/edit/${id}`)}
-                  className="edit-btn"
-                >
-                  수정
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="delete-btn"
-                >
-                  삭제
-                </button>
+                {isAuthor() && (
+                  <>
+                    <button
+                      onClick={() => navigate(`/community/edit/${id}`)}
+                      className="edit-btn"
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      className="delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
