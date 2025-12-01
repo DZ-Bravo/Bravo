@@ -1,3 +1,5 @@
+name: hiking-app
+
 services:
   mongodb:
     image: mongo:7

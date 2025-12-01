@@ -47,6 +47,8 @@ function Home() {
             <Link to="#" className="mountain-tag">소백산</Link>
             <Link to="/seoraksan" className="mountain-tag">설악산</Link>
             <Link to="#" className="mountain-tag">봉화산</Link>
+            <Link to="#" className="mountain-tag">지리산</Link>
+            <Link to="#" className="mountain-tag">한라산</Link>
           </div>
         </section>
 
