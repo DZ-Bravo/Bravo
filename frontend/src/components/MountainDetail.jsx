@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Header from './Header'
 import { convertArcGISToGeoJSON, transformArcGISToWGS84 } from '../utils/coordinateTransform'
+import { API_URL } from '../utils/api'
 import './MountainDetail.css'
 
 function MountainDetail({ name, code, height, location, description, center, zoom, origin }) {
@@ -84,7 +85,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
 
     try {
       // 백엔드 API에서 데이터 가져오기
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+      const apiUrl = API_URL
       const response = await fetch(`${apiUrl}/api/mountains/${mountainCode}/courses`)
       
       if (!response.ok) {
@@ -143,7 +144,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
 
     try {
       // 백엔드 API에서 지점 데이터 가져오기
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+      const apiUrl = API_URL
       const response = await fetch(`${apiUrl}/api/mountains/${mountainCode}/spots`)
       
       if (!response.ok) {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import { API_URL } from '../utils/api'
 import './Login.css'
 
 function Login() {
@@ -11,8 +12,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
-  
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
   const handleChange = (e) => {
     setFormData({
