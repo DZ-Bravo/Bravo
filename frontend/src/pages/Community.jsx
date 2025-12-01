@@ -83,23 +83,36 @@ function Community() {
                 <Link
                   key={post.id}
                   to={`/community/${post.id}`}
-                  className="post-item"
+                  className="post-card"
                 >
-                  <div className="post-content">
-                    <div className="post-header">
-                      <span className="post-category">
+                  <div className="post-card-content">
+                    <div className="post-card-header">
+                      <span className="post-category-badge">
                         {categories.find(c => c.id === post.category)?.name}
                       </span>
-                      <span className="post-title">{post.title}</span>
+                      <h3 className="post-card-title">{post.title}</h3>
                     </div>
-                    <div className="post-meta">
-                      <span className="post-author">{post.author}</span>
-                      <span className="post-date">{post.date}</span>
-                      <span className="post-views">조회 {post.views}</span>
-                      <span className="post-likes">좋아요 {post.likes}</span>
+                    {post.content && (
+                      <p className="post-card-preview">{post.content}</p>
+                    )}
+                    <div className="post-card-footer">
+                      <span className="post-author-name">{post.author}</span>
+                      <span className="post-time">{post.date}</span>
+                      <span className="post-views-count">조회 {post.views}</span>
+                      <span className="post-comments-count">💬 {post.comments || 0}</span>
                     </div>
                   </div>
-                  <div className="post-arrow">→</div>
+                  {post.thumbnail && (
+                    <div className="post-card-thumbnail">
+                      <img 
+                        src={`${API_URL}${post.thumbnail}`} 
+                        alt="썸네일"
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                        }}
+                      />
+                    </div>
+                  )}
                 </Link>
               ))
             )}
@@ -111,4 +124,5 @@ function Community() {
 }
 
 export default Community
+
 

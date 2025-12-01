@@ -1,6 +1,7 @@
 import express from 'express'
 import Post from '../models/Post.js'
 import User from '../models/User.js'
+import Comment from '../models/Comment.js'
 import { authenticateToken } from './auth.js'
 import multer from 'multer'
 import path from 'path'
@@ -58,7 +59,7 @@ router.get('/', async (req, res) => {
     
     const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
-      .select('title category author authorName views likes createdAt')
+      .select('title content category author authorName views likes createdAt images')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -66,16 +67,37 @@ router.get('/', async (req, res) => {
 
     const total = await Post.countDocuments(query)
 
-    // 날짜 포맷팅
-    const formattedPosts = posts.map(post => ({
-      id: post._id,
-      title: post.title,
-      category: post.category,
-      author: post.authorName || (post.author && post.author.name) || '알 수 없음',
-      authorId: post.author && post.author.id,
-      date: new Date(post.createdAt).toISOString().split('T')[0],
-      views: post.views || 0,
-      likes: post.likes || 0
+    // 날짜 포맷팅 및 본문 미리보기 생성
+    const formattedPosts = await Promise.all(posts.map(async (post) => {
+      // 본문 미리보기 (100자 제한, HTML 태그 제거)
+      const contentPreview = post.content
+        ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+        : ''
+      
+      // 첫 번째 이미지를 썸네일로 사용
+      const thumbnail = post.images && post.images.length > 0 ? post.images[0] : null
+      
+      // 날짜 포맷팅 (YYYY-MM-DD)
+      const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+      const [year, month, day] = dateStr.split('-')
+      const formattedDate = `${year}.${month}.${day}`
+      
+      // 댓글 수 가져오기
+      const commentCount = await Comment.countDocuments({ post: post._id })
+      
+      return {
+        id: post._id,
+        title: post.title,
+        content: contentPreview,
+        category: post.category,
+        author: post.authorName || (post.author && post.author.name) || '알 수 없음',
+        authorId: post.author && post.author.id,
+        date: formattedDate,
+        views: post.views || 0,
+        likes: post.likes || 0,
+        thumbnail: thumbnail,
+        comments: commentCount
+      }
     }))
 
     res.json({
@@ -276,12 +298,181 @@ router.delete('/:id', authenticateToken, async (req, res) => {
       })
     }
 
+    // 댓글도 함께 삭제
+    await Comment.deleteMany({ post: postId })
+
     await Post.findByIdAndDelete(postId)
 
     res.json({ message: '게시글이 삭제되었습니다.' })
   } catch (error) {
     console.error('게시글 삭제 오류:', error)
     res.status(500).json({ error: '게시글 삭제 중 오류가 발생했습니다.' })
+  }
+})
+
+// 댓글 작성 (인증 필요)
+router.post('/:id/comments', authenticateToken, async (req, res) => {
+  try {
+    const { content } = req.body
+    const userId = req.user.userId
+    const postId = req.params.id
+
+    if (!content || !content.trim()) {
+      return res.status(400).json({ error: '댓글 내용을 입력해주세요.' })
+    }
+
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    const comment = new Comment({
+      post: postId,
+      author: userId,
+      authorName: user.name,
+      content: content.trim()
+    })
+
+    await comment.save()
+
+    res.status(201).json({
+      message: '댓글이 작성되었습니다.',
+      comment: {
+        id: comment._id,
+        content: comment.content,
+        author: comment.authorName,
+        authorId: user.id,
+        date: new Date(comment.createdAt).toISOString().split('T')[0],
+        createdAt: comment.createdAt
+      }
+    })
+  } catch (error) {
+    console.error('댓글 작성 오류:', error)
+    res.status(500).json({ error: '댓글 작성 중 오류가 발생했습니다.' })
+  }
+})
+
+// 댓글 목록 조회
+router.get('/:id/comments', async (req, res) => {
+  try {
+    const postId = req.params.id
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 50
+    const skip = (page - 1) * limit
+
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    const comments = await Comment.find({ post: postId })
+      .populate('author', 'id name profileImage')
+      .sort({ createdAt: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
+
+    const total = await Comment.countDocuments({ post: postId })
+
+    const formattedComments = comments.map(comment => {
+      const dateStr = new Date(comment.createdAt).toISOString().split('T')[0]
+      const [year, month, day] = dateStr.split('-')
+      const formattedDate = `${year}.${month}.${day}`
+
+      return {
+        id: comment._id,
+        content: comment.content,
+        author: comment.authorName || (comment.author && comment.author.name) || '알 수 없음',
+        authorId: comment.author && comment.author.id,
+        authorProfileImage: comment.author && comment.author.profileImage,
+        date: formattedDate,
+        createdAt: comment.createdAt
+      }
+    })
+
+    res.json({
+      comments: formattedComments,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    })
+  } catch (error) {
+    console.error('댓글 목록 조회 오류:', error)
+    res.status(500).json({ error: '댓글 목록을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 댓글 수정 (인증 필요, 작성자만)
+router.put('/:postId/comments/:commentId', authenticateToken, async (req, res) => {
+  try {
+    const { content } = req.body
+    const userId = req.user.userId
+    const { postId, commentId } = req.params
+
+    if (!content || !content.trim()) {
+      return res.status(400).json({ error: '댓글 내용을 입력해주세요.' })
+    }
+
+    const comment = await Comment.findById(commentId)
+    if (!comment) {
+      return res.status(404).json({ error: '댓글을 찾을 수 없습니다.' })
+    }
+
+    if (comment.post.toString() !== postId) {
+      return res.status(400).json({ error: '잘못된 요청입니다.' })
+    }
+
+    if (comment.author.toString() !== userId) {
+      return res.status(403).json({ error: '댓글을 수정할 권한이 없습니다.' })
+    }
+
+    comment.content = content.trim()
+    comment.updatedAt = new Date()
+    await comment.save()
+
+    res.json({
+      message: '댓글이 수정되었습니다.',
+      comment: {
+        id: comment._id,
+        content: comment.content
+      }
+    })
+  } catch (error) {
+    console.error('댓글 수정 오류:', error)
+    res.status(500).json({ error: '댓글 수정 중 오류가 발생했습니다.' })
+  }
+})
+
+// 댓글 삭제 (인증 필요, 작성자만)
+router.delete('/:postId/comments/:commentId', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const { postId, commentId } = req.params
+
+    const comment = await Comment.findById(commentId)
+    if (!comment) {
+      return res.status(404).json({ error: '댓글을 찾을 수 없습니다.' })
+    }
+
+    if (comment.post.toString() !== postId) {
+      return res.status(400).json({ error: '잘못된 요청입니다.' })
+    }
+
+    if (comment.author.toString() !== userId) {
+      return res.status(403).json({ error: '댓글을 삭제할 권한이 없습니다.' })
+    }
+
+    await Comment.findByIdAndDelete(commentId)
+
+    res.json({ message: '댓글이 삭제되었습니다.' })
+  } catch (error) {
+    console.error('댓글 삭제 오류:', error)
+    res.status(500).json({ error: '댓글 삭제 중 오류가 발생했습니다.' })
   }
 })
 
