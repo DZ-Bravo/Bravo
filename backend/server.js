@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import dotenv from 'dotenv'
 import connectDB from './config/database.js'
 import { MOUNTAIN_ROUTES, getMountainInfo, getAllMountains } from './utils/mountainRoutes.js'
+import authRoutes from './routes/auth.js'
 
 dotenv.config()
 
@@ -18,9 +19,15 @@ const PORT = process.env.PORT || 5000
 // Middleware
 app.use(cors())
 app.use(express.json())
+// express.urlencoded는 multer가 multipart/form-data를 처리할 때 필요하지 않음
+// multer가 자동으로 텍스트 필드를 req.body에 추가함
+app.use('/uploads', express.static(join(__dirname, 'uploads'))) // 정적 파일 서빙
 
 // MongoDB 연결 (비동기로 처리, 서버 시작은 계속 진행)
 connectDB()
+
+// 인증 라우트
+app.use('/api/auth', authRoutes)
 
 // 산 정보 라우트
 app.get('/api/mountains', async (req, res) => {

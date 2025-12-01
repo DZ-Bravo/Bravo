@@ -30,6 +30,7 @@ services:
       - ./mountain:/app/mountain
       - ./backend:/app
       - /app/node_modules
+      - ./backend/uploads:/app/uploads
     environment:
       - NODE_ENV=development
       - PORT=5000

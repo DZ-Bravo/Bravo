@@ -1,7 +1,31 @@
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './Header.css'
 
 function Header() {
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // localStorage에서 사용자 정보 확인
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      try {
+        setUser(JSON.parse(userData))
+      } catch (e) {
+        console.error('사용자 정보 파싱 오류:', e)
+      }
+    }
+  }, [])
+
+  const handleLogout = () => {
+    // localStorage에서 토큰과 사용자 정보 제거
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setUser(null)
+    navigate('/')
+  }
+
   return (
     <header>
       <div className="header-top">
@@ -9,8 +33,17 @@ function Header() {
           <span>내일의 등산</span>
         </Link>
         <div className="header-actions">
-          <Link to="/login" className="btn-login">Login</Link>
-          <Link to="/signup" className="btn-signup">회원가입</Link>
+          {user ? (
+            <div className="user-info">
+              <span className="user-id-display">{user.id}</span>
+              <button onClick={handleLogout} className="btn-logout">로그아웃</button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn-login">Login</Link>
+              <Link to="/signup" className="btn-signup">회원가입</Link>
+            </>
+          )}
         </div>
       </div>
       <nav>

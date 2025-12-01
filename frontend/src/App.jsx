@@ -10,6 +10,7 @@ import Community from './pages/Community'
 import AICourse from './pages/AICourse'
 import Store from './pages/Store'
 import MyPage from './pages/MyPage'
+import CourseDetail from './pages/CourseDetail'
 import './App.css'
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/ai-course" element={<AICourse />} />
         <Route path="/store" element={<Store />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/course/:theme" element={<CourseDetail />} />
       </Routes>
     </Router>
   )

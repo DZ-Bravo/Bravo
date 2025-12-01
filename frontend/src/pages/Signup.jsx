@@ -6,20 +6,24 @@ import './Signup.css'
 function Signup() {
   const [formData, setFormData] = useState({
     id: '',
+    name: '',
     password: '',
     confirmPassword: '',
     gender: '',
     fitnessLevel: '',
-    phone: '',
-    verificationCode: '',
     birthYear: '',
+    profileImage: null,
     termsAgreed: false
   })
-  const [isCodeSent, setIsCodeSent] = useState(false)
+  const [profileImageName, setProfileImageName] = useState('')
   const [isFitnessDropdownOpen, setIsFitnessDropdownOpen] = useState(false)
   const [isIdChecked, setIsIdChecked] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const fitnessDropdownRef = useRef(null)
   const navigate = useNavigate()
+  
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
   const fitnessLevels = [
     { value: 'level1', label: '등산 3회 이하' },
@@ -40,13 +44,120 @@ function Signup() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setFormData({
+        ...formData,
+        profileImage: file
+      })
+      setProfileImageName(file.name)
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // 회원가입 로직 구현
-    console.log('Signup:', formData)
-    // TODO: API 호출하여 회원가입 처리
-    // 성공 시 로그인 페이지로 이동
-    // navigate('/login')
+    setIsLoading(true)
+    setErrorMessage('')
+    
+    // ID 중복체크 확인
+    if (!isIdChecked) {
+      alert('ID 중복체크를 먼저 해주세요.')
+      setIsLoading(false)
+      return
+    }
+    
+    // 비밀번호 길이 검증
+    if (formData.password.length < 6) {
+      alert('비밀번호는 최소 6자 이상이어야 합니다.')
+      setIsLoading(false)
+      return
+    }
+    
+    // 비밀번호 일치 확인
+    if (formData.password !== formData.confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.')
+      setIsLoading(false)
+      return
+    }
+    
+    // 이용약관 동의 확인
+    if (!formData.termsAgreed) {
+      alert('이용약관에 동의해주세요.')
+      setIsLoading(false)
+      return
+    }
+    
+    try {
+      // 전송 전 값 확인
+      console.log('전송할 데이터:', {
+        id: formData.id,
+        name: formData.name,
+        gender: formData.gender,
+        fitnessLevel: formData.fitnessLevel,
+        birthYear: formData.birthYear,
+        termsAgreed: formData.termsAgreed,
+        hasPassword: !!formData.password,
+        hasConfirmPassword: !!formData.confirmPassword
+      })
+      
+      // FormData 생성 (파일 업로드를 위해)
+      const submitData = new FormData()
+      submitData.append('id', formData.id || '')
+      submitData.append('name', formData.name || '')
+      submitData.append('password', formData.password || '')
+      submitData.append('confirmPassword', formData.confirmPassword || '')
+      submitData.append('gender', formData.gender || '')
+      submitData.append('fitnessLevel', formData.fitnessLevel || '')
+      submitData.append('birthYear', formData.birthYear ? formData.birthYear.toString() : '')
+      submitData.append('termsAgreed', formData.termsAgreed.toString())
+      
+      if (formData.profileImage) {
+        submitData.append('profileImage', formData.profileImage)
+      }
+      
+      // FormData 내용 확인 (디버깅용)
+      for (let pair of submitData.entries()) {
+        console.log(pair[0] + ': ' + (pair[0].includes('password') ? '***' : pair[1]))
+      }
+      
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
+        method: 'POST',
+        body: submitData
+      })
+      
+      let data
+      try {
+        data = await response.json()
+      } catch (e) {
+        console.error('JSON 파싱 오류:', e)
+        data = { error: '서버 응답을 파싱할 수 없습니다.' }
+      }
+      
+      if (response.ok) {
+        // 토큰 저장
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        
+        alert('회원가입이 완료되었습니다!')
+        navigate('/')
+      } else {
+        const errorMsg = data.error || data.message || '회원가입 중 오류가 발생했습니다.'
+        setErrorMessage(errorMsg)
+        alert(errorMsg)
+        console.error('회원가입 오류 응답:', {
+          status: response.status,
+          statusText: response.statusText,
+          data: data
+        })
+      }
+    } catch (error) {
+      console.error('회원가입 오류:', error)
+      setErrorMessage('서버 오류가 발생했습니다.')
+      alert('서버 오류가 발생했습니다. 다시 시도해주세요.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSocialLogin = (provider) => {
@@ -54,28 +165,49 @@ function Signup() {
     // TODO: 소셜 로그인 구현
   }
 
-  const handleCheckIdDuplicate = () => {
+  const handleCheckIdDuplicate = async () => {
     if (!formData.id) {
       alert('ID를 입력해주세요.')
       return
     }
-    // TODO: ID 중복체크 API 호출
-    console.log('ID 중복체크:', formData.id)
-    // 실제 구현 시 API 호출 후 결과에 따라 처리
-    setIsIdChecked(true)
-    alert('사용 가능한 ID입니다.')
-    // 중복인 경우: alert('이미 사용 중인 ID입니다.')
-  }
-
-  const handleSendVerificationCode = () => {
-    if (!formData.phone) {
-      alert('휴대폰 번호를 입력해주세요.')
-      return
+    
+    try {
+      const response = await fetch(`${API_URL}/api/auth/check-id`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: formData.id })
+      })
+      
+      if (!response.ok && response.status === 0) {
+        throw new Error('백엔드 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.')
+      }
+      
+      const data = await response.json()
+      
+      if (response.ok && data.available) {
+        setIsIdChecked(true)
+        setErrorMessage('')
+        alert('사용 가능한 ID입니다.')
+      } else {
+        setIsIdChecked(false)
+        const errorMsg = data.error || '이미 사용 중인 ID입니다.'
+        setErrorMessage(errorMsg)
+        alert(errorMsg)
+      }
+    } catch (error) {
+      console.error('ID 중복체크 오류:', error)
+      setIsIdChecked(false)
+      let errorMsg = '서버에 연결할 수 없습니다.'
+      if (error.message.includes('Failed to fetch') || error.message.includes('ERR_EMPTY_RESPONSE')) {
+        errorMsg = '백엔드 서버에 연결할 수 없습니다.\n\n백엔드 서버가 실행 중인지 확인해주세요:\n- Docker: docker-compose up backend\n- 직접 실행: cd backend && npm start'
+      } else {
+        errorMsg = error.message || errorMsg
+      }
+      setErrorMessage(errorMsg)
+      alert(errorMsg)
     }
-    // TODO: 인증번호 전송 API 호출
-    console.log('인증번호 전송:', formData.phone)
-    setIsCodeSent(true)
-    // 실제 구현 시 API 호출 후 성공 시 setIsCodeSent(true)
   }
 
   const handleFitnessLevelSelect = (value) => {
@@ -136,6 +268,9 @@ function Signup() {
               {isIdChecked && (
                 <span className="id-check-message">✓ 사용 가능한 ID입니다</span>
               )}
+            {errorMessage && !isIdChecked && (
+                <span className="id-check-message error">{errorMessage}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -146,6 +281,7 @@ function Signup() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                autoComplete="new-password"
                 required
                 className="form-input"
               />
@@ -158,6 +294,20 @@ function Signup() {
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
+                onChange={handleChange}
+                autoComplete="new-password"
+                required
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="name">이름/닉네임</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className="form-input"
@@ -224,45 +374,6 @@ function Signup() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="phone">휴대폰 번호</label>
-              <div className="phone-input-group">
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="010-1234-5678"
-                  required
-                  className="form-input phone-input"
-                />
-                <button
-                  type="button"
-                  onClick={handleSendVerificationCode}
-                  className="verify-btn"
-                >
-                  인증번호 전송
-                </button>
-              </div>
-            </div>
-
-            {isCodeSent && (
-              <div className="form-group">
-                <label htmlFor="verificationCode">인증번호</label>
-                <input
-                  type="text"
-                  id="verificationCode"
-                  name="verificationCode"
-                  value={formData.verificationCode}
-                  onChange={handleChange}
-                  placeholder="인증번호를 입력하세요"
-                  required
-                  className="form-input"
-                />
-              </div>
-            )}
-
-            <div className="form-group">
               <label htmlFor="birthYear">출생년도</label>
               <select
                 id="birthYear"
@@ -285,6 +396,26 @@ function Signup() {
             </div>
 
             <div className="form-group">
+              <label>프로필 사진 첨부</label>
+              <div className="file-upload-group">
+                <input
+                  type="file"
+                  id="profileImage"
+                  name="profileImage"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="file-input"
+                />
+                <label htmlFor="profileImage" className="file-upload-btn">
+                  파일첨부
+                </label>
+                {profileImageName && (
+                  <span className="file-name">{profileImageName}</span>
+                )}
+              </div>
+            </div>
+
+            <div className="form-group">
               <label className="checkbox-label">
                 <input
                   type="checkbox"
@@ -297,9 +428,12 @@ function Signup() {
               </label>
             </div>
 
-            <button type="submit" className="signup-submit-btn">
-              회원가입
+            <button type="submit" className="signup-submit-btn" disabled={isLoading}>
+              {isLoading ? '처리 중...' : '회원가입'}
             </button>
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
           </form>
 
           <div className="social-login">

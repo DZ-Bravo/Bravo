@@ -67,6 +67,43 @@ header {
   color: white;
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-id-display {
+  padding: 8px 16px;
+  border: 1px solid #00BF93;
+  border-radius: 6px;
+  background: #00BF93;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.btn-logout {
+  padding: 8px 16px;
+  border: 1px solid #00BF93;
+  border-radius: 6px;
+  background: #00BF93;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: #00a67d;
+  border-color: #00a67d;
+  color: white;
+}
+
 nav {
   border-top: 1px solid var(--border);
   padding: 0;

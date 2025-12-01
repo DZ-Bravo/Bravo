@@ -26,9 +26,9 @@ function MyPage() {
               <span className="menu-text">내 게시글</span>
               <span className="menu-arrow">→</span>
             </Link>
-            <Link to="/mypage/comments" className="menu-item">
-              <span className="menu-icon">💬</span>
-              <span className="menu-text">내 댓글</span>
+            <Link to="/mypage/favorites-products" className="menu-item">
+              <span className="menu-icon">🛍️</span>
+              <span className="menu-text">찜한 상품</span>
               <span className="menu-arrow">→</span>
             </Link>
             <Link to="/mypage/favorites" className="menu-item">
@@ -36,24 +36,19 @@ function MyPage() {
               <span className="menu-text">찜한 코스</span>
               <span className="menu-arrow">→</span>
             </Link>
-            <Link to="/mypage/settings" className="menu-item">
-              <span className="menu-icon">⚙️</span>
-              <span className="menu-text">설정</span>
-              <span className="menu-arrow">→</span>
-            </Link>
           </div>
 
           <div className="mypage-stats">
             <div className="stat-item">
-              <div className="stat-number">12</div>
+              <div className="stat-number">0</div>
               <div className="stat-label">등반한 산</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number">8</div>
+              <div className="stat-number">0</div>
               <div className="stat-label">작성한 글</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number">24</div>
+              <div className="stat-number">0</div>
               <div className="stat-label">받은 좋아요</div>
             </div>
           </div>
