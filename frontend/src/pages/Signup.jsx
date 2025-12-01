@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import { API_URL } from '../utils/api'
 import './Signup.css'
 
 function Signup() {
@@ -22,8 +23,6 @@ function Signup() {
   const [errorMessage, setErrorMessage] = useState('')
   const fitnessDropdownRef = useRef(null)
   const navigate = useNavigate()
-  
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
   const fitnessLevels = [
     { value: 'level1', label: '등산 3회 이하' },

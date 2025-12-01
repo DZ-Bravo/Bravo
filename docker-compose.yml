@@ -52,8 +52,9 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - VITE_API_URL=http://localhost:5000
+    # VITE_API_URL은 런타임에 자동으로 결정되므로 제거
+    # environment:
+    #   - VITE_API_URL=http://localhost:5000
     depends_on:
       - backend
     restart: unless-stopped
