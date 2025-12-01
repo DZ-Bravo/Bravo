@@ -15,6 +15,10 @@ import CommunityDetail from './pages/CommunityDetail'
 import AICourse from './pages/AICourse'
 import Store from './pages/Store'
 import MyPage from './pages/MyPage'
+import MyPosts from './pages/MyPosts'
+import NoticeDetail from './pages/NoticeDetail'
+import NoticeWrite from './pages/NoticeWrite'
+import NoticeEdit from './pages/NoticeEdit'
 import CourseDetail from './pages/CourseDetail'
 import './App.css'
 
@@ -36,6 +40,9 @@ function App() {
         <Route path="/find-id" element={<FindId />} />
         <Route path="/find-password" element={<FindPassword />} />
         <Route path="/notice" element={<Notice />} />
+        <Route path="/notice/write" element={<NoticeWrite />} />
+        <Route path="/notice/edit/:id" element={<NoticeEdit />} />
+        <Route path="/notice/:id" element={<NoticeDetail />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/write" element={<CommunityWrite />} />
         <Route path="/community/edit/:id" element={<CommunityEdit />} />
@@ -43,6 +50,7 @@ function App() {
         <Route path="/ai-course" element={<AICourse />} />
         <Route path="/store" element={<Store />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/posts" element={<MyPosts />} />
         <Route path="/course/:theme" element={<CourseDetail />} />
       </Routes>
     </Router>

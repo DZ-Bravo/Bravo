@@ -2,6 +2,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import User from '../models/User.js'
+import Post from '../models/Post.js'
 import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -194,7 +195,8 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
         name: user.name,
         gender: user.gender,
         fitnessLevel: user.fitnessLevel,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        role: user.role || 'user'
       }
     })
   } catch (error) {
@@ -242,7 +244,8 @@ router.post('/login', async (req, res) => {
         name: user.name,
         gender: user.gender,
         fitnessLevel: user.fitnessLevel,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        role: user.role || 'user'
       }
     })
   } catch (error) {
@@ -472,6 +475,29 @@ router.get('/me', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('사용자 정보 조회 오류:', error)
     res.status(500).json({ error: '사용자 정보를 가져오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 사용자 통계 가져오기
+router.get('/stats', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    
+    // 작성한 글 수
+    const postCount = await Post.countDocuments({ author: userId })
+    
+    // 받은 좋아요 수 (작성한 모든 게시글의 likes 합계)
+    const posts = await Post.find({ author: userId }).select('likes').lean()
+    const totalLikes = posts.reduce((sum, post) => sum + (post.likes || 0), 0)
+    
+    res.json({
+      postCount,
+      totalLikes,
+      climbedMountains: 0 // 등반한 산은 아직 구현되지 않음
+    })
+  } catch (error) {
+    console.error('사용자 통계 조회 오류:', error)
+    res.status(500).json({ error: '사용자 통계를 가져오는 중 오류가 발생했습니다.' })
   }
 })
 
