@@ -1,0 +1,323 @@
+import express from 'express'
+import Post from '../models/Post.js'
+import User from '../models/User.js'
+import { authenticateToken } from './auth.js'
+import multer from 'multer'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import fs from 'fs'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const router = express.Router()
+
+// 게시글 이미지 업로드 설정
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, '../uploads/posts')
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true })
+    }
+    cb(null, uploadDir)
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, 'post-' + uniqueSuffix + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB 제한
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif|webp/
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase())
+    const mimetype = allowedTypes.test(file.mimetype)
+    
+    if (extname && mimetype) {
+      return cb(null, true)
+    } else {
+      cb(new Error('이미지 파일만 업로드 가능합니다.'))
+    }
+  }
+})
+
+// 게시글 목록 조회 (카테고리별)
+router.get('/', async (req, res) => {
+  try {
+    const { category } = req.query
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
+
+    const query = category ? { category } : {}
+    
+    const posts = await Post.find(query)
+      .populate('author', 'id name profileImage')
+      .select('title category author authorName views likes createdAt')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
+
+    const total = await Post.countDocuments(query)
+
+    // 날짜 포맷팅
+    const formattedPosts = posts.map(post => ({
+      id: post._id,
+      title: post.title,
+      category: post.category,
+      author: post.authorName || (post.author && post.author.name) || '알 수 없음',
+      authorId: post.author && post.author.id,
+      date: new Date(post.createdAt).toISOString().split('T')[0],
+      views: post.views || 0,
+      likes: post.likes || 0
+    }))
+
+    res.json({
+      posts: formattedPosts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    })
+  } catch (error) {
+    console.error('게시글 목록 조회 오류:', error)
+    res.status(500).json({ error: '게시글 목록을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 게시글 상세 조회
+router.get('/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id)
+      .populate('author', 'id name profileImage')
+      .lean()
+
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    // 조회수 증가 (한 번만 실행되도록 await 사용)
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } },
+      { new: true }
+    )
+
+    res.json({
+      id: post._id,
+      title: post.title,
+      content: post.content,
+      category: post.category,
+      author: post.authorName || (post.author && post.author.name) || '알 수 없음',
+      authorId: post.author && post.author.id,
+      authorProfileImage: post.author && post.author.profileImage,
+      date: new Date(post.createdAt).toISOString().split('T')[0],
+      views: updatedPost.views || (post.views || 0) + 1,
+      likes: post.likes || 0,
+      images: post.images || [],
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt
+    })
+  } catch (error) {
+    console.error('게시글 상세 조회 오류:', error)
+    res.status(500).json({ error: '게시글을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 게시글 작성 (인증 필요)
+router.post('/', authenticateToken, upload.array('images', 5), async (req, res) => {
+  try {
+    const { title, content, category } = req.body
+    const userId = req.user.userId
+
+    if (!title || !content || !category) {
+      return res.status(400).json({ error: '제목, 내용, 카테고리를 입력해주세요.' })
+    }
+
+    if (!['diary', 'qa', 'free'].includes(category)) {
+      return res.status(400).json({ error: '유효하지 않은 카테고리입니다.' })
+    }
+
+    // 작성자 정보 가져오기
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    // 이미지 경로 처리
+    const images = req.files ? req.files.map(file => `/uploads/posts/${file.filename}`) : []
+
+    const post = new Post({
+      title,
+      content,
+      category,
+      author: userId,
+      authorName: user.name,
+      images
+    })
+
+    await post.save()
+
+    res.status(201).json({
+      message: '게시글이 작성되었습니다.',
+      post: {
+        id: post._id,
+        title: post.title,
+        category: post.category,
+        author: post.authorName,
+        date: new Date(post.createdAt).toISOString().split('T')[0],
+        views: post.views,
+        likes: post.likes
+      }
+    })
+  } catch (error) {
+    console.error('게시글 작성 오류:', error)
+    res.status(500).json({ error: '게시글 작성 중 오류가 발생했습니다.' })
+  }
+})
+
+// 게시글 수정 (인증 필요, 작성자만)
+router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res) => {
+  try {
+    const { title, content, category, removedImages } = req.body
+    const userId = req.user.userId
+    const postId = req.params.id
+
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    if (post.author.toString() !== userId) {
+      return res.status(403).json({ error: '게시글을 수정할 권한이 없습니다.' })
+    }
+
+    // 제거할 이미지 처리
+    if (removedImages) {
+      let removedImagePaths = []
+      try {
+        removedImagePaths = JSON.parse(removedImages)
+      } catch (e) {
+        removedImagePaths = Array.isArray(removedImages) ? removedImages : []
+      }
+
+      // 이미지 파일 삭제
+      removedImagePaths.forEach(imagePath => {
+        const fullPath = path.join(__dirname, '..', imagePath)
+        if (fs.existsSync(fullPath)) {
+          try {
+            fs.unlinkSync(fullPath)
+          } catch (err) {
+            console.error('이미지 삭제 오류:', err)
+          }
+        }
+      })
+
+      // 배열에서 제거
+      post.images = (post.images || []).filter(img => !removedImagePaths.includes(img))
+    }
+
+    // 새 이미지 추가
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map(file => `/uploads/posts/${file.filename}`)
+      post.images = [...(post.images || []), ...newImages]
+    }
+
+    if (title) post.title = title
+    if (content) post.content = content
+    if (category) post.category = category
+    post.updatedAt = new Date()
+
+    await post.save()
+
+    res.json({
+      message: '게시글이 수정되었습니다.',
+      post: {
+        id: post._id,
+        title: post.title,
+        content: post.content,
+        category: post.category,
+        images: post.images
+      }
+    })
+  } catch (error) {
+    console.error('게시글 수정 오류:', error)
+    res.status(500).json({ error: '게시글 수정 중 오류가 발생했습니다.' })
+  }
+})
+
+// 게시글 삭제 (인증 필요, 작성자만)
+router.delete('/:id', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const postId = req.params.id
+
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    if (post.author.toString() !== userId) {
+      return res.status(403).json({ error: '게시글을 삭제할 권한이 없습니다.' })
+    }
+
+    // 이미지 파일 삭제
+    if (post.images && post.images.length > 0) {
+      post.images.forEach(imagePath => {
+        const fullPath = path.join(__dirname, '..', imagePath)
+        if (fs.existsSync(fullPath)) {
+          fs.unlinkSync(fullPath)
+        }
+      })
+    }
+
+    await Post.findByIdAndDelete(postId)
+
+    res.json({ message: '게시글이 삭제되었습니다.' })
+  } catch (error) {
+    console.error('게시글 삭제 오류:', error)
+    res.status(500).json({ error: '게시글 삭제 중 오류가 발생했습니다.' })
+  }
+})
+
+// 좋아요 토글 (인증 필요)
+router.post('/:id/like', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const postId = req.params.id
+
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    const likedIndex = post.likedBy.indexOf(userId)
+    if (likedIndex > -1) {
+      // 이미 좋아요를 눌렀으면 취소
+      post.likedBy.splice(likedIndex, 1)
+      post.likes = Math.max(0, post.likes - 1)
+    } else {
+      // 좋아요 추가
+      post.likedBy.push(userId)
+      post.likes = post.likes + 1
+    }
+
+    await post.save()
+
+    res.json({
+      likes: post.likes,
+      isLiked: post.likedBy.includes(userId)
+    })
+  } catch (error) {
+    console.error('좋아요 처리 오류:', error)
+    res.status(500).json({ error: '좋아요 처리 중 오류가 발생했습니다.' })
+  }
+})
+
+export default router
+
