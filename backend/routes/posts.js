@@ -47,6 +47,69 @@ const upload = multer({
   }
 })
 
+// 내 게시글 조회 (인증 필요)
+router.get('/my', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
+
+    const posts = await Post.find({ author: userId })
+      .populate('author', 'id name profileImage')
+      .select('title content category author authorName views likes createdAt images')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
+
+    const total = await Post.countDocuments({ author: userId })
+
+    // 날짜 포맷팅 및 본문 미리보기 생성
+    const formattedPosts = await Promise.all(posts.map(async (post) => {
+      // 본문 미리보기 (100자 제한, HTML 태그 제거)
+      const contentPreview = post.content
+        ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+        : ''
+      
+      // 첫 번째 이미지를 썸네일로 사용
+      const thumbnail = post.images && post.images.length > 0 ? post.images[0] : null
+      
+      // 날짜 포맷팅 (YYYY-MM-DD)
+      const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+      const [year, month, day] = dateStr.split('-')
+      const formattedDate = `${year}.${month}.${day}`
+      
+      // 댓글 수 가져오기
+      const commentCount = await Comment.countDocuments({ post: post._id })
+      
+      return {
+        id: post._id,
+        title: post.title,
+        content: contentPreview,
+        category: post.category,
+        author: post.authorName || (post.author && post.author.name) || '알 수 없음',
+        authorId: post.author && post.author.id,
+        date: formattedDate,
+        views: post.views || 0,
+        likes: post.likes || 0,
+        thumbnail: thumbnail,
+        comments: commentCount
+      }
+    }))
+
+    res.json({
+      posts: formattedPosts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    })
+  } catch (error) {
+    console.error('내 게시글 조회 오류:', error)
+    res.status(500).json({ error: '내 게시글을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
 // 게시글 목록 조회 (카테고리별)
 router.get('/', async (req, res) => {
   try {
@@ -215,7 +278,9 @@ router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
 
-    if (post.author.toString() !== userId) {
+    // 작성자 또는 관리자만 수정 가능
+    const user = await User.findById(userId)
+    if (post.author.toString() !== userId && (!user || user.role !== 'admin')) {
       return res.status(403).json({ error: '게시글을 수정할 권한이 없습니다.' })
     }
 
@@ -284,7 +349,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
 
-    if (post.author.toString() !== userId) {
+    // 작성자 또는 관리자만 삭제 가능
+    const user = await User.findById(userId)
+    if (post.author.toString() !== userId && (!user || user.role !== 'admin')) {
       return res.status(403).json({ error: '게시글을 삭제할 권한이 없습니다.' })
     }
 

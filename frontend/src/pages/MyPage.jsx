@@ -1,11 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import Header from '../components/Header'
+import { API_URL } from '../utils/api'
 import './MyPage.css'
 
 function MyPage() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
+  const [stats, setStats] = useState({
+    postCount: 0,
+    totalLikes: 0,
+    climbedMountains: 0
+  })
   const [isLoading, setIsLoading] = useState(true)
   const hasChecked = useRef(false)
 
@@ -27,17 +33,33 @@ function MyPage() {
       return
     }
 
-    try {
-      const parsedUser = JSON.parse(userData)
-      setUser(parsedUser)
-    } catch (error) {
-      console.error('사용자 정보 파싱 오류:', error)
-      alert('사용자 정보를 불러올 수 없습니다.')
-      navigate('/login', { replace: true })
-    } finally {
-      setIsLoading(false)
+    const loadUserData = async () => {
+      try {
+        const parsedUser = JSON.parse(userData)
+        setUser(parsedUser)
+        
+        // 사용자 통계 가져오기
+        const statsResponse = await fetch(`${API_URL}/api/auth/stats`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json()
+          setStats(statsData)
+        }
+      } catch (error) {
+        console.error('사용자 정보 파싱 오류:', error)
+        alert('사용자 정보를 불러올 수 없습니다.')
+        navigate('/login', { replace: true })
+      } finally {
+        setIsLoading(false)
+      }
     }
-  }, [navigate])
+
+    loadUserData()
+  }, [navigate, API_URL])
 
   // 로딩 중이거나 사용자 정보가 없으면 아무것도 표시하지 않음
   if (isLoading || !user) {
@@ -101,15 +123,15 @@ function MyPage() {
 
           <div className="mypage-stats">
             <div className="stat-item">
-              <div className="stat-number">0</div>
+              <div className="stat-number">{stats.climbedMountains}</div>
               <div className="stat-label">등반한 산</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number">0</div>
+              <div className="stat-number">{stats.postCount}</div>
               <div className="stat-label">작성한 글</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number">0</div>
+              <div className="stat-number">{stats.totalLikes}</div>
               <div className="stat-label">받은 좋아요</div>
             </div>
           </div>
