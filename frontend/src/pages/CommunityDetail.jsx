@@ -12,6 +12,7 @@ function CommunityDetail() {
   const [error, setError] = useState('')
   const [isLiked, setIsLiked] = useState(false)
   const hasFetched = useRef(false)
+  const currentId = useRef(null)
 
   const categories = [
     { id: 'diary', name: '등산일지' },
@@ -21,13 +22,27 @@ function CommunityDetail() {
 
   // 게시글 상세 정보 가져오기
   useEffect(() => {
+    // id가 변경되면 리셋
+    if (currentId.current !== id) {
+      currentId.current = id
+      hasFetched.current = false
+      setPost(null)
+      setIsLoading(true)
+      setError('')
+    }
+    
     // 중복 호출 방지
-    if (hasFetched.current) {
+    if (hasFetched.current || !id) {
       return
     }
 
     const fetchPost = async () => {
+      // 중복 호출 방지 체크 (비동기 함수 내에서도 체크)
+      if (hasFetched.current) {
+        return
+      }
       hasFetched.current = true
+      
       setIsLoading(true)
       setError('')
       try {
@@ -40,31 +55,32 @@ function CommunityDetail() {
         }
         const data = await response.json()
         console.log('게시글 데이터:', data) // 디버깅용
-        setPost(data)
         
-        // 로그인한 사용자의 좋아요 여부 확인
-        const token = localStorage.getItem('token')
-        if (token) {
-          // 좋아요 상태는 백엔드에서 확인해야 하지만, 일단 기본값으로 설정
-          setIsLiked(false)
+        // id가 여전히 같은지 확인 (컴포넌트가 언마운트되었거나 id가 변경되었을 수 있음)
+        if (currentId.current === id) {
+          setPost(data)
+          
+          // 로그인한 사용자의 좋아요 여부 확인
+          const token = localStorage.getItem('token')
+          if (token) {
+            // 좋아요 상태는 백엔드에서 확인해야 하지만, 일단 기본값으로 설정
+            setIsLiked(false)
+          }
         }
       } catch (err) {
         console.error('게시글 상세 조회 오류:', err)
-        setError(err.message || '게시글을 불러오는데 실패했습니다.')
+        if (currentId.current === id) {
+          setError(err.message || '게시글을 불러오는데 실패했습니다.')
+        }
         hasFetched.current = false // 에러 시 다시 시도할 수 있도록
       } finally {
-        setIsLoading(false)
+        if (currentId.current === id) {
+          setIsLoading(false)
+        }
       }
     }
 
-    if (id) {
-      fetchPost()
-    }
-
-    // cleanup 함수: 컴포넌트 언마운트 시 또는 id 변경 시 리셋
-    return () => {
-      hasFetched.current = false
-    }
+    fetchPost()
   }, [id, API_URL])
 
   // 좋아요 토글
