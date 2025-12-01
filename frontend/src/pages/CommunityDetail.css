@@ -1,0 +1,246 @@
+.community-detail-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.community-detail-main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.community-detail-container {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.back-link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.back-link:hover {
+  color: #00BF93;
+}
+
+.post-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background: var(--card-bg);
+  color: var(--text-main);
+}
+
+.edit-btn:hover {
+  background: var(--bg);
+}
+
+.delete-btn {
+  background: #fee;
+  color: #c33;
+  border-color: #fcc;
+}
+
+.delete-btn:hover {
+  background: #fdd;
+}
+
+.post-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.post-detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-category {
+  display: inline-block;
+  padding: 6px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  width: fit-content;
+}
+
+.post-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.post-author {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.post-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.post-date,
+.post-views {
+  color: var(--text-muted);
+}
+
+.like-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.like-btn:hover {
+  border-color: #00BF93;
+  color: #00BF93;
+}
+
+.like-btn.liked {
+  background: #fee;
+  border-color: #fcc;
+  color: #c33;
+}
+
+.post-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.post-images {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.content-image {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 12px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+}
+
+.post-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.post-text p {
+  margin: 0 0 16px 0;
+}
+
+.post-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .community-detail-container {
+    padding: 32px 24px;
+  }
+
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .post-title {
+    font-size: 1.25rem;
+  }
+
+  .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .content-image {
+    max-width: 100%;
+  }
+}
+

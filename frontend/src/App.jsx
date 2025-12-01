@@ -7,6 +7,9 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Notice from './pages/Notice'
 import Community from './pages/Community'
+import CommunityWrite from './pages/CommunityWrite'
+import CommunityEdit from './pages/CommunityEdit'
+import CommunityDetail from './pages/CommunityDetail'
 import AICourse from './pages/AICourse'
 import Store from './pages/Store'
 import MyPage from './pages/MyPage'
@@ -30,6 +33,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/community/write" element={<CommunityWrite />} />
+        <Route path="/community/edit/:id" element={<CommunityEdit />} />
+        <Route path="/community/:id" element={<CommunityDetail />} />
         <Route path="/ai-course" element={<AICourse />} />
         <Route path="/store" element={<Store />} />
         <Route path="/mypage" element={<MyPage />} />
