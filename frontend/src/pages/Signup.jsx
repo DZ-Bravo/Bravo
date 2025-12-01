@@ -135,12 +135,8 @@ function Signup() {
       }
       
       if (response.ok) {
-        // 토큰 저장
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        
-        alert('회원가입이 완료되었습니다!')
-        navigate('/')
+        alert('회원가입이 완료되었습니다! 로그인해주세요.')
+        navigate('/login')
       } else {
         const errorMsg = data.error || data.message || '회원가입 중 오류가 발생했습니다.'
         setErrorMessage(errorMsg)
