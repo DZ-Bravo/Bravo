@@ -251,6 +251,198 @@ router.post('/login', async (req, res) => {
   }
 })
 
+// 인증번호 전송 (간단한 구현 - 실제로는 SMS API 연동 필요)
+const verificationCodes = new Map() // 메모리에 저장 (실제로는 Redis 등 사용)
+
+router.post('/send-verification-code', async (req, res) => {
+  try {
+    const { phone } = req.body
+
+    if (!phone) {
+      return res.status(400).json({ error: '휴대폰 번호를 입력해주세요.' })
+    }
+
+    // 휴대폰 번호 형식 검증
+    const phoneRegex = /^010-\d{4}-\d{4}$/
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({ error: '올바른 휴대폰 번호 형식이 아닙니다. (010-1111-2222)' })
+    }
+
+    // 해당 휴대폰 번호로 가입된 사용자 확인
+    const user = await User.findOne({ phone })
+    if (!user) {
+      return res.status(404).json({ error: '해당 휴대폰 번호로 가입된 회원이 없습니다.' })
+    }
+
+    // 인증번호 생성 (6자리)
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    
+    // 메모리에 저장 (5분 유효)
+    verificationCodes.set(phone, {
+      code,
+      expiresAt: Date.now() + 5 * 60 * 1000
+    })
+
+    // 실제로는 SMS API로 전송해야 함
+    console.log(`인증번호 전송: ${phone} -> ${code}`)
+
+    res.json({
+      message: '인증번호가 전송되었습니다.',
+      // 개발 환경에서는 인증번호 반환 (실제 운영에서는 제거)
+      code: process.env.NODE_ENV === 'development' ? code : undefined
+    })
+  } catch (error) {
+    console.error('인증번호 전송 오류:', error)
+    res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
+  }
+})
+
+// 아이디 찾기 (휴대폰 번호 인증)
+router.post('/find-id', async (req, res) => {
+  try {
+    const { phone, verificationCode } = req.body
+
+    if (!phone || !verificationCode) {
+      return res.status(400).json({ error: '휴대폰 번호와 인증번호를 입력해주세요.' })
+    }
+
+    // 인증번호 확인
+    const stored = verificationCodes.get(phone)
+    if (!stored) {
+      return res.status(400).json({ error: '인증번호를 먼저 요청해주세요.' })
+    }
+
+    if (Date.now() > stored.expiresAt) {
+      verificationCodes.delete(phone)
+      return res.status(400).json({ error: '인증번호가 만료되었습니다. 다시 요청해주세요.' })
+    }
+
+    if (stored.code !== verificationCode) {
+      return res.status(400).json({ error: '인증번호가 일치하지 않습니다.' })
+    }
+
+    // 인증번호 확인 후 삭제
+    verificationCodes.delete(phone)
+
+    // 사용자 찾기
+    const user = await User.findOne({ phone })
+      .select('id name createdAt')
+
+    if (!user) {
+      return res.status(404).json({ error: '일치하는 회원정보를 찾을 수 없습니다.' })
+    }
+
+    res.json({
+      message: '아이디를 찾았습니다.',
+      id: user.id,
+      createdAt: user.createdAt
+    })
+  } catch (error) {
+    console.error('아이디 찾기 오류:', error)
+    res.status(500).json({ error: '아이디 찾기 중 오류가 발생했습니다.' })
+  }
+})
+
+// 비밀번호 찾기용 인증번호 전송
+router.post('/send-verification-code-password', async (req, res) => {
+  try {
+    const { id, phone } = req.body
+
+    if (!id || !phone) {
+      return res.status(400).json({ error: 'ID와 휴대폰 번호를 입력해주세요.' })
+    }
+
+    // 휴대폰 번호 형식 검증
+    const phoneRegex = /^010-\d{4}-\d{4}$/
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({ error: '올바른 휴대폰 번호 형식이 아닙니다. (010-1111-2222)' })
+    }
+
+    // 해당 ID와 휴대폰 번호로 가입된 사용자 확인
+    const user = await User.findOne({ id, phone })
+    if (!user) {
+      return res.status(404).json({ error: '일치하는 회원정보를 찾을 수 없습니다.' })
+    }
+
+    // 인증번호 생성 (6자리)
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    
+    // 메모리에 저장 (5분 유효) - ID와 phone을 키로 사용
+    const key = `${id}:${phone}`
+    verificationCodes.set(key, {
+      code,
+      expiresAt: Date.now() + 5 * 60 * 1000
+    })
+
+    // 실제로는 SMS API로 전송해야 함
+    console.log(`비밀번호 찾기 인증번호 전송: ${id} / ${phone} -> ${code}`)
+
+    res.json({
+      message: '인증번호가 전송되었습니다.',
+      // 개발 환경에서는 인증번호 반환 (실제 운영에서는 제거)
+      code: process.env.NODE_ENV === 'development' ? code : undefined
+    })
+  } catch (error) {
+    console.error('인증번호 전송 오류:', error)
+    res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
+  }
+})
+
+// 비밀번호 찾기 (임시 비밀번호 발급)
+router.post('/find-password', async (req, res) => {
+  try {
+    const { id, phone, verificationCode } = req.body
+
+    if (!id || !phone || !verificationCode) {
+      return res.status(400).json({ error: 'ID, 휴대폰 번호, 인증번호를 모두 입력해주세요.' })
+    }
+
+    // 인증번호 확인
+    const key = `${id}:${phone}`
+    const stored = verificationCodes.get(key)
+    if (!stored) {
+      return res.status(400).json({ error: '인증번호를 먼저 요청해주세요.' })
+    }
+
+    if (Date.now() > stored.expiresAt) {
+      verificationCodes.delete(key)
+      return res.status(400).json({ error: '인증번호가 만료되었습니다. 다시 요청해주세요.' })
+    }
+
+    if (stored.code !== verificationCode) {
+      return res.status(400).json({ error: '인증번호가 일치하지 않습니다.' })
+    }
+
+    // 인증번호 확인 후 삭제
+    verificationCodes.delete(key)
+
+    // 사용자 찾기
+    const user = await User.findOne({ id, phone })
+
+    if (!user) {
+      return res.status(404).json({ error: '일치하는 회원정보를 찾을 수 없습니다.' })
+    }
+
+    // 임시 비밀번호 생성 (8자리 랜덤)
+    const tempPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8).toUpperCase()
+    const tempPasswordShort = tempPassword.slice(0, 8)
+
+    // 비밀번호 업데이트
+    user.password = tempPasswordShort
+    await user.save()
+
+    res.json({
+      message: '임시 비밀번호가 발급되었습니다.',
+      tempPassword: tempPasswordShort,
+      // 실제 운영 환경에서는 이메일이나 SMS로 전송해야 함
+      warning: '임시 비밀번호를 안전하게 보관하시고, 로그인 후 비밀번호를 변경해주세요.'
+    })
+  } catch (error) {
+    console.error('비밀번호 찾기 오류:', error)
+    res.status(500).json({ error: '비밀번호 찾기 중 오류가 발생했습니다.' })
+  }
+})
+
 // 토큰 검증 미들웨어
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization']

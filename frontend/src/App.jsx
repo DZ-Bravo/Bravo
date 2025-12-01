@@ -5,6 +5,8 @@ import Seoraksan from './pages/Seoraksan'
 import MountainsMap from './pages/MountainsMap'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
+import FindId from './pages/FindId'
+import FindPassword from './pages/FindPassword'
 import Notice from './pages/Notice'
 import Community from './pages/Community'
 import CommunityWrite from './pages/CommunityWrite'
@@ -31,6 +33,8 @@ function App() {
         <Route path="/mountains-map" element={<MountainsMap />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/find-id" element={<FindId />} />
+        <Route path="/find-password" element={<FindPassword />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/write" element={<CommunityWrite />} />
