@@ -1,18 +1,39 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Chatbot from '../components/Chatbot'
-import { notices } from '../utils/notices'
+import { API_URL } from '../utils/api'
 import './Home.css'
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [notices, setNotices] = useState([])
+  const [isLoadingNotices, setIsLoadingNotices] = useState(true)
 
   const handleSearch = (e) => {
     e.preventDefault()
     // 검색 로직 구현
     console.log('Search:', searchQuery)
   }
+
+  // 공지사항 가져오기
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/notices?limit=3`)
+        if (response.ok) {
+          const data = await response.json()
+          setNotices(data.notices || [])
+        }
+      } catch (error) {
+        console.error('공지사항 조회 오류:', error)
+      } finally {
+        setIsLoadingNotices(false)
+      }
+    }
+
+    fetchNotices()
+  }, [API_URL])
 
   return (
     <div className="home">
@@ -100,16 +121,26 @@ function Home() {
         <section className="notice-section">
           <h2>공지사항</h2>
           <div className="notice-list">
-            {notices.slice(0, 3).map((notice) => (
-              <Link
-                key={notice.id}
-                to={`/notice/${notice.id}`}
-                className="notice-item"
-              >
-                <span className="notice-title">{notice.title}</span>
-                <span className="notice-date">{notice.date}</span>
-              </Link>
-            ))}
+            {isLoadingNotices ? (
+              <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                공지사항을 불러오는 중...
+              </div>
+            ) : notices.length === 0 ? (
+              <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                공지사항이 없습니다.
+              </div>
+            ) : (
+              notices.map((notice) => (
+                <Link
+                  key={notice.id}
+                  to={`/notice/${notice.id}`}
+                  className="notice-item"
+                >
+                  <span className="notice-title">{notice.title}</span>
+                  <span className="notice-date">{notice.date}</span>
+                </Link>
+              ))
+            )}
           </div>
         </section>
 
