@@ -24,6 +24,15 @@ header {
   text-align: center;
   grid-column: 2;
   justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-mountain {
+  width: 40px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .header-actions {

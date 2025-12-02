@@ -1,12 +1,14 @@
 .notice-page {
   min-height: 100vh;
-  background: var(--bg);
+  background: transparent;
 }
 
 .notice-main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 24px;
+  position: relative;
+  z-index: 10;
 }
 
 .notice-container {
@@ -15,6 +17,8 @@
   padding: 48px 40px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--border);
+  position: relative;
+  z-index: 10;
 }
 
 .notice-header {
