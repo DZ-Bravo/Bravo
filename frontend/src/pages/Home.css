@@ -33,6 +33,7 @@
   max-width: 600px;
   margin: 0 auto;
   gap: 12px;
+  align-items: center;
 }
 
 .search-input {
@@ -62,6 +63,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 12px;
+  flex-shrink: 0;
 }
 
 .search-btn:hover {

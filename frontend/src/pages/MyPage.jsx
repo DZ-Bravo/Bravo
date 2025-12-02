@@ -257,7 +257,6 @@ function MyPage() {
                 </div>
                 <div className="profile-details">
                   <div className="profile-name-text">{user.name || user.id}</div>
-                  <div className="profile-level">등력이 없어요</div>
                   <div className="profile-logs">등산일지 {stats.hikingLogs}개</div>
                 </div>
                 <button className="level-guide-btn" onClick={() => setShowLevelGuide(true)}>

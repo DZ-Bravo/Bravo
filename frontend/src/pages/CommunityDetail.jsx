@@ -404,7 +404,7 @@ function CommunityDetail() {
         <div className="community-detail-container">
           <div className="detail-header">
             <Link to="/community" className="back-link">
-              ← 목록으로
+              ←
             </Link>
             
             <div className="header-actions">
