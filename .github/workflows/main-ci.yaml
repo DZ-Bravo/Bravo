@@ -79,11 +79,11 @@ jobs:
       matrix:
         include:
           - image_name: backend
-            context: backend
-            dockerfile: backend/Dockerfile
+            context: /home/bravo/LABs/hiking/backend
+            dockerfile: /home/bravo/LABs/hiking/backend/Dockerfile
           - image_name: frontend
-            context: frontend/app
-            dockerfile: frontend/app/Dockerfile
+            context: /home/bravo/LABs/hiking/frontend/app
+            dockerfile: /home/bravo/LABs/hiking/frontend/app/Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
