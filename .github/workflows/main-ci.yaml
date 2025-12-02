@@ -82,8 +82,8 @@ jobs:
             context: backend
             dockerfile: backend/Dockerfile
           - image_name: frontend
-            context: frontend/app
-            dockerfile: frontend/app/Dockerfile
+            context: frontend
+            dockerfile: frontend/Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
