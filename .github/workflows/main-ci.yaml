@@ -79,8 +79,8 @@ jobs:
       matrix:
         include:
           - image_name: backend
-            context: backend
-            dockerfile: backend/Dockerfile
+            context: /home/bravo/LABs/hiking/backend
+            dockerfile: /home/bravo/LABs/hiking/backend/Dockerfile
           - image_name: frontend
             context: frontend
             dockerfile: frontend/Dockerfile
@@ -91,11 +91,8 @@ jobs:
       - name: Install Harbor CA certificate
         if: ${{ env.HARBOR_CA_CRT != '' }}
         run: |
-          echo "$HARBOR_CA_CRT" > harbor-ca.crt
-          sudo mkdir -p /etc/docker/certs.d/${{ env.REGISTRY_HOST }}
-          sudo cp harbor-ca.crt /etc/docker/certs.d/${{ env.REGISTRY_HOST }}/ca.crt
-          sudo cp harbor-ca.crt /usr/local/share/ca-certificates/harbor.crt
-          sudo update-ca-certificates
+          mkdir -p ~/.docker/certs.d/${{ env.REGISTRY_HOST }}
+          printf '%s\n' "$HARBOR_CA_CRT" > ~/.docker/certs.d/${{ env.REGISTRY_HOST }}/ca.crt
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
