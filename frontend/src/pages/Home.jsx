@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Header from '../components/Header'
-import Chatbot from '../components/Chatbot'
 import { API_URL } from '../utils/api'
 import './Home.css'
 
@@ -138,8 +137,12 @@ function Home() {
                   to={`/notice/${notice.id}`}
                   className="notice-item"
                 >
-                  <span className="notice-title">{notice.title}</span>
-                  <span className="notice-date">{notice.date}</span>
+                  <div className="notice-icon">{notice.icon}</div>
+                  <div className="notice-content-wrapper">
+                    <span className="notice-title">{notice.title}</span>
+                    <span className="notice-date">{notice.date}</span>
+                  </div>
+                  <div className="notice-arrow">→</div>
                 </Link>
               ))
             )}
@@ -150,9 +153,6 @@ function Home() {
         <Link to="/mountains-map" className="view-all-mountains-btn">
           산 전체보기
         </Link>
-
-        {/* 챗봇 */}
-        <Chatbot />
       </main>
     </div>
   )

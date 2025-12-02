@@ -47,6 +47,71 @@ const upload = multer({
   }
 })
 
+// 즐겨찾기 목록 조회 (인증 필요) - /:id보다 먼저 정의해야 함
+router.get('/favorites/my', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
+
+    const user = await User.findById(userId).populate('favorites')
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    const favoritePostIds = user.favorites || []
+    const total = favoritePostIds.length
+
+    const posts = await Post.find({ _id: { $in: favoritePostIds } })
+      .populate('author', 'id name profileImage')
+      .select('title content category author authorName views likes createdAt images')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
+
+    // 날짜 포맷팅 및 본문 미리보기 생성
+    const formattedPosts = await Promise.all(posts.map(async (post) => {
+      const contentPreview = post.content
+        ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+        : ''
+      
+      const thumbnail = post.images && post.images.length > 0 ? post.images[0] : null
+      
+      const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+      const [year, month, day] = dateStr.split('-')
+      const formattedDate = `${year}.${month}.${day}`
+      
+      const commentCount = await Comment.countDocuments({ post: post._id })
+      
+      return {
+        id: post._id,
+        title: post.title,
+        content: contentPreview,
+        category: post.category,
+        author: post.authorName || (post.author && post.author.name) || '알 수 없음',
+        authorId: post.author && post.author.id,
+        date: formattedDate,
+        views: post.views || 0,
+        likes: post.likes || 0,
+        thumbnail: thumbnail,
+        comments: commentCount
+      }
+    }))
+
+    res.json({
+      posts: formattedPosts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    })
+  } catch (error) {
+    console.error('즐겨찾기 목록 조회 오류:', error)
+    res.status(500).json({ error: '즐겨찾기 목록을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
 // 내 게시글 조회 (인증 필요)
 router.get('/my', authenticateToken, async (req, res) => {
   try {
@@ -216,6 +281,26 @@ router.get('/', async (req, res) => {
     
     console.log('게시글 목록 조회 결과 - 카테고리:', category, '조회된 게시글 수:', posts.length, '게시글 카테고리들:', posts.map(p => ({ title: p.title, category: p.category })))
 
+    // 즐겨찾기 상태 확인 (인증된 사용자인 경우)
+    let userFavorites = []
+    const authHeader = req.headers['authorization']
+    if (authHeader) {
+      const token = authHeader.split(' ')[1]
+      if (token) {
+        try {
+          const jwt = await import('jsonwebtoken')
+          const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+          const decoded = jwt.default.verify(token, JWT_SECRET)
+          const user = await User.findById(decoded.userId).select('favorites').lean()
+          if (user && user.favorites) {
+            userFavorites = user.favorites.map(favId => favId.toString())
+          }
+        } catch (err) {
+          // 토큰이 유효하지 않으면 무시
+        }
+      }
+    }
+
     // 날짜 포맷팅 및 본문 미리보기 생성
     const formattedPosts = await Promise.all(posts.map(async (post) => {
       // 본문 미리보기 (100자 제한, HTML 태그 제거)
@@ -234,6 +319,9 @@ router.get('/', async (req, res) => {
       // 댓글 수 가져오기
       const commentCount = await Comment.countDocuments({ post: post._id })
       
+      // 즐겨찾기 상태 확인
+      const isFavorited = userFavorites.includes(post._id.toString())
+      
       return {
         id: post._id,
         title: post.title,
@@ -244,6 +332,7 @@ router.get('/', async (req, res) => {
         date: formattedDate,
         views: post.views || 0,
         likes: post.likes || 0,
+        isFavorited,
         thumbnail: thumbnail,
         comments: commentCount
       }
@@ -266,12 +355,13 @@ router.get('/:id', async (req, res) => {
   try {
     // "search", "my" 등의 특수 경로는 ObjectId가 아니므로 404 반환
     const id = req.params.id
-    if (id === 'search' || id === 'my') {
+    if (id === 'search' || id === 'my' || id === 'favorites') {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
     
     const post = await Post.findById(id)
       .populate('author', 'id name profileImage')
+      .select('title content category author authorName views likes likedBy createdAt updatedAt images')
       .lean()
 
     if (!post) {
@@ -283,7 +373,53 @@ router.get('/:id', async (req, res) => {
       req.params.id,
       { $inc: { views: 1 } },
       { new: true }
-    )
+    ).select('likedBy likes views')
+
+    // 즐겨찾기 및 좋아요 상태 확인 (인증된 사용자인 경우)
+    let isFavorited = false
+    let isLiked = false
+    const authHeader = req.headers['authorization']
+    if (authHeader) {
+      const token = authHeader.split(' ')[1]
+      if (token) {
+        try {
+          const jwt = await import('jsonwebtoken')
+          const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+          const decoded = jwt.default.verify(token, JWT_SECRET)
+          const userId = decoded.userId
+          
+          // 즐겨찾기 상태 확인
+          const user = await User.findById(userId).select('favorites').lean()
+          if (user && user.favorites) {
+            isFavorited = user.favorites.some(favId => favId.toString() === post._id.toString())
+          }
+          
+          // 좋아요 상태 확인 (updatedPost 객체의 likedBy 사용)
+          const likedByArray = (updatedPost && updatedPost.likedBy) || []
+          if (Array.isArray(likedByArray) && likedByArray.length > 0) {
+            // userId를 문자열로 변환
+            const userIdStr = userId.toString ? userId.toString() : String(userId)
+            
+            isLiked = likedByArray.some(likedUserId => {
+              // ObjectId를 문자열로 변환
+              let likedIdStr
+              if (likedUserId && likedUserId.toString) {
+                likedIdStr = likedUserId.toString()
+              } else if (likedUserId && likedUserId._id) {
+                likedIdStr = likedUserId._id.toString()
+              } else {
+                likedIdStr = String(likedUserId)
+              }
+              return likedIdStr === userIdStr
+            })
+          }
+          console.log('좋아요 상태 확인 - userId:', userId, 'userIdStr:', userId.toString(), 'likedBy length:', likedByArray.length, 'isLiked:', isLiked)
+        } catch (err) {
+          // 토큰이 유효하지 않으면 무시
+          console.error('인증 오류:', err)
+        }
+      }
+    }
 
     res.json({
       id: post._id,
@@ -294,8 +430,10 @@ router.get('/:id', async (req, res) => {
       authorId: post.author && post.author.id,
       authorProfileImage: post.author && post.author.profileImage,
       date: new Date(post.createdAt).toISOString().split('T')[0],
-      views: updatedPost.views || (post.views || 0) + 1,
-      likes: post.likes || 0,
+      views: (updatedPost && updatedPost.views) || (post.views || 0) + 1,
+      likes: (updatedPost && updatedPost.likes) || post.likes || 0,
+      isFavorited,
+      isLiked,
       images: post.images || [],
       createdAt: post.createdAt,
       updatedAt: post.updatedAt
@@ -660,7 +798,12 @@ router.post('/:id/like', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
 
-    const likedIndex = post.likedBy.indexOf(userId)
+    // userId를 문자열로 변환하여 비교
+    const userIdStr = userId.toString ? userId.toString() : String(userId)
+    const likedIndex = post.likedBy.findIndex(id => {
+      const idStr = id.toString ? id.toString() : String(id)
+      return idStr === userIdStr
+    })
     if (likedIndex > -1) {
       // 이미 좋아요를 눌렀으면 취소
       post.likedBy.splice(likedIndex, 1)
@@ -680,6 +823,46 @@ router.post('/:id/like', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('좋아요 처리 오류:', error)
     res.status(500).json({ error: '좋아요 처리 중 오류가 발생했습니다.' })
+  }
+})
+
+// 즐겨찾기 토글 (인증 필요)
+router.post('/:id/favorite', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const postId = req.params.id
+
+    const post = await Post.findById(postId)
+    if (!post) {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    const favoriteIndex = user.favorites.indexOf(postId)
+    if (favoriteIndex > -1) {
+      // 이미 즐겨찾기에 있으면 제거
+      user.favorites.splice(favoriteIndex, 1)
+      await user.save()
+      res.json({
+        isFavorited: false,
+        message: '즐겨찾기가 해제되었습니다.'
+      })
+    } else {
+      // 즐겨찾기 추가
+      user.favorites.push(postId)
+      await user.save()
+      res.json({
+        isFavorited: true,
+        message: '즐겨찾기에 추가되었습니다.'
+      })
+    }
+  } catch (error) {
+    console.error('즐겨찾기 처리 오류:', error)
+    res.status(500).json({ error: '즐겨찾기 처리 중 오류가 발생했습니다.' })
   }
 })
 

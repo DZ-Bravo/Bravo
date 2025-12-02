@@ -11,6 +11,7 @@ function CommunityDetail() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [isLiked, setIsLiked] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(false)
   const [comments, setComments] = useState([])
   const [commentContent, setCommentContent] = useState('')
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
@@ -51,7 +52,14 @@ function CommunityDetail() {
       setIsLoading(true)
       setError('')
       try {
-        const response = await fetch(`${API_URL}/api/posts/${id}`)
+        const token = localStorage.getItem('token')
+        const headers = {}
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`
+        }
+        const response = await fetch(`${API_URL}/api/posts/${id}`, {
+          headers
+        })
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('게시글을 찾을 수 없습니다.')
@@ -60,16 +68,22 @@ function CommunityDetail() {
         }
         const data = await response.json()
         console.log('게시글 데이터:', data) // 디버깅용
+        console.log('isLiked 상태:', data.isLiked) // 디버깅용
         
         // id가 여전히 같은지 확인 (컴포넌트가 언마운트되었거나 id가 변경되었을 수 있음)
         if (currentId.current === id) {
           setPost(data)
           
-          // 로그인한 사용자의 좋아요 여부 확인
+          // 로그인한 사용자의 좋아요 및 즐겨찾기 여부 확인
           const token = localStorage.getItem('token')
           if (token) {
-            // 좋아요 상태는 백엔드에서 확인해야 하지만, 일단 기본값으로 설정
+            // 좋아요 상태 설정 (명시적으로 boolean으로 변환)
+            setIsLiked(data.isLiked === true)
+            // 즐겨찾기 상태 설정
+            setIsFavorited(data.isFavorited === true)
+          } else {
             setIsLiked(false)
+            setIsFavorited(false)
           }
         }
       } catch (err) {
@@ -263,6 +277,38 @@ function CommunityDetail() {
     }
   }
 
+  // 즐겨찾기 토글
+  const handleFavorite = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      alert('로그인이 필요합니다.')
+      navigate('/login')
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/posts/${id}/favorite`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setIsFavorited(data.isFavorited)
+        alert(data.message)
+      } else {
+        const errorData = await response.json()
+        alert(errorData.error || '즐겨찾기 처리 중 오류가 발생했습니다.')
+      }
+    } catch (error) {
+      console.error('즐겨찾기 처리 오류:', error)
+      alert('즐겨찾기 처리 중 오류가 발생했습니다.')
+    }
+  }
+
   // 게시글 삭제
   const handleDelete = async () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) {
@@ -361,59 +407,61 @@ function CommunityDetail() {
               ← 목록으로
             </Link>
             
-            {localStorage.getItem('token') && (
-              <div className="post-actions">
-                {isAuthor() && (
-                  <>
-                    <button
-                      onClick={() => navigate(`/community/edit/${id}`)}
-                      className="edit-btn"
-                    >
-                      수정
-                    </button>
-                    <button
-                      onClick={handleDelete}
-                      className="delete-btn"
-                    >
-                      삭제
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
+            <div className="header-actions">
+              {localStorage.getItem('token') && (
+                <button
+                  onClick={handleFavorite}
+                  className={`favorite-btn-header ${isFavorited ? 'favorited' : ''}`}
+                  title={isFavorited ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+                >
+                  {isFavorited ? '⭐' : '☆'}
+                </button>
+              )}
+              
+              {localStorage.getItem('token') && (
+                <div className="post-actions">
+                  {isAuthor() && (
+                    <>
+                      <button
+                        onClick={() => navigate(`/community/edit/${id}`)}
+                        className="edit-btn"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={handleDelete}
+                        className="delete-btn"
+                      >
+                        삭제
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="post-detail">
-            <div className="post-detail-header">
-              <span className="post-category">
-                {categories.find(c => c.id === post.category)?.name}
-              </span>
-              <h1 className="post-title">{post.title}</h1>
+            {/* 제목 */}
+            <h1 className="post-title">{post.title}</h1>
+
+            {/* 작성자 정보 */}
+            <div className="author-info">
+              {post.authorProfileImage ? (
+                <img
+                  src={`${API_URL}${post.authorProfileImage}`}
+                  alt={post.author}
+                  className="author-avatar"
+                />
+              ) : (
+                <div className="author-avatar-placeholder">
+                  <span>👤</span>
+                </div>
+              )}
+              <span className="post-author">{post.author}</span>
             </div>
 
-            <div className="post-meta">
-              <div className="author-info">
-                {post.authorProfileImage && (
-                  <img
-                    src={`${API_URL}${post.authorProfileImage}`}
-                    alt={post.author}
-                    className="author-avatar"
-                  />
-                )}
-                <span className="post-author">{post.author}</span>
-              </div>
-              <div className="post-stats">
-                <span className="post-date">{post.date}</span>
-                <span className="post-views">조회 {post.views}</span>
-                <button
-                  onClick={handleLike}
-                  className={`like-btn ${isLiked ? 'liked' : ''}`}
-                >
-                  ♥ {post.likes}
-                </button>
-              </div>
-            </div>
-
+            {/* 내용 */}
             <div className="post-content">
               {post.images && post.images.length > 0 && (
                 <div className="post-images">
@@ -439,6 +487,18 @@ function CommunityDetail() {
                   <p>내용이 없습니다.</p>
                 )}
               </div>
+            </div>
+
+            {/* 메타 정보 */}
+            <div className="post-meta-footer">
+              <span className="post-date">{post.date}</span>
+              <button
+                onClick={handleLike}
+                className={`like-btn-meta ${isLiked ? 'liked' : ''}`}
+              >
+                <span className="like-heart">{isLiked ? '♥' : '♡'}</span> 좋아요 {post.likes || 0}
+              </button>
+              <span className="post-views">조회 {post.views}</span>
             </div>
           </div>
 
