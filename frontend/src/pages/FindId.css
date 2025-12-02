@@ -1,6 +1,6 @@
 .find-id-page {
   min-height: 100vh;
-  background: var(--bg);
+  background: transparent;
 }
 
 .find-id-main {

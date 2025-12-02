@@ -1,12 +1,14 @@
 .mypage-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: transparent;
 }
 
 .mypage-main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 24px;
+  position: relative;
+  z-index: 10;
 }
 
 .mypage-container {
@@ -15,6 +17,8 @@
   padding: 48px 40px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border: 1px solid #e0e0e0;
+  position: relative;
+  z-index: 10;
 }
 
 .mypage-title {
@@ -166,6 +170,89 @@
   color: #00BF93;
 }
 
+/* 최근 기록 섹션 */
+.recent-records-section {
+  margin-bottom: 32px;
+}
+
+.records-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.records-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.view-all-link {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.view-all-link:hover {
+  color: #00BF93;
+}
+
+.records-content {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 20px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.records-empty {
+  text-align: center;
+}
+
+.records-empty p {
+  font-size: 1rem;
+  color: var(--text-main);
+  margin: 0 0 8px 0;
+}
+
+.records-empty-hint {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* 기록하기 버튼 */
+.record-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 200px;
+  margin: 32px auto 0;
+  padding: 14px 24px;
+  background: #00BF93;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 191, 147, 0.3);
+  transition: all 0.2s;
+}
+
+.record-btn:hover {
+  background: #00a67d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 191, 147, 0.4);
+}
+
 /* 프로필 탭 */
 .profile-info-card {
   display: flex;
@@ -259,6 +346,22 @@
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.summary-stat-item button {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: center;
+  color: inherit;
+  font: inherit;
 }
 
 .summary-stat-item:hover {
@@ -311,6 +414,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.content-item.active {
+  background: #e8f5e9;
+  border-color: #00BF93;
+}
+
 .content-icon {
   font-size: 32px;
   margin-bottom: 12px;
@@ -327,6 +435,224 @@
   font-size: 28px;
   font-weight: 700;
   color: #00BF93;
+  margin-bottom: 8px;
+}
+
+.content-likes {
+  font-size: 14px;
+  color: #c33;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* 커뮤니티 게시글 섹션 */
+.community-posts-section {
+  margin-top: 24px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.community-category-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.community-category-tab {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #666666;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.community-category-tab:hover {
+  border-color: #00BF93;
+  color: #00BF93;
+}
+
+.community-category-tab.active {
+  background: #00BF93;
+  border-color: #00BF93;
+  color: white;
+}
+
+.community-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.community-post-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.community-post-item:hover {
+  border-color: #00BF93;
+  box-shadow: 0 2px 8px rgba(0, 191, 147, 0.1);
+}
+
+.community-post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.community-post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.community-post-category {
+  padding: 4px 12px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666666;
+  white-space: nowrap;
+}
+
+.community-post-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  word-break: break-word;
+}
+
+.community-post-preview {
+  font-size: 0.9rem;
+  color: #666666;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.community-post-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #999999;
+  flex-wrap: wrap;
+}
+
+.community-post-author,
+.community-post-date,
+.community-post-views,
+.community-post-likes,
+.community-post-comments {
+  white-space: nowrap;
+}
+
+.community-post-thumbnail {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+}
+
+.community-post-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 내 게시글 목록 섹션 */
+.my-posts-section {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.my-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.my-post-item {
+  display: block;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+}
+
+.my-post-item:hover {
+  border-color: #00BF93;
+  box-shadow: 0 2px 8px rgba(0, 191, 147, 0.1);
+}
+
+.my-post-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.my-post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.my-post-preview {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-post-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
 /* 설정 메뉴 */
@@ -454,4 +780,440 @@
   .content-item {
     padding: 16px;
   }
+}
+
+/* 등력안내 모달 */
+.level-guide-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10000 !important;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 0 !important;
+}
+
+.level-guide-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: calc(90vh - 40px);
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: 0 !important;
+  align-self: center;
+}
+
+.level-guide-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.level-guide-close-btn {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #000000;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.level-guide-close-btn:hover {
+  color: #666666;
+}
+
+.level-guide-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.level-guide-content {
+  padding: 24px;
+}
+
+.level-guide-intro {
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.level-guide-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.level-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.level-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.level-text {
+  flex: 1;
+}
+
+.level-main-text {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.level-sub-text {
+  font-size: 12px;
+  color: #999999;
+}
+
+.level-guide-modal-footer {
+  padding: 20px 24px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+
+.level-guide-close-button {
+  width: 100%;
+  padding: 14px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.level-guide-close-button:hover {
+  background: #e0e0e0;
+}
+
+/* 캘린더 모달 */
+.calendar-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(90vh - 40px);
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: 0 !important;
+  align-self: center;
+}
+
+.calendar-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.calendar-close-btn {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #000000;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.calendar-close-btn:hover {
+  color: #666666;
+}
+
+.calendar-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.calendar-content {
+  padding: 24px;
+}
+
+.calendar-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #000000;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: color 0.2s;
+}
+
+.calendar-nav-btn:hover {
+  color: #666666;
+}
+
+.calendar-month-year {
+  font-size: 18px;
+  font-weight: 600;
+  color: #c33;
+}
+
+.calendar-grid {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  padding: 8px 0;
+}
+
+.calendar-weekday.weekend {
+  color: #c33;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+  padding: 4px;
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.calendar-day:hover:not(.empty) {
+  background: #f5f5f5;
+}
+
+.calendar-day.weekend .calendar-day-number {
+  color: #c33;
+}
+
+.calendar-day.selected {
+  background: #ffeb3b;
+  border-radius: 50%;
+}
+
+.calendar-day.selected .calendar-day-number {
+  font-weight: 700;
+}
+
+.calendar-day-number {
+  font-size: 14px;
+  color: #000000;
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-marker {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.calendar-marker.red-dot {
+  width: 4px;
+  height: 4px;
+  background: #c33;
+  border-radius: 50%;
+}
+
+.calendar-marker.yellow-triangle {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 5px solid #ffeb3b;
+  bottom: 4px;
+}
+
+.calendar-event-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  margin-top: 20px;
+}
+
+.event-image {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.event-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-d-day {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #e8f5e9;
+  color: #4caf50;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.event-mountain {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.event-height {
+  font-size: 14px;
+  color: #666666;
+}
+
+.event-time {
+  font-size: 14px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.event-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.event-cancel-btn,
+.event-info-btn {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.event-cancel-btn {
+  background: #ffffff;
+  color: #000000;
+}
+
+.event-cancel-btn:hover {
+  background: #f5f5f5;
+}
+
+.event-info-btn {
+  background: #00BF93;
+  color: #ffffff;
+  border-color: #00BF93;
+}
+
+.event-info-btn:hover {
+  background: #00a67d;
+}
+
+.calendar-modal-footer {
+  padding: 20px 24px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+
+.calendar-close-button {
+  width: 100%;
+  padding: 14px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calendar-close-button:hover {
+  background: #e0e0e0;
 }

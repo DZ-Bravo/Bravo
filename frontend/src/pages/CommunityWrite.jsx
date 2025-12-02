@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import { API_URL } from '../utils/api'
+import { MOUNTAIN_ROUTES } from '../utils/mountainRoutes'
 import './CommunityWrite.css'
 
 function CommunityWrite() {
@@ -9,11 +10,97 @@ function CommunityWrite() {
     title: '',
     content: '',
     category: 'diary',
-    images: []
+    images: [],
+    // 등산일지 전용 필드
+    hikingTip: '',
+    hashtags: [],
+    mountainCode: '',
+    courseName: ''
   })
+  const [currentHashtag, setCurrentHashtag] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [mountains, setMountains] = useState([])
+  const [courses, setCourses] = useState([])
+  const [isLoadingCourses, setIsLoadingCourses] = useState(false)
   const navigate = useNavigate()
+
+  // 산 목록 가져오기
+  useEffect(() => {
+    const fetchMountains = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/mountains`)
+        if (response.ok) {
+          const data = await response.json()
+          setMountains(data.mountains || [])
+        } else {
+          // API가 없으면 MOUNTAIN_ROUTES 사용
+          const mountainList = Object.values(MOUNTAIN_ROUTES).map(m => ({
+            code: m.code,
+            name: m.name
+          }))
+          setMountains(mountainList)
+        }
+      } catch (error) {
+        console.error('산 목록 조회 오류:', error)
+        // 에러 시 MOUNTAIN_ROUTES 사용
+        const mountainList = Object.values(MOUNTAIN_ROUTES).map(m => ({
+          code: m.code,
+          name: m.name
+        }))
+        setMountains(mountainList)
+      }
+    }
+    fetchMountains()
+  }, [])
+
+  // 산 선택 시 등산 코스 가져오기
+  useEffect(() => {
+    if (formData.mountainCode && formData.category === 'diary') {
+      setIsLoadingCourses(true)
+      const fetchCourses = async () => {
+        try {
+          const response = await fetch(`${API_URL}/api/mountains/${formData.mountainCode}/courses`)
+          if (response.ok) {
+            const data = await response.json()
+            const courseList = (data.courses || []).map((course, index) => {
+              const props = course.properties || {}
+              return {
+                id: index,
+                name: props.PMNTN_NM || props.courseName || `코스 ${index + 1}`,
+                distance: props.PMNTN_LT || props.distance,
+                difficulty: props.PMNTN_DFFL || props.difficulty
+              }
+            })
+            setCourses(courseList)
+          } else {
+            setCourses([])
+          }
+        } catch (error) {
+          console.error('등산 코스 조회 오류:', error)
+          setCourses([])
+        } finally {
+          setIsLoadingCourses(false)
+        }
+      }
+      fetchCourses()
+    } else {
+      setCourses([])
+      if (formData.category !== 'diary') {
+      setFormData(prev => ({ 
+        ...prev, 
+        mountainCode: '', 
+        courseName: '',
+        images: [],
+        hikingTip: '',
+        hashtags: []
+      }))
+        setCurrentHashtag('')
+      } else {
+        setFormData(prev => ({ ...prev, courseName: '' }))
+      }
+    }
+  }, [formData.mountainCode, formData.category])
 
   const categories = [
     { id: 'diary', name: '등산일지' },
@@ -23,10 +110,26 @@ function CommunityWrite() {
 
   const handleChange = (e) => {
     const value = e.target.value
-    setFormData({
-      ...formData,
-      [e.target.name]: value
-    })
+    const name = e.target.name
+    
+    // 카테고리 변경 시 등산일지가 아니면 등산일지 전용 필드 초기화
+    if (name === 'category' && value !== 'diary') {
+      setFormData({
+        ...formData,
+        [name]: value,
+        mountainCode: '',
+        courseName: '',
+        images: [],
+        hikingTip: '',
+        hashtags: []
+      })
+      setCurrentHashtag('')
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      })
+    }
   }
 
   const handleImageChange = (e) => {
@@ -48,22 +151,72 @@ function CommunityWrite() {
     })
   }
 
+  const handleHashtagKeyPress = (e) => {
+    if (e.key === ' ' && currentHashtag.trim()) {
+      e.preventDefault()
+      const tag = currentHashtag.trim().replace('#', '')
+      if (tag.length > 0 && tag.length <= 15 && formData.hashtags.length < 5) {
+        setFormData({
+          ...formData,
+          hashtags: [...formData.hashtags, tag]
+        })
+        setCurrentHashtag('')
+      }
+    }
+  }
+
+  const removeHashtag = (index) => {
+    setFormData({
+      ...formData,
+      hashtags: formData.hashtags.filter((_, i) => i !== index)
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setErrorMessage('')
 
     // 유효성 검사
-    if (!formData.title.trim()) {
-      alert('제목을 입력해주세요.')
-      setIsLoading(false)
-      return
-    }
-
-    if (!formData.content.trim()) {
-      alert('내용을 입력해주세요.')
-      setIsLoading(false)
-      return
+    if (formData.category === 'diary') {
+      // 등산일지 유효성 검사
+      if (formData.images.length === 0) {
+        alert('사진을 최소 1개 이상 업로드해주세요.')
+        setIsLoading(false)
+        return
+      }
+      if (!formData.title.trim()) {
+        alert('제목을 입력해주세요.')
+        setIsLoading(false)
+        return
+      }
+      if (!formData.hikingTip.trim()) {
+        alert('하이킹 팁을 입력해주세요.')
+        setIsLoading(false)
+        return
+      }
+      if (!formData.mountainCode) {
+        alert('산을 선택해주세요.')
+        setIsLoading(false)
+        return
+      }
+      if (!formData.courseName) {
+        alert('등산 코스를 선택해주세요.')
+        setIsLoading(false)
+        return
+      }
+    } else {
+      // Q&A/자유게시판 유효성 검사
+      if (!formData.title.trim()) {
+        alert('제목을 입력해주세요.')
+        setIsLoading(false)
+        return
+      }
+      if (!formData.content.trim()) {
+        alert('내용을 입력해주세요.')
+        setIsLoading(false)
+        return
+      }
     }
 
     // 로그인 확인
@@ -78,16 +231,30 @@ function CommunityWrite() {
     try {
       // FormData 생성
       const submitData = new FormData()
-      submitData.append('title', formData.title)
-      submitData.append('content', formData.content)
       submitData.append('category', formData.category)
+      
+      if (formData.category === 'diary') {
+        // 등산일지 데이터
+        submitData.append('title', formData.title)
+        submitData.append('content', formData.hikingTip)
+        formData.images.forEach((image) => {
+          submitData.append('images', image)
+        })
+        submitData.append('mountainCode', formData.mountainCode)
+        submitData.append('courseName', formData.courseName)
+        if (formData.hashtags.length > 0) {
+          submitData.append('hashtags', JSON.stringify(formData.hashtags))
+        }
+      } else {
+        // Q&A/자유게시판 데이터
+        submitData.append('title', formData.title)
+        submitData.append('content', formData.content)
+        formData.images.forEach((image) => {
+          submitData.append('images', image)
+        })
+      }
 
       console.log('게시글 작성 요청 - 카테고리:', formData.category, '전체 formData:', formData)
-
-      // 이미지 추가
-      formData.images.forEach((image) => {
-        submitData.append('images', image)
-      })
 
       console.log('FormData 카테고리 확인:', submitData.get('category'))
 
@@ -144,77 +311,261 @@ function CommunityWrite() {
               </select>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="title">제목</label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="제목을 입력해주세요"
-                required
-                className="form-input"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="content">내용</label>
-              <textarea
-                id="content"
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                placeholder="내용을 입력해주세요"
-                rows={15}
-                required
-                className="form-textarea"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="images">이미지 첨부 (최대 5개)</label>
-              <div className="image-upload-group">
-                <input
-                  type="file"
-                  id="images"
-                  name="images"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  className="file-input"
-                  disabled={formData.images.length >= 5}
-                />
-                <label htmlFor="images" className="file-upload-btn">
-                  파일 선택
-                </label>
-                {formData.images.length > 0 && (
-                  <span className="file-count">
-                    {formData.images.length}개 선택됨
-                  </span>
-                )}
-              </div>
-              {formData.images.length > 0 && (
-                <div className="image-preview-list">
-                  {formData.images.map((image, index) => (
-                    <div key={index} className="image-preview-item">
-                      <img
-                        src={URL.createObjectURL(image)}
-                        alt={`미리보기 ${index + 1}`}
-                        className="preview-image"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="remove-image-btn"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
+            {formData.category === 'diary' ? (
+              /* 등산일지 작성 폼 */
+              <>
+                {/* 사진 첨부 */}
+                <div className="form-group">
+                  <label htmlFor="diary-images" className="form-label">
+                    사진 첨부 <span className="required">*</span>
+                  </label>
+                  <div className="diary-image-upload">
+                    <input
+                      type="file"
+                      id="diary-images"
+                      name="diary-images"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                      className="diary-image-input"
+                      disabled={formData.images.length >= 5}
+                    />
+                    <label htmlFor="diary-images" className="diary-image-label">
+                      {formData.images.length > 0 ? (
+                        <div className="diary-image-preview-grid">
+                          {formData.images.map((image, index) => (
+                            <div key={index} className="diary-image-preview-item">
+                              <img
+                                src={URL.createObjectURL(image)}
+                                alt={`미리보기 ${index + 1}`}
+                                className="diary-preview-image"
+                              />
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  removeImage(index)
+                                }}
+                                className="diary-remove-image-btn"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          ))}
+                          {formData.images.length < 5 && (
+                            <div className="diary-image-placeholder">
+                              <div className="diary-thumbnail-icon">🏔️</div>
+                              <div className="diary-thumbnail-count">{formData.images.length}/5</div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="diary-image-placeholder">
+                          <div className="diary-thumbnail-icon">🏔️</div>
+                          <div className="diary-thumbnail-count">0/5</div>
+                        </div>
+                      )}
+                    </label>
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {/* 산 선택 */}
+                <div className="form-group">
+                  <label htmlFor="mountainCode" className="form-label">
+                    산 <span className="required">*</span>
+                  </label>
+                  <select
+                    id="mountainCode"
+                    name="mountainCode"
+                    value={formData.mountainCode}
+                    onChange={handleChange}
+                    required
+                    className="form-select"
+                  >
+                    <option value="">산을 선택해주세요</option>
+                    {mountains.map((mountain) => (
+                      <option key={mountain.code} value={mountain.code}>
+                        {mountain.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* 등산 코스 선택 */}
+                {formData.mountainCode && (
+                  <div className="form-group">
+                    <label htmlFor="courseName" className="form-label">
+                      등산코스 <span className="required">*</span>
+                    </label>
+                    {isLoadingCourses ? (
+                      <div className="loading-courses">등산 코스를 불러오는 중...</div>
+                    ) : (
+                      <select
+                        id="courseName"
+                        name="courseName"
+                        value={formData.courseName}
+                        onChange={handleChange}
+                        required
+                        className="form-select"
+                      >
+                        <option value="">등산 코스를 선택해주세요</option>
+                        {courses.map((course) => (
+                          <option key={course.id} value={course.name}>
+                            {course.name}
+                            {course.distance && ` (${course.distance}km)`}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                )}
+
+                {/* 제목 */}
+                <div className="form-group">
+                  <label htmlFor="title" className="form-label">
+                    제목 <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder="제목을 입력해 주세요."
+                    required
+                    className="form-input"
+                  />
+                </div>
+
+                {/* 하이킹 팁 */}
+                <div className="form-group">
+                  <label htmlFor="hikingTip" className="form-label">
+                    하이킹 팁 <span className="required">*</span>
+                  </label>
+                  <textarea
+                    id="hikingTip"
+                    name="hikingTip"
+                    value={formData.hikingTip}
+                    onChange={handleChange}
+                    placeholder="산행 팁을 간단하게 작성해주세요. 자세한 후기는 본문에서 작성할 수 있어요!"
+                    required
+                    className="form-textarea"
+                    rows={5}
+                  />
+                </div>
+
+                {/* 해시태그 */}
+                <div className="form-group">
+                  <label htmlFor="hashtag" className="form-label">
+                    해시태그
+                  </label>
+                  <input
+                    type="text"
+                    id="hashtag"
+                    value={currentHashtag}
+                    onChange={(e) => setCurrentHashtag(e.target.value)}
+                    onKeyPress={handleHashtagKeyPress}
+                    placeholder="#해시태그 입력(15자), (스페이스바)를 눌러주세요."
+                    className="form-input hashtag-input"
+                    maxLength={16}
+                  />
+                  <p className="hashtag-hint">
+                    스페이스바를 누르면 해시태그가 완성돼요. 최대 5개
+                  </p>
+                  {formData.hashtags.length > 0 && (
+                    <div className="hashtag-list">
+                      {formData.hashtags.map((tag, index) => (
+                        <span key={index} className="hashtag-item">
+                          #{tag}
+                          <button
+                            type="button"
+                            onClick={() => removeHashtag(index)}
+                            className="hashtag-remove"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              /* Q&A/자유게시판 작성 폼 */
+              <>
+                <div className="form-group">
+                  <label htmlFor="title">제목</label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder="제목을 입력해주세요"
+                    required
+                    className="form-input"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="content">내용</label>
+                  <textarea
+                    id="content"
+                    name="content"
+                    value={formData.content}
+                    onChange={handleChange}
+                    placeholder="내용을 입력해주세요"
+                    rows={15}
+                    required
+                    className="form-textarea"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="images">이미지 첨부 (최대 5개)</label>
+                  <div className="image-upload-group">
+                    <input
+                      type="file"
+                      id="images"
+                      name="images"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                      className="file-input"
+                      disabled={formData.images.length >= 5}
+                    />
+                    <label htmlFor="images" className="file-upload-btn">
+                      파일 선택
+                    </label>
+                    {formData.images.length > 0 && (
+                      <span className="file-count">
+                        {formData.images.length}개 선택됨
+                      </span>
+                    )}
+                  </div>
+                  {formData.images.length > 0 && (
+                    <div className="image-preview-list">
+                      {formData.images.map((image, index) => (
+                        <div key={index} className="image-preview-item">
+                          <img
+                            src={URL.createObjectURL(image)}
+                            alt={`미리보기 ${index + 1}`}
+                            className="preview-image"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="remove-image-btn"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
 
             {errorMessage && (
               <div className="error-message">{errorMessage}</div>

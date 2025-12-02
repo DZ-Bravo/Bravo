@@ -1,7 +1,9 @@
 .chatbot-icon {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  left: auto !important;
+  top: auto !important;
   width: 60px;
   height: 60px;
   background: var(--primary);
@@ -14,8 +16,9 @@
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  z-index: 1000;
+  z-index: 10000 !important;
   transition: background 0.2s, transform 0.2s;
+  margin: 0 !important;
 }
 
 .chatbot-icon:hover {
@@ -24,13 +27,17 @@
 }
 
 .chatbot-container {
-  position: fixed;
-  bottom: 100px;
-  right: 24px;
+  position: fixed !important;
+  bottom: 100px !important;
+  right: 24px !important;
+  left: auto !important;
+  top: auto !important;
   width: 380px;
   height: 600px;
-  z-index: 1001;
+  max-height: calc(100vh - 140px);
+  z-index: 10001 !important;
   animation: slideUp 0.3s ease-out;
+  margin: 0 !important;
 }
 
 @keyframes slideUp {
