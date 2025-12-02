@@ -82,7 +82,7 @@ function MyFavorites() {
         <div className="my-posts-container">
           <div className="my-posts-header">
             <Link to="/mypage" className="back-link">
-              ← 마이페이지
+              ←
             </Link>
             <h1 className="my-posts-title">찜 목록</h1>
           </div>
