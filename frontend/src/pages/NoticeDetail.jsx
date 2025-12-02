@@ -162,7 +162,7 @@ function NoticeDetail() {
         <div className="notice-detail-container">
           <div className="detail-header">
             <Link to="/notice" className="back-link">
-              ← 목록으로
+              ←
             </Link>
             
             {isAdmin && (
