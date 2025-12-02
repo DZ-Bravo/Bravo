@@ -79,8 +79,8 @@ jobs:
       matrix:
         include:
           - image_name: backend
-            context: /home/bravo/LABs/hiking/backend
-            dockerfile: /home/bravo/LABs/hiking/backend/Dockerfile
+            context: backend
+            dockerfile: backend/Dockerfile
           - image_name: frontend
             context: frontend
             dockerfile: frontend/Dockerfile
