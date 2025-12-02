@@ -78,4 +78,3 @@ jobs:
       HARBOR_CA_CRT: ${{ secrets.HARBOR_CA_CRT }}
     strategy:
       fail-fast: false
-   
