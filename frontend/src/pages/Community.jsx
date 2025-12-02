@@ -22,11 +22,14 @@ function Community() {
       setIsLoading(true)
       setError('')
       try {
-        const response = await fetch(`${API_URL}/api/posts?category=${selectedCategory}`)
+        const url = `${API_URL}/api/posts?category=${selectedCategory}`
+        console.log('게시글 목록 요청 - 선택된 카테고리:', selectedCategory, 'URL:', url)
+        const response = await fetch(url)
         if (!response.ok) {
           throw new Error('게시글을 불러오는데 실패했습니다.')
         }
         const data = await response.json()
+        console.log('게시글 목록 응답 - 카테고리:', selectedCategory, '받은 게시글 수:', data.posts?.length, '게시글 카테고리들:', data.posts?.map(p => ({ title: p.title, category: p.category })))
         setPosts(data.posts || [])
       } catch (err) {
         console.error('게시글 목록 조회 오류:', err)
@@ -80,16 +83,16 @@ function Community() {
               </div>
             ) : (
               posts.map((post) => (
-                <Link
-                  key={post.id}
-                  to={`/community/${post.id}`}
+              <Link
+                key={post.id}
+                to={`/community/${post.id}`}
                   className="post-card"
-                >
+              >
                   <div className="post-card-content">
                     <div className="post-card-header">
                       <span className="post-category-badge">
-                        {categories.find(c => c.id === post.category)?.name}
-                      </span>
+                      {categories.find(c => c.id === post.category)?.name}
+                    </span>
                       <h3 className="post-card-title">{post.title}</h3>
                     </div>
                     {post.content && (
@@ -99,8 +102,9 @@ function Community() {
                       <span className="post-author-name">{post.author}</span>
                       <span className="post-time">{post.date}</span>
                       <span className="post-views-count">조회 {post.views}</span>
+                      <span className="post-likes-count">❤️ {post.likes || 0}</span>
                       <span className="post-comments-count">💬 {post.comments || 0}</span>
-                    </div>
+                  </div>
                   </div>
                   {post.thumbnail && (
                     <div className="post-card-thumbnail">
@@ -111,9 +115,9 @@ function Community() {
                           e.target.style.display = 'none'
                         }}
                       />
-                    </div>
+                </div>
                   )}
-                </Link>
+              </Link>
               ))
             )}
           </div>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Chatbot from '../components/Chatbot'
@@ -6,14 +6,16 @@ import { API_URL } from '../utils/api'
 import './Home.css'
 
 function Home() {
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [notices, setNotices] = useState([])
   const [isLoadingNotices, setIsLoadingNotices] = useState(true)
 
   const handleSearch = (e) => {
     e.preventDefault()
-    // 검색 로직 구현
-    console.log('Search:', searchQuery)
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+    }
   }
 
   // 공지사항 가져오기
@@ -61,16 +63,16 @@ function Home() {
         <section className="popular-mountains">
           <h2>지금 인기 있는 산</h2>
           <div className="mountain-tags">
-            <Link to="/bukhansan" className="mountain-tag">북한산</Link>
-            <Link to="/seoraksan" className="mountain-tag">설악산</Link>
-            <Link to="#" className="mountain-tag">관악산</Link>
-            <Link to="#" className="mountain-tag">월악산</Link>
-            <Link to="#" className="mountain-tag">계룡산</Link>
-            <Link to="#" className="mountain-tag">천마산</Link>
-            <Link to="#" className="mountain-tag">소백산</Link>
-            <Link to="#" className="mountain-tag">봉화산</Link>
-            <Link to="#" className="mountain-tag">한라산</Link>
-            <Link to="#" className="mountain-tag">내장산</Link>
+            <Link to="/mountain/287201304" className="mountain-tag">북한산</Link>
+            <Link to="/mountain/428302602" className="mountain-tag">설악산</Link>
+            <Link to="/mountain/488605302" className="mountain-tag">지리산</Link>
+            <Link to="/mountain/421902904" className="mountain-tag">태백산</Link>
+            <Link to="/mountain/483100401" className="mountain-tag">계룡산</Link>
+            <Link to="/mountain/457300301" className="mountain-tag">덕유산</Link>
+            <Link to="/mountain/438001301" className="mountain-tag">소백산</Link>
+            <Link to="/mountain/111100101" className="mountain-tag">북악산</Link>
+            <Link to="/mountain/282601001" className="mountain-tag">금정산</Link>
+            <Link to="/mountain/287100601" className="mountain-tag">마니산</Link>
           </div>
         </section>
 
