@@ -2,7 +2,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import MountainDetail from '../components/MountainDetail'
 import Header from '../components/Header'
 import { MOUNTAIN_ROUTES } from '../utils/mountainRoutes'
-import './MountainDetail.css'
 
 // 산별 유래 정보 (필요시 확장 가능)
 const MOUNTAIN_ORIGINS = {
