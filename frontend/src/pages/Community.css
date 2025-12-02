@@ -176,6 +176,13 @@
   color: var(--text-muted);
 }
 
+.post-likes-count {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .post-comments-count {
   color: var(--text-muted);
   display: flex;

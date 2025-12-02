@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import User from '../models/User.js'
 import Post from '../models/Post.js'
+import Comment from '../models/Comment.js'
 import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -483,21 +484,108 @@ router.get('/stats', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId
     
+    // 등반한 산 수 (현재는 구현되지 않음, 추후 확장 가능)
+    const climbedMountains = 0
+    
+    // 누적고도 (m) - 등반한 산들의 고도 합계 (현재는 구현되지 않음, 추후 확장 가능)
+    const totalElevation = 0
+    
+    // 누적시간 (시간) - 등반한 산들의 소요시간 합계 (현재는 구현되지 않음, 추후 확장 가능)
+    const totalTime = 0
+    
     // 작성한 글 수
     const postCount = await Post.countDocuments({ author: userId })
+    
+    // 등산일지 수 (카테고리가 정확히 'diary'인 게시글만 카운트)
+    const hikingLogs = await Post.countDocuments({ 
+      author: userId, 
+      category: { $eq: 'diary' } 
+    })
+    
+    // 디버깅: 사용자의 모든 게시글 카테고리 확인
+    const allUserPosts = await Post.find({ author: userId }).select('category title').lean()
+    console.log('사용자 ID:', userId, '전체 게시글 카테고리:', allUserPosts.map(p => ({ category: p.category, title: p.title })))
+    console.log('등산일지 카운트:', hikingLogs)
     
     // 받은 좋아요 수 (작성한 모든 게시글의 likes 합계)
     const posts = await Post.find({ author: userId }).select('likes').lean()
     const totalLikes = posts.reduce((sum, post) => sum + (post.likes || 0), 0)
     
     res.json({
+      totalElevation,
+      totalTime,
+      climbedMountains,
       postCount,
       totalLikes,
-      climbedMountains: 0 // 등반한 산은 아직 구현되지 않음
+      hikingLogs,
+      points: 0, // 추후 확장 가능
+      schedules: 0, // 추후 확장 가능
+      items: 0 // 추후 확장 가능
     })
   } catch (error) {
     console.error('사용자 통계 조회 오류:', error)
     res.status(500).json({ error: '사용자 통계를 가져오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 회원 탈퇴 (인증 필요)
+router.delete('/delete', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    
+    // 사용자 확인
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    // 관리자는 탈퇴 불가
+    if (user.role === 'admin') {
+      return res.status(403).json({ error: '관리자는 탈퇴할 수 없습니다.' })
+    }
+
+    // 사용자가 작성한 게시글의 이미지 파일 삭제
+    const userPosts = await Post.find({ author: userId })
+    userPosts.forEach(post => {
+      if (post.images && post.images.length > 0) {
+        post.images.forEach(imagePath => {
+          const fullPath = path.join(__dirname, '..', imagePath)
+          if (fs.existsSync(fullPath)) {
+            try {
+              fs.unlinkSync(fullPath)
+            } catch (err) {
+              console.error('이미지 삭제 오류:', err)
+            }
+          }
+        })
+      }
+    })
+
+    // 사용자가 작성한 댓글 삭제
+    await Comment.deleteMany({ author: userId })
+
+    // 사용자가 작성한 게시글 삭제
+    await Post.deleteMany({ author: userId })
+
+    // 프로필 이미지 삭제
+    if (user.profileImage) {
+      const profileImagePath = path.join(__dirname, '..', user.profileImage)
+      if (fs.existsSync(profileImagePath)) {
+        try {
+          fs.unlinkSync(profileImagePath)
+        } catch (err) {
+          console.error('프로필 이미지 삭제 오류:', err)
+        }
+      }
+    }
+
+    // 사용자 삭제
+    await User.findByIdAndDelete(userId)
+
+    res.json({ message: '회원 탈퇴가 완료되었습니다.' })
+  } catch (error) {
+    console.error('회원 탈퇴 오류:', error)
+    res.status(500).json({ error: '회원 탈퇴 중 오류가 발생했습니다.' })
   }
 })
 

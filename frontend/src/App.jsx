@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import Bukhansan from './pages/Bukhansan'
-import Seoraksan from './pages/Seoraksan'
+import Mountain from './pages/Mountain'
 import MountainsMap from './pages/MountainsMap'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
@@ -20,6 +19,7 @@ import NoticeDetail from './pages/NoticeDetail'
 import NoticeWrite from './pages/NoticeWrite'
 import NoticeEdit from './pages/NoticeEdit'
 import CourseDetail from './pages/CourseDetail'
+import SearchResults from './pages/SearchResults'
 import './App.css'
 
 function App() {
@@ -32,9 +32,11 @@ function App() {
     >
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/bukhansan" element={<Bukhansan />} />
-        <Route path="/seoraksan" element={<Seoraksan />} />
+        <Route path="/mountain/:code" element={<Mountain />} />
         <Route path="/mountains-map" element={<MountainsMap />} />
+        {/* 기존 URL 호환성을 위한 리다이렉트 */}
+        <Route path="/bukhansan" element={<Mountain />} />
+        <Route path="/seoraksan" element={<Mountain />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/find-id" element={<FindId />} />
@@ -52,6 +54,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/posts" element={<MyPosts />} />
         <Route path="/course/:theme" element={<CourseDetail />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
     </Router>
   )
