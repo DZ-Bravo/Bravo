@@ -239,12 +239,14 @@
 
 .notice-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 16px;
   padding: 16px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.2s;
+  text-decoration: none;
+  color: inherit;
 }
 
 .notice-item:last-child {
@@ -255,14 +257,36 @@
   background: var(--bg);
 }
 
+.notice-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 32px;
+  text-align: center;
+}
+
+.notice-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
 .notice-title {
   color: var(--text-main);
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .notice-date {
   color: var(--text-muted);
   font-size: 0.9rem;
+}
+
+.notice-arrow {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 /* 산 전체보기 버튼 - 하단 고정 */

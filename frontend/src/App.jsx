@@ -15,48 +15,62 @@ import AICourse from './pages/AICourse'
 import Store from './pages/Store'
 import MyPage from './pages/MyPage'
 import MyPosts from './pages/MyPosts'
+import MyFavorites from './pages/MyFavorites'
+import MyPoints from './pages/MyPoints'
 import NoticeDetail from './pages/NoticeDetail'
 import NoticeWrite from './pages/NoticeWrite'
 import NoticeEdit from './pages/NoticeEdit'
 import CourseDetail from './pages/CourseDetail'
 import SearchResults from './pages/SearchResults'
+import Chatbot from './components/Chatbot'
 import './App.css'
 
 function App() {
   return (
-    <Router
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true
-      }}
-    >
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/mountain/:code" element={<Mountain />} />
-        <Route path="/mountains-map" element={<MountainsMap />} />
-        {/* 기존 URL 호환성을 위한 리다이렉트 */}
-        <Route path="/bukhansan" element={<Mountain />} />
-        <Route path="/seoraksan" element={<Mountain />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/find-id" element={<FindId />} />
-        <Route path="/find-password" element={<FindPassword />} />
-        <Route path="/notice" element={<Notice />} />
-        <Route path="/notice/write" element={<NoticeWrite />} />
-        <Route path="/notice/edit/:id" element={<NoticeEdit />} />
-        <Route path="/notice/:id" element={<NoticeDetail />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/write" element={<CommunityWrite />} />
-        <Route path="/community/edit/:id" element={<CommunityEdit />} />
-        <Route path="/community/:id" element={<CommunityDetail />} />
-        <Route path="/ai-course" element={<AICourse />} />
-        <Route path="/store" element={<Store />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/posts" element={<MyPosts />} />
-        <Route path="/course/:theme" element={<CourseDetail />} />
-        <Route path="/search" element={<SearchResults />} />
-      </Routes>
-    </Router>
+    <>
+      <div className="snow-container">
+        {Array.from({ length: 30 }).map((_, i) => (
+          <div key={i} className="snowflake">❄</div>
+        ))}
+      </div>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mountain/:code" element={<Mountain />} />
+          <Route path="/mountains-map" element={<MountainsMap />} />
+          {/* 기존 URL 호환성을 위한 리다이렉트 */}
+          <Route path="/bukhansan" element={<Mountain />} />
+          <Route path="/seoraksan" element={<Mountain />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/find-id" element={<FindId />} />
+          <Route path="/find-password" element={<FindPassword />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/write" element={<NoticeWrite />} />
+          <Route path="/notice/edit/:id" element={<NoticeEdit />} />
+          <Route path="/notice/:id" element={<NoticeDetail />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/community/write" element={<CommunityWrite />} />
+          <Route path="/community/edit/:id" element={<CommunityEdit />} />
+          <Route path="/community/:id" element={<CommunityDetail />} />
+          <Route path="/ai-course" element={<AICourse />} />
+          <Route path="/store" element={<Store />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/posts" element={<MyPosts />} />
+          <Route path="/mypage/favorites" element={<MyFavorites />} />
+          <Route path="/mypage/points" element={<MyPoints />} />
+          <Route path="/diary/write" element={<CommunityWrite />} />
+          <Route path="/course/:theme" element={<CourseDetail />} />
+          <Route path="/search" element={<SearchResults />} />
+        </Routes>
+      </Router>
+      <Chatbot />
+    </>
   )
 }
 

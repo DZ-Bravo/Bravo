@@ -1,6 +1,6 @@
 .community-detail-page {
   min-height: 100vh;
-  background: var(--bg);
+  background: transparent;
 }
 
 .community-detail-main {
@@ -22,6 +22,32 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.favorite-btn-header {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-btn-header:hover {
+  transform: scale(1.1);
+}
+
+.favorite-btn-header.favorited {
+  color: #FFD700;
 }
 
 .back-link {
@@ -80,61 +106,46 @@
   gap: 24px;
 }
 
-.post-detail-header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.post-category {
-  display: inline-block;
-  padding: 6px 16px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  width: fit-content;
-}
 
 .post-title {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-main);
-  margin: 0;
-  line-height: 1.4;
-}
-
-.post-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-  gap: 16px;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
 }
 
 .author-info {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 24px;
 }
 
 .author-avatar {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid var(--border);
+  background: #f0f0f0;
+}
+
+.author-avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
   border: 1px solid var(--border);
 }
 
 .post-author {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-main);
 }
 
@@ -177,10 +188,107 @@
   color: #c33;
 }
 
+.favorite-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+}
+
+.favorite-btn:hover {
+  border-color: #FFD700;
+  background: #fffef0;
+}
+
+.favorite-btn.favorited {
+  background: #fffef0;
+  border-color: #FFD700;
+  color: #FFD700;
+}
+
 .post-content {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+.post-meta-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding-top: 16px;
+}
+
+.post-meta-footer .post-date,
+.post-meta-footer .post-views {
+  color: var(--text-muted);
+}
+
+.like-btn-meta {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.like-btn-meta:hover {
+  color: #c33;
+}
+
+.like-btn-meta.liked {
+  color: #c33;
+  font-weight: 600;
+}
+
+.like-heart {
+  display: inline-block;
+  transition: color 0.2s;
+}
+
+.like-btn-meta .like-heart {
+  color: var(--text-muted);
+}
+
+.like-btn-meta.liked .like-heart {
+  color: #c33;
+}
+
+.favorite-btn-meta {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.favorite-btn-meta:hover {
+  transform: scale(1.1);
+}
+
+.favorite-btn-meta.favorited {
+  color: #FFD700;
 }
 
 .post-images {
@@ -429,13 +537,22 @@
     gap: 16px;
   }
 
-  .post-title {
-    font-size: 1.25rem;
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
-  .post-meta {
-    flex-direction: column;
-    align-items: flex-start;
+  .post-title {
+    font-size: 1.5rem;
+  }
+
+  .author-info {
+    margin-bottom: 16px;
+  }
+
+  .post-meta-footer {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .post-stats {

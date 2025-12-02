@@ -5,12 +5,13 @@ import { API_URL } from '../utils/api'
 import './Community.css'
 
 function Community() {
-  const [selectedCategory, setSelectedCategory] = useState('diary')
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const [posts, setPosts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
   const categories = [
+    { id: 'all', name: '전체' },
     { id: 'diary', name: '등산일지' },
     { id: 'qa', name: 'Q&A' },
     { id: 'free', name: '자유게시판' }
@@ -22,7 +23,10 @@ function Community() {
       setIsLoading(true)
       setError('')
       try {
-        const url = `${API_URL}/api/posts?category=${selectedCategory}`
+        // 'all'이면 category 파라미터 없이 모든 게시글 가져오기
+        const url = selectedCategory === 'all' 
+          ? `${API_URL}/api/posts`
+          : `${API_URL}/api/posts?category=${selectedCategory}`
         console.log('게시글 목록 요청 - 선택된 카테고리:', selectedCategory, 'URL:', url)
         const response = await fetch(url)
         if (!response.ok) {
@@ -54,8 +58,12 @@ function Community() {
             {categories.map((category) => (
               <button
                 key={category.id}
+                type="button"
                 className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setSelectedCategory(category.id)
+                }}
               >
                 {category.name}
               </button>
@@ -86,25 +94,30 @@ function Community() {
               <Link
                 key={post.id}
                 to={`/community/${post.id}`}
-                  className="post-card"
+                  className={`post-card ${post.thumbnail ? 'has-thumbnail' : ''}`}
               >
                   <div className="post-card-content">
                     <div className="post-card-header">
                       <span className="post-category-badge">
-                      {categories.find(c => c.id === post.category)?.name}
-                    </span>
-                      <h3 className="post-card-title">{post.title}</h3>
+                        {categories.find(c => c.id === post.category)?.name}
+                      </span>
                     </div>
+                    <h3 className="post-card-title">{post.title}</h3>
                     {post.content && (
                       <p className="post-card-preview">{post.content}</p>
                     )}
                     <div className="post-card-footer">
-                      <span className="post-author-name">{post.author}</span>
-                      <span className="post-time">{post.date}</span>
-                      <span className="post-views-count">조회 {post.views}</span>
-                      <span className="post-likes-count">❤️ {post.likes || 0}</span>
-                      <span className="post-comments-count">💬 {post.comments || 0}</span>
-                  </div>
+                      <div className="post-author-section">
+                        <span className="post-author-label">작성자</span>
+                        <span className="post-author-name">{post.author}</span>
+                      </div>
+                      <div className="post-meta-section">
+                        <span className="post-time">{post.date}</span>
+                        <span className="post-views-count">조회 {post.views}</span>
+                        <span className="post-likes-count">❤️ {post.likes || 0}</span>
+                        <span className="post-comments-count">💬 {post.comments || 0}</span>
+                      </div>
+                    </div>
                   </div>
                   {post.thumbnail && (
                     <div className="post-card-thumbnail">
