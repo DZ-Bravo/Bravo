@@ -51,9 +51,49 @@ export const MOUNTAIN_ROUTES = {
   '438001301': {
     name: '소백산',
     code: '438001301',
-    courseFile: '/mountain/438001301_geojson/PMNTN_소백산_438001301.json',
-    spotFile: '/mountain/438001301_geojson/PMNTN_SPOT_소백산_438001301.json',
+    courseFile: '/mountain/438001301_geojson/PMNTN_소백산_비로봉_438001301.json',
+    spotFile: '/mountain/438001301_geojson/PMNTN_SPOT_소백산_비로봉_438001301.json',
     center: [36.9167, 128.4667],
+    zoom: 13
+  },
+  '111100101': {
+    name: '북악산',
+    code: '111100101',
+    courseFile: '/mountain/111100101_geojson/PMNTN_북악산_111100101.json',
+    spotFile: '/mountain/111100101_geojson/PMNTN_SPOT_북악산_111100101.json',
+    center: [37.6000, 126.9667],
+    zoom: 13
+  },
+  '282601001': {
+    name: '금정산',
+    code: '282601001',
+    courseFile: '/mountain/282601001_geojson/PMNTN_금정산_282601001.json',
+    spotFile: '/mountain/282601001_geojson/PMNTN_SPOT_금정산_282601001.json',
+    center: [35.2833, 129.0333],
+    zoom: 13
+  },
+  '287100601': {
+    name: '마니산',
+    code: '287100601',
+    courseFile: '/mountain/287100601_geojson/PMNTN_마니산_287100601.json',
+    spotFile: '/mountain/287100601_geojson/PMNTN_SPOT_마니산_287100601.json',
+    center: [37.6167, 126.4167],
+    zoom: 13
+  },
+  '287101001': {
+    name: '정족산',
+    code: '287101001',
+    courseFile: '/mountain/287101001_geojson/PMNTN_정족산_287101001.json',
+    spotFile: '/mountain/287101001_geojson/PMNTN_SPOT_정족산_287101001.json',
+    center: [37.4500, 126.6167],
+    zoom: 13
+  },
+  '287100101': {
+    name: '고려산',
+    code: '287100101',
+    courseFile: '/mountain/287100101_geojson/PMNTN_고려산_287100101.json',
+    spotFile: '/mountain/287100101_geojson/PMNTN_SPOT_고려산_287100101.json',
+    center: [37.6833, 126.7500],
     zoom: 13
   }
 }

@@ -82,10 +82,14 @@ function CommunityWrite() {
       submitData.append('content', formData.content)
       submitData.append('category', formData.category)
 
+      console.log('게시글 작성 요청 - 카테고리:', formData.category, '전체 formData:', formData)
+
       // 이미지 추가
       formData.images.forEach((image) => {
         submitData.append('images', image)
       })
+
+      console.log('FormData 카테고리 확인:', submitData.get('category'))
 
       const response = await fetch(`${API_URL}/api/posts`, {
         method: 'POST',
