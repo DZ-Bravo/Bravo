@@ -91,7 +91,8 @@ jobs:
       - name: Install Harbor CA certificate
         if: ${{ env.HARBOR_CA_CRT != '' }}
         run: |
-          echo "$HARBOR_CA_CRT" | base64 -d > harbor-ca.crt
+          # GitHub Secret(HARBOR_CA_CRT)에 들어있는 인증서를 그대로 파일로 저장
+          printf '%s\n' "$HARBOR_CA_CRT" > harbor-ca.crt
           sudo mkdir -p /etc/docker/certs.d/${{ env.REGISTRY_HOST }}
           sudo cp harbor-ca.crt /etc/docker/certs.d/${{ env.REGISTRY_HOST }}/ca.crt
           sudo cp harbor-ca.crt /usr/local/share/ca-certificates/harbor.crt
@@ -164,4 +165,3 @@ jobs:
           fi
           git tag "$TAG"
           git push origin "$TAG"
-          
