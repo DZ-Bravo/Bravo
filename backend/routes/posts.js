@@ -110,6 +110,84 @@ router.get('/my', authenticateToken, async (req, res) => {
   }
 })
 
+// 게시글 검색 (인증 불필요)
+router.get('/search', async (req, res) => {
+  try {
+    const query = req.query.q || ''
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
+
+    if (!query.trim()) {
+      return res.json({ posts: [], total: 0 })
+    }
+
+    // 제목 또는 내용에서 검색 (한글 검색 지원)
+    // 특수문자 이스케이프 (한글은 이스케이프 불필요)
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    
+    console.log('검색어:', query, '이스케이프된 검색어:', escapedQuery)
+    
+    // MongoDB $regex를 사용하여 대소문자 구분 없이 검색
+    const searchCondition = {
+      $or: [
+        { title: { $regex: escapedQuery, $options: 'i' } },
+        { content: { $regex: escapedQuery, $options: 'i' } }
+      ]
+    }
+    
+    console.log('검색 조건:', { query: escapedQuery, options: 'i' })
+    
+    const posts = await Post.find(searchCondition)
+      .populate('author', 'id name profileImage')
+      .select('title content category author authorName views likes createdAt images')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
+
+    const total = await Post.countDocuments(searchCondition)
+
+    console.log('검색 쿼리:', query, '검색 결과 수:', total)
+    if (posts.length > 0) {
+      console.log('검색된 게시글 제목들:', posts.map(p => p.title))
+    }
+
+    // 날짜 포맷팅 및 본문 미리보기 생성
+    const formattedPosts = posts.map((post) => {
+      // 본문 미리보기 (100자 제한, HTML 태그 제거)
+      const contentPreview = post.content
+        ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+        : ''
+      
+      // 첫 번째 이미지를 썸네일로 사용
+      const thumbnailImage = post.images && post.images.length > 0 ? post.images[0] : null
+      
+      // 날짜 포맷팅 (YYYY-MM-DD)
+      const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+
+      return {
+        ...post,
+        id: post._id.toString(),
+        authorId: post.author ? post.author.id : post.authorName,
+        previewContent: contentPreview,
+        thumbnailImage,
+        date: dateStr
+      }
+    })
+
+    res.json({
+      posts: formattedPosts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    })
+  } catch (error) {
+    console.error('게시글 검색 오류:', error)
+    res.status(500).json({ error: '게시글 검색 중 오류가 발생했습니다.' })
+  }
+})
+
 // 게시글 목록 조회 (카테고리별)
 router.get('/', async (req, res) => {
   try {
@@ -118,7 +196,13 @@ router.get('/', async (req, res) => {
     const limit = parseInt(req.query.limit) || 20
     const skip = (page - 1) * limit
 
-    const query = category ? { category } : {}
+    // 카테고리 필터링 (정확히 일치하는 것만)
+    let query = {}
+    if (category && ['diary', 'qa', 'free'].includes(category)) {
+      query = { category: category }
+    }
+    
+    console.log('게시글 목록 조회 - 요청 카테고리:', category, '필터 쿼리:', JSON.stringify(query))
     
     const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
@@ -129,6 +213,8 @@ router.get('/', async (req, res) => {
       .lean()
 
     const total = await Post.countDocuments(query)
+    
+    console.log('게시글 목록 조회 결과 - 카테고리:', category, '조회된 게시글 수:', posts.length, '게시글 카테고리들:', posts.map(p => ({ title: p.title, category: p.category })))
 
     // 날짜 포맷팅 및 본문 미리보기 생성
     const formattedPosts = await Promise.all(posts.map(async (post) => {
@@ -178,7 +264,13 @@ router.get('/', async (req, res) => {
 // 게시글 상세 조회
 router.get('/:id', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id)
+    // "search", "my" 등의 특수 경로는 ObjectId가 아니므로 404 반환
+    const id = req.params.id
+    if (id === 'search' || id === 'my') {
+      return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
+    }
+    
+    const post = await Post.findById(id)
       .populate('author', 'id name profileImage')
       .lean()
 
@@ -220,11 +312,20 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
     const { title, content, category } = req.body
     const userId = req.user.userId
 
+    console.log('게시글 작성 요청 - 받은 데이터:', { title, content, category, bodyKeys: Object.keys(req.body) })
+    console.log('req.body 전체:', JSON.stringify(req.body))
+
     if (!title || !content || !category) {
+      console.log('필수 필드 누락:', { title: !!title, content: !!content, category: !!category })
       return res.status(400).json({ error: '제목, 내용, 카테고리를 입력해주세요.' })
     }
 
-    if (!['diary', 'qa', 'free'].includes(category)) {
+    // 카테고리 검증 및 정규화 (먼저 정규화 후 검증)
+    const normalizedCategory = String(category || '').toLowerCase().trim()
+    console.log('카테고리 처리 - 원본:', category, '타입:', typeof category, '정규화:', normalizedCategory)
+    
+    if (!['diary', 'qa', 'free'].includes(normalizedCategory)) {
+      console.log('유효하지 않은 카테고리:', category, '-> 정규화:', normalizedCategory)
       return res.status(400).json({ error: '유효하지 않은 카테고리입니다.' })
     }
 
@@ -240,13 +341,18 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
     const post = new Post({
       title,
       content,
-      category,
+      category: normalizedCategory,
       author: userId,
       authorName: user.name,
       images
     })
 
     await post.save()
+    console.log('게시글 작성 완료 - 원본 카테고리:', category, '정규화된 카테고리:', normalizedCategory, '저장된 카테고리:', post.category, '제목:', title)
+    
+    // 저장 후 실제 DB에서 확인
+    const savedPost = await Post.findById(post._id).select('category title').lean()
+    console.log('DB에 저장된 실제 값:', savedPost)
 
     res.status(201).json({
       message: '게시글이 작성되었습니다.',
