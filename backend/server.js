@@ -1187,18 +1187,27 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
   const allDates = Object.keys(dailyForecast)
   console.log(`날씨 API - 필터링 전 모든 날짜: ${allDates.join(', ')}`)
   
-  const sortedDates = allDates
+  // 어제 날짜를 dailyForecast에서 완전히 제거
+  Object.keys(dailyForecast).forEach(dateKey => {
+    const dateKeyNum = parseInt(dateKey.replace(/-/g, ''))
+    if (dateKeyNum < todayKeyNum) {
+      console.log(`날씨 API - dailyForecast에서 어제 날짜 삭제: ${dateKey}`)
+      delete dailyForecast[dateKey]
+    }
+  })
+  
+  const sortedDates = Object.keys(dailyForecast)
     .map(dateKey => ({
       dateKey,
       dateNum: parseInt(dateKey.replace(/-/g, ''))
     }))
     .filter(({ dateKey, dateNum }) => {
-      // 오늘 날짜 이상만 포함 (어제는 완전히 제외)
-      const isTodayOrAfter = dateNum >= todayKeyNum
-      if (!isTodayOrAfter) {
-        console.log(`날씨 API - 어제 날짜 필터링 제외: ${dateKey} (${dateNum} < ${todayKeyNum})`)
+      // 오늘 날짜 이상만 포함 (어제는 완전히 제외) - 이중 체크
+      if (dateNum < todayKeyNum || dateKey < todayKey) {
+        console.error(`날씨 API - 오류: 어제 날짜가 여전히 존재함! ${dateKey} (${dateNum} < ${todayKeyNum})`)
+        return false
       }
-      return isTodayOrAfter
+      return true
     })
     .sort((a, b) => a.dateNum - b.dateNum) // 날짜순 정렬
     .slice(0, 5) // 정확히 5일만
@@ -1206,24 +1215,32 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
   
   console.log(`날씨 API - 오늘 날짜: ${todayKey} (${todayKeyNum}), 필터링 후 날짜 개수: ${sortedDates.length}, 날짜들: ${sortedDates.join(', ')}`)
   
-  // 어제 날짜가 포함되어 있으면 경고
+  // 어제 날짜가 포함되어 있으면 에러
   sortedDates.forEach(dateKey => {
     const dateKeyNum = parseInt(dateKey.replace(/-/g, ''))
     if (dateKeyNum < todayKeyNum) {
-      console.error(`날씨 API - 오류: 어제 날짜가 포함됨: ${dateKey} (${dateKeyNum} < ${todayKeyNum})`)
+      console.error(`날씨 API - 치명적 오류: 어제 날짜가 최종 결과에 포함됨! ${dateKey} (${dateKeyNum} < ${todayKeyNum})`)
     }
   })
   
   sortedDates.forEach(dateKey => {
-    // 한 번 더 확인: 어제 날짜는 절대 포함하지 않음 (이중 체크)
+    // 한 번 더 확인: 어제 날짜는 절대 포함하지 않음 (삼중 체크)
     const dateKeyNum = parseInt(dateKey.replace(/-/g, ''))
     if (dateKeyNum < todayKeyNum || dateKey < todayKey) {
       console.error(`날씨 API - 오류: 어제 날짜가 최종 결과에 포함됨! ${dateKey} (${dateKeyNum} < ${todayKeyNum}) - 건너뜀`)
       return // 이 날짜는 건너뛰기
     }
     
+    // dailyForecast에 해당 날짜가 없으면 건너뛰기 (이미 삭제된 경우)
+    if (!dailyForecast[dateKey]) {
+      console.log(`날씨 API - dailyForecast에 ${dateKey} 없음 (이미 삭제됨)`)
+      return
+    }
+    
     const day = dailyForecast[dateKey]
-    const date = new Date(dateKey + 'T00:00:00+09:00')
+    // 날짜를 직접 파싱 (시간대 문제 방지)
+    const [year, month, dayNum] = dateKey.split('-').map(Number)
+    const date = new Date(year, month - 1, dayNum) // 월은 0부터 시작하므로 -1
     const dayNames = ['일', '월', '화', '수', '목', '금', '토']
     
     // 오전 데이터 (9시 시간대 기준, 없으면 가장 가까운 시간)
@@ -1253,8 +1270,8 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
         result.push({
           date: dateKey,
           dayName: dayNames[date.getDay()],
-          month: date.getMonth() + 1,
-          day: date.getDate(),
+          month: month, // 직접 파싱한 월 사용
+          day: dayNum, // 직접 파싱한 일 사용
           period: '오전',
           tempMin: Math.round(Math.min(...day.morning.temps)),
           tempMax: Math.round(Math.max(...day.morning.temps)),
@@ -1306,8 +1323,8 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
         result.push({
           date: dateKey,
           dayName: dayNames[date.getDay()],
-          month: date.getMonth() + 1,
-          day: date.getDate(),
+          month: month, // 직접 파싱한 월 사용
+          day: dayNum, // 직접 파싱한 일 사용
           period: '오후',
           tempMin: Math.round(Math.min(...day.afternoon.temps)),
           tempMax: Math.round(Math.max(...day.afternoon.temps)),
@@ -1333,7 +1350,19 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
     }
   })
   
-  return { code, lat, lon, forecast: result }
+  // 최종 결과에서도 어제 날짜 제거 (최종 안전장치)
+  const finalResult = result.filter(item => {
+    const itemDateNum = parseInt(item.date.replace(/-/g, ''))
+    if (itemDateNum < todayKeyNum) {
+      console.error(`날씨 API - 최종 결과에서 어제 날짜 제거: ${item.date}`)
+      return false
+    }
+    return true
+  })
+  
+  console.log(`날씨 API - 최종 반환 날짜: ${finalResult.map(r => r.date).join(', ')}`)
+  
+  return { code, lat, lon, forecast: finalResult }
 }
 
 app.listen(PORT, '0.0.0.0', () => {
