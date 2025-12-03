@@ -52,6 +52,8 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      - VITE_KAKAO_MAP_API_KEY=2558d942f5694586673df72d72e089b8
     depends_on:
       - backend
     restart: unless-stopped
