@@ -35,6 +35,13 @@ services:
       - NODE_ENV=development
       - PORT=5000
       - MONGODB_URI=mongodb://admin:admin123@mongodb:27017/hiking?authSource=admin
+      - KAKAO_REST_API_KEY=75218448ddb01cb67aec079a8dbd61ae
+      - KAKAO_CLIENT_SECRET=jqAC1gVOlf7cBhb500rReivNfJ3o5F59
+      - KAKAO_REDIRECT_URI=http://192.168.0.242:5000/api/auth/kakao/callback
+      - FRONTEND_URL=http://192.168.0.242:3000
+      - NAVER_CLIENT_ID=bPUAgB6QZBRBZrL3G1CN
+      - NAVER_CLIENT_SECRET=9TzCuTvpBJ
+      - NAVER_REDIRECT_URI=http://192.168.0.242:5000/api/auth/naver/callback
     depends_on:
       mongodb:
         condition: service_healthy

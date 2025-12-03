@@ -620,5 +620,288 @@ router.delete('/delete', authenticateToken, async (req, res) => {
   }
 })
 
+// 소셜 로그인 라우트
+// 카카오 로그인 시작
+router.get('/kakao', (req, res) => {
+  const KAKAO_REST_API_KEY = process.env.KAKAO_REST_API_KEY || '75218448ddb01cb67aec079a8dbd61ae'
+  // 백엔드로 콜백 받기
+  const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI || 'http://192.168.0.242:5000/api/auth/kakao/callback'
+  
+  // 카카오 OAuth URL 생성
+  const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code`
+  
+  console.log('카카오 로그인 시작')
+  console.log('- Client ID:', KAKAO_REST_API_KEY)
+  console.log('- Redirect URI:', REDIRECT_URI)
+  console.log('- Full URL:', kakaoAuthURL)
+  
+  // CORS 헤더 설정 (필요한 경우)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.redirect(kakaoAuthURL)
+})
+
+// 카카오 로그인 콜백
+router.get('/kakao/callback', async (req, res) => {
+  try {
+    const { code, error, error_description } = req.query
+    const FRONTEND_URL = process.env.FRONTEND_URL || 'http://192.168.0.242:3000'
+    
+    console.log('카카오 콜백 받음 - code:', code ? '있음' : '없음', 'error:', error, 'error_description:', error_description)
+    
+    if (error) {
+      console.error('카카오 OAuth 오류:', error, error_description)
+      return res.redirect(`${FRONTEND_URL}/login?error=kakao_oauth_error&message=${encodeURIComponent(error_description || error)}`)
+    }
+    
+    if (!code) {
+      console.error('카카오 인증 코드 없음')
+      return res.redirect(`${FRONTEND_URL}/login?error=kakao_auth_failed`)
+    }
+
+    const KAKAO_REST_API_KEY = process.env.KAKAO_REST_API_KEY || '75218448ddb01cb67aec079a8dbd61ae'
+    const KAKAO_CLIENT_SECRET = process.env.KAKAO_CLIENT_SECRET || 'jqAC1gVOlf7cBhb500rReivNfJ3o5F59'
+    const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI || 'http://192.168.0.242:5000/api/auth/kakao/callback'
+
+    // 액세스 토큰 요청
+    const tokenParams = new URLSearchParams({
+      grant_type: 'authorization_code',
+      client_id: KAKAO_REST_API_KEY,
+      redirect_uri: REDIRECT_URI,
+      code: code
+    })
+    
+    // Client Secret이 있으면 추가
+    if (KAKAO_CLIENT_SECRET) {
+      tokenParams.append('client_secret', KAKAO_CLIENT_SECRET)
+    }
+
+    const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: tokenParams
+    })
+
+    const tokenData = await tokenResponse.json()
+    console.log('카카오 토큰 응답:', tokenData.error ? tokenData : '성공')
+    if (!tokenData.access_token) {
+      console.error('카카오 토큰 요청 실패:', JSON.stringify(tokenData, null, 2))
+      return res.redirect(`${FRONTEND_URL}/login?error=kakao_token_failed&message=${encodeURIComponent(tokenData.error_description || tokenData.error || '토큰 요청 실패')}`)
+    }
+
+    // 사용자 정보 요청
+    const userInfoResponse = await fetch('https://kapi.kakao.com/v2/user/me', {
+      headers: {
+        'Authorization': `Bearer ${tokenData.access_token}`
+      }
+    })
+
+    const kakaoUser = await userInfoResponse.json()
+    console.log('카카오 사용자 정보 응답:', kakaoUser.error ? kakaoUser : '성공')
+    if (!kakaoUser.id) {
+      console.error('카카오 사용자 정보 요청 실패:', JSON.stringify(kakaoUser, null, 2))
+      return res.redirect(`${FRONTEND_URL}/login?error=kakao_user_info_failed&message=${encodeURIComponent(kakaoUser.msg || '사용자 정보 요청 실패')}`)
+    }
+
+    // DB에서 사용자 찾기 또는 생성
+    const socialId = `kakao_${kakaoUser.id}`
+    let user = await User.findOne({ socialId, socialProvider: 'kakao' })
+
+    if (!user) {
+      // 신규 사용자 생성
+      const kakaoAccount = kakaoUser.kakao_account || {}
+      const profile = kakaoAccount.profile || {}
+      
+      // 고유한 ID 생성 (카카오 ID 기반)
+      let userId = `kakao_${kakaoUser.id}`
+      let counter = 1
+      while (await User.findOne({ id: userId })) {
+        userId = `kakao_${kakaoUser.id}_${counter}`
+        counter++
+      }
+
+      user = new User({
+        id: userId,
+        name: profile.nickname || kakaoAccount.name || `카카오사용자${kakaoUser.id}`,
+        password: Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12).toUpperCase(), // 임시 비밀번호
+        gender: 'male', // 기본값
+        fitnessLevel: 'beginner', // 기본값
+        birthYear: new Date().getFullYear() - 25, // 기본값
+        socialId: socialId,
+        socialProvider: 'kakao',
+        profileImage: profile.profile_image_url || null
+      })
+      await user.save()
+      console.log('카카오 신규 사용자 DB 저장 완료:', user.id, user.name)
+    }
+
+    // JWT 토큰 생성
+    const token = jwt.sign(
+      { userId: user._id, id: user.id },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    )
+
+    // 프론트엔드로 리다이렉트 (토큰을 쿼리 파라미터로 전달)
+    console.log('카카오 로그인 성공, 사용자:', user.id, user.name)
+    res.redirect(`${FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
+      id: user.id,
+      name: user.name,
+      gender: user.gender,
+      fitnessLevel: user.fitnessLevel,
+      profileImage: user.profileImage,
+      role: user.role || 'user'
+    }))}`)
+  } catch (error) {
+    console.error('카카오 로그인 오류:', error)
+    const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'http://192.168.0.242:3000'
+    res.redirect(`${FRONTEND_URL_ERROR}/login?error=kakao_login_failed`)
+  }
+})
+
+// 네이버 로그인 시작
+router.get('/naver', (req, res) => {
+  const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID || 'bPUAgB6QZBRBZrL3G1CN'
+  // 백엔드로 콜백 받기
+  const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242:5000/api/auth/naver/callback'
+  const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+  
+  // 네이버 OAuth URL 생성
+  const naverAuthURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`
+  
+  console.log('네이버 로그인 시작')
+  console.log('- Client ID:', NAVER_CLIENT_ID)
+  console.log('- Redirect URI:', REDIRECT_URI)
+  console.log('- State:', state)
+  console.log('- Full URL:', naverAuthURL)
+  
+  // CORS 헤더 설정 (필요한 경우)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.redirect(naverAuthURL)
+})
+
+// 네이버 로그인 콜백
+router.get('/naver/callback', async (req, res) => {
+  try {
+    const { code, state, error, error_description } = req.query
+    const FRONTEND_URL = process.env.FRONTEND_URL || 'http://192.168.0.242:3000'
+    
+    console.log('네이버 콜백 받음 - code:', code ? '있음' : '없음', 'error:', error, 'error_description:', error_description)
+    
+    if (error) {
+      console.error('네이버 OAuth 오류:', error, error_description)
+      return res.redirect(`${FRONTEND_URL}/login?error=naver_oauth_error&message=${encodeURIComponent(error_description || error)}`)
+    }
+    
+    if (!code) {
+      console.error('네이버 인증 코드 없음')
+      return res.redirect(`${FRONTEND_URL}/login?error=naver_auth_failed`)
+    }
+
+    const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID || 'bPUAgB6QZBRBZrL3G1CN'
+    const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET || '9TzCuTvpBJ'
+    const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242:5000/api/auth/naver/callback'
+
+    // 액세스 토큰 요청
+    const tokenResponse = await fetch('https://nid.naver.com/oauth2.0/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: NAVER_CLIENT_ID,
+        client_secret: NAVER_CLIENT_SECRET,
+        redirect_uri: REDIRECT_URI,
+        code: code,
+        state: state
+      })
+    })
+
+    const tokenData = await tokenResponse.json()
+    console.log('네이버 토큰 응답:', tokenData.error ? tokenData : '성공')
+    if (!tokenData.access_token) {
+      console.error('네이버 토큰 요청 실패:', JSON.stringify(tokenData, null, 2))
+      return res.redirect(`${FRONTEND_URL}/login?error=naver_token_failed&message=${encodeURIComponent(tokenData.error_description || tokenData.error || '토큰 요청 실패')}`)
+    }
+
+    // 사용자 정보 요청
+    const userInfoResponse = await fetch('https://openapi.naver.com/v1/nid/me', {
+      headers: {
+        'Authorization': `Bearer ${tokenData.access_token}`
+      }
+    })
+
+    const naverUserData = await userInfoResponse.json()
+    console.log('네이버 사용자 정보 응답:', naverUserData.error ? naverUserData : '성공')
+    if (!naverUserData.response || !naverUserData.response.id) {
+      console.error('네이버 사용자 정보 요청 실패:', JSON.stringify(naverUserData, null, 2))
+      return res.redirect(`${FRONTEND_URL}/login?error=naver_user_info_failed&message=${encodeURIComponent(naverUserData.errorMessage || '사용자 정보 요청 실패')}`)
+    }
+
+    const naverUser = naverUserData.response
+
+    // DB에서 사용자 찾기 또는 생성
+    const socialId = `naver_${naverUser.id}`
+    let user = await User.findOne({ socialId, socialProvider: 'naver' })
+
+    if (!user) {
+      // 신규 사용자 생성
+      let userId = `naver_${naverUser.id}`
+      let counter = 1
+      while (await User.findOne({ id: userId })) {
+        userId = `naver_${naverUser.id}_${counter}`
+        counter++
+      }
+
+      // 성별 변환 (네이버는 M/F, 우리는 male/female)
+      const gender = naverUser.gender === 'M' ? 'male' : (naverUser.gender === 'F' ? 'female' : 'male')
+      
+      // 출생년도 추출 (YYYY 형식)
+      let birthYear = new Date().getFullYear() - 25 // 기본값
+      if (naverUser.birthyear) {
+        birthYear = parseInt(naverUser.birthyear)
+      }
+
+      user = new User({
+        id: userId,
+        name: naverUser.nickname || naverUser.name || `네이버사용자${naverUser.id}`,
+        password: Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12).toUpperCase(), // 임시 비밀번호
+        gender: gender,
+        fitnessLevel: 'beginner', // 기본값
+        birthYear: birthYear,
+        socialId: socialId,
+        socialProvider: 'naver',
+        profileImage: naverUser.profile_image || null
+      })
+      await user.save()
+      console.log('네이버 신규 사용자 DB 저장 완료:', user.id, user.name)
+    }
+
+    // JWT 토큰 생성
+    const token = jwt.sign(
+      { userId: user._id, id: user.id },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    )
+
+    // 프론트엔드로 리다이렉트 (토큰을 쿼리 파라미터로 전달)
+    console.log('네이버 로그인 성공, 사용자:', user.id, user.name, '신규:', !user.createdAt || user.createdAt > new Date(Date.now() - 10000))
+    res.redirect(`${FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
+      id: user.id,
+      name: user.name,
+      gender: user.gender,
+      fitnessLevel: user.fitnessLevel,
+      profileImage: user.profileImage,
+      role: user.role || 'user'
+    }))}`)
+  } catch (error) {
+    console.error('네이버 로그인 오류:', error)
+    const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'http://192.168.0.242:3000'
+    res.redirect(`${FRONTEND_URL_ERROR}/login?error=naver_login_failed`)
+  }
+})
+
 export default router
 
