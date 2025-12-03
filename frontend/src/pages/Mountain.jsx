@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import MountainDetail from '../components/MountainDetail'
 import Header from '../components/Header'
 import { MOUNTAIN_ROUTES } from '../utils/mountainRoutes'
+import { API_URL } from '../utils/api'
 
 // 산별 유래 정보 (필요시 확장 가능)
 const MOUNTAIN_ORIGINS = {
@@ -96,6 +98,9 @@ const MOUNTAIN_INFO = {
 function Mountain() {
   const { code } = useParams()
   const navigate = useNavigate()
+  const [mountainData, setMountainData] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   // 기존 URL 호환성: 산 이름으로 접근한 경우 코드로 변환
   const nameToCode = {
@@ -104,42 +109,142 @@ function Mountain() {
   }
   
   const actualCode = nameToCode[code] || code
-  const mountainData = MOUNTAIN_ROUTES[actualCode]
 
-  if (!mountainData) {
+  useEffect(() => {
+    const fetchMountainData = async () => {
+      setIsLoading(true)
+      setError(null)
+      
+      try {
+        // 먼저 API에서 Mountain_list 데이터 가져오기 시도
+        console.log('산 상세 정보 요청 - code:', actualCode)
+        const response = await fetch(`${API_URL}/api/mountains/${actualCode}`)
+        console.log('API 응답 상태:', response.status)
+        
+        if (response.ok) {
+          const data = await response.json()
+          console.log('API 응답 데이터:', data)
+          
+          // 에러 응답인지 확인
+          if (data.error) {
+            console.error('API 에러:', data.error)
+            throw new Error(data.error)
+          }
+          
+          // 데이터가 있는지 확인
+          if (!data.name) {
+            console.warn('API 응답에 name이 없음:', data)
+            throw new Error('산 정보를 찾을 수 없습니다')
+          }
+          
+          // API에서 가져온 데이터로 설정
+          setMountainData({
+            name: data.name,
+            code: data.code,
+            height: data.height || '정보 없음',
+            location: data.location || '정보 없음',
+            description: data.description || `${data.name}은(는) 한국의 대표적인 명산입니다.`,
+            center: data.center ? [data.center.lat, data.center.lon] : [36.5, 127.8],
+            zoom: data.zoom || 13,
+            origin: data.origin || `${data.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+          })
+        } else if (response.status === 404) {
+          console.log('API 404 - 폴백 데이터 사용')
+          // API에 없으면 기존 하드코딩된 데이터로 폴백
+          const fallbackData = MOUNTAIN_ROUTES[actualCode]
+          if (fallbackData) {
+            const mountainInfo = MOUNTAIN_INFO[actualCode] || {
+              height: '정보 없음',
+              location: '정보 없음',
+              description: `${fallbackData.name}은(는) 한국의 대표적인 명산입니다.`
+            }
+            const origin = MOUNTAIN_ORIGINS[actualCode] || `${fallbackData.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+            
+            setMountainData({
+              name: fallbackData.name,
+              code: fallbackData.code,
+              height: mountainInfo.height,
+              location: mountainInfo.location,
+              description: mountainInfo.description,
+              center: fallbackData.center,
+              zoom: fallbackData.zoom,
+              origin: origin
+            })
+          } else {
+            setError('산을 찾을 수 없습니다')
+          }
+        } else {
+          throw new Error('산 정보를 불러오는데 실패했습니다')
+        }
+      } catch (err) {
+        console.error('Error fetching mountain data:', err)
+        // 에러 발생 시 기존 하드코딩된 데이터로 폴백
+        const fallbackData = MOUNTAIN_ROUTES[actualCode]
+        if (fallbackData) {
+          const mountainInfo = MOUNTAIN_INFO[actualCode] || {
+            height: '정보 없음',
+            location: '정보 없음',
+            description: `${fallbackData.name}은(는) 한국의 대표적인 명산입니다.`
+          }
+          const origin = MOUNTAIN_ORIGINS[actualCode] || `${fallbackData.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+          
+          setMountainData({
+            name: fallbackData.name,
+            code: fallbackData.code,
+            height: mountainInfo.height,
+            location: mountainInfo.location,
+            description: mountainInfo.description,
+            center: fallbackData.center,
+            zoom: fallbackData.zoom,
+            origin: origin
+          })
+        } else {
+          setError('산을 찾을 수 없습니다')
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchMountainData()
+  }, [actualCode, API_URL])
+
+  if (isLoading) {
     return (
       <div className="mountain-detail">
         <Header />
         <main>
           <div style={{ padding: '40px', textAlign: 'center' }}>
-            <h1>산을 찾을 수 없습니다</h1>
-            <button onClick={() => navigate('/mountains-map')}>
-              산 지도로 돌아가기
-            </button>
+            <h1>산 정보를 불러오는 중...</h1>
           </div>
         </main>
       </div>
     )
   }
 
-  const mountainInfo = MOUNTAIN_INFO[actualCode] || {
-    height: '정보 없음',
-    location: '정보 없음',
-    description: `${mountainData.name}은(는) 한국의 대표적인 명산입니다.`
+  if (error || !mountainData) {
+    return (
+      <div className="mountain-detail">
+        <Header />
+        <main>
+          <div style={{ padding: '40px', textAlign: 'center' }}>
+            <h1>{error || '산을 찾을 수 없습니다'}</h1>
+          </div>
+        </main>
+      </div>
+    )
   }
-
-  const origin = MOUNTAIN_ORIGINS[actualCode] || `${mountainData.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
 
   return (
     <MountainDetail
       name={mountainData.name}
       code={mountainData.code}
-      height={mountainInfo.height}
-      location={mountainInfo.location}
-      description={mountainInfo.description}
+      height={mountainData.height}
+      location={mountainData.location}
+      description={mountainData.description}
       center={mountainData.center}
       zoom={mountainData.zoom}
-      origin={origin}
+      origin={mountainData.origin}
     />
   )
 }
