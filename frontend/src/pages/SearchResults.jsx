@@ -344,13 +344,15 @@ function SearchResults() {
                     <div className="results-category">
                       <h3 className="category-title">산</h3>
                       <div className="results-list">
-                        {mountainResults.map((mountain) => {
+                        {mountainResults.map((mountain, index) => {
                           const courses = mountainCourses[mountain.code] || []
                           const courseCount = courses.length
+                          // 고유 key 생성: _id가 있으면 사용, 없으면 code와 index 조합
+                          const uniqueKey = mountain._id || `${mountain.code}-${index}`
                           
                           return (
                             <Link
-                              key={mountain.code}
+                              key={uniqueKey}
                               to={`/mountain/${mountain.code}`}
                               className="result-item"
                             >

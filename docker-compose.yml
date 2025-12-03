@@ -42,6 +42,7 @@ services:
       - NAVER_CLIENT_ID=bPUAgB6QZBRBZrL3G1CN
       - NAVER_CLIENT_SECRET=9TzCuTvpBJ
       - NAVER_REDIRECT_URI=http://192.168.0.242:5000/api/auth/naver/callback
+      - OPENWEATHER_API_KEY=5845f67e1cb9eac922b39d43844a8fc1
     depends_on:
       mongodb:
         condition: service_healthy

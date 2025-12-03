@@ -838,6 +838,504 @@ app.get('/api/mountains/:code/spots', async (req, res) => {
   }
 })
 
+// 산별 날씨 정보 (5일 예보)
+app.get('/api/mountains/:code/weather', async (req, res) => {
+  try {
+    const { code } = req.params
+    const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY || '5845f67e1cb9eac922b39d43844a8fc1'
+    
+    // 먼저 /api/mountains/:code를 호출해서 center 정보 가져오기 (가장 확실한 방법)
+    let lat = null
+    let lon = null
+    
+    try {
+      // 내부적으로 직접 DB 조회 (더 효율적)
+      const mongoose = await import('mongoose')
+      if (mongoose.default.connection.readyState === 1) {
+        const db = mongoose.default.connection.db
+        const collections = await db.listCollections().toArray()
+        const actualCollectionName = collections.find(c => 
+          c.name.toLowerCase() === 'mountain_list' || 
+          c.name.toLowerCase() === 'mountain_lists'
+        )?.name || 'Mountain_list'
+        
+        const actualCollection = db.collection(actualCollectionName)
+        
+        const codeStr = String(code)
+        let codeNum = parseInt(code)
+        if (isNaN(codeNum)) codeNum = null
+        
+        let mountain = null
+        
+        // ObjectId로 시도
+        if (code.match(/^[0-9a-fA-F]{24}$/)) {
+          mountain = await actualCollection.findOne({ _id: new mongoose.default.Types.ObjectId(code) })
+        }
+        
+        // mntilistno로 시도
+        if (!mountain) {
+          const query = { $or: [] }
+          if (codeNum !== null) {
+            query.$or.push(
+              { mntilistno: codeNum },
+              { mntilistno: parseFloat(code) },
+              { 'trail_match.mountain_info.mntilistno': codeNum },
+              { 'trail_match.mountain_info.mntilistno': parseFloat(code) }
+            )
+          }
+          query.$or.push(
+            { mntilistno: codeStr },
+            { mntilistno: code },
+            { 'trail_match.mountain_info.mntilistno': codeStr },
+            { 'trail_match.mountain_info.mntilistno': code }
+          )
+          mountain = await actualCollection.findOne(query)
+        }
+        
+        if (mountain) {
+          // /api/mountains/:code와 동일한 center 매핑 로직 사용
+          const mountainInfo = mountain.trail_match?.mountain_info || {}
+          const mappedCenter = mountain.center || 
+            (mountain.MNTN_CTR ? { 
+              lat: mountain.MNTN_CTR.lat || mountain.MNTN_CTR[0], 
+              lon: mountain.MNTN_CTR.lon || mountain.MNTN_CTR[1] 
+            } : null) || 
+            (mountain.coordinates ? { 
+              lat: mountain.coordinates.lat, 
+              lon: mountain.coordinates.lon 
+            } : null) ||
+            (mountain.lat && (mountain.lon || mountain.lng) ? {
+              lat: mountain.lat,
+              lon: mountain.lon || mountain.lng
+            } : null)
+          
+          if (mappedCenter && mappedCenter.lat && mappedCenter.lon) {
+            lat = mappedCenter.lat
+            lon = mappedCenter.lon
+            console.log(`날씨 API - /api/mountains와 동일한 로직으로 좌표 찾음: lat=${lat}, lon=${lon}`)
+          }
+        }
+      }
+    } catch (err) {
+      console.error('날씨 API - 좌표 찾기 오류:', err)
+    }
+    
+    // 좌표가 없으면 추가로 찾기 시도
+    if (!lat || !lon) {
+      // 실제 컬렉션 이름 찾기
+      const mongoose = await import('mongoose')
+      if (mongoose.default.connection.readyState === 1) {
+        const db = mongoose.default.connection.db
+        const collections = await db.listCollections().toArray()
+        const actualCollectionName = collections.find(c => 
+          c.name.toLowerCase() === 'mountain_list' || 
+          c.name.toLowerCase() === 'mountain_lists'
+        )?.name || 'Mountain_list'
+        
+        const actualCollection = db.collection(actualCollectionName)
+        
+        // 다양한 방법으로 산 찾기
+        const codeStr = String(code)
+        let codeNum = parseInt(code)
+        if (isNaN(codeNum)) codeNum = null
+        
+        let foundMountain = null
+        
+        // ObjectId로 시도
+        if (code.match(/^[0-9a-fA-F]{24}$/)) {
+          foundMountain = await actualCollection.findOne({ _id: new mongoose.default.Types.ObjectId(code) })
+        }
+        
+        // mntilistno로 시도
+        if (!foundMountain) {
+          foundMountain = await actualCollection.findOne({ 
+            $or: [
+              { mntilistno: code },
+              { mntilistno: codeStr },
+              { mntilistno: codeNum },
+              { 'trail_match.mountain_info.mntilistno': code },
+              { 'trail_match.mountain_info.mntilistno': codeStr },
+              { 'trail_match.mountain_info.mntilistno': codeNum }
+            ]
+          })
+        }
+        
+        if (foundMountain) {
+          // /api/mountains/:code와 동일한 center 매핑 로직 사용
+          const mappedCenter = foundMountain.center || 
+            (foundMountain.MNTN_CTR ? { 
+              lat: foundMountain.MNTN_CTR.lat || foundMountain.MNTN_CTR[0] || foundMountain.MNTN_CTR.y, 
+              lon: foundMountain.MNTN_CTR.lon || foundMountain.MNTN_CTR[1] || foundMountain.MNTN_CTR.x 
+            } : null) || 
+            (foundMountain.coordinates ? { 
+              lat: foundMountain.coordinates.lat, 
+              lon: foundMountain.coordinates.lon 
+            } : null) ||
+            (foundMountain.lat && (foundMountain.lon || foundMountain.lng) ? {
+              lat: foundMountain.lat,
+              lon: foundMountain.lon || foundMountain.lng
+            } : null)
+          
+          if (mappedCenter && mappedCenter.lat && mappedCenter.lon) {
+            lat = mappedCenter.lat
+            lon = mappedCenter.lon
+            console.log(`날씨 API - /api/mountains와 동일한 로직으로 좌표 찾음: lat=${lat}, lon=${lon}`)
+          } else {
+            // 좌표 찾기 - 다양한 필드명 확인 (fallback)
+            if (foundMountain.lat && (foundMountain.lon || foundMountain.lng)) {
+              lat = foundMountain.lat
+              lon = foundMountain.lon || foundMountain.lng
+              console.log(`날씨 API - DB에서 lat/lng로 좌표 찾음: lat=${lat}, lon=${lon}`)
+            } else if (foundMountain.center) {
+              if (foundMountain.center.lat && foundMountain.center.lon) {
+                lat = foundMountain.center.lat
+                lon = foundMountain.center.lon
+                console.log(`날씨 API - DB에서 center 객체로 좌표 찾음: lat=${lat}, lon=${lon}`)
+              } else if (Array.isArray(foundMountain.center) && foundMountain.center.length >= 2) {
+                lat = foundMountain.center[0]
+                lon = foundMountain.center[1]
+                console.log(`날씨 API - DB에서 center 배열로 좌표 찾음: lat=${lat}, lon=${lon}`)
+              }
+            } else if (foundMountain.MNTN_CTR) {
+              if (Array.isArray(foundMountain.MNTN_CTR) && foundMountain.MNTN_CTR.length >= 2) {
+                lat = foundMountain.MNTN_CTR[0]
+                lon = foundMountain.MNTN_CTR[1]
+                console.log(`날씨 API - DB에서 MNTN_CTR 배열로 좌표 찾음: lat=${lat}, lon=${lon}`)
+              } else if (foundMountain.MNTN_CTR.lat && foundMountain.MNTN_CTR.lon) {
+                lat = foundMountain.MNTN_CTR.lat
+                lon = foundMountain.MNTN_CTR.lon
+                console.log(`날씨 API - DB에서 MNTN_CTR 객체로 좌표 찾음: lat=${lat}, lon=${lon}`)
+              }
+            } else if (foundMountain.trail_match?.mountain_info) {
+              const info = foundMountain.trail_match.mountain_info
+              if (info.lat && (info.lon || info.lng)) {
+                lat = info.lat
+                lon = info.lon || info.lng
+                console.log(`날씨 API - DB에서 trail_match.mountain_info로 좌표 찾음: lat=${lat}, lon=${lon}`)
+              } else if (info.center) {
+                if (Array.isArray(info.center) && info.center.length >= 2) {
+                  lat = info.center[0]
+                  lon = info.center[1]
+                  console.log(`날씨 API - DB에서 trail_match.mountain_info.center 배열로 좌표 찾음: lat=${lat}, lon=${lon}`)
+                } else if (info.center.lat && info.center.lon) {
+                  lat = info.center.lat
+                  lon = info.center.lon
+                  console.log(`날씨 API - DB에서 trail_match.mountain_info.center 객체로 좌표 찾음: lat=${lat}, lon=${lon}`)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    // 여전히 좌표가 없으면 기본값 사용 (서울) - 경고 로그
+    if (!lat || !lon) {
+      console.warn(`날씨 API - 좌표를 찾을 수 없어 기본값(서울) 사용: code=${code}`)
+      lat = 37.5665
+      lon = 126.9780
+    }
+    
+    console.log(`날씨 API - 최종 사용 좌표: lat=${lat}, lon=${lon}, code=${code}`)
+    
+    // OpenWeatherMap API 호출 (3시간 간격, 5일 예보)
+    const openWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast'
+    const openWeatherParams = new URLSearchParams({
+      lat: lat.toString(),
+      lon: lon.toString(),
+      appid: OPENWEATHER_API_KEY,
+      units: 'metric',
+      lang: 'kr'
+    })
+    
+    console.log(`날씨 API - OpenWeatherMap API 호출: lat=${lat}, lon=${lon}`)
+    const forecastResponse = await fetch(`${openWeatherUrl}?${openWeatherParams}`)
+    if (!forecastResponse.ok) {
+      const errorText = await forecastResponse.text()
+      console.error(`날씨 API - OpenWeatherMap API 실패: ${forecastResponse.status}`, errorText)
+      throw new Error(`Weather API error: ${forecastResponse.status}`)
+    }
+    
+    const forecastData = await forecastResponse.json()
+    console.log(`날씨 API - OpenWeatherMap 응답 받음: list.length=${forecastData.list?.length}`)
+    
+    const result = await processOpenWeatherData(forecastData, code, lat, lon)
+    console.log(`날씨 API - 처리 완료: forecast.length=${result.forecast?.length}`)
+    return res.json(result)
+  } catch (error) {
+    console.error('날씨 정보 가져오기 오류:', error)
+    res.status(500).json({ 
+      error: '날씨 정보를 가져오는데 실패했습니다.',
+      message: error.message 
+    })
+  }
+})
+
+// OpenWeatherMap 데이터 처리 함수 (3시간 간격, 5일 예보)
+// current_weather_refine.json 형식으로 변환
+async function processOpenWeatherData(forecastData, code, lat, lon) {
+  const dailyForecast = {}
+  const city = forecastData.city || {}
+  
+  // 오늘 날짜 기준으로 필터링 (어제 제외) - 한국 시간 기준 (KST, UTC+9)
+  const now = new Date()
+  // 한국 시간대(UTC+9)로 변환
+  const kstOffset = 9 * 60 * 60 * 1000 // 9시간을 밀리초로
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60 * 1000)
+  const koreaTime = new Date(utcTime + kstOffset)
+  
+  const todayYear = koreaTime.getFullYear()
+  const todayMonth = String(koreaTime.getMonth() + 1).padStart(2, '0')
+  const todayDay = String(koreaTime.getDate()).padStart(2, '0')
+  const todayKey = `${todayYear}-${todayMonth}-${todayDay}`
+  const todayKeyNum = parseInt(todayKey.replace(/-/g, ''))
+  
+  console.log(`날씨 API - 현재 시간 (UTC): ${now.toISOString()}`)
+  console.log(`날씨 API - 오늘 날짜 (KST): ${todayKey} (숫자: ${todayKeyNum})`)
+  
+  // 3시간 간격 데이터를 일별로 그룹화하고 오전/오후로 분류
+  forecastData.list.forEach(item => {
+    const utcTimestamp = item.dt * 1000
+    const utcDate = new Date(utcTimestamp)
+    const formatter = new Intl.DateTimeFormat('ko-KR', {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      hour12: false
+    })
+    const parts = formatter.formatToParts(utcDate)
+    const year = parts.find(p => p.type === 'year').value
+    const month = parts.find(p => p.type === 'month').value
+    const day = parts.find(p => p.type === 'day').value
+    const hour = parseInt(parts.find(p => p.type === 'hour').value)
+    const dateKey = `${year}-${month}-${day}`
+    
+    // 오늘 날짜 이후만 포함 (어제 완전히 제외) - 날짜를 숫자로 변환해서 엄격하게 비교
+    const dateKeyNum = parseInt(dateKey.replace(/-/g, ''))
+    const todayKeyNum = parseInt(todayKey.replace(/-/g, ''))
+    
+    // 어제 날짜는 완전히 제외 (오늘 날짜부터만 포함) - 엄격한 비교
+    if (dateKeyNum < todayKeyNum) {
+      console.log(`날씨 API - 어제 날짜 제외: ${dateKey} (${dateKeyNum}) < 오늘: ${todayKey} (${todayKeyNum})`)
+      return // 어제 날짜는 완전히 제외
+    }
+    
+    // 오늘 날짜보다 작으면 무조건 제외 (안전장치)
+    if (dateKey < todayKey) {
+      console.log(`날씨 API - 어제 날짜 제외 (문자열 비교): ${dateKey} < ${todayKey}`)
+      return
+    }
+    
+    // 오늘 날짜부터만 포함 (오전/오후 모두 표시)
+    
+    if (!dailyForecast[dateKey]) {
+      dailyForecast[dateKey] = {
+        date: dateKey,
+        morning: { temps: [], weathers: [], winds: [], icons: [], items: [] },
+        afternoon: { temps: [], weathers: [], winds: [], icons: [], items: [] }
+      }
+    }
+    
+    // current_weather_refine.json 형식으로 변환하여 저장
+    const refinedItem = {
+      coord: city.coord || { lat, lon },
+      weather: item.weather,
+      main: {
+        temp: item.main.temp,
+        feels_like: item.main.feels_like,
+        temp_min: item.main.temp_min,
+        temp_max: item.main.temp_max,
+        humidity: item.main.humidity
+      },
+      wind: item.wind || {},
+      clouds: item.clouds || {},
+      dt: item.dt,
+      sys: {
+        country: city.country || 'KR',
+        sunrise: city.sunrise,
+        sunset: city.sunset
+      },
+      timezone: city.timezone || 32400,
+      id: city.id || null,
+      name: city.name || null,
+      cod: forecastData.cod || '200',
+      hour: hour // 시간 정보 추가
+    }
+    
+    // 오전(0-11시)과 오후(12-23시)로 분류
+    if (hour < 12) {
+      dailyForecast[dateKey].morning.temps.push(item.main.temp)
+      dailyForecast[dateKey].morning.weathers.push(item.weather[0])
+      dailyForecast[dateKey].morning.winds.push(item.wind?.speed || 0)
+      dailyForecast[dateKey].morning.icons.push(item.weather[0].icon)
+      dailyForecast[dateKey].morning.items.push(refinedItem)
+    } else {
+      dailyForecast[dateKey].afternoon.temps.push(item.main.temp)
+      dailyForecast[dateKey].afternoon.weathers.push(item.weather[0])
+      dailyForecast[dateKey].afternoon.winds.push(item.wind?.speed || 0)
+      dailyForecast[dateKey].afternoon.icons.push(item.weather[0].icon)
+      dailyForecast[dateKey].afternoon.items.push(refinedItem)
+    }
+  })
+  
+  // 일별 데이터 변환 (오늘부터 정확히 5일) - 오전/오후로 분리
+  const result = []
+  
+  // 날짜를 숫자로 변환해서 정확히 필터링 (어제 완전히 제외)
+  const allDates = Object.keys(dailyForecast)
+  console.log(`날씨 API - 필터링 전 모든 날짜: ${allDates.join(', ')}`)
+  
+  const sortedDates = allDates
+    .map(dateKey => ({
+      dateKey,
+      dateNum: parseInt(dateKey.replace(/-/g, ''))
+    }))
+    .filter(({ dateKey, dateNum }) => {
+      // 오늘 날짜 이상만 포함 (어제는 완전히 제외)
+      const isTodayOrAfter = dateNum >= todayKeyNum
+      if (!isTodayOrAfter) {
+        console.log(`날씨 API - 어제 날짜 필터링 제외: ${dateKey} (${dateNum} < ${todayKeyNum})`)
+      }
+      return isTodayOrAfter
+    })
+    .sort((a, b) => a.dateNum - b.dateNum) // 날짜순 정렬
+    .slice(0, 5) // 정확히 5일만
+    .map(({ dateKey }) => dateKey) // dateKey만 추출
+  
+  console.log(`날씨 API - 오늘 날짜: ${todayKey} (${todayKeyNum}), 필터링 후 날짜 개수: ${sortedDates.length}, 날짜들: ${sortedDates.join(', ')}`)
+  
+  // 어제 날짜가 포함되어 있으면 경고
+  sortedDates.forEach(dateKey => {
+    const dateKeyNum = parseInt(dateKey.replace(/-/g, ''))
+    if (dateKeyNum < todayKeyNum) {
+      console.error(`날씨 API - 오류: 어제 날짜가 포함됨: ${dateKey} (${dateKeyNum} < ${todayKeyNum})`)
+    }
+  })
+  
+  sortedDates.forEach(dateKey => {
+    // 한 번 더 확인: 어제 날짜는 절대 포함하지 않음 (이중 체크)
+    const dateKeyNum = parseInt(dateKey.replace(/-/g, ''))
+    if (dateKeyNum < todayKeyNum || dateKey < todayKey) {
+      console.error(`날씨 API - 오류: 어제 날짜가 최종 결과에 포함됨! ${dateKey} (${dateKeyNum} < ${todayKeyNum}) - 건너뜀`)
+      return // 이 날짜는 건너뛰기
+    }
+    
+    const day = dailyForecast[dateKey]
+    const date = new Date(dateKey + 'T00:00:00+09:00')
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토']
+    
+    // 오전 데이터 (9시 시간대 기준, 없으면 가장 가까운 시간)
+    if (day.morning.items.length > 0) {
+      let morningItem = null
+      let morningHour = 9
+      
+      // 9시 시간대 찾기
+      const morning9 = day.morning.items.find(item => item.hour === 9)
+      if (morning9) {
+        morningItem = morning9
+        morningHour = 9
+      } else {
+        // 가장 가까운 시간대 찾기
+        let minDiff = Infinity
+        day.morning.items.forEach(item => {
+          const diff = Math.abs(item.hour - 9)
+          if (diff < minDiff) {
+            minDiff = diff
+            morningItem = item
+            morningHour = item.hour
+          }
+        })
+      }
+      
+      if (morningItem) {
+        result.push({
+          date: dateKey,
+          dayName: dayNames[date.getDay()],
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+          period: '오전',
+          tempMin: Math.round(Math.min(...day.morning.temps)),
+          tempMax: Math.round(Math.max(...day.morning.temps)),
+          weather: morningItem.weather[0],
+          windSpeed: (day.morning.winds.reduce((a, b) => a + b, 0) / day.morning.winds.length).toFixed(1),
+          icon: morningItem.weather[0].icon,
+          // current_weather_refine.json 형식 데이터 추가
+          refined: {
+            coord: morningItem.coord,
+            weather: morningItem.weather,
+            main: morningItem.main,
+            wind: morningItem.wind,
+            clouds: morningItem.clouds,
+            dt: morningItem.dt,
+            sys: morningItem.sys,
+            timezone: morningItem.timezone,
+            id: morningItem.id,
+            name: morningItem.name,
+            cod: morningItem.cod
+          }
+        })
+      }
+    }
+    
+    // 오후 데이터 (15시 시간대 기준, 없으면 가장 가까운 시간)
+    if (day.afternoon.items.length > 0) {
+      let afternoonItem = null
+      let afternoonHour = 15
+      
+      // 15시 시간대 찾기
+      const afternoon15 = day.afternoon.items.find(item => item.hour === 15)
+      if (afternoon15) {
+        afternoonItem = afternoon15
+        afternoonHour = 15
+      } else {
+        // 가장 가까운 시간대 찾기
+        let minDiff = Infinity
+        day.afternoon.items.forEach(item => {
+          const diff = Math.abs(item.hour - 15)
+          if (diff < minDiff) {
+            minDiff = diff
+            afternoonItem = item
+            afternoonHour = item.hour
+          }
+        })
+      }
+      
+      if (afternoonItem) {
+        result.push({
+          date: dateKey,
+          dayName: dayNames[date.getDay()],
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+          period: '오후',
+          tempMin: Math.round(Math.min(...day.afternoon.temps)),
+          tempMax: Math.round(Math.max(...day.afternoon.temps)),
+          weather: afternoonItem.weather[0],
+          windSpeed: (day.afternoon.winds.reduce((a, b) => a + b, 0) / day.afternoon.winds.length).toFixed(1),
+          icon: afternoonItem.weather[0].icon,
+          // current_weather_refine.json 형식 데이터 추가
+          refined: {
+            coord: afternoonItem.coord,
+            weather: afternoonItem.weather,
+            main: afternoonItem.main,
+            wind: afternoonItem.wind,
+            clouds: afternoonItem.clouds,
+            dt: afternoonItem.dt,
+            sys: afternoonItem.sys,
+            timezone: afternoonItem.timezone,
+            id: afternoonItem.id,
+            name: afternoonItem.name,
+            cod: afternoonItem.cod
+          }
+        })
+      }
+    }
+  })
+  
+  return { code, lat, lon, forecast: result }
+}
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${PORT}`)
 })
