@@ -259,6 +259,9 @@ function MountainDetail({ name, code, height, location, description, center, zoo
             lon: data.lon, 
             forecastCount: data.forecast?.length 
           })
+          // 받은 날짜 목록 확인
+          const receivedDates = data.forecast?.map(f => f.date) || []
+          console.log('날씨 API - 받은 날짜 목록:', receivedDates)
           setWeatherData(data)
         } else {
           const errorText = await response.text()
@@ -371,14 +374,17 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                   const todayKeyNum = parseInt(todayKey.replace(/-/g, ''))
                   
                   console.log(`프론트엔드 - 오늘 날짜 (KST): ${todayKey} (숫자: ${todayKeyNum})`)
+                  console.log(`프론트엔드 - 받은 forecast 데이터:`, weatherData.forecast?.map(d => ({date: d.date, period: d.period})))
                   
                   // 날짜별로 그룹화 (어제 날짜 제외)
                   const groupedByDate = {}
+                  let excludedCount = 0
                   weatherData.forecast.forEach((day) => {
                     // 어제 날짜는 완전히 제외 (이중 체크)
                     const dateKeyNum = parseInt(day.date.replace(/-/g, ''))
                     if (dateKeyNum < todayKeyNum || day.date < todayKey) {
                       console.log(`프론트엔드 - 어제 날짜 제외: ${day.date} (${dateKeyNum}) < 오늘: ${todayKey} (${todayKeyNum})`)
+                      excludedCount++
                       return
                     }
                     
@@ -417,6 +423,8 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                     })
                     .slice(0, 5) // 정확히 5일만
                   
+                  console.log(`프론트엔드 - 제외된 날짜 개수: ${excludedCount}`)
+                  console.log(`프론트엔드 - 그룹화된 날짜: ${Object.keys(groupedByDate).join(', ')}`)
                   console.log(`프론트엔드 - 최종 표시 날짜: ${sortedGroups.map(g => g.date).join(', ')}`)
                   
                   return sortedGroups.map((group, index) => (
