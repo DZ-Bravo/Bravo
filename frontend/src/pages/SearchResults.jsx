@@ -15,6 +15,7 @@ function SearchResults() {
   
   // 검색 결과
   const [mountainResults, setMountainResults] = useState([])
+  const [mountainCourses, setMountainCourses] = useState({}) // 각 산의 등산 코스 정보
   const [postResults, setPostResults] = useState([])
   const [productResults, setProductResults] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -74,12 +75,74 @@ function SearchResults() {
     setIsLoading(true)
 
     try {
-      // 산 검색
-      const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
-        mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
-      )
-      setMountainResults(mountains)
+      // 산 검색 - API에서 모든 산 목록 가져오기
+      try {
+        const mountainsResponse = await fetch(`${API_URL}/api/mountains`)
+        console.log('산 검색 API 응답 상태:', mountainsResponse.status)
+        if (mountainsResponse.ok) {
+          const mountainsData = await mountainsResponse.json()
+          console.log('산 검색 API 응답 데이터:', {
+            total: mountainsData.total,
+            returned: mountainsData.returned,
+            mountainsCount: mountainsData.mountains?.length
+          })
+          const allMountains = mountainsData.mountains || []
+          console.log('전체 산 개수:', allMountains.length)
+          
+          // 검색어로 필터링 ("산"이라는 단어만 검색하면 모든 산 표시)
+          let filtered = []
+          if (searchTerm.trim() === '산' || searchTerm.trim() === '') {
+            // "산"만 검색하면 모든 산 표시
+            filtered = allMountains
+          } else {
+            filtered = allMountains.filter(mountain => {
+              const nameMatch = mountain.name && mountain.name.toLowerCase().includes(searchTerm.toLowerCase())
+              const locationMatch = mountain.location && mountain.location.toLowerCase().includes(searchTerm.toLowerCase())
+              const codeMatch = mountain.code && String(mountain.code).includes(searchTerm)
+              return nameMatch || locationMatch || codeMatch
+            })
+          }
+          
+          console.log('필터링된 산 개수:', filtered.length)
+          setMountainResults(filtered)
+          
+          // 각 산의 등산 코스 정보 가져오기
+          const coursesMap = {}
+          await Promise.all(
+            filtered.map(async (mountain) => {
+              try {
+                const coursesResponse = await fetch(`${API_URL}/api/mountains/${mountain.code}/courses`)
+                if (coursesResponse.ok) {
+                  const coursesData = await coursesResponse.json()
+                  coursesMap[mountain.code] = coursesData.courses || []
+                }
+              } catch (error) {
+                console.error(`산 ${mountain.name}의 코스 정보 가져오기 실패:`, error)
+                coursesMap[mountain.code] = []
+              }
+            })
+          )
+          setMountainCourses(coursesMap)
+        } else {
+          console.error('산 검색 API 실패:', mountainsResponse.status, mountainsResponse.statusText)
+          const errorText = await mountainsResponse.text()
+          console.error('에러 응답:', errorText)
+          // API 실패 시 기존 하드코딩된 목록으로 폴백
+          const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
+            mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
+          )
+          setMountainResults(mountains)
+        }
+      } catch (error) {
+        console.error('산 검색 API 오류:', error)
+        // API 실패 시 기존 하드코딩된 목록으로 폴백
+        const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
+          mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
+        )
+        setMountainResults(mountains)
+      }
 
       // 커뮤니티 게시글 검색
       try {
@@ -281,20 +344,29 @@ function SearchResults() {
                     <div className="results-category">
                       <h3 className="category-title">산</h3>
                       <div className="results-list">
-                        {mountainResults.map((mountain) => (
-                          <Link
-                            key={mountain.code}
-                            to={`/mountain/${mountain.code}`}
-                            className="result-item"
-                          >
-                            <div className="result-icon">⛰️</div>
-                            <div className="result-content">
-                              <div className="result-name">{mountain.name}</div>
-                              <div className="result-location">등산 코스 정보</div>
-                            </div>
-                            <div className="result-arrow">→</div>
-                          </Link>
-                        ))}
+                        {mountainResults.map((mountain) => {
+                          const courses = mountainCourses[mountain.code] || []
+                          const courseCount = courses.length
+                          
+                          return (
+                            <Link
+                              key={mountain.code}
+                              to={`/mountain/${mountain.code}`}
+                              className="result-item"
+                            >
+                              <div className="result-icon">⛰️</div>
+                              <div className="result-content">
+                                <div className="result-name">{mountain.name}</div>
+                                <div className="result-location">
+                                  {courseCount > 0 
+                                    ? `등산 코스 ${courseCount}개` 
+                                    : '등산 코스 정보'}
+                                </div>
+                              </div>
+                              <div className="result-arrow">→</div>
+                            </Link>
+                          )
+                        })}
                       </div>
                     </div>
                   )}
