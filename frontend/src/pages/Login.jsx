@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import { API_URL } from '../utils/api'
@@ -12,6 +12,42 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
+
+  // URL 파라미터에서 에러 메시지 확인
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const error = urlParams.get('error')
+    const message = urlParams.get('message')
+    
+    if (error) {
+      let errorMsg = '소셜 로그인에 실패했습니다.'
+      if (message) {
+        errorMsg = decodeURIComponent(message)
+      } else if (error === 'kakao_auth_failed') {
+        errorMsg = '카카오 인증에 실패했습니다.'
+      } else if (error === 'kakao_token_failed') {
+        errorMsg = '카카오 토큰 요청에 실패했습니다.'
+      } else if (error === 'kakao_user_info_failed') {
+        errorMsg = '카카오 사용자 정보를 가져오는데 실패했습니다.'
+      } else if (error === 'kakao_oauth_error') {
+        errorMsg = '카카오 OAuth 오류가 발생했습니다.'
+      } else if (error === 'naver_auth_failed') {
+        errorMsg = '네이버 인증에 실패했습니다.'
+      } else if (error === 'naver_token_failed') {
+        errorMsg = '네이버 토큰 요청에 실패했습니다.'
+      } else if (error === 'naver_user_info_failed') {
+        errorMsg = '네이버 사용자 정보를 가져오는데 실패했습니다.'
+      } else if (error === 'naver_oauth_error') {
+        errorMsg = '네이버 OAuth 오류가 발생했습니다.'
+      }
+      
+      setErrorMessage(errorMsg)
+      alert(errorMsg)
+      
+      // URL에서 에러 파라미터 제거
+      window.history.replaceState({}, document.title, window.location.pathname)
+    }
+  }, [])
 
   const handleChange = (e) => {
     setFormData({
@@ -57,8 +93,8 @@ function Login() {
   }
 
   const handleSocialLogin = (provider) => {
-    console.log(`Social login with ${provider}`)
-    // TODO: 소셜 로그인 구현
+    // 백엔드 OAuth 시작 엔드포인트로 리다이렉트
+    window.location.href = `${API_URL}/api/auth/${provider}`
   }
 
   return (
@@ -122,14 +158,6 @@ function Login() {
                 aria-label="카카오로 로그인"
               >
                 K
-              </button>
-              <button
-                type="button"
-                className="social-btn social-google"
-                onClick={() => handleSocialLogin('google')}
-                aria-label="구글로 로그인"
-              >
-                G
               </button>
             </div>
           </div>

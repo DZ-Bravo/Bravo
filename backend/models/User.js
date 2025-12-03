@@ -16,8 +16,20 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function() {
+      return !this.socialId // 소셜 로그인 사용자는 비밀번호 불필요
+    },
     minlength: 6
+  },
+  socialId: {
+    type: String,
+    sparse: true, // null 값 허용, 하지만 값이 있으면 unique
+    index: true
+  },
+  socialProvider: {
+    type: String,
+    enum: ['kakao', 'naver', 'google'],
+    default: null
   },
   gender: {
     type: String,

@@ -1,0 +1,40 @@
+{
+    "coord": {
+        "lon": 126.9642,
+        "lat": 37.445
+    },
+    "weather": [
+        {
+            "id": 802,
+            "main": "Clouds",
+            "description": "구름조금",
+            "icon": "03d"
+        }
+    ],
+    "main": {
+        "temp": -0.28,
+        "feels_like": -6.14,
+        "temp_min": -1.18,
+        "temp_max": 0.72,
+        "humidity": 25
+    },
+    "wind": {
+        "speed": 6.69,
+        "deg": 320,
+        "gust": 11.83
+    },
+    "clouds": {
+        "all": 40
+    },
+    "dt": 1764648933,
+    "sys": {
+        "country": "KR",
+        "sunrise": 1764628124,
+        "sunset": 1764663273
+    },
+    "timezone": 32400,
+    "id": 1841909,
+    "name": "Gwacheon",
+    "cod": 200
+}
+

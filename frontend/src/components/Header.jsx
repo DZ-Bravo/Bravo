@@ -67,7 +67,7 @@ function Header() {
         <div className="header-actions">
           {user ? (
             <div className="user-info">
-              <span className="user-id-display">{user.id}</span>
+              <span className="user-id-display">{user.name || user.id}</span>
               <button onClick={handleLogout} className="btn-logout">로그아웃</button>
             </div>
           ) : (
