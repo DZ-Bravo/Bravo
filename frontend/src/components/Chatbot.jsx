@@ -35,7 +35,7 @@ function Chatbot() {
   return (
     <>
       <div className="chatbot-icon" onClick={toggleChat}>
-        <span>챗봇</span>
+        <img src="/images/chatbot_icon.png" alt="챗봇" />
       </div>
       
       {isOpen && (
