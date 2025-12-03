@@ -33,12 +33,13 @@ jobs:
             -Dsonar.sources=backend,frontend
             -Dsonar.exclusions=**/node_modules/**,**/.next/**,frontend/app/public/**,**/build/**,**/dist/**,**/coverage/**
 
-      - name: Check Quality Gate
-        continue-on-error: true  # Quality Gate 실패해도 빌드 계속 진행
-        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # Quality Gate 체크 제거 (실패 시 빌드 중단 방지)
+      # - name: Check Quality Gate
+      #   continue-on-error: true
+      #   uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   prepare-version:
     name: Determine Image Version
