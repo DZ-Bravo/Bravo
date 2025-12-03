@@ -22,6 +22,7 @@ import NoticeWrite from './pages/NoticeWrite'
 import NoticeEdit from './pages/NoticeEdit'
 import CourseDetail from './pages/CourseDetail'
 import SearchResults from './pages/SearchResults'
+import AuthSuccess from './pages/AuthSuccess'
 import Chatbot from './components/Chatbot'
 import './App.css'
 
@@ -67,6 +68,7 @@ function App() {
           <Route path="/diary/write" element={<CommunityWrite />} />
           <Route path="/course/:theme" element={<CourseDetail />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/auth/success" element={<AuthSuccess />} />
         </Routes>
       </Router>
       <Chatbot />

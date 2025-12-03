@@ -156,8 +156,8 @@ function Signup() {
   }
 
   const handleSocialLogin = (provider) => {
-    console.log(`Social login with ${provider}`)
-    // TODO: 소셜 로그인 구현
+    // 백엔드 OAuth 시작 엔드포인트로 리다이렉트
+    window.location.href = `${API_URL}/api/auth/${provider}`
   }
 
   const handleCheckIdDuplicate = async () => {
@@ -449,14 +449,6 @@ function Signup() {
                 aria-label="카카오로 가입"
               >
                 K
-              </button>
-              <button
-                type="button"
-                className="social-btn social-google"
-                onClick={() => handleSocialLogin('google')}
-                aria-label="구글로 가입"
-              >
-                G
               </button>
             </div>
           </div>
