@@ -29,11 +29,6 @@ import './App.css'
 function App() {
   return (
     <>
-      <div className="snow-container">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <div key={i} className="snowflake">❄</div>
-        ))}
-      </div>
       <Router
         future={{
           v7_startTransition: true,
