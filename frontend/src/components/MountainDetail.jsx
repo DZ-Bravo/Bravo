@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import { convertArcGISToGeoJSON, transformArcGISToWGS84 } from '../utils/coordinateTransform'
 import { API_URL } from '../utils/api'
@@ -7,6 +7,8 @@ import './MountainDetail.css'
 function MountainDetail({ name, code, height, location, description, center, zoom, origin }) {
   const mapRef = useRef(null)
   const mapInstanceRef = useRef(null)
+  const [weatherData, setWeatherData] = useState(null)
+  const [weatherLoading, setWeatherLoading] = useState(true)
 
   useEffect(() => {
     let isMounted = true
@@ -225,7 +227,88 @@ function MountainDetail({ name, code, height, location, description, center, zoo
     }
   }
 
+  // 날씨 데이터 가져오기 (1시간마다 자동 업데이트)
+  useEffect(() => {
+    const fetchWeather = async () => {
+      if (!code) {
+        console.log('날씨 API - code가 없어서 요청하지 않음')
+        return
+      }
+      
+      console.log(`날씨 API - 요청 시작: code=${code}`)
+      setWeatherLoading(true)
+      try {
+        const weatherUrl = `${API_URL}/api/mountains/${code}/weather`
+        console.log(`날씨 API - 요청 URL: ${weatherUrl}`)
+        
+        // 타임아웃 설정 (30초)
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 30000)
+        
+        const response = await fetch(weatherUrl, {
+          signal: controller.signal
+        })
+        clearTimeout(timeoutId)
+        
+        console.log(`날씨 API - 응답 상태: ${response.status}`)
+        if (response.ok) {
+          const data = await response.json()
+          console.log('날씨 API - 응답 데이터:', { 
+            code: data.code, 
+            lat: data.lat, 
+            lon: data.lon, 
+            forecastCount: data.forecast?.length 
+          })
+          setWeatherData(data)
+        } else {
+          const errorText = await response.text()
+          console.error('날씨 데이터 가져오기 실패:', response.status, errorText)
+          setWeatherData(null)
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.error('날씨 데이터 가져오기 타임아웃:', error)
+        } else {
+          console.error('날씨 데이터 가져오기 오류:', error)
+        }
+        setWeatherData(null)
+      } finally {
+        setWeatherLoading(false)
+        console.log('날씨 API - 로딩 완료')
+      }
+    }
+    
+    // 즉시 한 번 실행
+    fetchWeather()
+    
+    // 1시간(3600000ms)마다 자동 업데이트
+    const interval = setInterval(() => {
+      console.log('날씨 데이터 자동 업데이트 중...')
+      fetchWeather()
+    }, 60 * 60 * 1000) // 1시간 = 3600000ms
+    
+    // 컴포넌트 언마운트 시 인터벌 정리
+    return () => clearInterval(interval)
+  }, [code, API_URL])
 
+  // 날씨 아이콘 경로 생성
+  const getWeatherIconUrl = (icon) => {
+    // public 폴더의 Weather_icon 사용
+    return `/Weather_icon/${icon}.svg`
+  }
+
+  // 날짜 포맷팅 (오전/오후 표시)
+  const formatDate = (dateStr, period) => {
+    // YYYY-MM-DD 형식의 문자열을 한국 시간으로 파싱
+    const date = new Date(dateStr + 'T00:00:00+09:00') // KST 시간대 명시
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토']
+    const dayName = dayNames[date.getDay()]
+    
+    // 오전/오후 정보 추가
+    return `${month}.${day} ${dayName} ${period}`
+  }
 
   const originText = origin || `${name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
 
@@ -267,69 +350,224 @@ function MountainDetail({ name, code, height, location, description, center, zoo
             <div className="weather-header">
               <h2>{name} 날씨</h2>
               <span className="weather-help">?</span>
-              <div className="weather-source">데이터출처: Openweather • 실시간</div>
+              <div className="weather-source">데이터출처: OpenWeatherMap • 3시간 간격</div>
             </div>
-            <div className="weather-forecast">
-              <div className="weather-day">
-                <div className="weather-day-name">11.29 토</div>
-                <div className="weather-icon">☀️</div>
-                <div className="weather-temp">
-                  <span className="temp-min">-1°</span>
-                  <span className="temp-separator">/</span>
-                  <span className="temp-max">8°</span>
-                </div>
-                <div className="weather-wind">풍속 2.8m/s</div>
+            {weatherLoading ? (
+              <div style={{ padding: '20px', textAlign: 'center' }}>날씨 정보를 불러오는 중...</div>
+            ) : weatherData && weatherData.forecast ? (
+              <div className="weather-forecast">
+                {(() => {
+                  // 오늘 날짜 기준으로 필터링 (어제 제외) - 한국 시간 기준 (KST, UTC+9)
+                  const now = new Date()
+                  // 한국 시간대(UTC+9)로 변환
+                  const kstOffset = 9 * 60 * 60 * 1000 // 9시간을 밀리초로
+                  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60 * 1000)
+                  const koreaTime = new Date(utcTime + kstOffset)
+                  
+                  const todayYear = koreaTime.getFullYear()
+                  const todayMonth = String(koreaTime.getMonth() + 1).padStart(2, '0')
+                  const todayDay = String(koreaTime.getDate()).padStart(2, '0')
+                  const todayKey = `${todayYear}-${todayMonth}-${todayDay}`
+                  const todayKeyNum = parseInt(todayKey.replace(/-/g, ''))
+                  
+                  console.log(`프론트엔드 - 오늘 날짜 (KST): ${todayKey} (숫자: ${todayKeyNum})`)
+                  
+                  // 날짜별로 그룹화 (어제 날짜 제외)
+                  const groupedByDate = {}
+                  weatherData.forecast.forEach((day) => {
+                    // 어제 날짜는 완전히 제외 (이중 체크)
+                    const dateKeyNum = parseInt(day.date.replace(/-/g, ''))
+                    if (dateKeyNum < todayKeyNum || day.date < todayKey) {
+                      console.log(`프론트엔드 - 어제 날짜 제외: ${day.date} (${dateKeyNum}) < 오늘: ${todayKey} (${todayKeyNum})`)
+                      return
+                    }
+                    
+                    if (!groupedByDate[day.date]) {
+                      groupedByDate[day.date] = {
+                        date: day.date,
+                        dayName: day.dayName,
+                        month: day.month,
+                        day: day.day,
+                        morning: null,
+                        afternoon: null
+                      }
+                    }
+                    if (day.period === '오전') {
+                      groupedByDate[day.date].morning = day
+                    } else if (day.period === '오후') {
+                      groupedByDate[day.date].afternoon = day
+                    }
+                  })
+                  
+                  // 날짜순으로 정렬하고 최대 5일만 (어제 날짜 최종 제외)
+                  const sortedGroups = Object.values(groupedByDate)
+                    .filter(group => {
+                      // 한 번 더 확인: 어제 날짜는 절대 포함하지 않음
+                      const dateKeyNum = parseInt(group.date.replace(/-/g, ''))
+                      if (dateKeyNum < todayKeyNum || group.date < todayKey) {
+                        console.error(`프론트엔드 - 오류: 어제 날짜가 그룹에 포함됨! ${group.date} - 제외`)
+                        return false
+                      }
+                      return true
+                    })
+                    .sort((a, b) => {
+                      const aNum = parseInt(a.date.replace(/-/g, ''))
+                      const bNum = parseInt(b.date.replace(/-/g, ''))
+                      return aNum - bNum
+                    })
+                    .slice(0, 5) // 정확히 5일만
+                  
+                  console.log(`프론트엔드 - 최종 표시 날짜: ${sortedGroups.map(g => g.date).join(', ')}`)
+                  
+                  return sortedGroups.map((group, index) => (
+                    <div key={index} className="weather-date-group">
+                      <div className="weather-date-header">
+                        <span className="weather-date-name">{group.month}.{group.day} {group.dayName}</span>
+                      </div>
+                      <div className="weather-periods">
+                        {group.morning && (() => {
+                          // current_weather_refine.json 형식 데이터 우선 사용
+                          const refined = group.morning.refined
+                          const icon = refined?.weather?.[0]?.icon || group.morning.icon
+                          const description = refined?.weather?.[0]?.description || group.morning.weather?.description || '날씨'
+                          const tempMin = refined ? Math.round(refined.main?.temp_min || refined.main?.temp || 0) : group.morning.tempMin
+                          const tempMax = refined ? Math.round(refined.main?.temp_max || refined.main?.temp || 0) : group.morning.tempMax
+                          const temp = refined ? Math.round(refined.main?.temp || 0) : null
+                          const feelsLike = refined ? Math.round(refined.main?.feels_like || 0) : null
+                          const humidity = refined ? refined.main?.humidity : null
+                          const windSpeed = refined ? (refined.wind?.speed || 0).toFixed(1) : group.morning.windSpeed
+                          const clouds = refined ? refined.clouds?.all : null
+                          
+                          return (
+                            <div className="weather-period weather-morning">
+                              <div className="weather-period-label">오전</div>
+                              <div className="weather-icon">
+                                <img 
+                                  src={getWeatherIconUrl(icon)} 
+                                  alt={description}
+                                  onError={(e) => {
+                                    console.error('날씨 아이콘 로드 실패:', getWeatherIconUrl(icon))
+                                    e.target.style.display = 'none'
+                                    const fallback = icon?.includes('d') ? '☀️' : '🌙'
+                                    if (!e.target.nextSibling) {
+                                      e.target.parentElement.appendChild(document.createTextNode(fallback))
+                                    }
+                                  }}
+                                  style={{ width: '48px', height: '48px', objectFit: 'contain' }}
+                                />
+                              </div>
+                              <div className="weather-description">{description}</div>
+                              <div className="weather-temp">
+                                <span className="temp-min">{tempMin}°</span>
+                                <span className="temp-separator">/</span>
+                                <span className="temp-max">{tempMax}°</span>
+                              </div>
+                              {temp !== null && (
+                                <div className="weather-detail">온도: {temp}°</div>
+                              )}
+                              {feelsLike !== null && (
+                                <div className="weather-detail">체감: {feelsLike}°</div>
+                              )}
+                              {humidity !== null && (
+                                <div className="weather-detail">습도: {humidity}%</div>
+                              )}
+                              <div className="weather-wind">풍속 {windSpeed}m/s</div>
+                              {clouds !== null && (
+                                <div className="weather-detail">구름: {clouds}%</div>
+                              )}
+                            </div>
+                          )
+                        })()}
+                        {group.afternoon && (() => {
+                          // current_weather_refine.json 형식 데이터 우선 사용
+                          const refined = group.afternoon.refined
+                          const icon = refined?.weather?.[0]?.icon || group.afternoon.icon
+                          const description = refined?.weather?.[0]?.description || group.afternoon.weather?.description || '날씨'
+                          const tempMin = refined ? Math.round(refined.main?.temp_min || refined.main?.temp || 0) : group.afternoon.tempMin
+                          const tempMax = refined ? Math.round(refined.main?.temp_max || refined.main?.temp || 0) : group.afternoon.tempMax
+                          const temp = refined ? Math.round(refined.main?.temp || 0) : null
+                          const feelsLike = refined ? Math.round(refined.main?.feels_like || 0) : null
+                          const humidity = refined ? refined.main?.humidity : null
+                          const windSpeed = refined ? (refined.wind?.speed || 0).toFixed(1) : group.afternoon.windSpeed
+                          const clouds = refined ? refined.clouds?.all : null
+                          
+                          return (
+                            <div className="weather-period weather-afternoon">
+                              <div className="weather-period-label">오후</div>
+                              <div className="weather-icon">
+                                <img 
+                                  src={getWeatherIconUrl(icon)} 
+                                  alt={description}
+                                  onError={(e) => {
+                                    console.error('날씨 아이콘 로드 실패:', getWeatherIconUrl(icon))
+                                    e.target.style.display = 'none'
+                                    const fallback = icon?.includes('d') ? '☀️' : '🌙'
+                                    if (!e.target.nextSibling) {
+                                      e.target.parentElement.appendChild(document.createTextNode(fallback))
+                                    }
+                                  }}
+                                  style={{ width: '48px', height: '48px', objectFit: 'contain' }}
+                                />
+                              </div>
+                              <div className="weather-description">{description}</div>
+                              <div className="weather-temp">
+                                <span className="temp-min">{tempMin}°</span>
+                                <span className="temp-separator">/</span>
+                                <span className="temp-max">{tempMax}°</span>
+                              </div>
+                              {temp !== null && (
+                                <div className="weather-detail">온도: {temp}°</div>
+                              )}
+                              {feelsLike !== null && (
+                                <div className="weather-detail">체감: {feelsLike}°</div>
+                              )}
+                              {humidity !== null && (
+                                <div className="weather-detail">습도: {humidity}%</div>
+                              )}
+                              <div className="weather-wind">풍속 {windSpeed}m/s</div>
+                              {clouds !== null && (
+                                <div className="weather-detail">구름: {clouds}%</div>
+                              )}
+                            </div>
+                          )
+                        })()}
+                      </div>
+                    </div>
+                  ))
+                })()}
               </div>
-              <div className="weather-day">
-                <div className="weather-day-name">11.30 일</div>
-                <div className="weather-icon">☁️</div>
-                <div className="weather-temp">
-                  <span className="temp-min">4°</span>
-                  <span className="temp-separator">/</span>
-                  <span className="temp-max">15°</span>
-                </div>
-                <div className="weather-wind">풍속 3.6m/s</div>
-              </div>
-              <div className="weather-day">
-                <div className="weather-day-name">12.1 월</div>
-                <div className="weather-icon">☀️</div>
-                <div className="weather-temp">
-                  <span className="temp-min">2°</span>
-                  <span className="temp-separator">/</span>
-                  <span className="temp-max">10°</span>
-                </div>
-                <div className="weather-wind">풍속 3.6m/s</div>
-              </div>
-              <div className="weather-day">
-                <div className="weather-day-name">12.2 화</div>
-                <div className="weather-icon">☁️</div>
-                <div className="weather-temp">
-                  <span className="temp-min">-4°</span>
-                  <span className="temp-separator">/</span>
-                  <span className="temp-max">4°</span>
-                </div>
-                <div className="weather-wind">풍속 5.0m/s</div>
-              </div>
-              <div className="weather-day">
-                <div className="weather-day-name">12.3 수</div>
-                <div className="weather-icon">☀️</div>
-                <div className="weather-temp">
-                  <span className="temp-min">-8°</span>
-                  <span className="temp-separator">/</span>
-                  <span className="temp-max">2°</span>
-                </div>
-                <div className="weather-wind">풍속 7.2m/s</div>
-              </div>
-            </div>
+            ) : (
+              <div style={{ padding: '20px', textAlign: 'center' }}>날씨 정보를 불러올 수 없습니다.</div>
+            )}
             <div className="sun-info">
-              <div className="sun-item">
-                <span>🌅</span>
-                <span>일출 07:17</span>
-              </div>
-              <div className="sun-item">
-                <span>🌇</span>
-                <span>일몰 17:10</span>
-              </div>
+              {(() => {
+                // 첫 번째 날의 refined 데이터에서 일출/일몰 정보 가져오기
+                const firstDay = weatherData?.forecast?.[0]
+                const refined = firstDay?.refined || firstDay?.morning?.refined || firstDay?.afternoon?.refined
+                const sunrise = refined?.sys?.sunrise
+                const sunset = refined?.sys?.sunset
+                
+                const formatTime = (timestamp) => {
+                  if (!timestamp) return '--:--'
+                  const date = new Date(timestamp * 1000)
+                  const hours = String(date.getHours()).padStart(2, '0')
+                  const minutes = String(date.getMinutes()).padStart(2, '0')
+                  return `${hours}:${minutes}`
+                }
+                
+                return (
+                  <>
+                    <div className="sun-item">
+                      <span>🌅</span>
+                      <span>일출 {formatTime(sunrise)}</span>
+                    </div>
+                    <div className="sun-item">
+                      <span>🌇</span>
+                      <span>일몰 {formatTime(sunset)}</span>
+                    </div>
+                  </>
+                )
+              })()}
             </div>
           </section>
 
