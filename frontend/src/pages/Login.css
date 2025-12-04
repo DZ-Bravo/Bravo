@@ -56,8 +56,16 @@
   transition: border-color 0.2s;
   background: #fff;
   color: #333;
-  margin-bottom: 16px;
+  margin-bottom: 32px !important;
   box-sizing: border-box;
+}
+
+.login-form input[type="text"] {
+  margin-bottom: 32px !important;
+}
+
+.login-form input[type="password"] {
+  margin-bottom: 16px !important;
 }
 
 .form-input:focus {

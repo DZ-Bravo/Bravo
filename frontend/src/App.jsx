@@ -17,6 +17,7 @@ import MyPage from './pages/MyPage'
 import MyPosts from './pages/MyPosts'
 import MyFavorites from './pages/MyFavorites'
 import MyPoints from './pages/MyPoints'
+import EditProfile from './pages/EditProfile'
 import NoticeDetail from './pages/NoticeDetail'
 import NoticeWrite from './pages/NoticeWrite'
 import NoticeEdit from './pages/NoticeEdit'
@@ -59,6 +60,7 @@ function App() {
           <Route path="/ai-course" element={<AICourse />} />
           <Route path="/store" element={<Store />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/edit" element={<EditProfile />} />
           <Route path="/mypage/posts" element={<MyPosts />} />
           <Route path="/mypage/favorites" element={<MyFavorites />} />
           <Route path="/mypage/points" element={<MyPoints />} />

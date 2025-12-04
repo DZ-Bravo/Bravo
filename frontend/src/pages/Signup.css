@@ -129,20 +129,20 @@
 .duplicate-check-btn {
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 8px;
   background: transparent;
   border: none;
   color: #333;
   font-size: 0.95rem;
   font-weight: 400;
   cursor: pointer;
-  padding: 8px 0;
+  padding: 0;
   margin: 0;
   white-space: nowrap;
   transition: color 0.2s;
   flex-shrink: 0;
   height: auto;
-  line-height: 1;
+  line-height: normal !important;
 }
 
 .duplicate-check-btn:hover {
@@ -151,6 +151,59 @@
 
 .duplicate-check-btn:focus {
   outline: none;
+}
+
+.phone-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.phone-input {
+  flex: 1;
+  margin-bottom: 0;
+  padding-right: 100px;
+}
+
+.send-code-btn {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-radius: 0 !important;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  height: auto;
+  line-height: normal !important;
+  text-decoration: none;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.send-code-btn:hover:not(:disabled) {
+  color: #ffa04a !important;
+}
+
+.send-code-btn:disabled {
+  color: #ccc !important;
+  cursor: not-allowed;
+}
+
+.send-code-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .id-check-message {

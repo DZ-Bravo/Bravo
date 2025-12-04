@@ -62,9 +62,8 @@ function Home() {
   return (
     <div className="home">
       <Header />
-      <main>
-        {/* 메인 검색 섹션 */}
-        <section className="search-section">
+      {/* 메인 검색 섹션 */}
+      <section className="search-section">
           <div className="search-background">
             {mainImages.map((image, index) => (
               <div
@@ -90,8 +89,10 @@ function Home() {
               </form>
             </div>
           </div>
-        </section>
+      </section>
 
+      <div className="home-container">
+        <main>
         {/* 인기 있는 산 섹션 */}
         <section className="popular-mountains">
           <h2>인기 있는 산</h2>
@@ -200,6 +201,7 @@ function Home() {
           <img src="/images/mountFullView_btn.png" alt="산 전체보기" />
         </Link>
       </main>
+      </div>
     </div>
   )
 }
