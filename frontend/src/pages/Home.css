@@ -421,18 +421,19 @@
   flex-direction: column;
   gap: 0;
   margin-top: 32px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
 }
 
 .notice-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
-  padding: 20px 24px;
+  padding: 16px 0;
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   text-decoration: none;
@@ -447,18 +448,24 @@
   background: transparent;
 }
 
-.notice-title {
+.notice-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   flex: 1;
+}
+
+.notice-title {
   color: #333;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .notice-date {
   color: #666;
-  font-size: 0.9rem;
-  margin-right: 8px;
-  flex-shrink: 0;
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 .notice-arrow {

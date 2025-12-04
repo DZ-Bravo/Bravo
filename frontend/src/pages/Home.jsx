@@ -187,8 +187,10 @@ function Home() {
                   to={`/notice/${notice.id}`}
                   className="notice-item"
                 >
-                  <span className="notice-title">{notice.title}</span>
-                  <span className="notice-date">{notice.date}</span>
+                  <div className="notice-content">
+                    <span className="notice-title">📢 {notice.title}</span>
+                    <span className="notice-date">{notice.date}</span>
+                  </div>
                   <span className="notice-arrow">→</span>
                 </Link>
               ))
