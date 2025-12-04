@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const postSchema = new mongoose.Schema({
+  // 기본 게시글 정보
   title: {
     type: String,
     required: true,
@@ -25,6 +26,19 @@ const postSchema = new mongoose.Schema({
   authorName: {
     type: String,
     required: true
+  },
+  // 등산일지 전용 필드
+  mountainCode: {
+    type: String
+  },
+  courseName: {
+    type: String
+  },
+  courseDistance: {
+    type: Number // km 단위
+  },
+  courseDurationMinutes: {
+    type: Number // 분 단위
   },
   views: {
     type: Number,

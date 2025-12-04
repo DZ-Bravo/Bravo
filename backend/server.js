@@ -9,9 +9,13 @@ import { MOUNTAIN_ROUTES, getMountainInfo, getAllMountains } from './utils/mount
 import { MountainList } from './models/Mountain.js'
 import Course from './models/Course.js'
 import Lodging from './models/Lodging.js'
+import Schedule from './models/Schedule.js'
+import Notification from './models/Notification.js'
 import authRoutes from './routes/auth.js'
 import postsRoutes from './routes/posts.js'
 import noticesRoutes from './routes/notices.js'
+import schedulesRoutes from './routes/schedules.js'
+import notificationsRoutes from './routes/notifications.js'
 
 dotenv.config()
 
@@ -39,6 +43,12 @@ app.use('/api/posts', postsRoutes)
 
 // 공지사항 라우트
 app.use('/api/notices', noticesRoutes)
+
+// 등산일정 라우트
+app.use('/api/schedules', schedulesRoutes)
+
+// 알림 라우트
+app.use('/api/notifications', notificationsRoutes)
 
 // 디버깅: Mountain_list 컬렉션 구조 확인
 app.get('/api/debug/mountain-list', async (req, res) => {
@@ -1929,6 +1939,65 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
   
   return { code, lat, lon, forecast: finalResult }
 }
+
+// 등산일정 하루 전 알림 체크 함수
+async function checkScheduleReminders() {
+  try {
+    // 내일 날짜 계산
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setHours(0, 0, 0, 0)
+    
+    const tomorrowEnd = new Date(tomorrow)
+    tomorrowEnd.setHours(23, 59, 59, 999)
+    
+    // 내일 등산일정이 있는 사용자 찾기
+    const schedules = await Schedule.find({
+      scheduledDate: {
+        $gte: tomorrow,
+        $lte: tomorrowEnd
+      }
+    }).populate('user', 'id name').lean()
+    
+    console.log(`등산일정 알림 체크 - 내일 등산일정이 있는 사용자 수: ${schedules.length}`)
+    
+    for (const schedule of schedules) {
+      // 이미 오늘 알림이 있는지 확인 (중복 방지)
+      const todayStart = new Date()
+      todayStart.setHours(0, 0, 0, 0)
+      
+      const existingNotification = await Notification.findOne({
+        user: schedule.user._id,
+        type: 'schedule_reminder',
+        relatedId: schedule._id,
+        createdAt: {
+          $gte: todayStart
+        }
+      })
+      
+      if (!existingNotification) {
+        const notification = new Notification({
+          user: schedule.user._id,
+          type: 'schedule_reminder',
+          title: '등산일정 알림',
+          message: `내일 ${schedule.mountainName} 등산일정이 있습니다.`,
+          relatedId: schedule._id,
+          relatedModel: 'Schedule'
+        })
+        await notification.save()
+        console.log(`등산일정 알림 생성: ${schedule.user.name} - ${schedule.mountainName}`)
+      }
+    }
+  } catch (error) {
+    console.error('등산일정 알림 체크 오류:', error)
+  }
+}
+
+// 서버 시작 시 등산일정 알림 체크
+// 이후 매일 자정에 실행되도록 설정 (24시간마다)
+setInterval(checkScheduleReminders, 24 * 60 * 60 * 1000) // 24시간
+// 서버 시작 시 즉시 한 번 실행
+setTimeout(checkScheduleReminders, 10000) // 10초 후 실행 (DB 연결 대기)
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${PORT}`)
