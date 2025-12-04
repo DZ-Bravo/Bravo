@@ -24,6 +24,8 @@ import CourseDetail from './pages/CourseDetail'
 import SearchResults from './pages/SearchResults'
 import AuthSuccess from './pages/AuthSuccess'
 import Chatbot from './components/Chatbot'
+import TopButton from './components/TopButton'
+import Footer from './components/Footer'
 import './App.css'
 
 function App() {
@@ -65,8 +67,10 @@ function App() {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/auth/success" element={<AuthSuccess />} />
         </Routes>
+        <Footer />
       </Router>
       <Chatbot />
+      <TopButton />
     </>
   )
 }

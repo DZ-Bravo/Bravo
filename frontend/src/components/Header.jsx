@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './Header.css'
 
-function Header() {
+function Header({ hideNav = false }) {
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
@@ -31,7 +31,7 @@ function Header() {
   }
 
   return (
-    <header>
+    <header className={hideNav ? 'hide-nav' : ''}>
       <div className="header-top">
         <Link to="/" className="logo">
           <img src="/images/logo.png" alt="HIKER" className="logo-img" />
@@ -50,15 +50,17 @@ function Header() {
           )}
         </div>
       </div>
-      <nav>
-        <ul>
-          <li><Link to="/notice">공지사항</Link></li>
-          <li><Link to="/ai-course">AI 등산 코스 추천</Link></li>
-          <li><Link to="/store">스토어</Link></li>
-          <li><Link to="/community">커뮤니티</Link></li>
-          <li><Link to="/mypage">마이페이지</Link></li>
-        </ul>
-      </nav>
+      {!hideNav && (
+        <nav>
+          <ul>
+            <li><Link to="/notice">공지사항</Link></li>
+            <li><Link to="/ai-course">AI 등산 코스 추천</Link></li>
+            <li><Link to="/store">스토어</Link></li>
+            <li><Link to="/community">커뮤니티</Link></li>
+            <li><Link to="/mypage">마이페이지</Link></li>
+          </ul>
+        </nav>
+      )}
     </header>
   )
 }

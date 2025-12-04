@@ -99,38 +99,34 @@ function Login() {
 
   return (
     <div className="login-page">
-      <Header />
+      <Header hideNav={true} />
       <main className="login-main">
         <div className="login-container">
-          <h1 className="login-title">Hello! Today's Hike</h1>
+          <h1 className="login-title">로그인</h1>
           
           <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
-              <label htmlFor="id">ID</label>
-              <input
-                type="text"
-                id="id"
-                name="id"
-                value={formData.id}
-                onChange={handleChange}
-                required
-                className="form-input"
-              />
-            </div>
+            <input
+              type="text"
+              id="id"
+              name="id"
+              value={formData.id}
+              onChange={handleChange}
+              required
+              className="form-input"
+              placeholder="아이디를 입력해주세요."
+            />
 
-            <div className="form-group">
-              <label htmlFor="password">비밀번호</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                autoComplete="current-password"
-                required
-                className="form-input"
-              />
-            </div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="current-password"
+              required
+              className="form-input"
+              placeholder="비밀번호를 입력해주세요."
+            />
 
             <button type="submit" className="login-submit-btn" disabled={isLoading}>
               {isLoading ? '로그인 중...' : '로그인'}
@@ -140,8 +136,17 @@ function Login() {
             )}
           </form>
 
+          <Link to="/signup" className="signup-btn">
+            회원가입
+          </Link>
+
+          <div className="auth-links">
+            <Link to="/find-id" className="auth-link">아이디 찾기</Link>
+            <Link to="/find-password" className="auth-link">비밀번호 찾기</Link>
+          </div>
+
           <div className="social-login">
-            <h3 className="social-title">소셜 로그인으로 간편하게 로그인하기</h3>
+            <h3 className="social-title">소셜 간편 로그인</h3>
             <div className="social-buttons">
               <button
                 type="button"
@@ -149,7 +154,7 @@ function Login() {
                 onClick={() => handleSocialLogin('naver')}
                 aria-label="네이버로 로그인"
               >
-                N
+                <img src="/images/login_naver_icon.png" alt="네이버 로그인" />
               </button>
               <button
                 type="button"
@@ -157,15 +162,9 @@ function Login() {
                 onClick={() => handleSocialLogin('kakao')}
                 aria-label="카카오로 로그인"
               >
-                K
+                <img src="/images/login_kakao_icon.png" alt="카카오 로그인" />
               </button>
             </div>
-          </div>
-
-          <div className="auth-links">
-            <Link to="/find-id" className="auth-link">아이디 찾기</Link>
-            <Link to="/find-password" className="auth-link">비밀번호 찾기</Link>
-            <Link to="/signup" className="auth-link">회원가입</Link>
           </div>
         </div>
       </main>

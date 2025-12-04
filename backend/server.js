@@ -569,7 +569,12 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
         if (existsSync(geojsonDir)) {
           // PMNTN_로 시작하는 JSON 파일 찾기 (등산 코스 파일)
           const files = await readdir(geojsonDir)
-          const courseFiles = files.filter(f => f.startsWith('PMNTN_') && f.endsWith('.json') && !f.includes('SPOT'))
+          const courseFiles = files.filter(f => 
+            f.startsWith('PMNTN_') && 
+            f.endsWith('.json') && 
+            !f.includes('SPOT') && 
+            !f.includes('SAFE_SPOT')
+          )
           
           console.log('찾은 코스 파일들:', courseFiles)
           
@@ -579,15 +584,273 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
             const courseData = JSON.parse(await readFile(courseFilePath, 'utf-8'))
             
             // GeoJSON 형식으로 변환
+            let rawCourses = []
             if (courseData.features) {
-              courses = courseData.features
+              rawCourses = courseData.features
             } else if (courseData.type === 'FeatureCollection') {
-              courses = courseData.features || []
+              rawCourses = courseData.features || []
             } else {
-              courses = [courseData]
+              rawCourses = [courseData]
             }
             
-            console.log('파일에서 가져온 코스 개수:', courses.length)
+            // ArcGIS 형식인 경우 attributes를 properties로 변환
+            courses = rawCourses.map((course, index) => {
+              // ArcGIS 형식 (attributes와 geometry.paths가 있는 경우)
+              if (course.attributes && course.geometry && course.geometry.paths) {
+                const attrs = course.attributes
+                
+                // 코스 이름 확인 (이름이 없으면 null 반환하여 필터링)
+                let courseName = (attrs.PMNTN_NM || attrs.PMNTN_MAIN || '').trim()
+                if (!courseName || courseName === '' || courseName === ' ') {
+                  // 이름이 없으면 제외
+                  return null
+                }
+                
+                // 시간 계산 (상행 + 하행)
+                const upTime = attrs.PMNTN_UPPL || 0
+                const downTime = attrs.PMNTN_GODN || 0
+                const totalMinutes = upTime + downTime
+                const distance = attrs.PMNTN_LT || 0
+                const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim() // 노면 재질
+                
+                // 난이도 추정 함수 (노면 재질 + 거리/시간 기반, 원본 난이도 무시)
+                const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
+                  // 거리/시간 기반 점수 계산
+                  let score = 0 // 난이도 점수 (낮을수록 쉬움)
+                  
+                  // 거리 기반 점수 (km 기준)
+                  if (distance < 1) score += 0
+                  else if (distance < 2) score += 0
+                  else if (distance < 5) score += 1
+                  else if (distance < 10) score += 2
+                  else if (distance < 15) score += 3
+                  else score += 4
+                  
+                  // 시간 기반 점수 (분 기준)
+                  if (totalMinutes < 30) score += 0
+                  else if (totalMinutes < 60) score += 0
+                  else if (totalMinutes < 120) score += 1
+                  else if (totalMinutes < 180) score += 2
+                  else if (totalMinutes < 240) score += 3
+                  else if (totalMinutes < 360) score += 4
+                  else score += 5
+                  
+                  // 노면 재질 기반 점수
+                  const hardSurfaces = ['암석', '바위', '암벽', '절벽']
+                  const mediumSurfaces = ['토사', '자갈', '돌']
+                  const easySurfaces = ['포장', '콘크리트', '데크']
+                  
+                  if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
+                    score += 3
+                  } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
+                    score += 1
+                  } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
+                    score -= 1
+                  }
+                  
+                  // 점수에 따라 난이도 결정 (쉬움/보통/어려움만)
+                  if (score <= 2) return '쉬움'
+                  else if (score <= 5) return '보통'
+                  else return '어려움'
+                }
+                
+                const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
+                console.log(`코스 난이도 추정: ${courseName}, 추정: ${difficulty}, 거리: ${distance}km, 시간: ${totalMinutes}분, 노면: ${surfaceMaterial}`)
+                let duration = ''
+                if (totalMinutes >= 60) {
+                  const hours = Math.floor(totalMinutes / 60)
+                  const minutes = totalMinutes % 60
+                  duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+                } else {
+                  duration = `${totalMinutes}분`
+                }
+                
+                return {
+                  type: 'Feature',
+                  properties: {
+                    name: courseName,
+                    description: (attrs.PMNTN_MAIN || '').trim() || '',
+                    difficulty: difficulty || attrs.PMNTN_DFFL || '보통',
+                    distance: attrs.PMNTN_LT || 0,
+                    duration: duration,
+                    upTime: upTime,
+                    downTime: downTime,
+                    PMNTN_SN: attrs.PMNTN_SN,
+                    MNTN_CODE: attrs.MNTN_CODE,
+                    MNTN_NM: attrs.MNTN_NM
+                  },
+                  // ArcGIS 형식 유지 (프론트엔드에서 변환)
+                  geometry: course.geometry
+                }
+              }
+              // 이미 GeoJSON Feature 형식인 경우
+              else if (course.type === 'Feature' && course.properties) {
+                // 코스 이름 확인 (이름이 없으면 제외)
+                const courseName = (course.properties.name || course.properties.PMNTN_NM || course.attributes?.PMNTN_NM || '').trim()
+                if (!courseName || courseName === '' || courseName === ' ') {
+                  return null
+                }
+                
+                // properties에 난이도 정보가 없으면 attributes에서 가져오기
+                if (!course.properties.difficulty && course.attributes) {
+                  const attrs = course.attributes
+                  const upTime = attrs.PMNTN_UPPL || 0
+                  const downTime = attrs.PMNTN_GODN || 0
+                  const totalMinutes = upTime + downTime
+                  const distance = attrs.PMNTN_LT || 0
+                  const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim()
+                  
+                  // 난이도 추정 함수 (노면 재질 + 거리/시간 기반, 원본 난이도 무시)
+                  const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
+                    let score = 0
+                    
+                    if (distance < 1) score += 0
+                    else if (distance < 2) score += 0
+                    else if (distance < 5) score += 1
+                    else if (distance < 10) score += 2
+                    else if (distance < 15) score += 3
+                    else score += 4
+                    
+                    if (totalMinutes < 30) score += 0
+                    else if (totalMinutes < 60) score += 0
+                    else if (totalMinutes < 120) score += 1
+                    else if (totalMinutes < 180) score += 2
+                    else if (totalMinutes < 240) score += 3
+                    else if (totalMinutes < 360) score += 4
+                    else score += 5
+                    
+                    const hardSurfaces = ['암석', '바위', '암벽', '절벽']
+                    const mediumSurfaces = ['토사', '자갈', '돌']
+                    const easySurfaces = ['포장', '콘크리트', '데크']
+                    
+                    if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
+                      score += 3
+                    } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
+                      score += 1
+                    } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
+                      score -= 1
+                    }
+                    
+                    // 점수에 따라 난이도 결정 (쉬움/보통/어려움만)
+                    if (score <= 2) return '쉬움'
+                    else if (score <= 5) return '보통'
+                    else return '어려움'
+                  }
+                  
+                  const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
+                  
+                  let duration = ''
+                  if (totalMinutes >= 60) {
+                    const hours = Math.floor(totalMinutes / 60)
+                    const minutes = totalMinutes % 60
+                    duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+                  } else {
+                    duration = `${totalMinutes}분`
+                  }
+                  
+                  course.properties.difficulty = difficulty
+                  course.properties.distance = course.properties.distance || distance
+                  course.properties.duration = course.properties.duration || duration
+                  course.properties.name = course.properties.name || attrs.PMNTN_NM || attrs.PMNTN_MAIN
+                  course.properties.description = course.properties.description || attrs.PMNTN_MAIN || ''
+                }
+                return course
+              }
+              // 그 외의 경우
+              else {
+                // 이름이 있는지 확인
+                const courseName = (course.properties?.name || course.name || '').trim()
+                if (!courseName || courseName === '' || courseName === ' ') {
+                  return null
+                }
+                return course
+              }
+            })
+            .filter(course => course !== null) // null인 항목 제거
+            
+            console.log('파일에서 가져온 코스 개수 (이름 있는 것만):', courses.length)
+            
+            // 코스 필터링 및 그룹화
+            // 1. 10분 이하 또는 0.5km 이하 코스 제외
+            const filteredCourses = courses.filter(course => {
+              const props = course.properties || {}
+              const totalTime = (props.upTime || 0) + (props.downTime || 0)
+              const distance = props.distance || 0
+              
+              // 10분 이하 또는 0.5km 이하 제외
+              if (totalTime <= 10 || distance <= 0.5) {
+                return false
+              }
+              return true
+            })
+            
+            console.log('필터링 후 코스 개수 (10분 이상, 0.5km 이상):', filteredCourses.length)
+            
+            // 2. 같은 코스명을 가진 구간들을 하나의 코스로 묶기
+            const courseGroups = {}
+            filteredCourses.forEach(course => {
+              const props = course.properties || {}
+              const courseName = props.name || ''
+              
+              if (!courseName) return
+              
+              if (!courseGroups[courseName]) {
+                courseGroups[courseName] = {
+                  course: course,
+                  segments: [course],
+                  totalTime: (props.upTime || 0) + (props.downTime || 0),
+                  totalDistance: props.distance || 0
+                }
+              } else {
+                // 같은 코스명이면 구간 추가
+                courseGroups[courseName].segments.push(course)
+                // 가장 긴 시간과 거리로 업데이트
+                const currentTime = (props.upTime || 0) + (props.downTime || 0)
+                const currentDistance = props.distance || 0
+                if (currentTime > courseGroups[courseName].totalTime) {
+                  courseGroups[courseName].totalTime = currentTime
+                  courseGroups[courseName].course = course // 가장 긴 구간을 대표 코스로
+                }
+                if (currentDistance > courseGroups[courseName].totalDistance) {
+                  courseGroups[courseName].totalDistance = currentDistance
+                }
+              }
+            })
+            
+            // 3. 그룹화된 코스들을 배열로 변환 (가장 긴 구간을 대표로 사용)
+            courses = Object.values(courseGroups).map(group => {
+              const representativeCourse = group.course
+              const props = representativeCourse.properties || {}
+              
+              // 여러 구간이 있으면 총 시간과 거리를 업데이트
+              if (group.segments.length > 1) {
+                // 모든 구간의 시간과 거리 합산
+                let totalTime = 0
+                let totalDistance = 0
+                group.segments.forEach(seg => {
+                  const segProps = seg.properties || {}
+                  totalTime += (segProps.upTime || 0) + (segProps.downTime || 0)
+                  totalDistance += segProps.distance || 0
+                })
+                
+                // properties 업데이트
+                if (!props.upTime && !props.downTime) {
+                  // 시간 정보가 없으면 합산된 값 사용
+                  const hours = Math.floor(totalTime / 60)
+                  const minutes = totalTime % 60
+                  props.duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+                }
+                props.distance = totalDistance
+                props.segmentCount = group.segments.length // 구간 개수 정보 추가
+              }
+              
+              return representativeCourse
+            })
+            
+            console.log('그룹화 후 코스 개수:', courses.length)
+            if (courses.length > 0) {
+              console.log('첫 번째 코스 샘플:', JSON.stringify(courses[0].properties || courses[0], null, 2).substring(0, 500))
+            }
           }
         } else {
           console.log('geojson 디렉토리가 없음:', geojsonDir)
@@ -644,8 +907,80 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
       let geoJsonCourses = []
       
       if (isGeoJSONFeature) {
-        // 이미 GeoJSON 형식이면 그대로 사용
-        geoJsonCourses = courses
+        // 이미 GeoJSON 형식이면 properties 확인 및 보완
+        geoJsonCourses = courses.map(course => {
+          // properties에 난이도 정보가 없으면 attributes에서 가져오기
+          if (course.attributes && (!course.properties || !course.properties.difficulty)) {
+            const attrs = course.attributes
+            const upTime = attrs.PMNTN_UPPL || 0
+            const downTime = attrs.PMNTN_GODN || 0
+            const totalMinutes = upTime + downTime
+            const distance = attrs.PMNTN_LT || 0
+            const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim()
+            
+            // 난이도 추정 함수 (노면 재질 + 거리/시간 기반, 원본 난이도 무시)
+            const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
+              let score = 0
+              
+              if (distance < 1) score += 0
+              else if (distance < 2) score += 0
+              else if (distance < 5) score += 1
+              else if (distance < 10) score += 2
+              else if (distance < 15) score += 3
+              else score += 4
+              
+              if (totalMinutes < 30) score += 0
+              else if (totalMinutes < 60) score += 0
+              else if (totalMinutes < 120) score += 1
+              else if (totalMinutes < 180) score += 2
+              else if (totalMinutes < 240) score += 3
+              else if (totalMinutes < 360) score += 4
+              else score += 5
+              
+              const hardSurfaces = ['암석', '바위', '암벽', '절벽']
+              const mediumSurfaces = ['토사', '자갈', '돌']
+              const easySurfaces = ['포장', '콘크리트', '데크']
+              
+              if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
+                score += 3
+              } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
+                score += 1
+              } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
+                score -= 1
+              }
+              
+              // 점수에 따라 난이도 결정 (쉬움/보통/어려움만)
+              if (score <= 2) return '쉬움'
+              else if (score <= 5) return '보통'
+              else return '어려움'
+            }
+            
+            const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
+            
+            let duration = ''
+            if (totalMinutes >= 60) {
+              const hours = Math.floor(totalMinutes / 60)
+              const minutes = totalMinutes % 60
+              duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+            } else {
+              duration = `${totalMinutes}분`
+            }
+            
+            // properties가 없으면 생성
+            if (!course.properties) {
+              course.properties = {}
+            }
+            
+            course.properties.name = course.properties.name || attrs.PMNTN_NM || attrs.PMNTN_MAIN || '등산 코스'
+            course.properties.description = course.properties.description || attrs.PMNTN_MAIN || ''
+            course.properties.difficulty = course.properties.difficulty || difficulty
+            course.properties.distance = course.properties.distance || distance
+            course.properties.duration = course.properties.duration || duration
+            course.properties.upTime = course.properties.upTime || upTime
+            course.properties.downTime = course.properties.downTime || downTime
+          }
+          return course
+        })
       } else {
         // Course 컬렉션에서 가져온 데이터를 GeoJSON 형식으로 변환
         geoJsonCourses = courses.map(course => {
