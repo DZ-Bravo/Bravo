@@ -1,6 +1,7 @@
 import express from 'express'
 import Notice from '../models/Notice.js'
 import User from '../models/User.js'
+import Notification from '../models/Notification.js'
 import { authenticateToken } from './auth.js'
 import multer from 'multer'
 import path from 'path'
@@ -175,6 +176,30 @@ router.post('/', authenticateToken, requireAdmin, upload.array('images', 5), asy
     })
 
     await notice.save()
+
+    // 공지사항 작성 시 모든 사용자에게 알림 생성
+    try {
+      const allUsers = await User.find({}).select('_id').lean()
+      console.log(`공지사항 알림 생성 - 전체 사용자 수: ${allUsers.length}`)
+      
+      const notifications = allUsers.map(user => ({
+        user: user._id,
+        type: 'announcement',
+        title: '공지사항',
+        message: `새로운 공지사항: "${title}"`,
+        relatedId: notice._id,
+        relatedModel: 'Notice'
+      }))
+      
+      // 대량 삽입 (성능 최적화)
+      if (notifications.length > 0) {
+        await Notification.insertMany(notifications)
+        console.log(`공지사항 알림 생성 완료 - ${notifications.length}개 알림 생성`)
+      }
+    } catch (error) {
+      console.error('공지사항 알림 생성 오류:', error)
+      // 알림 생성 실패해도 공지사항 작성은 성공으로 처리
+    }
 
     res.status(201).json({
       message: '공지사항이 작성되었습니다.',

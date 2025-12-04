@@ -204,11 +204,90 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 40px 20px;
+  padding: 20px;
   min-height: 200px;
+}
+
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.record-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.record-item:hover {
+  background: #e9ecef;
+  border-color: #00BF93;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 191, 147, 0.1);
+}
+
+.record-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.record-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.record-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.record-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.record-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.record-mountain,
+.record-course {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
+}
+
+.record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: auto;
+}
+
+.record-distance,
+.record-duration,
+.record-date {
+  display: flex;
+  align-items: center;
 }
 
 .records-empty {

@@ -34,6 +34,7 @@ function MyPoints() {
           setPoints(data.points || 0)
           setEarned(data.earnedPoints || 0)
           setUsed(data.usedPoints || 0)
+          setHistory(data.history || [])
         }
       } catch (error) {
         console.error('포인트 조회 오류:', error)

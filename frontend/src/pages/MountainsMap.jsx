@@ -205,9 +205,9 @@ function MountainsMap() {
             const infowindow = new window.kakao.maps.InfoWindow({
               content: `
                 <div style="padding: 10px; min-width: 150px; text-align: center;">
-                  <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; color: #2d8659; font-weight: 600;">${mountain.name}</h3>
+                  <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; color: #000; font-weight: 600;">${mountain.name}</h3>
                   <button 
-                    style="background: #2d8659; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;"
+                    style="background: #ffa04a; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 500;"
                     onclick="window.location.href='/mountain/${mountain.code}'"
                   >
                     상세보기
@@ -276,7 +276,6 @@ function MountainsMap() {
       <main>
         <h1>전체 산 지도</h1>
         <div id="mountains-map" ref={mapRef} style={{ width: '100%', height: '600px' }}></div>
-        <button className="list-view-btn">목록 보기</button>
       </main>
     </div>
   )
