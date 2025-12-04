@@ -1164,7 +1164,7 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
       hour: hour // 시간 정보 추가
     }
     
-    // 오전(0-11시)과 오후(12-23시)로 분류
+    // 오전(0시~11시59분)과 오후(12시~23시59분)로 분류
     if (hour < 12) {
       dailyForecast[dateKey].morning.temps.push(item.main.temp)
       dailyForecast[dateKey].morning.weathers.push(item.weather[0])
@@ -1243,6 +1243,9 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
     const date = new Date(year, month - 1, dayNum) // 월은 0부터 시작하므로 -1
     const dayNames = ['일', '월', '화', '수', '목', '금', '토']
     
+    // 오늘 날짜인지 확인
+    const isToday = dateKey === todayKey
+    
     // 오전 데이터 (9시 시간대 기준, 없으면 가장 가까운 시간)
     if (day.morning.items.length > 0) {
       let morningItem = null
@@ -1267,6 +1270,7 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
       }
       
       if (morningItem) {
+        // 오전: 0시 ~ 11시 59분까지
         result.push({
           date: dateKey,
           dayName: dayNames[date.getDay()],
@@ -1294,6 +1298,58 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
           }
         })
       }
+    } else if (isToday && day.afternoon.items.length > 0) {
+      // 오늘 날짜인데 오전 데이터가 없으면, 오후 데이터를 기반으로 오전 데이터 생성
+      // 가장 이른 오후 시간대 데이터 사용 (12시 또는 가장 가까운 시간)
+      let morningItem = null
+      let minHour = Infinity
+      
+      day.afternoon.items.forEach(item => {
+        if (item.hour < minHour) {
+          minHour = item.hour
+          morningItem = item
+        }
+      })
+      
+      if (morningItem) {
+        // 오전 데이터로 변환 (온도는 약간 낮게 조정)
+        const adjustedTemp = morningItem.main.temp - 2 // 오전은 약간 낮게
+        const adjustedTempMin = Math.min(morningItem.main.temp_min, adjustedTemp)
+        const adjustedTempMax = Math.max(morningItem.main.temp_max, adjustedTemp)
+        
+        // 오전: 0시 ~ 11시 59분까지
+        result.push({
+          date: dateKey,
+          dayName: dayNames[date.getDay()],
+          month: month,
+          day: dayNum,
+          period: '오전',
+          tempMin: Math.round(adjustedTempMin),
+          tempMax: Math.round(adjustedTempMax),
+          weather: morningItem.weather[0],
+          windSpeed: (morningItem.wind?.speed || 0).toFixed(1),
+          icon: morningItem.weather[0].icon,
+          refined: {
+            coord: morningItem.coord,
+            weather: morningItem.weather,
+            main: {
+              ...morningItem.main,
+              temp: adjustedTemp,
+              temp_min: adjustedTempMin,
+              temp_max: adjustedTempMax
+            },
+            wind: morningItem.wind,
+            clouds: morningItem.clouds,
+            dt: morningItem.dt,
+            sys: morningItem.sys,
+            timezone: morningItem.timezone,
+            id: morningItem.id,
+            name: morningItem.name,
+            cod: morningItem.cod
+          }
+        })
+        console.log(`날씨 API - 오늘 날짜 오전 데이터 생성 (오후 데이터 기반): ${dateKey}`)
+      }
     }
     
     // 오후 데이터 (15시 시간대 기준, 없으면 가장 가까운 시간)
@@ -1320,6 +1376,7 @@ async function processOpenWeatherData(forecastData, code, lat, lon) {
       }
       
       if (afternoonItem) {
+        // 오후: 12시 ~ 23시 59분까지 (자정 전까지)
         result.push({
           date: dateKey,
           dayName: dayNames[date.getDay()],
