@@ -185,7 +185,7 @@ function MyPage() {
                   <div className="welcome-avatar">
                     {user.profileImage ? (
                       <img 
-                        src={user.profileImage} 
+                        src={user.profileImage.startsWith('http') ? user.profileImage : `${API_URL}${user.profileImage}`}
                         alt={user.name}
                         className="avatar-img"
                       />
@@ -247,7 +247,7 @@ function MyPage() {
                 <div className="profile-avatar-section">
                   {user.profileImage ? (
                     <img 
-                      src={user.profileImage} 
+                      src={user.profileImage.startsWith('http') ? user.profileImage : `${API_URL}${user.profileImage}`}
                       alt={user.name}
                       className="profile-avatar-img"
                     />
@@ -312,6 +312,10 @@ function MyPage() {
                   로그아웃
                   <span className="settings-arrow">&gt;</span>
                 </button>
+                <Link to="/mypage/edit" className="settings-item" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: '12px 16px', border: 'none', background: 'none', cursor: 'pointer' }}>
+                  회원수정
+                  <span className="settings-arrow">&gt;</span>
+                </Link>
                 <button className="settings-item" onClick={handleWithdraw}>
                   탈퇴하기
                   <span className="settings-arrow">&gt;</span>

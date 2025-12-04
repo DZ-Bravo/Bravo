@@ -8,6 +8,7 @@ import connectDB from './config/database.js'
 import { MOUNTAIN_ROUTES, getMountainInfo, getAllMountains } from './utils/mountainRoutes.js'
 import { MountainList } from './models/Mountain.js'
 import Course from './models/Course.js'
+import Lodging from './models/Lodging.js'
 import authRoutes from './routes/auth.js'
 import postsRoutes from './routes/posts.js'
 import noticesRoutes from './routes/notices.js'
@@ -480,6 +481,41 @@ app.get('/api/mountains/:code', async (req, res) => {
   }
 })
 
+// 특정 산 주변 숙소 조회
+app.get('/api/mountains/:code/lodgings', async (req, res) => {
+  try {
+    const { code } = req.params
+    const mountainCode = String(code)
+
+    let lodgings = []
+
+    // 1차: mountainCode 로 직접 매칭
+    lodgings = await Lodging.find({
+      $or: [
+        { mountainCode },
+        { mountain_code: mountainCode },
+        { mntilistno: mountainCode },
+        { 'mountain.code': mountainCode }
+      ]
+    }).lean()
+
+    // 2차: mountainRoutes 에서 산 이름을 얻어서 이름 기반 매칭
+    if (!lodgings || lodgings.length === 0) {
+      const mountainInfo = getMountainInfo(mountainCode)
+      if (mountainInfo && mountainInfo.name) {
+        lodgings = await Lodging.find({
+          'mountain.name': mountainInfo.name
+        }).lean()
+      }
+    }
+
+    res.json({ lodgings: lodgings || [] })
+  } catch (error) {
+    console.error('주변 숙소 조회 오류:', error)
+    res.status(500).json({ error: '주변 숙소 정보를 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
 // 특정 산의 등산 코스 가져오기
 app.get('/api/mountains/:code/courses', async (req, res) => {
   try {
@@ -613,45 +649,58 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
                 const distance = attrs.PMNTN_LT || 0
                 const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim() // 노면 재질
                 
-                // 난이도 추정 함수 (노면 재질 + 거리/시간 기반, 원본 난이도 무시)
+                // 난이도 추정 함수 (국립공원 관리공단 기준 참고)
+                // 쉬움: 평탄, 비교적 매끈한 노면, 짧은 거리/시간
+                // 보통: 약간의 경사, 비교적 거친 노면, 중간 거리/시간
+                // 어려움: 심한 경사, 거친 노면, 긴 거리/시간
                 const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
-                  // 거리/시간 기반 점수 계산
-                  let score = 0 // 난이도 점수 (낮을수록 쉬움)
-                  
-                  // 거리 기반 점수 (km 기준)
-                  if (distance < 1) score += 0
-                  else if (distance < 2) score += 0
-                  else if (distance < 5) score += 1
-                  else if (distance < 10) score += 2
-                  else if (distance < 15) score += 3
-                  else score += 4
-                  
-                  // 시간 기반 점수 (분 기준)
-                  if (totalMinutes < 30) score += 0
-                  else if (totalMinutes < 60) score += 0
-                  else if (totalMinutes < 120) score += 1
-                  else if (totalMinutes < 180) score += 2
-                  else if (totalMinutes < 240) score += 3
-                  else if (totalMinutes < 360) score += 4
-                  else score += 5
-                  
-                  // 노면 재질 기반 점수
+                  // 노면 재질이 가장 중요한 기준
                   const hardSurfaces = ['암석', '바위', '암벽', '절벽']
                   const mediumSurfaces = ['토사', '자갈', '돌']
                   const easySurfaces = ['포장', '콘크리트', '데크']
                   
+                  // 노면 재질 기준으로 기본 난이도 결정
+                  let baseDifficulty = '보통' // 기본값
                   if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
-                    score += 3
-                  } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
-                    score += 1
+                    baseDifficulty = '어려움' // 거친 노면 → 어려움
                   } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
-                    score -= 1
+                    baseDifficulty = '쉬움' // 매끈한 포장 → 쉬움
+                  } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
+                    baseDifficulty = '보통' // 비교적 거친 노면 → 보통
                   }
                   
-                  // 점수에 따라 난이도 결정 (쉬움/보통/어려움만)
-                  if (score <= 2) return '쉬움'
-                  else if (score <= 5) return '보통'
-                  else return '어려움'
+                  // 거리와 시간으로 난이도 조정
+                  // 매우 짧은 코스는 쉬움으로
+                  if (distance <= 1.5 && totalMinutes <= 60) {
+                    return '쉬움'
+                  }
+                  
+                  // 매우 긴 코스는 어려움으로
+                  if (distance >= 10 || totalMinutes >= 240) {
+                    return '어려움'
+                  }
+                  
+                  // 중간 거리/시간은 노면 재질 기준 따름
+                  if (baseDifficulty === '쉬움') {
+                    // 포장된 노면이면 거리/시간이 길어도 쉬움 유지 (최대 5km, 2시간까지)
+                    if (distance <= 5 && totalMinutes <= 120) {
+                      return '쉬움'
+                    } else {
+                      return '보통'
+                    }
+                  } else if (baseDifficulty === '어려움') {
+                    // 거친 노면이면 거리/시간이 짧아도 어려움 유지
+                    return '어려움'
+                  } else {
+                    // 보통 노면은 거리/시간에 따라 조정
+                    if (distance <= 3 && totalMinutes <= 90) {
+                      return '쉬움'
+                    } else if (distance >= 8 || totalMinutes >= 180) {
+                      return '어려움'
+                    } else {
+                      return '보통'
+                    }
+                  }
                 }
                 
                 const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
@@ -700,41 +749,58 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
                   const distance = attrs.PMNTN_LT || 0
                   const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim()
                   
-                  // 난이도 추정 함수 (노면 재질 + 거리/시간 기반, 원본 난이도 무시)
+                  // 난이도 추정 함수 (국립공원 관리공단 기준 참고)
+                  // 쉬움: 평탄, 비교적 매끈한 노면, 짧은 거리/시간
+                  // 보통: 약간의 경사, 비교적 거친 노면, 중간 거리/시간
+                  // 어려움: 심한 경사, 거친 노면, 긴 거리/시간
                   const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
-                    let score = 0
-                    
-                    if (distance < 1) score += 0
-                    else if (distance < 2) score += 0
-                    else if (distance < 5) score += 1
-                    else if (distance < 10) score += 2
-                    else if (distance < 15) score += 3
-                    else score += 4
-                    
-                    if (totalMinutes < 30) score += 0
-                    else if (totalMinutes < 60) score += 0
-                    else if (totalMinutes < 120) score += 1
-                    else if (totalMinutes < 180) score += 2
-                    else if (totalMinutes < 240) score += 3
-                    else if (totalMinutes < 360) score += 4
-                    else score += 5
-                    
+                    // 노면 재질이 가장 중요한 기준
                     const hardSurfaces = ['암석', '바위', '암벽', '절벽']
                     const mediumSurfaces = ['토사', '자갈', '돌']
                     const easySurfaces = ['포장', '콘크리트', '데크']
                     
+                    // 노면 재질 기준으로 기본 난이도 결정
+                    let baseDifficulty = '보통' // 기본값
                     if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
-                      score += 3
-                    } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
-                      score += 1
+                      baseDifficulty = '어려움' // 거친 노면 → 어려움
                     } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
-                      score -= 1
+                      baseDifficulty = '쉬움' // 매끈한 포장 → 쉬움
+                    } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
+                      baseDifficulty = '보통' // 비교적 거친 노면 → 보통
                     }
                     
-                    // 점수에 따라 난이도 결정 (쉬움/보통/어려움만)
-                    if (score <= 2) return '쉬움'
-                    else if (score <= 5) return '보통'
-                    else return '어려움'
+                    // 거리와 시간으로 난이도 조정
+                    // 매우 짧은 코스는 쉬움으로
+                    if (distance <= 1.5 && totalMinutes <= 60) {
+                      return '쉬움'
+                    }
+                    
+                    // 매우 긴 코스는 어려움으로
+                    if (distance >= 10 || totalMinutes >= 240) {
+                      return '어려움'
+                    }
+                    
+                    // 중간 거리/시간은 노면 재질 기준 따름
+                    if (baseDifficulty === '쉬움') {
+                      // 포장된 노면이면 거리/시간이 길어도 쉬움 유지 (최대 5km, 2시간까지)
+                      if (distance <= 5 && totalMinutes <= 120) {
+                        return '쉬움'
+                      } else {
+                        return '보통'
+                      }
+                    } else if (baseDifficulty === '어려움') {
+                      // 거친 노면이면 거리/시간이 짧아도 어려움 유지
+                      return '어려움'
+                    } else {
+                      // 보통 노면은 거리/시간에 따라 조정
+                      if (distance <= 3 && totalMinutes <= 90) {
+                        return '쉬움'
+                      } else if (distance >= 8 || totalMinutes >= 180) {
+                        return '어려움'
+                      } else {
+                        return '보통'
+                      }
+                    }
                   }
                   
                   const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
@@ -751,8 +817,26 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
                   course.properties.difficulty = difficulty
                   course.properties.distance = course.properties.distance || distance
                   course.properties.duration = course.properties.duration || duration
+                  course.properties.upTime = course.properties.upTime || upTime
+                  course.properties.downTime = course.properties.downTime || downTime
                   course.properties.name = course.properties.name || attrs.PMNTN_NM || attrs.PMNTN_MAIN
                   course.properties.description = course.properties.description || attrs.PMNTN_MAIN || ''
+                }
+                // upTime과 downTime이 없으면 properties에서 직접 계산
+                if (!course.properties.upTime && !course.properties.downTime) {
+                  const props = course.properties
+                  // duration에서 시간 추출 시도
+                  if (props.duration) {
+                    const durationMatch = props.duration.match(/(\d+)시간\s*(\d+)분|(\d+)시간|(\d+)분/)
+                    if (durationMatch) {
+                      const hours = parseInt(durationMatch[1] || durationMatch[3] || 0)
+                      const minutes = parseInt(durationMatch[2] || durationMatch[4] || 0)
+                      const totalMinutes = hours * 60 + minutes
+                      // upTime과 downTime을 대략적으로 분배 (상행:하행 = 1:1로 가정)
+                      course.properties.upTime = Math.floor(totalMinutes / 2)
+                      course.properties.downTime = Math.ceil(totalMinutes / 2)
+                    }
+                  }
                 }
                 return course
               }
@@ -774,8 +858,24 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
             // 1. 10분 이하 또는 0.5km 이하 코스 제외
             const filteredCourses = courses.filter(course => {
               const props = course.properties || {}
-              const totalTime = (props.upTime || 0) + (props.downTime || 0)
-              const distance = props.distance || 0
+              
+              // upTime과 downTime 계산 (여러 방법 시도)
+              let totalTime = 0
+              if (props.upTime !== undefined && props.downTime !== undefined) {
+                totalTime = (props.upTime || 0) + (props.downTime || 0)
+              } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
+                totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+              } else if (props.duration) {
+                // duration 문자열에서 시간 파싱
+                const durationMatch = props.duration.match(/(\d+)시간\s*(\d+)분|(\d+)시간|(\d+)분/)
+                if (durationMatch) {
+                  const hours = parseInt(durationMatch[1] || durationMatch[3] || 0)
+                  const minutes = parseInt(durationMatch[2] || durationMatch[4] || 0)
+                  totalTime = hours * 60 + minutes
+                }
+              }
+              
+              const distance = props.distance || props.PMNTN_LT || 0
               
               // 10분 이하 또는 0.5km 이하 제외
               if (totalTime <= 10 || distance <= 0.5) {
@@ -918,41 +1018,58 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
             const distance = attrs.PMNTN_LT || 0
             const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim()
             
-            // 난이도 추정 함수 (노면 재질 + 거리/시간 기반, 원본 난이도 무시)
+            // 난이도 추정 함수 (국립공원 관리공단 기준 참고)
+            // 쉬움: 평탄, 비교적 매끈한 노면, 짧은 거리/시간
+            // 보통: 약간의 경사, 비교적 거친 노면, 중간 거리/시간
+            // 어려움: 심한 경사, 거친 노면, 긴 거리/시간
             const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
-              let score = 0
-              
-              if (distance < 1) score += 0
-              else if (distance < 2) score += 0
-              else if (distance < 5) score += 1
-              else if (distance < 10) score += 2
-              else if (distance < 15) score += 3
-              else score += 4
-              
-              if (totalMinutes < 30) score += 0
-              else if (totalMinutes < 60) score += 0
-              else if (totalMinutes < 120) score += 1
-              else if (totalMinutes < 180) score += 2
-              else if (totalMinutes < 240) score += 3
-              else if (totalMinutes < 360) score += 4
-              else score += 5
-              
+              // 노면 재질이 가장 중요한 기준
               const hardSurfaces = ['암석', '바위', '암벽', '절벽']
               const mediumSurfaces = ['토사', '자갈', '돌']
               const easySurfaces = ['포장', '콘크리트', '데크']
               
+              // 노면 재질 기준으로 기본 난이도 결정
+              let baseDifficulty = '보통' // 기본값
               if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
-                score += 3
-              } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
-                score += 1
+                baseDifficulty = '어려움' // 거친 노면 → 어려움
               } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
-                score -= 1
+                baseDifficulty = '쉬움' // 매끈한 포장 → 쉬움
+              } else if (mediumSurfaces.some(s => surfaceMaterial.includes(s))) {
+                baseDifficulty = '보통' // 비교적 거친 노면 → 보통
               }
               
-              // 점수에 따라 난이도 결정 (쉬움/보통/어려움만)
-              if (score <= 2) return '쉬움'
-              else if (score <= 5) return '보통'
-              else return '어려움'
+              // 거리와 시간으로 난이도 조정
+              // 매우 짧은 코스는 쉬움으로
+              if (distance <= 1.5 && totalMinutes <= 60) {
+                return '쉬움'
+              }
+              
+              // 매우 긴 코스는 어려움으로
+              if (distance >= 10 || totalMinutes >= 240) {
+                return '어려움'
+              }
+              
+              // 중간 거리/시간은 노면 재질 기준 따름
+              if (baseDifficulty === '쉬움') {
+                // 포장된 노면이면 거리/시간이 길어도 쉬움 유지 (최대 5km, 2시간까지)
+                if (distance <= 5 && totalMinutes <= 120) {
+                  return '쉬움'
+                } else {
+                  return '보통'
+                }
+              } else if (baseDifficulty === '어려움') {
+                // 거친 노면이면 거리/시간이 짧아도 어려움 유지
+                return '어려움'
+              } else {
+                // 보통 노면은 거리/시간에 따라 조정
+                if (distance <= 3 && totalMinutes <= 90) {
+                  return '쉬움'
+                } else if (distance >= 8 || totalMinutes >= 180) {
+                  return '어려움'
+                } else {
+                  return '보통'
+                }
+              }
             }
             
             const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)

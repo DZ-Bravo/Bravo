@@ -79,6 +79,14 @@ export const MOUNTAIN_ROUTES = {
     spotFile: 'mountain/287100601_geojson/PMNTN_SPOT_마니산_287100601.json',
     center: [37.6167, 126.4167],
     zoom: 13
+  },
+  '113050202': {
+    name: '북한산 백운대',
+    code: '113050202',
+    courseFile: 'mountain/113050202_geojson/PMNTN_북한산_백운대_113050202.json',
+    spotFile: 'mountain/113050202_geojson/PMNTN_SPOT_북한산_백운대_113050202.json',
+    center: [37.6584, 126.9994],
+    zoom: 13
   }
 }
 
