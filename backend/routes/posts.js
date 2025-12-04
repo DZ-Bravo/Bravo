@@ -2,6 +2,8 @@ import express from 'express'
 import Post from '../models/Post.js'
 import User from '../models/User.js'
 import Comment from '../models/Comment.js'
+import Course from '../models/Course.js'
+import Notification from '../models/Notification.js'
 import { authenticateToken } from './auth.js'
 import multer from 'multer'
 import path from 'path'
@@ -120,15 +122,22 @@ router.get('/my', authenticateToken, async (req, res) => {
     const limit = parseInt(req.query.limit) || 20
     const skip = (page - 1) * limit
 
-    const posts = await Post.find({ author: userId })
+    // 카테고리 필터링 (선택적)
+    const { category } = req.query
+    let query = { author: userId }
+    if (category && ['diary', 'qa', 'free'].includes(category)) {
+      query.category = category
+    }
+    
+    const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes createdAt images')
+      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .lean()
 
-    const total = await Post.countDocuments({ author: userId })
+    const total = await Post.countDocuments(query)
 
     // 날짜 포맷팅 및 본문 미리보기 생성
     const formattedPosts = await Promise.all(posts.map(async (post) => {
@@ -159,7 +168,12 @@ router.get('/my', authenticateToken, async (req, res) => {
         views: post.views || 0,
         likes: post.likes || 0,
         thumbnail: thumbnail,
-        comments: commentCount
+        comments: commentCount,
+        mountainCode: post.mountainCode,
+        courseName: post.courseName,
+        courseDistance: post.courseDistance,
+        courseDurationMinutes: post.courseDurationMinutes,
+        createdAt: post.createdAt
       }
     }))
 
@@ -271,7 +285,7 @@ router.get('/', async (req, res) => {
     
     const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes createdAt images')
+      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -361,7 +375,7 @@ router.get('/:id', async (req, res) => {
     
     const post = await Post.findById(id)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes likedBy createdAt updatedAt images')
+      .select('title content category author authorName views likes likedBy createdAt updatedAt images mountainCode courseName courseDistance courseDurationMinutes')
       .lean()
 
     if (!post) {
@@ -476,24 +490,137 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
     // 이미지 경로 처리
     const images = req.files ? req.files.map(file => `/uploads/posts/${file.filename}`) : []
 
+    // 등산일지 전용 필드 추출
+    let mountainCode = null
+    let courseName = null
+    let courseDistance = null
+    let courseDurationMinutes = null
+
+    if (normalizedCategory === 'diary') {
+      mountainCode = req.body.mountainCode || null
+      courseName = req.body.courseName || null
+
+      // 프론트엔드에서 전송한 거리 정보 사용
+      if (req.body.courseDistance) {
+        const distanceNum = parseFloat(req.body.courseDistance)
+        if (!isNaN(distanceNum) && distanceNum > 0) {
+          courseDistance = distanceNum
+        }
+      }
+
+      // 프론트엔드에서 전송한 시간 정보 사용 (문자열을 분 단위로 변환)
+      if (req.body.courseDuration) {
+        const durationStr = String(req.body.courseDuration).trim()
+        let minutes = 0
+        
+        // "1시간 30분" 형식 파싱
+        const hourMatch = durationStr.match(/(\d+)\s*시간/)
+        const minuteMatch = durationStr.match(/(\d+)\s*분/)
+        
+        if (hourMatch) {
+          minutes += parseInt(hourMatch[1], 10) * 60
+        }
+        if (minuteMatch) {
+          minutes += parseInt(minuteMatch[1], 10)
+        }
+        
+        // 숫자만 있는 경우 (분 단위로 가정)
+        if (minutes === 0 && /^\d+$/.test(durationStr)) {
+          minutes = parseInt(durationStr, 10)
+        }
+        
+        if (minutes > 0) {
+          courseDurationMinutes = minutes
+        }
+      }
+
+      // 프론트엔드에서 정보가 없으면 Course 컬렉션에서 조회 (fallback)
+      if ((!courseDistance || !courseDurationMinutes) && mountainCode && courseName) {
+        try {
+          const course = await Course.findOne({
+            mountainCode: mountainCode,
+            courseName: courseName
+          }).lean()
+
+          if (course) {
+            // 거리가 없으면 Course에서 가져오기
+            if (!courseDistance && typeof course.distance === 'number') {
+              courseDistance = course.distance
+            }
+
+            // 시간이 없으면 Course에서 가져오기
+            if (!courseDurationMinutes && course.duration && typeof course.duration === 'string') {
+              const durationStr = course.duration
+              let minutes = 0
+              const hourMatch = durationStr.match(/(\d+)\s*시간/)
+              const minuteMatch = durationStr.match(/(\d+)\s*분/)
+              if (hourMatch) {
+                minutes += parseInt(hourMatch[1], 10) * 60
+              }
+              if (minuteMatch) {
+                minutes += parseInt(minuteMatch[1], 10)
+              }
+              if (minutes > 0) {
+                courseDurationMinutes = minutes
+              }
+            }
+          }
+        } catch (e) {
+          console.error('등산 코스 정보 조회 오류 (포스트 작성 중):', e)
+        }
+      }
+
+      console.log('등산일지 작성 - 코스 정보:', {
+        mountainCode,
+        courseName,
+        courseDistance,
+        courseDurationMinutes,
+        receivedDistance: req.body.courseDistance,
+        receivedDuration: req.body.courseDuration
+      })
+    }
+
     const post = new Post({
       title,
       content,
       category: normalizedCategory,
       author: userId,
       authorName: user.name,
-      images
+      images,
+      mountainCode,
+      courseName,
+      courseDistance,
+      courseDurationMinutes
     })
 
     await post.save()
     console.log('게시글 작성 완료 - 원본 카테고리:', category, '정규화된 카테고리:', normalizedCategory, '저장된 카테고리:', post.category, '제목:', title)
+    
+    // 등산일지 작성 시 포인트 +100 지급 및 알림 생성
+    if (normalizedCategory === 'diary') {
+      const currentPoints = user.points || 0
+      user.points = currentPoints + 100
+      await user.save()
+      console.log(`등산일지 작성 포인트 지급: 사용자 ${user.name} (${user.id})에게 +100 포인트 지급. 현재 포인트: ${user.points}`)
+      
+      // 포인트 적립 알림 생성
+      const notification = new Notification({
+        user: userId,
+        type: 'point_earned',
+        title: '포인트 적립',
+        message: '등산일지 작성으로 100포인트가 적립되었습니다.',
+        relatedId: post._id,
+        relatedModel: 'Post'
+      })
+      await notification.save()
+    }
     
     // 저장 후 실제 DB에서 확인
     const savedPost = await Post.findById(post._id).select('category title').lean()
     console.log('DB에 저장된 실제 값:', savedPost)
 
     res.status(201).json({
-      message: '게시글이 작성되었습니다.',
+      message: normalizedCategory === 'diary' ? '게시글이 작성되었습니다. 포인트 100점이 지급되었습니다!' : '게시글이 작성되었습니다.',
       post: {
         id: post._id,
         title: post.title,
@@ -502,7 +629,9 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
         date: new Date(post.createdAt).toISOString().split('T')[0],
         views: post.views,
         likes: post.likes
-      }
+      },
+      pointsAdded: normalizedCategory === 'diary' ? 100 : 0,
+      currentPoints: normalizedCategory === 'diary' ? user.points : undefined
     })
   } catch (error) {
     console.error('게시글 작성 오류:', error)
@@ -650,6 +779,36 @@ router.post('/:id/comments', authenticateToken, async (req, res) => {
     })
 
     await comment.save()
+
+    // 댓글 알림 생성 (게시글 작성자에게만, 자기 자신이 아닌 경우)
+    // post.author가 populate되지 않았을 수 있으므로 ObjectId로 처리
+    const postAuthorId = post.author.toString ? post.author.toString() : String(post.author)
+    const commenterId = userId.toString()
+    
+    console.log('댓글 알림 체크 - postAuthorId:', postAuthorId, 'commenterId:', commenterId)
+    
+    if (postAuthorId !== commenterId) {
+      try {
+        const commenterName = user.name || '누군가'
+        
+        console.log('댓글 알림 생성 시도 - 작성자:', postAuthorId, '댓글 작성자:', commenterName)
+        
+        const notification = new Notification({
+          user: post.author,
+          type: 'comment',
+          title: '댓글 알림',
+          message: `${commenterName}님이 "${post.title}" 게시글에 댓글을 남겼습니다.`,
+          relatedId: postId,
+          relatedModel: 'Post'
+        })
+        await notification.save()
+        console.log('댓글 알림 생성 완료:', notification._id)
+      } catch (error) {
+        console.error('댓글 알림 생성 오류:', error)
+      }
+    } else {
+      console.log('댓글 알림 스킵 - 자기 자신의 게시글')
+    }
 
     res.status(201).json({
       message: '댓글이 작성되었습니다.',

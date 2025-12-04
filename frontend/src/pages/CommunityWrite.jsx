@@ -15,7 +15,9 @@ function CommunityWrite() {
     hikingTip: '',
     hashtags: [],
     mountainCode: '',
-    courseName: ''
+    courseName: '',
+    courseDistance: null,
+    courseDuration: null
   })
   const [currentHashtag, setCurrentHashtag] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -65,10 +67,31 @@ function CommunityWrite() {
             const data = await response.json()
             const courseList = (data.courses || []).map((course, index) => {
               const props = course.properties || {}
+              // 코스 이름 추출 (여러 필드에서 시도)
+              const courseName = props.name || props.PMNTN_NM || props.PMNTN_MAIN || props.courseName || `코스 ${index + 1}`
+              // 거리 (km)
+              const distance = props.PMNTN_LT || props.distance
+              // 소요시간 계산 (duration이 있으면 사용, 없으면 PMNTN_UPPL + PMNTN_GODN)
+              let duration = props.duration || ''
+              if (!duration) {
+                const upTime = props.PMNTN_UPPL || 0
+                const downTime = props.PMNTN_GODN || 0
+                const totalMinutes = upTime + downTime
+                if (totalMinutes > 0) {
+                  const hours = Math.floor(totalMinutes / 60)
+                  const minutes = totalMinutes % 60
+                  if (hours > 0) {
+                    duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+                  } else {
+                    duration = `${totalMinutes}분`
+                  }
+                }
+              }
               return {
                 id: index,
-                name: props.PMNTN_NM || props.courseName || `코스 ${index + 1}`,
-                distance: props.PMNTN_LT || props.distance,
+                name: courseName,
+                distance: distance,
+                duration: duration,
                 difficulty: props.PMNTN_DFFL || props.difficulty
               }
             })
@@ -119,11 +142,22 @@ function CommunityWrite() {
         [name]: value,
         mountainCode: '',
         courseName: '',
+        courseDistance: null,
+        courseDuration: null,
         images: [],
         hikingTip: '',
         hashtags: []
       })
       setCurrentHashtag('')
+    } else if (name === 'courseName') {
+      // 코스 선택 시 해당 코스의 거리와 시간 정보 저장
+      const selectedCourse = courses.find(c => c.name === value)
+      setFormData({
+        ...formData,
+        [name]: value,
+        courseDistance: selectedCourse ? selectedCourse.distance : null,
+        courseDuration: selectedCourse ? selectedCourse.duration : null
+      })
     } else {
       setFormData({
         ...formData,
@@ -242,6 +276,12 @@ function CommunityWrite() {
         })
         submitData.append('mountainCode', formData.mountainCode)
         submitData.append('courseName', formData.courseName)
+        if (formData.courseDistance) {
+          submitData.append('courseDistance', formData.courseDistance.toString())
+        }
+        if (formData.courseDuration) {
+          submitData.append('courseDuration', formData.courseDuration)
+        }
         if (formData.hashtags.length > 0) {
           submitData.append('hashtags', JSON.stringify(formData.hashtags))
         }

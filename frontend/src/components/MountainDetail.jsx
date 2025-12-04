@@ -26,6 +26,63 @@ function MountainDetail({ name, code, height, location, description, center, zoo
   const [showDifficultyModal, setShowDifficultyModal] = useState(false)
   const [selectedDifficultyLevel, setSelectedDifficultyLevel] = useState('normal') // 기본값: 보통
   const [kakaoLoaded, setKakaoLoaded] = useState(false)
+  const [showScheduleModal, setShowScheduleModal] = useState(false)
+  const [scheduleDate, setScheduleDate] = useState('')
+  const [scheduleTime, setScheduleTime] = useState('09:00')
+  const [scheduleNotes, setScheduleNotes] = useState('')
+  const [scheduleLoading, setScheduleLoading] = useState(false)
+  const [selectedScheduleCourseIndex, setSelectedScheduleCourseIndex] = useState(null)
+
+  // 등산일정 추가 함수
+  const handleAddSchedule = async () => {
+    if (!scheduleDate) {
+      alert('등산일자를 선택해주세요.')
+      return
+    }
+
+    const token = localStorage.getItem('token')
+    if (!token) {
+      alert('로그인이 필요합니다.')
+      return
+    }
+
+    setScheduleLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/api/schedules`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          mountainCode: code,
+          mountainName: name,
+          scheduledDate: scheduleDate,
+          scheduledTime: scheduleTime,
+          courseName: selectedScheduleCourseIndex !== null && courses[selectedScheduleCourseIndex] ? courses[selectedScheduleCourseIndex]?.properties?.name : null,
+          notes: scheduleNotes
+        })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        alert('등산일정이 추가되었습니다.')
+        setShowScheduleModal(false)
+        setScheduleDate('')
+        setScheduleTime('09:00')
+        setScheduleNotes('')
+        setSelectedScheduleCourseIndex(null)
+      } else {
+        alert(data.error || '등산일정 추가에 실패했습니다.')
+      }
+    } catch (error) {
+      console.error('등산일정 추가 오류:', error)
+      alert('등산일정 추가 중 오류가 발생했습니다.')
+    } finally {
+      setScheduleLoading(false)
+    }
+  }
 
   // 카카오맵 SDK 로드
   useEffect(() => {
@@ -882,8 +939,8 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                 hasValidBounds,
                 minLat, maxLat, minLng, maxLng
               })
-            }
           }
+        }
         }
       } else {
         setCourses([])
@@ -1823,6 +1880,17 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                                 >
                                   주변 숙소
                                 </button>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.currentTarget.blur()
+                                    setShowScheduleModal(true)
+                                  }}
+                                  className="show-all-courses-btn"
+                                  style={{ backgroundColor: '#00BF93', color: '#ffffff' }}
+                                >
+                                  등산일정 추가
+                                </button>
                               </div>
                             </div>
                             <div className="course-detail-info">
@@ -1877,6 +1945,17 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                           style={{ backgroundColor: lodgingsVisible ? '#FF7043' : '#ffffff', color: lodgingsVisible ? '#ffffff' : '#333' }}
                         >
                           주변 숙소
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.currentTarget.blur()
+                            setShowScheduleModal(true)
+                          }}
+                          className="show-all-courses-btn"
+                          style={{ backgroundColor: '#00BF93', color: '#ffffff' }}
+                        >
+                          등산일정 추가
                         </button>
                       </div>
                     </div>
@@ -2227,6 +2306,89 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                 </div>
               )
             })()}
+          </div>
+        </div>
+      )}
+
+      {/* 등산일정 추가 모달 */}
+      {showScheduleModal && (
+        <div className="modal-overlay" onClick={() => setShowScheduleModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>등산일정 추가</h2>
+              <button className="modal-close-btn" onClick={() => setShowScheduleModal(false)}>
+                ✕
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>산 이름</label>
+                <input type="text" value={name} disabled className="form-input" />
+              </div>
+              <div className="form-group">
+                <label>등산일자 <span className="required">*</span></label>
+                <input
+                  type="date"
+                  value={scheduleDate}
+                  onChange={(e) => setScheduleDate(e.target.value)}
+                  className="form-input"
+                  min={new Date().toISOString().split('T')[0]}
+                />
+              </div>
+              <div className="form-group">
+                <label>등산시간</label>
+                <input
+                  type="time"
+                  value={scheduleTime}
+                  onChange={(e) => setScheduleTime(e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>등산 코스</label>
+                <select
+                  value={selectedScheduleCourseIndex !== null ? selectedScheduleCourseIndex : ''}
+                  onChange={(e) => setSelectedScheduleCourseIndex(e.target.value === '' ? null : parseInt(e.target.value))}
+                  className="form-input"
+                >
+                  <option value="">코스를 선택하세요</option>
+                  {courses.map((course, index) => {
+                    const courseName = course.properties?.name || course.properties?.PMNTN_NM || course.properties?.PMNTN_MAIN || `코스 ${index + 1}`
+                    return (
+                      <option key={index} value={index}>
+                        {courseName}
+                      </option>
+                    )
+                  })}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>메모</label>
+                <textarea
+                  value={scheduleNotes}
+                  onChange={(e) => setScheduleNotes(e.target.value)}
+                  className="form-textarea"
+                  rows="3"
+                  placeholder="등산 일정에 대한 메모를 입력하세요"
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                className="modal-btn cancel"
+                onClick={() => setShowScheduleModal(false)}
+                disabled={scheduleLoading}
+              >
+                취소
+              </button>
+              <button
+                className="modal-btn submit"
+                onClick={handleAddSchedule}
+                disabled={scheduleLoading}
+              >
+                {scheduleLoading ? '추가 중...' : '추가하기'}
+              </button>
+            </div>
           </div>
         </div>
       )}
