@@ -456,10 +456,14 @@
 }
 
 .notice-title {
-  color: #333;
-  font-size: 0.85rem;
-  font-weight: 500;
-  line-height: 1.4;
+  color: #333 !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+}
+
+.notice-item .notice-content .notice-title {
+  font-size: 0.75rem !important;
 }
 
 .notice-date {
