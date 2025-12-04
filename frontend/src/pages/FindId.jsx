@@ -99,10 +99,10 @@ function FindId() {
 
   return (
     <div className="find-id-page">
-      <Header />
+      <Header hideNav={true} />
       <main className="find-id-main">
         <div className="find-id-container">
-          <h1 className="find-id-title">Find your ID</h1>
+          <h1 className="find-id-title">아이디 찾기</h1>
 
           {foundId ? (
             <div className="result-container">
@@ -133,18 +133,18 @@ function FindId() {
             </div>
           ) : (
             <div className="find-id-form">
-              <div className="phone-group">
-                <label htmlFor="phone" className="phone-label">휴대폰 번호</label>
-                <div className="phone-input-group">
+              <div className="form-field">
+                <label htmlFor="phone" className="form-label">휴대폰 번호</label>
+                <div className="phone-input-wrapper">
                   <input
                     type="text"
                     id="phone"
                     name="phone"
                     value={phone}
                     onChange={handlePhoneChange}
-                    placeholder="EX)010-1111-2222"
+                    placeholder="휴대폰 번호를 입력해 주세요."
                     maxLength="13"
-                    className="phone-input"
+                    className="form-input phone-input"
                   />
                   <button
                     type="button"
@@ -158,7 +158,7 @@ function FindId() {
               </div>
 
               {isCodeSent && (
-                <div className="verification-group">
+                <div className="form-field">
                   <input
                     type="text"
                     value={verificationCode}
@@ -168,16 +168,13 @@ function FindId() {
                     }}
                     placeholder="인증번호 입력"
                     maxLength="6"
-                    className="verification-input"
+                    className="form-input verification-code-input"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !isLoading && verificationCode) {
+                        handleVerifyCode()
+                      }
+                    }}
                   />
-                  <button
-                    type="button"
-                    onClick={handleVerifyCode}
-                    disabled={isLoading || !verificationCode}
-                    className="verify-btn"
-                  >
-                    확인
-                  </button>
                 </div>
               )}
 

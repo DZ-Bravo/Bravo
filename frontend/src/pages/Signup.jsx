@@ -13,6 +13,7 @@ function Signup() {
     gender: '',
     fitnessLevel: '',
     birthYear: '',
+    phone: '',
     profileImage: null,
     termsAgreed: false
   })
@@ -40,6 +41,22 @@ function Signup() {
     setFormData({
       ...formData,
       [e.target.name]: value
+    })
+  }
+
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, '')
+    
+    // 하이픈 자동 추가
+    if (value.length > 3 && value.length <= 7) {
+      value = value.slice(0, 3) + '-' + value.slice(3)
+    } else if (value.length > 7) {
+      value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7, 11)
+    }
+    
+    setFormData({
+      ...formData,
+      phone: value
     })
   }
 
@@ -369,6 +386,28 @@ function Signup() {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="phone" className="form-label">휴대폰 번호</label>
+              <div className="phone-input-wrapper">
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handlePhoneChange}
+                  placeholder="휴대폰 번호를 입력해 주세요."
+                  maxLength="13"
+                  className="form-input phone-input"
+                />
+                <button
+                  type="button"
+                  className="send-code-btn"
+                >
+                  인증번호전송
+                </button>
               </div>
             </div>
 

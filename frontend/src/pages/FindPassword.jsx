@@ -107,10 +107,10 @@ function FindPassword() {
 
   return (
     <div className="find-password-page">
-      <Header />
+      <Header hideNav={true} />
       <main className="find-password-main">
         <div className="find-password-container">
-          <h1 className="find-password-title">Find your PW</h1>
+          <h1 className="find-password-title">비밀번호 찾기</h1>
 
           {tempPassword ? (
             <div className="result-container">
@@ -148,7 +148,7 @@ function FindPassword() {
             </div>
           ) : (
             <div className="find-password-form">
-              <div className="form-group">
+              <div className="form-field">
                 <label htmlFor="id" className="form-label">아이디</label>
                 <input
                   type="text"
@@ -160,23 +160,23 @@ function FindPassword() {
                     setErrorMessage('')
                     setTempPassword(null)
                   }}
-                  placeholder="아이디를 입력해주세요"
+                  placeholder="아이디를 입력해주세요."
                   className="form-input"
                 />
               </div>
 
-              <div className="phone-section">
-                <label className="phone-section-label">휴대폰 번호로 찾기</label>
-                <div className="phone-input-group">
+              <div className="form-field">
+                <label htmlFor="phone" className="form-label">휴대폰 번호</label>
+                <div className="phone-input-wrapper">
                   <input
                     type="text"
                     id="phone"
                     name="phone"
                     value={phone}
                     onChange={handlePhoneChange}
-                    placeholder="EX)010-1111-2222"
+                    placeholder="휴대폰 번호를 입력해 주세요."
                     maxLength="13"
-                    className="phone-input"
+                    className="form-input phone-input"
                   />
                   <button
                     type="button"
@@ -190,7 +190,7 @@ function FindPassword() {
               </div>
 
               {isCodeSent && (
-                <div className="verification-group">
+                <div className="form-field">
                   <input
                     type="text"
                     value={verificationCode}
@@ -200,16 +200,13 @@ function FindPassword() {
                     }}
                     placeholder="인증번호 입력"
                     maxLength="6"
-                    className="verification-input"
+                    className="form-input verification-code-input"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !isLoading && verificationCode) {
+                        handleVerifyCode()
+                      }
+                    }}
                   />
-                  <button
-                    type="button"
-                    onClick={handleVerifyCode}
-                    disabled={isLoading || !verificationCode}
-                    className="verify-btn"
-                  >
-                    확인
-                  </button>
                 </div>
               )}
 
@@ -221,7 +218,7 @@ function FindPassword() {
 
           <div className="auth-links">
             <Link to="/login" className="auth-link">로그인</Link>
-            <Link to="/find-password" className="auth-link">비밀번호 찾기</Link>
+            <Link to="/find-id" className="auth-link">아이디 찾기</Link>
           </div>
         </div>
       </main>
