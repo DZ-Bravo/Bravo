@@ -132,3 +132,7 @@ nav a:hover {
   color: #ffa04a;
 }
 
+header.hide-nav nav {
+  display: none;
+}
+

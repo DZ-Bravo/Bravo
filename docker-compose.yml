@@ -62,8 +62,61 @@ services:
       - /app/node_modules
     environment:
       - VITE_KAKAO_MAP_API_KEY=2558d942f5694586673df72d72e089b8
+      - VITE_NAVER_MAP_CLIENT_ID=amwq6xvj0j
     depends_on:
       - backend
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: hiking-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: hiking-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - SERVERNAME=kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  fluent-bit:
+    image: fluent/fluent-bit:2.2.0
+    container_name: hiking-fluent-bit
+    volumes:
+      - ./Elasticsearch/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - fluent-bit-data:/tmp
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - hiking-network
@@ -74,4 +127,6 @@ networks:
 
 volumes:
   mongodb_data:
+  elasticsearch_data:
+  fluent-bit-data:
 

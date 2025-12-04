@@ -48,11 +48,6 @@ function Home() {
     fetchNotices()
   }, [API_URL])
 
-  // TOP 버튼 클릭 핸들러
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   // 인기 있는 산 데이터
   const popularMountains = [
     { id: '287201304', name: '북한산', image: '/images/popularity_img1.png' },
@@ -204,39 +199,7 @@ function Home() {
         <Link to="/mountains-map" className="view-all-mountains-btn">
           <img src="/images/mountFullView_btn.png" alt="산 전체보기" />
         </Link>
-
-        {/* TOP 버튼 */}
-        <button onClick={scrollToTop} className="top-btn">
-          <img src="/images/top_btn.png" alt="TOP" />
-        </button>
       </main>
-
-      {/* 푸터 */}
-      <footer className="home-footer">
-        <div className="footer-content">
-          <div className="footer-logo">
-            <img src="/images/logo2.png" alt="HIKER" />
-          </div>
-          <div className="footer-info">
-            <div className="footer-info-item">
-              <strong>주소</strong>
-              <span>서울 종로구 인사동길 12 15층 하이미디어아카데미</span>
-            </div>
-            <div className="footer-info-item">
-              <strong>대표자</strong>
-              <span>민선재</span>
-            </div>
-            <div className="footer-info-item">
-              <strong>문의/제안</strong>
-              <span>msj67854643@gmail.com</span>
-            </div>
-            <div className="footer-info-item">
-              <strong>연락처</strong>
-              <span>010-4634-6785</span>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
