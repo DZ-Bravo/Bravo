@@ -7,7 +7,7 @@ function Chatbot() {
   const [messages, setMessages] = useState([
     {
       type: 'bot',
-      text: '안녕하세요! 내일의 등산 챗봇입니다. 무엇을 도와드릴까요?'
+      text: '안녕하세요! HIKER 챗봇입니다. 무엇을 도와드릴까요?'
     }
   ])
 
@@ -43,9 +43,11 @@ function Chatbot() {
           <div className="chatbot-window">
             <div className="chatbot-header">
               <div className="chatbot-header-info">
-                <div className="chatbot-avatar">🤖</div>
+                <div className="chatbot-avatar">
+                  <img src="/images/chatbot_icon.png" alt="챗봇" />
+                </div>
                 <div>
-                  <div className="chatbot-name">내일의 등산 챗봇</div>
+                  <div className="chatbot-name">HIKER 챗봇</div>
                   <div className="chatbot-status">온라인</div>
                 </div>
               </div>
