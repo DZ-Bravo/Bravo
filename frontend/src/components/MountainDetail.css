@@ -1,5 +1,5 @@
 .mountain-detail main {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -301,12 +301,65 @@
   margin: 0;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.course-list-panel .courses-header > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.course-list-panel .courses-header h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin: 0;
+  font-weight: 600;
+}
+
+.course-list-panel .courses-header .sort-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .course-list-panel .courses-list {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.show-all-courses-btn {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  outline: none;
+}
+
+.show-all-courses-btn:hover {
+  background-color: #45a049;
+}
+
+.show-all-courses-btn:active {
+  background-color: #3d8b40;
+}
+
+.show-all-courses-btn:focus {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
 }
 
 .course-detail-header {
@@ -315,10 +368,17 @@
   flex-shrink: 0;
 }
 
+.course-detail-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
 .course-detail-header h3 {
   font-size: 1.5rem;
   color: var(--primary);
-  margin: 0 0 16px 0;
+  margin: 0;
 }
 
 .course-detail-info {
@@ -715,14 +775,18 @@
 }
 
 .sort-options button {
-  padding: 6px 12px;
+  padding: 8px 14px;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text-main);
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .sort-options button:hover {
@@ -748,6 +812,7 @@
   border-radius: 12px;
   padding: 20px;
   transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
 }
 
 .course-card:hover {
@@ -763,10 +828,17 @@
 
 .course-card-header {
   margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .course-name {
   font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  flex: 1;
   font-weight: 600;
   color: var(--text-main);
   margin: 0 0 8px 0;
@@ -781,25 +853,29 @@
 
 .course-info {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .course-info-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .course-info-item .info-label {
   font-size: 0.8rem;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .course-info-item .info-value {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-main);
+  white-space: nowrap;
 }
 
 .course-info-item .info-value.difficulty-easy {
@@ -812,5 +888,136 @@
 
 .course-info-item .info-value.difficulty-hard {
   color: #f44336;
+}
+
+/* 주변 숙소 목록 스타일 */
+.lodging-list-section {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.lodging-list-header {
+  margin-bottom: 20px;
+}
+
+.lodging-list-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.lodging-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lodging-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  transition: box-shadow 0.2s;
+}
+
+.lodging-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lodging-card-content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.lodging-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.lodging-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 8px 0;
+}
+
+.lodging-address {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 8px 0;
+}
+
+.lodging-directions-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.lodging-directions-link:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.lodging-description {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  margin: 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lodging-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.lodging-rating-stars {
+  font-size: 0.9rem;
+}
+
+.lodging-rating-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.lodging-image {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.lodging-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .lodging-card-content {
+    flex-direction: column;
+  }
+  
+  .lodging-image {
+    width: 100%;
+    height: 200px;
+  }
 }
 

@@ -479,6 +479,123 @@ router.get('/me', authenticateToken, async (req, res) => {
   }
 })
 
+// 회원정보 수정
+router.put('/update', authenticateToken, upload.single('profileImage'), async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const { name, password, gender, fitnessLevel, birthYear, phone } = req.body
+    
+    console.log('=== 회원정보 수정 요청 ===')
+    console.log('userId:', userId)
+    console.log('받은 데이터:', {
+      name: name || '없음',
+      password: password ? '***' : '없음',
+      gender: gender || '없음',
+      fitnessLevel: fitnessLevel || '없음',
+      birthYear: birthYear || '없음',
+      phone: phone || '없음',
+      profileImage: req.file ? req.file.filename : '없음'
+    })
+    
+    const user = await User.findById(userId)
+    if (!user) {
+      console.error('사용자를 찾을 수 없음:', userId)
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+    
+    console.log('수정 전 사용자 정보:', {
+      name: user.name,
+      gender: user.gender,
+      fitnessLevel: user.fitnessLevel,
+      birthYear: user.birthYear,
+      phone: user.phone
+    })
+    
+    // 업데이트할 필드 설정 (값이 제공된 경우에만 업데이트)
+    if (name !== undefined && name !== null) {
+      const trimmedName = name.trim()
+      if (trimmedName !== '') {
+        user.name = trimmedName
+        console.log('이름 업데이트:', user.name)
+      }
+    }
+    if (gender !== undefined && gender !== null && gender !== '') {
+      user.gender = gender
+      console.log('성별 업데이트:', user.gender)
+    }
+    if (fitnessLevel !== undefined && fitnessLevel !== null && fitnessLevel !== '') {
+      user.fitnessLevel = fitnessLevel
+      console.log('등력 업데이트:', user.fitnessLevel)
+    }
+    if (birthYear !== undefined && birthYear !== null && birthYear !== '') {
+      const birthYearNum = parseInt(birthYear)
+      if (!isNaN(birthYearNum) && birthYearNum > 1900 && birthYearNum <= new Date().getFullYear()) {
+        user.birthYear = birthYearNum
+        console.log('출생년도 업데이트:', user.birthYear)
+      }
+    }
+    if (phone !== undefined) {
+      user.phone = phone || ''
+      console.log('전화번호 업데이트:', user.phone)
+    }
+    
+    // 비밀번호 변경 (입력된 경우에만)
+    if (password && password.trim() !== '') {
+      if (password.length < 6) {
+        return res.status(400).json({ error: '비밀번호는 최소 6자 이상이어야 합니다.' })
+      }
+      user.password = password
+      console.log('비밀번호 업데이트됨')
+    }
+    
+    // 프로필 이미지 업데이트
+    if (req.file) {
+      // 기존 이미지 삭제 (있는 경우)
+      if (user.profileImage && !user.profileImage.startsWith('http')) {
+        const oldImagePath = path.join(__dirname, '..', user.profileImage)
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath)
+          console.log('기존 프로필 이미지 삭제:', oldImagePath)
+        }
+      }
+      user.profileImage = `/uploads/profiles/${req.file.filename}`
+      console.log('프로필 이미지 업데이트:', user.profileImage)
+    }
+    
+    // DB에 저장
+    await user.save()
+    console.log('DB 저장 완료')
+    console.log('수정 후 사용자 정보:', {
+      name: user.name,
+      gender: user.gender,
+      fitnessLevel: user.fitnessLevel,
+      birthYear: user.birthYear,
+      phone: user.phone,
+      profileImage: user.profileImage
+    })
+    
+    res.json({
+      message: '회원정보가 수정되었습니다.',
+      user: {
+        id: user.id,
+        name: user.name,
+        gender: user.gender,
+        fitnessLevel: user.fitnessLevel,
+        birthYear: user.birthYear,
+        phone: user.phone,
+        profileImage: user.profileImage,
+        role: user.role || 'user'
+      }
+    })
+  } catch (error) {
+    console.error('회원정보 수정 오류:', error)
+    res.status(500).json({ 
+      error: '회원정보 수정 중 오류가 발생했습니다.',
+      details: error.message 
+    })
+  }
+})
+
 // 사용자 통계 가져오기
 router.get('/stats', authenticateToken, async (req, res) => {
   try {

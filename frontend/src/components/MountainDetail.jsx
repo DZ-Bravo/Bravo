@@ -11,59 +11,108 @@ function MountainDetail({ name, code, height, location, description, center, zoo
   const [weatherLoading, setWeatherLoading] = useState(true)
   const [courses, setCourses] = useState([])
   const [coursesLoading, setCoursesLoading] = useState(true)
+  const [lodgings, setLodgings] = useState([])
+  const [lodgingsVisible, setLodgingsVisible] = useState(false)
+  const [selectedLodging, setSelectedLodging] = useState(null)
+  const [showLodgingModal, setShowLodgingModal] = useState(false)
   const [sortBy, setSortBy] = useState('difficulty-asc') // difficulty-asc/desc, time-asc/desc, distance-asc/desc
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(null)
-  const courseLayerRef = useRef(null)
-  const spotsRef = useRef([]) // SPOT 데이터 저장
+  const courseLayerRef = useRef([]) // 카카오맵에서는 배열로 관리
+  const markersRef = useRef([]) // 카카오맵 마커 배열
+  const lodgingMarkersRef = useRef([]) // 주변 숙소 마커
+  const spotsRef = useRef([]) // SPOT 데이터 저장 (편의시설)
+  const courseItemRefs = useRef({}) // 코스 아이템 DOM 참조 저장
+  const eventListenersRef = useRef([]) // 이벤트 리스너 저장 (제거용)
   const [showDifficultyModal, setShowDifficultyModal] = useState(false)
   const [selectedDifficultyLevel, setSelectedDifficultyLevel] = useState('normal') // 기본값: 보통
+  const [kakaoLoaded, setKakaoLoaded] = useState(false)
 
+  // 카카오맵 SDK 로드
   useEffect(() => {
     let isMounted = true
 
+    const loadKakaoMap = () => {
+      if (window.kakao && window.kakao.maps) {
+        setKakaoLoaded(true)
+        return
+      }
+
+      const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY || ''
+      
+      if (!apiKey) {
+        console.error('카카오 맵 API 키가 설정되지 않았습니다. VITE_KAKAO_MAP_API_KEY 환경 변수를 설정해주세요.')
+        return
+      }
+
+      if (window.kakao && window.kakao.maps) {
+        window.kakao.maps.load(() => {
+          if (isMounted) {
+            setKakaoLoaded(true)
+          }
+        })
+      } else {
+        const script = document.createElement('script')
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`
+        script.async = true
+        script.onload = () => {
+          if (window.kakao && window.kakao.maps) {
+            window.kakao.maps.load(() => {
+              if (isMounted) {
+                setKakaoLoaded(true)
+              }
+            })
+          }
+        }
+        document.head.appendChild(script)
+      }
+    }
+
+    loadKakaoMap()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
     // 지도 초기화
-    const initMap = async () => {
-      if (!mapRef.current) {
+  useEffect(() => {
+    if (!kakaoLoaded || !mapRef.current) return
+
+    let isMounted = true
+
+    const initMap = () => {
+      if (!mapRef.current || !window.kakao || !window.kakao.maps) {
         return
       }
 
       // 기존 지도가 있으면 제거
       if (mapInstanceRef.current) {
-        try {
-          mapInstanceRef.current.remove()
-        } catch (error) {
-          // 이미 제거된 경우 무시
-        }
         mapInstanceRef.current = null
       }
 
       // 지도 컨테이너 초기화
-      if (mapRef.current._leaflet_id) {
-        mapRef.current._leaflet_id = null
         mapRef.current.innerHTML = ''
-      }
 
       try {
-        const L = await import('leaflet')
-        
-        if (!isMounted || !mapRef.current) return
+        const container = mapRef.current
+        // 지도 초기화 시 임시 center 설정 (코스 데이터 로드 후 bounds로 덮어쓸 예정)
+        const options = {
+          center: new window.kakao.maps.LatLng(center[0], center[1]),
+          level: zoom || 13
+        }
 
-        const map = L.default.map(mapRef.current, {
-          center: center,
-          zoom: zoom
-        })
-        
-        L.default.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors',
-          minZoom: 3
-        }).addTo(map)
-
+        const map = new window.kakao.maps.Map(container, options)
         mapInstanceRef.current = map
 
         // GeoJSON 로드 (코스 경로 + 지점 마커)
         if (isMounted) {
+          // 지도가 완전히 초기화된 후 코스 데이터 로드
+          setTimeout(() => {
+            if (isMounted && mapInstanceRef.current && window.kakao && window.kakao.maps) {
           loadCourseData(code, map)
-          loadSpotData(code, map) // SPOT 데이터를 먼저 로드하여 spotsRef에 저장
+              loadSpotData(code, map) // SPOT 데이터를 먼저 로드하여 spotsRef에 저장
+            }
+          }, 100)
         }
       } catch (error) {
         console.error('Failed to initialize map:', error)
@@ -74,27 +123,252 @@ function MountainDetail({ name, code, height, location, description, center, zoo
 
     return () => {
       isMounted = false
-      if (mapInstanceRef.current) {
-        try {
-          mapInstanceRef.current.remove()
-        } catch (error) {
-          // 이미 제거된 경우 무시
+      // 마커 제거
+      markersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(null)
         }
-        mapInstanceRef.current = null
-      }
-      // 지도 컨테이너 초기화
+      })
+      markersRef.current = []
+      // 폴리라인 제거
+      courseLayerRef.current.forEach(polyline => {
+        if (polyline && polyline.setMap) {
+          polyline.setMap(null)
+        }
+      })
+      courseLayerRef.current = []
       if (mapRef.current) {
-        mapRef.current._leaflet_id = null
         mapRef.current.innerHTML = ''
       }
     }
-  }, [code, center, zoom])
+  }, [kakaoLoaded, code, center, zoom])
+
+  // 전체 코스를 지도에 다시 표시하는 함수
+  const showAllCourses = async () => {
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
+      return
+    }
+    
+    // courses 상태를 직접 참조하지 않고, 최신 값을 가져오기
+    const currentCourses = courses
+    if (currentCourses.length === 0) {
+      return
+    }
+    
+    try {
+      // 기존 이벤트 리스너 제거
+      eventListenersRef.current.forEach(listener => {
+        if (listener && listener.remove) {
+          window.kakao.maps.event.removeListener(listener.target, listener.type, listener.handler)
+        }
+      })
+      eventListenersRef.current = []
+      
+      // 기존 폴리라인 및 마커 제거
+      courseLayerRef.current.forEach(polyline => {
+        if (polyline && polyline.setMap) {
+          polyline.setMap(null)
+        }
+      })
+      courseLayerRef.current = []
+      
+      markersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(null)
+        }
+      })
+      markersRef.current = []
+      
+      // 선택 해제
+      setSelectedCourseIndex(null)
+      
+      // ArcGIS 형식인지 확인
+      const isArcGISFormat = currentCourses.some(course => 
+        course.geometry && (course.geometry.paths || (course.attributes && !course.properties))
+      )
+      
+      let geoJsonData
+      if (isArcGISFormat) {
+        geoJsonData = convertArcGISToGeoJSON({
+          features: currentCourses
+        })
+        
+        // 변환 후 원본 코스의 properties 정보 복원
+        if (geoJsonData.features && currentCourses) {
+          geoJsonData.features.forEach((feature, index) => {
+            const originalCourse = currentCourses[index]
+            if (originalCourse && originalCourse.properties) {
+              feature.properties = {
+                ...feature.properties,
+                ...originalCourse.properties
+              }
+            }
+          })
+        }
+        } else {
+          geoJsonData = {
+            type: 'FeatureCollection',
+            features: Array.isArray(currentCourses) ? currentCourses : [currentCourses]
+          }
+        }
+      
+      if (geoJsonData.features && geoJsonData.features.length > 0 && mapInstanceRef.current) {
+        const bounds = new window.kakao.maps.LatLngBounds()
+        
+        // 각 코스를 카카오맵 Polyline으로 표시
+        geoJsonData.features.forEach((feature) => {
+          const props = feature.properties || {}
+          const rawDifficulty = props.difficulty || '보통'
+          const difficultyColor = getDifficultyColor(rawDifficulty)
+          const courseName = props.name || '등산 코스'
+          
+          // 좌표 추출
+          let path = []
+          if (feature.geometry.type === 'LineString') {
+            path = feature.geometry.coordinates.map(coord => 
+              new window.kakao.maps.LatLng(coord[1], coord[0])
+            )
+          } else if (feature.geometry.type === 'MultiLineString') {
+            path = feature.geometry.coordinates.flat().map(coord => 
+              new window.kakao.maps.LatLng(coord[1], coord[0])
+            )
+          }
+          
+          if (path.length > 0) {
+            // Polyline 생성
+            const polyline = new window.kakao.maps.Polyline({
+              path: path,
+              strokeWeight: 4,
+              strokeColor: difficultyColor,
+              strokeOpacity: 0.8,
+              strokeStyle: 'solid',
+              zIndex: 1
+            })
+            
+            polyline.setMap(mapInstanceRef.current)
+            courseLayerRef.current.push(polyline)
+            
+            // Polyline 클릭 이벤트 추가 (currentCourses를 클로저로 캡처)
+            const clickHandler = () => {
+              const courseIndex = currentCourses.findIndex(c => {
+                const cProps = c.properties || {}
+                return cProps.name === courseName
+              })
+              if (courseIndex !== -1) {
+                setSelectedCourseIndex(courseIndex)
+                displayCourseOnMap(currentCourses[courseIndex], courseIndex)
+              }
+            }
+            window.kakao.maps.event.addListener(polyline, 'click', clickHandler)
+            // 이벤트 리스너 저장 (나중에 제거하기 위해)
+            eventListenersRef.current.push({
+              target: polyline,
+              type: 'click',
+              handler: clickHandler,
+              remove: true
+            })
+            
+            // 코스 이름 표시 (경로의 중간 지점에)
+            const midIndex = Math.floor(path.length / 2)
+            const midPosition = path[midIndex]
+            
+            const difficulty = getDifficultyText(props.difficulty)
+            const distance = props.distance ? `${Number(props.distance).toFixed(2)}km` : '-'
+            const duration = props.duration || '-'
+            
+            // 코스 이름을 표시하는 DOM 요소 생성 (클릭 가능)
+            const courseNameDiv = document.createElement('div')
+            courseNameDiv.style.cssText = `
+              background-color: white;
+              padding: 6px 12px;
+              border-radius: 4px;
+              border: 2px solid ${difficultyColor};
+              box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+              font-size: 13px;
+              font-weight: bold;
+              color: ${difficultyColor};
+              white-space: nowrap;
+              cursor: pointer;
+              transition: all 0.2s;
+            `
+            courseNameDiv.textContent = courseName
+            
+            // 호버 효과
+            courseNameDiv.addEventListener('mouseenter', () => {
+              courseNameDiv.style.transform = 'scale(1.1)'
+              courseNameDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.4)'
+            })
+            courseNameDiv.addEventListener('mouseleave', () => {
+              courseNameDiv.style.transform = 'scale(1)'
+              courseNameDiv.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)'
+            })
+            
+            // 클릭 이벤트 (currentCourses를 클로저로 캡처)
+            courseNameDiv.addEventListener('click', () => {
+              const courseIndex = currentCourses.findIndex(c => {
+                const cProps = c.properties || {}
+                return cProps.name === courseName
+              })
+              if (courseIndex !== -1) {
+                setSelectedCourseIndex(courseIndex)
+                displayCourseOnMap(currentCourses[courseIndex], courseIndex)
+              }
+            })
+            
+            // 코스 이름을 표시하는 CustomOverlay
+            const courseNameOverlay = new window.kakao.maps.CustomOverlay({
+              position: midPosition,
+              content: courseNameDiv,
+              yAnchor: 0.5
+            })
+            
+            courseNameOverlay.setMap(mapInstanceRef.current)
+            markersRef.current.push(courseNameOverlay)
+            
+            // Polyline에 클릭 이벤트가 추가되었으므로 투명한 마커는 제거
+            // (Polyline 자체에 클릭 이벤트를 추가하여 더 정확한 클릭 감지)
+            
+            // 경로의 각 점을 bounds에 추가
+            path.forEach(point => bounds.extend(point))
+          }
+        })
+        
+        // 지도 범위 조정
+        if (courseLayerRef.current.length > 0) {
+          try {
+            // bounds에 포인트가 추가되었는지 확인
+            const sw = bounds.getSW()
+            const ne = bounds.getNE()
+            if (sw && ne && sw.getLat && ne.getLat) {
+              // bounds에 패딩 추가 (여유 공간)
+              const latDiff = ne.getLat() - sw.getLat()
+              const lngDiff = ne.getLng() - sw.getLng()
+              const padding = Math.max(latDiff * 0.1, lngDiff * 0.1, 0.005) // 10% 또는 최소 0.005도
+              
+              const paddedBounds = new window.kakao.maps.LatLngBounds(
+                new window.kakao.maps.LatLng(sw.getLat() - padding, sw.getLng() - padding),
+                new window.kakao.maps.LatLng(ne.getLat() + padding, ne.getLng() + padding)
+              )
+              
+              mapInstanceRef.current.setBounds(paddedBounds)
+              console.log('전체 코스 보기: 지도 범위 조정 완료')
+            } else {
+              console.warn('전체 코스 보기: bounds가 유효하지 않음', { sw, ne })
+            }
+          } catch (error) {
+            console.error('전체 코스 보기: 지도 범위 조정 실패:', error)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to show all courses:', error)
+    }
+  }
 
   // 특정 코스를 지도에 표시하는 함수
   const displayCourseOnMap = async (course, index) => {
-    if (!mapInstanceRef.current) {
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
       console.warn('지도가 초기화되지 않았습니다. 잠시 후 다시 시도합니다.')
-      // 지도가 아직 초기화되지 않았다면 잠시 대기 후 재시도
       setTimeout(() => {
         if (mapInstanceRef.current && course) {
           displayCourseOnMap(course, index)
@@ -110,20 +384,33 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       const courseDifficulty = actualCourse?.properties?.difficulty || course?.properties?.difficulty || '보통'
       
       console.log('코스 지도에 표시 시작:', courseName)
-      console.log('코스 난이도 확인:', {
-        index,
-        courses배열난이도: actualCourse?.properties?.difficulty,
-        전달받은코스난이도: course?.properties?.difficulty,
-        최종난이도: courseDifficulty
+      
+      // 기존 이벤트 리스너 제거
+      eventListenersRef.current.forEach(listener => {
+        if (listener && listener.remove) {
+          try {
+            window.kakao.maps.event.removeListener(listener.target, listener.type, listener.handler)
+          } catch (error) {
+            console.warn('이벤트 리스너 제거 실패:', error)
+          }
+        }
       })
+      eventListenersRef.current = []
       
-      const L = await import('leaflet')
+      // 기존 폴리라인 및 마커 제거
+      courseLayerRef.current.forEach(polyline => {
+        if (polyline && polyline.setMap) {
+          polyline.setMap(null)
+        }
+      })
+      courseLayerRef.current = []
       
-      // 기존 레이어 제거
-      if (courseLayerRef.current) {
-        mapInstanceRef.current.removeLayer(courseLayerRef.current)
-        courseLayerRef.current = null
-      }
+      markersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(null)
+        }
+      })
+      markersRef.current = []
 
       // 실제 코스 데이터 사용
       const courseToDisplay = actualCourse || course
@@ -162,192 +449,127 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       }
       
       if (geoJsonData.features && geoJsonData.features.length > 0) {
-        // 기존 마커 제거 (선택한 코스의 마커만 표시)
-        if (window.courseMarkers) {
-          window.courseMarkers.forEach(marker => {
-            if (marker && mapInstanceRef.current) {
-              try {
-                mapInstanceRef.current.removeLayer(marker)
-              } catch (e) {
-                // 이미 제거된 경우 무시
-              }
-            }
+        const feature = geoJsonData.features[0]
+        const props = feature.properties || {}
+        const rawDifficulty = props.difficulty || '보통'
+        const difficultyColor = getDifficultyColor(rawDifficulty)
+        const bounds = new window.kakao.maps.LatLngBounds()
+        
+        // 좌표 추출
+        let path = []
+        if (feature.geometry.type === 'LineString') {
+          path = feature.geometry.coordinates.map(coord => {
+            const latLng = new window.kakao.maps.LatLng(coord[1], coord[0])
+            bounds.extend(latLng)
+            return latLng
+          })
+        } else if (feature.geometry.type === 'MultiLineString') {
+          path = feature.geometry.coordinates.flat().map(coord => {
+            const latLng = new window.kakao.maps.LatLng(coord[1], coord[0])
+            bounds.extend(latLng)
+            return latLng
           })
         }
-        window.courseMarkers = []
         
-        // 기존 빨간 SPOT 마커도 제거 (선택한 코스의 편의시설만 표시)
-        if (window.spotMarkers) {
-          window.spotMarkers.forEach(marker => {
-            if (marker && mapInstanceRef.current) {
-              try {
-                mapInstanceRef.current.removeLayer(marker)
-              } catch (e) {
-                // 이미 제거된 경우 무시
-              }
-            }
+        if (path.length > 0) {
+          // Polyline 생성
+          const polyline = new window.kakao.maps.Polyline({
+            path: path,
+            strokeWeight: 5,
+            strokeColor: difficultyColor,
+            strokeOpacity: 0.9,
+            strokeStyle: 'solid'
           })
-        }
-        window.spotMarkers = []
-        
-        // GeoJSON 레이어 추가 (선택된 코스는 해당 난이도 색상으로 표시)
-        const geoJsonLayer = L.default.geoJSON(geoJsonData, {
-          style: (feature) => {
-            const props = feature.properties || {}
-            const rawDifficulty = props.difficulty || '보통'
-            const difficulty = getDifficultyText(rawDifficulty)
-            const difficultyColor = getDifficultyColor(rawDifficulty)
+          polyline.setMap(mapInstanceRef.current)
+          courseLayerRef.current.push(polyline)
+          
+          // 선택된 코스에도 클릭 이벤트 추가 (전체 코스 보기로 돌아가기)
+          const clickHandler = () => {
+            showAllCourses()
+          }
+          window.kakao.maps.event.addListener(polyline, 'click', clickHandler)
+          // 이벤트 리스너 저장 (나중에 제거하기 위해)
+          eventListenersRef.current.push({
+            target: polyline,
+            type: 'click',
+            handler: clickHandler,
+            remove: true
+          })
+          
+          const startPoint = path[0]
+          const endPoint = path[path.length - 1]
+          
+          // 출발 마커
+          const startCustomOverlay = new window.kakao.maps.CustomOverlay({
+            position: startPoint,
+            content: '<div style="background-color: #4CAF50; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 11px;">출발</div>',
+            yAnchor: 1
+          })
+          startCustomOverlay.setMap(mapInstanceRef.current)
+          markersRef.current.push(startCustomOverlay)
+          
+          // 코스 경로와 가까운 SPOT 찾기
+          const nearbySpots = []
+          const maxDistance = 200
+          const samplePoints = []
+          let accumulatedDistance = 0
+          
+          for (let i = 0; i < path.length - 1; i++) {
+            const p1 = path[i]
+            const p2 = path[i + 1]
+            const dist = calculateDistance(p1.getLat(), p1.getLng(), p2.getLat(), p2.getLng())
+            accumulatedDistance += dist
             
-            // 디버깅 로그
-            console.log('코스 지도 표시 - 난이도 정보:', {
-              코스명: props.name,
-              원본난이도: rawDifficulty,
-              변환된난이도: difficulty,
-              색상: difficultyColor,
-              전체props: props
-            })
-            console.log('코스 지도 표시 - 난이도 상세:', `원본="${rawDifficulty}", 변환="${difficulty}", 색상="${difficultyColor}"`)
-            
-            return {
-              color: difficultyColor,
-              weight: 5,
-              opacity: 0.9
-            }
-          },
-          onEachFeature: (feature, layer) => {
-            // 각 코스에 팝업 추가
-            const props = feature.properties || {}
-            const courseName = props.name || '등산 코스'
-            const difficulty = props.difficulty || '보통'
-            const distance = props.distance ? `${props.distance}km` : '-'
-            const duration = props.duration || '-'
-            
-            layer.bindPopup(`
-              <h3>${courseName}</h3>
-              <p><strong>난이도:</strong> ${difficulty}</p>
-              <p><strong>거리:</strong> ${distance}</p>
-              <p><strong>소요시간:</strong> ${duration}</p>
-            `)
-            
-            // 경로 좌표 추출하여 편의 시설 기준으로 마커 추가
-            if (feature.geometry && feature.geometry.coordinates) {
-              const coords = feature.geometry.coordinates
-              let points = []
-              
-              if (feature.geometry.type === 'LineString') {
-                points = coords
-              } else if (feature.geometry.type === 'MultiLineString') {
-                points = coords.flat()
-              }
-              
-              if (points.length > 0) {
-                const startPoint = points[0]
-                const endPoint = points[points.length - 1]
-                
-                // 출발지 - 경로의 첫 번째 좌표
-                const startIcon = L.default.divIcon({
-                  className: 'course-marker start',
-                  html: `
-                    <div style="background-color: #4CAF50; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 11px;">출발</div>
-                  `,
-                  iconSize: [32, 32],
-                  iconAnchor: [16, 16],
-                  popupAnchor: [0, -16]
-                })
-                const startMarker = L.default.marker([startPoint[1], startPoint[0]], { icon: startIcon })
-                startMarker.addTo(mapInstanceRef.current)
-                startMarker.bindPopup('출발지')
-                window.courseMarkers.push(startMarker)
-                
-                // 코스 경로와 가까운 SPOT 찾기 (편의 시설 기준)
-                const nearbySpots = []
-                const maxDistance = 200 // 최대 200m 이내의 SPOT만 선택
-                
-                // 경로를 따라 일정 간격으로 샘플링 (100m 간격)
-                const samplePoints = []
-                let accumulatedDistance = 0
-                for (let i = 0; i < points.length - 1; i++) {
-                  const p1 = points[i]
-                  const p2 = points[i + 1]
-                  const dist = calculateDistance(p1[1], p1[0], p2[1], p2[0])
-                  accumulatedDistance += dist
-                  
-                  if (accumulatedDistance >= 100 || i === 0) {
-                    samplePoints.push({ lat: p1[1], lon: p1[0], index: i })
-                    accumulatedDistance = 0
-                  }
-                }
-                // 마지막 점도 추가
-                samplePoints.push({ lat: endPoint[1], lon: endPoint[0], index: points.length - 1 })
-                
-                // 각 샘플링 포인트에서 가장 가까운 SPOT 찾기
-                const usedSpots = new Set()
-                let markerNumber = 2
-                
-                for (const samplePoint of samplePoints) {
-                  let closestSpot = null
-                  let minDistance = Infinity
-                  
-                  for (const spot of spotsRef.current) {
-                    if (usedSpots.has(spot)) continue // 이미 사용된 SPOT은 제외
-                    
-                    const dist = calculateDistance(
-                      samplePoint.lat, samplePoint.lon,
-                      spot.lat, spot.lon
-                    )
-                    
-                    if (dist < maxDistance && dist < minDistance) {
-                      minDistance = dist
-                      closestSpot = spot
-                    }
-                  }
-                  
-                  if (closestSpot && !usedSpots.has(closestSpot)) {
-                    nearbySpots.push({ ...closestSpot, number: markerNumber })
-                    usedSpots.add(closestSpot)
-                    markerNumber++
-                  }
-                }
-                
-                // 중간 지점 마커 추가 (편의 시설)
-                for (const spot of nearbySpots) {
-                  const spotIcon = L.default.divIcon({
-                    className: 'course-marker intermediate',
-                    html: `<div style="background-color: #2196F3; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>`,
-                    iconSize: [16, 16],
-                    iconAnchor: [8, 8],
-                    popupAnchor: [0, -8]
-                  })
-                  const spotMarker = L.default.marker([spot.lat, spot.lon], { icon: spotIcon })
-                  spotMarker.addTo(mapInstanceRef.current)
-                  spotMarker.bindPopup(`<strong>${spot.name}</strong><br/>${spot.type || ''}`)
-                  window.courseMarkers.push(spotMarker)
-                }
-                
-                // 도착지 - 경로의 마지막 좌표
-                const endIcon = L.default.divIcon({
-                  className: 'course-marker end',
-                  html: `
-                    <div style="background-color: #F44336; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 11px;">도착</div>
-                  `,
-                  iconSize: [32, 32],
-                  iconAnchor: [16, 16],
-                  popupAnchor: [0, -16]
-                })
-                const endMarker = L.default.marker([endPoint[1], endPoint[0]], { icon: endIcon })
-                endMarker.addTo(mapInstanceRef.current)
-                endMarker.bindPopup('도착지')
-                window.courseMarkers.push(endMarker)
-              }
+            if (accumulatedDistance >= 100 || i === 0) {
+              samplePoints.push({ lat: p1.getLat(), lon: p1.getLng(), index: i })
+              accumulatedDistance = 0
             }
           }
-        }).addTo(mapInstanceRef.current)
-        
-        courseLayerRef.current = geoJsonLayer
-        
-        // 지도 범위 조정
-        if (geoJsonLayer.getBounds().isValid()) {
-          mapInstanceRef.current.fitBounds(geoJsonLayer.getBounds(), { padding: [50, 50] })
+          samplePoints.push({ lat: endPoint.getLat(), lon: endPoint.getLng(), index: path.length - 1 })
+          
+          const usedSpots = new Set()
+          for (const samplePoint of samplePoints) {
+            let closestSpot = null
+            let minDistance = Infinity
+            
+            for (const spot of spotsRef.current) {
+              if (usedSpots.has(spot)) continue
+              const dist = calculateDistance(samplePoint.lat, samplePoint.lon, spot.lat, spot.lon)
+              if (dist < maxDistance && dist < minDistance) {
+                minDistance = dist
+                closestSpot = spot
+              }
+            }
+            
+            if (closestSpot && !usedSpots.has(closestSpot)) {
+              nearbySpots.push(closestSpot)
+              usedSpots.add(closestSpot)
+            }
+          }
+          
+          // 편의시설 마커 제거 (사용자 요청)
+          // 파란색 편의시설 마커는 더 이상 표시하지 않음
+          
+          // 도착 마커
+          const endCustomOverlay = new window.kakao.maps.CustomOverlay({
+            position: endPoint,
+            content: '<div style="background-color: #F44336; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 11px;">도착</div>',
+            yAnchor: 1
+          })
+          endCustomOverlay.setMap(mapInstanceRef.current)
+          markersRef.current.push(endCustomOverlay)
+          
+          // 지도 범위 조정
+          try {
+            const sw = bounds.getSW()
+            const ne = bounds.getNE()
+            if (sw && ne) {
+              mapInstanceRef.current.setBounds(bounds)
+              console.log('코스 선택: 지도 범위 조정 완료')
+            }
+          } catch (error) {
+            console.error('코스 선택: 지도 범위 조정 실패:', error)
+          }
         }
       }
     } catch (error) {
@@ -356,8 +578,14 @@ function MountainDetail({ name, code, height, location, description, center, zoo
   }
 
   const loadCourseData = async (mountainCode, map) => {
-    if (!map || !mapInstanceRef.current) {
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
       console.warn('지도가 초기화되지 않아 코스 데이터를 로드할 수 없습니다.')
+      // 지도가 아직 준비되지 않았다면 잠시 대기 후 재시도
+      setTimeout(() => {
+        if (mapInstanceRef.current && window.kakao && window.kakao.maps) {
+          loadCourseData(mountainCode, map)
+        }
+      }, 500)
       return
     }
 
@@ -373,34 +601,61 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       
       const data = await response.json()
       
+      console.log('API 응답 데이터:', data)
+      console.log('코스 개수:', data.courses?.length || 0)
+      
       // 코스 데이터 저장
       if (data.courses && data.courses.length > 0) {
-        setCourses(data.courses)
+        const coursesData = data.courses // 클로저 문제 해결을 위해 변수에 저장
+        setCourses(coursesData)
         setSelectedCourseIndex(null) // 초기화
-        console.log('코스 데이터 로드 완료:', data.courses.length, '개')
+        console.log('코스 데이터 로드 완료:', coursesData.length, '개')
+        console.log('지도 인스턴스 확인:', mapInstanceRef.current)
+        console.log('카카오맵 확인:', window.kakao?.maps)
         
-        // 기존 레이어 제거
-        if (courseLayerRef.current) {
-          mapInstanceRef.current.removeLayer(courseLayerRef.current)
-          courseLayerRef.current = null
-        }
+        // 기존 이벤트 리스너 제거
+        eventListenersRef.current.forEach(listener => {
+          if (listener && listener.remove) {
+            try {
+              window.kakao.maps.event.removeListener(listener.target, listener.type, listener.handler)
+            } catch (error) {
+              console.warn('이벤트 리스너 제거 실패:', error)
+            }
+          }
+        })
+        eventListenersRef.current = []
+        
+        // 기존 폴리라인 제거
+        courseLayerRef.current.forEach(polyline => {
+          if (polyline && polyline.setMap) {
+            polyline.setMap(null)
+          }
+        })
+        courseLayerRef.current = []
         
         // 초기에는 모든 코스를 지도에 표시 (마커는 표시하지 않음)
-        if (mapInstanceRef.current) {
-          const L = await import('leaflet')
+        if (mapInstanceRef.current && window.kakao && window.kakao.maps) {
           
-          // ArcGIS 형식인지 확인 (geometry.paths가 있으면 ArcGIS 형식)
-          const isArcGISFormat = data.courses.some(course => 
+          // 기존 마커 제거
+          markersRef.current.forEach(marker => {
+            if (marker && marker.setMap) {
+              marker.setMap(null)
+            }
+          })
+          markersRef.current = []
+        
+        // ArcGIS 형식인지 확인 (geometry.paths가 있으면 ArcGIS 형식)
+        const isArcGISFormat = data.courses.some(course => 
             course.geometry && (course.geometry.paths || (course.attributes && !course.properties))
-          )
-          
-          let geoJsonData
-          if (isArcGISFormat) {
-            // ArcGIS 형식을 GeoJSON으로 변환
+        )
+        
+        let geoJsonData
+        if (isArcGISFormat) {
+          // ArcGIS 형식을 GeoJSON으로 변환
             console.log('ArcGIS 형식 감지, 좌표 변환 시작...')
-            geoJsonData = convertArcGISToGeoJSON({
-              features: data.courses
-            })
+          geoJsonData = convertArcGISToGeoJSON({
+            features: data.courses
+          })
             console.log('좌표 변환 완료, 변환된 코스 개수:', geoJsonData.features?.length || 0)
             
             // 변환 후 원본 코스의 properties 정보 복원 (난이도 등)
@@ -416,77 +671,217 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                 }
               })
             }
-          } else {
-            // 이미 GeoJSON 형식
-            geoJsonData = {
-              type: 'FeatureCollection',
-              features: Array.isArray(data.courses) ? data.courses : [data.courses]
-            }
+        } else {
+          // 이미 GeoJSON 형식
+          geoJsonData = {
+            type: 'FeatureCollection',
+            features: Array.isArray(data.courses) ? data.courses : [data.courses]
           }
-          
-          if (geoJsonData.features && geoJsonData.features.length > 0 && mapInstanceRef.current) {
-            // GeoJSON 레이어 추가 (모든 코스, 난이도별 색상으로 표시)
-            const geoJsonLayer = L.default.geoJSON(geoJsonData, {
-              style: (feature) => {
-                const props = feature.properties || {}
-                const rawDifficulty = props.difficulty || '보통'
-                const difficulty = getDifficultyText(rawDifficulty)
-                const difficultyColor = getDifficultyColor(rawDifficulty)
-                
-                // 디버깅 로그 (첫 번째 코스만)
-                if (geoJsonData.features.indexOf(feature) === 0) {
-                  console.log('초기 코스 로드 - 난이도 정보:', {
-                    코스명: props.name,
-                    원본난이도: rawDifficulty,
-                    변환된난이도: difficulty,
-                    색상: difficultyColor,
-                    전체props: props
-                  })
-                  console.log('초기 코스 로드 - 난이도 상세:', `원본="${rawDifficulty}", 변환="${difficulty}", 색상="${difficultyColor}"`)
-                }
-                
-                return {
-                  color: difficultyColor,
-                  weight: 4,
-                  opacity: 0.8
-                }
-              },
-              onEachFeature: (feature, layer) => {
-                // 각 코스에 팝업 추가
-                const props = feature.properties || {}
+        }
+        
+        if (geoJsonData.features && geoJsonData.features.length > 0 && mapInstanceRef.current) {
+            console.log('지도에 코스 표시 시작, 코스 개수:', geoJsonData.features.length)
+            console.log('지도 인스턴스:', mapInstanceRef.current)
+            const bounds = new window.kakao.maps.LatLngBounds()
+            let hasValidBounds = false
+            let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity
+            
+            // 각 코스를 카카오맵 Polyline으로 표시
+            geoJsonData.features.forEach((feature, idx) => {
+              const props = feature.properties || {}
+              const rawDifficulty = props.difficulty || '보통'
+              const difficultyColor = getDifficultyColor(rawDifficulty)
+              
+              // 디버깅 로그 (첫 번째 코스만)
+              if (idx === 0) {
+                console.log('초기 코스 로드 - 난이도 정보:', {
+                  코스명: props.name,
+                  원본난이도: rawDifficulty,
+                  색상: difficultyColor
+                })
+              }
+              
+              // 좌표 추출
+              let path = []
+              if (feature.geometry.type === 'LineString') {
+                path = feature.geometry.coordinates.map(coord => {
+                  const lat = coord[1]
+                  const lng = coord[0]
+                  const latLng = new window.kakao.maps.LatLng(lat, lng)
+                  bounds.extend(latLng)
+                  // 수동으로 bounds 계산
+                  if (lat < minLat) minLat = lat
+                  if (lat > maxLat) maxLat = lat
+                  if (lng < minLng) minLng = lng
+                  if (lng > maxLng) maxLng = lng
+                  hasValidBounds = true
+                  return latLng
+                })
+              } else if (feature.geometry.type === 'MultiLineString') {
+                path = feature.geometry.coordinates.flat().map(coord => {
+                  const lat = coord[1]
+                  const lng = coord[0]
+                  const latLng = new window.kakao.maps.LatLng(lat, lng)
+                  bounds.extend(latLng)
+                  // 수동으로 bounds 계산
+                  if (lat < minLat) minLat = lat
+                  if (lat > maxLat) maxLat = lat
+                  if (lng < minLng) minLng = lng
+                  if (lng > maxLng) maxLng = lng
+                  hasValidBounds = true
+                  return latLng
+                })
+              }
+              
+              if (path.length > 0) {
                 const courseName = props.name || '등산 코스'
-                const difficulty = getDifficultyText(props.difficulty)
-                const distance = props.distance ? `${props.distance}km` : '-'
-                const duration = props.duration || '-'
-                const difficultyColor = getDifficultyColor(props.difficulty)
+                console.log(`코스 ${idx + 1} 경로 표시:`, courseName, '경로 포인트 수:', path.length)
+                // Polyline 생성
+                const polyline = new window.kakao.maps.Polyline({
+                  path: path,
+                  strokeWeight: 4,
+                  strokeColor: difficultyColor,
+                  strokeOpacity: 0.8,
+                  strokeStyle: 'solid',
+                  zIndex: 1
+                })
+                polyline.setMap(mapInstanceRef.current)
+                courseLayerRef.current.push(polyline)
                 
-                layer.bindPopup(`
-                  <h3>${courseName}</h3>
-                  <p><strong>난이도:</strong> <span style="color: ${difficultyColor};">${difficulty}</span></p>
-                  <p><strong>거리:</strong> <span style="color: ${difficultyColor};">${distance}</span></p>
-                  <p><strong>소요시간:</strong> ${duration}</p>
-                  <p style="margin-top: 8px; font-size: 0.9rem; color: #666;">왼쪽 목록에서 코스를 선택하면 상세 정보와 편의시설이 표시됩니다.</p>
-                `)
-                
-                // 코스 경로 클릭 시 해당 코스 선택
-                layer.on('click', () => {
-                  const courseIndex = data.courses.findIndex(c => {
+                // Polyline 클릭 이벤트 추가 (coursesData를 직접 사용하여 클로저 문제 해결)
+                const clickHandler = () => {
+                  // coursesData를 사용하여 코스 찾기
+                  const courseIndex = coursesData.findIndex(c => {
                     const cProps = c.properties || {}
                     return cProps.name === courseName
                   })
                   if (courseIndex !== -1) {
                     setSelectedCourseIndex(courseIndex)
-                    displayCourseOnMap(data.courses[courseIndex], courseIndex)
+                    displayCourseOnMap(coursesData[courseIndex], courseIndex)
+                  }
+                }
+                window.kakao.maps.event.addListener(polyline, 'click', clickHandler)
+                // 이벤트 리스너 저장 (나중에 제거하기 위해)
+                eventListenersRef.current.push({
+                  target: polyline,
+                  type: 'click',
+                  handler: clickHandler,
+                  remove: true
+                })
+                
+                console.log(`코스 ${idx + 1} Polyline 추가 완료`)
+                
+                // 코스 이름 표시 (경로의 중간 지점에)
+                const midIndex = Math.floor(path.length / 2)
+                const midPosition = path[midIndex]
+                
+                // 코스 이름을 표시하는 DOM 요소 생성 (클릭 가능)
+                const courseNameDiv = document.createElement('div')
+                courseNameDiv.style.cssText = `
+                  background-color: white;
+                  padding: 6px 12px;
+                  border-radius: 4px;
+                  border: 2px solid ${difficultyColor};
+                  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                  font-size: 13px;
+                  font-weight: bold;
+                  color: ${difficultyColor};
+                  white-space: nowrap;
+                  cursor: pointer;
+                  transition: all 0.2s;
+                `
+                courseNameDiv.textContent = courseName
+                
+                // 호버 효과
+                courseNameDiv.addEventListener('mouseenter', () => {
+                  courseNameDiv.style.transform = 'scale(1.1)'
+                  courseNameDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.4)'
+                })
+                courseNameDiv.addEventListener('mouseleave', () => {
+                  courseNameDiv.style.transform = 'scale(1)'
+                  courseNameDiv.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)'
+                })
+                
+                // 클릭 이벤트 (coursesData를 직접 사용하여 클로저 문제 해결)
+                courseNameDiv.addEventListener('click', () => {
+                  const courseIndex = coursesData.findIndex(c => {
+                    const cProps = c.properties || {}
+                    return cProps.name === courseName
+                  })
+                  if (courseIndex !== -1) {
+                    setSelectedCourseIndex(courseIndex)
+                    displayCourseOnMap(coursesData[courseIndex], courseIndex)
                   }
                 })
+                
+                // 코스 이름을 표시하는 CustomOverlay
+                const courseNameOverlay = new window.kakao.maps.CustomOverlay({
+                  position: midPosition,
+                  content: courseNameDiv,
+                  yAnchor: 0.5
+                })
+                
+                courseNameOverlay.setMap(mapInstanceRef.current)
+                markersRef.current.push(courseNameOverlay)
+                
+                // Polyline에 클릭 이벤트가 추가되었으므로 투명한 마커는 제거
+                // (Polyline 자체에 클릭 이벤트를 추가하여 더 정확한 클릭 감지)
               }
-            }).addTo(mapInstanceRef.current)
+            })
             
-            courseLayerRef.current = geoJsonLayer
-            
-            // 지도 범위 조정
-            if (geoJsonLayer.getBounds().isValid()) {
-              mapInstanceRef.current.fitBounds(geoJsonLayer.getBounds(), { padding: [50, 50] })
+            // 지도 범위 조정 - bounds에 포인트가 확장되었는지 확인
+            if (courseLayerRef.current.length > 0 && hasValidBounds && minLat !== Infinity) {
+              // 지도가 완전히 렌더링된 후 bounds 설정
+              const adjustBounds = () => {
+                try {
+                  // 수동으로 계산한 bounds 사용
+                  const latDiff = maxLat - minLat
+                  const lngDiff = maxLng - minLng
+                  const padding = Math.max(latDiff * 0.1, lngDiff * 0.1, 0.005) // 10% 또는 최소 0.005도
+                  
+                  const sw = new window.kakao.maps.LatLng(minLat - padding, minLng - padding)
+                  const ne = new window.kakao.maps.LatLng(maxLat + padding, maxLng + padding)
+                  
+                  const paddedBounds = new window.kakao.maps.LatLngBounds(sw, ne)
+                  
+                  console.log('Bounds 계산:', { 
+                    minLat, maxLat, minLng, maxLng,
+                    sw: { lat: sw.getLat(), lng: sw.getLng() },
+                    ne: { lat: ne.getLat(), lng: ne.getLng() },
+                    padding,
+                    courseCount: courseLayerRef.current.length
+                  })
+                  
+                  if (mapInstanceRef.current) {
+                    // setBounds 실행
+                    mapInstanceRef.current.setBounds(paddedBounds)
+                    console.log('초기 로드: 지도 범위 조정 완료')
+                    
+                    // bounds가 제대로 적용되었는지 확인 (1초 후)
+                    setTimeout(() => {
+                      if (mapInstanceRef.current) {
+                        const currentCenter = mapInstanceRef.current.getCenter()
+                        const currentLevel = mapInstanceRef.current.getLevel()
+                        console.log('지도 현재 상태:', {
+                          center: { lat: currentCenter.getLat(), lng: currentCenter.getLng() },
+                          level: currentLevel
+                        })
+                      }
+                    }, 1000)
+                  }
+                } catch (error) {
+                  console.error('초기 로드: 지도 범위 조정 실패:', error)
+                }
+              }
+              
+              // 지도 렌더링 대기 후 bounds 설정
+              setTimeout(adjustBounds, 300)
+            } else {
+              console.warn('초기 로드: 코스가 없거나 bounds가 유효하지 않음', {
+                courseCount: courseLayerRef.current.length,
+                hasValidBounds,
+                minLat, maxLat, minLng, maxLng
+              })
             }
           }
         }
@@ -496,6 +891,13 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       }
     } catch (error) {
       console.error('Failed to load course data:', error)
+      console.error('에러 상세:', {
+        message: error.message,
+        stack: error.stack,
+        mountainCode,
+        mapInstance: !!mapInstanceRef.current,
+        kakaoMaps: !!window.kakao?.maps
+      })
       if (error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_REFUSED')) {
         console.warn('백엔드 서버에 연결할 수 없습니다. 백엔드 서버가 실행 중인지 확인하세요.')
       }
@@ -637,10 +1039,8 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       
       // SPOT 데이터를 spotsRef에 저장 (마커 배치에 사용)
       spotsRef.current = []
-      
-      if (data.spots && data.spots.length > 0 && mapInstanceRef.current) {
-        const L = await import('leaflet')
         
+      if (data.spots && data.spots.length > 0 && mapInstanceRef.current) {
         // ArcGIS 형식인지 확인
         const isArcGISFormat = data.spots.some(spot => 
           spot.geometry && (spot.geometry.x !== undefined || spot.geometry.paths)
@@ -687,14 +1087,205 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                 etc: attrs.ETC_MATTER || ''
               })
             }
-            
-            // 빨간 마커는 표시하지 않음 (선택한 코스의 경로와 가까운 편의시설만 번호 마커로 표시)
           }
         }
       }
     } catch (error) {
       console.error('Failed to load spot data:', error)
     }
+  }
+
+  // 숙소 좌표 추출 헬퍼
+  const getLodgingLatLng = (lodging) => {
+    if (!lodging || typeof lodging !== 'object') return { lat: null, lon: null }
+
+    const lat =
+      lodging.lat ??
+      lodging.latitude ??
+      lodging.coordinates?.lat ??
+      lodging.location?.lat ??
+      lodging.geometry?.location?.lat ??
+      lodging.mountain?.lat
+
+    const lon =
+      lodging.lon ??
+      lodging.lng ??
+      lodging.longitude ??
+      lodging.coordinates?.lon ??
+      lodging.coordinates?.lng ??
+      lodging.location?.lon ??
+      lodging.location?.lng ??
+      lodging.geometry?.location?.lng ??
+      lodging.geometry?.location?.lon ??
+      lodging.mountain?.lng
+
+    return { lat, lon }
+  }
+
+  // 주변 숙소 데이터 로드
+  const loadLodgingData = async (mountainCode) => {
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
+      return []
+    }
+
+    try {
+      const apiUrl = API_URL
+      const response = await fetch(`${apiUrl}/api/mountains/${mountainCode}/lodgings`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      const list = data.lodgings || []
+      setLodgings(list)
+      return list
+    } catch (error) {
+      console.error('Failed to load lodging data:', error)
+      return []
+    }
+  }
+
+  // 주변 숙소 마커 표시/숨김
+  const toggleLodgingMarkers = async () => {
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
+      return
+    }
+
+    // 이미 보이는 경우 -> 제거하고 코스 다시 표시
+    if (lodgingsVisible) {
+      lodgingMarkersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(null)
+        }
+      })
+      lodgingMarkersRef.current = []
+      setLodgingsVisible(false)
+      
+      // 코스 레이어 다시 표시
+      courseLayerRef.current.forEach(polyline => {
+        if (polyline && polyline.setMap) {
+          polyline.setMap(mapInstanceRef.current)
+        }
+      })
+      // 코스 이름 마커도 다시 표시
+      markersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(mapInstanceRef.current)
+        }
+      })
+      return
+    }
+
+    // 코스 레이어 숨기기
+    courseLayerRef.current.forEach(polyline => {
+      if (polyline && polyline.setMap) {
+        polyline.setMap(null)
+      }
+    })
+    // 코스 이름 마커도 숨기기
+    markersRef.current.forEach(marker => {
+      if (marker && marker.setMap) {
+        marker.setMap(null)
+      }
+    })
+
+    // 아직 숙소 데이터를 안 불러왔다면 먼저 로드
+    let currentLodgings = lodgings
+    if (!currentLodgings || currentLodgings.length === 0) {
+      currentLodgings = await loadLodgingData(code)
+      if (!currentLodgings || currentLodgings.length === 0) {
+        // 숙소가 없으면 코스 다시 표시
+        courseLayerRef.current.forEach(polyline => {
+          if (polyline && polyline.setMap) {
+            polyline.setMap(mapInstanceRef.current)
+          }
+        })
+        markersRef.current.forEach(marker => {
+          if (marker && marker.setMap) {
+            marker.setMap(mapInstanceRef.current)
+          }
+        })
+        alert('등록된 주변 숙소 정보가 없습니다.')
+        return
+      }
+    }
+
+    // 기존 숙소 마커 제거
+    lodgingMarkersRef.current.forEach(marker => {
+      if (marker && marker.setMap) {
+        marker.setMap(null)
+      }
+    })
+    lodgingMarkersRef.current = []
+
+    // 숙소 마커 추가
+    const bounds = new window.kakao.maps.LatLngBounds()
+    let hasValidBounds = false
+
+    currentLodgings.forEach(lodging => {
+      const { lat, lon } = getLodgingLatLng(lodging)
+
+      if (!lat || !lon || isNaN(lat) || isNaN(lon)) return
+
+      const position = new window.kakao.maps.LatLng(lat, lon)
+      bounds.extend(position)
+      hasValidBounds = true
+
+      const lodgingName = lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소'
+      
+      const content = document.createElement('div')
+      content.style.cssText = `
+        background-color: #FF7043;
+        border-radius: 16px;
+        padding: 4px 10px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        white-space: nowrap;
+        cursor: pointer;
+      `
+      content.textContent = lodgingName
+
+      const overlay = new window.kakao.maps.CustomOverlay({
+        position,
+        content,
+        yAnchor: 1
+      })
+
+      // 마커 클릭 시 상세 모달 열기
+      content.addEventListener('click', () => {
+        setSelectedLodging(lodging)
+        setShowLodgingModal(true)
+      })
+
+      overlay.setMap(mapInstanceRef.current)
+      lodgingMarkersRef.current.push(overlay)
+    })
+
+    // 지도 범위를 숙소에 맞게 조정
+    if (hasValidBounds) {
+      try {
+        const sw = bounds.getSW()
+        const ne = bounds.getNE()
+        if (sw && ne) {
+          // 약간의 패딩 추가
+          const latDiff = ne.getLat() - sw.getLat()
+          const lngDiff = ne.getLng() - sw.getLng()
+          const padding = 0.1
+          
+          const paddedBounds = new window.kakao.maps.LatLngBounds(
+            new window.kakao.maps.LatLng(sw.getLat() - latDiff * padding, sw.getLng() - lngDiff * padding),
+            new window.kakao.maps.LatLng(ne.getLat() + latDiff * padding, ne.getLng() + lngDiff * padding)
+          )
+          mapInstanceRef.current.setBounds(paddedBounds)
+      }
+    } catch (error) {
+        console.error('숙소 지도 범위 조정 실패:', error)
+    }
+    }
+
+    setLodgingsVisible(true)
   }
 
   // 날씨 데이터 가져오기 (1시간마다 자동 업데이트)
@@ -1108,7 +1699,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                         const courseName = props.name || `코스 ${sortedIndex + 1}`
                         const difficulty = getDifficultyText(props.difficulty)
                         const difficultyClass = getDifficultyClass(props.difficulty)
-                        const distance = props.distance ? `${props.distance}km` : '-'
+                        const distance = props.distance ? `${Number(props.distance).toFixed(2)}km` : '-'
                         const duration = props.duration || '-'
                         const description = props.description || ''
                         
@@ -1126,6 +1717,11 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                         return (
                           <div 
                             key={`${courseName}-${actualIndex}`}
+                            ref={(el) => {
+                              if (el) {
+                                courseItemRefs.current[actualIndex] = el
+                              }
+                            }}
                             className={`course-card ${isSelected ? 'selected' : ''}`}
                             onClick={async () => {
                               setSelectedCourseIndex(actualIndex)
@@ -1195,14 +1791,40 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                       const courseName = props.name || '등산 코스'
                       const difficulty = getDifficultyText(props.difficulty)
                       const difficultyClass = getDifficultyClass(props.difficulty)
-                      const distance = props.distance ? `${props.distance}km` : '-'
+                      const distance = props.distance ? `${Number(props.distance).toFixed(2)}km` : '-'
                       const duration = props.duration || '-'
                       const description = props.description || ''
                       
                       return (
                         <>
                           <div className="course-detail-header">
-                            <h3>{courseName}</h3>
+                            <div className="course-detail-title-row">
+                              <h3>{courseName}</h3>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                {courses.length > 0 && (
+                                  <button 
+                                    onClick={(e) => {
+                                      e.currentTarget.blur() // 포커스 제거
+                                      showAllCourses()
+                                    }}
+                                    className="show-all-courses-btn"
+                                  >
+                                    전체 코스 보기
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.currentTarget.blur()
+                                    toggleLodgingMarkers()
+                                  }}
+                                  className="show-all-courses-btn"
+                                  style={{ backgroundColor: lodgingsVisible ? '#FF7043' : '#ffffff', color: lodgingsVisible ? '#ffffff' : '#333' }}
+                                >
+                                  주변 숙소
+                                </button>
+                              </div>
+                            </div>
                             <div className="course-detail-info">
                               <div className="course-detail-item">
                                 <span className="detail-label">난이도</span>
@@ -1231,14 +1853,134 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                   </>
                 ) : (
                   <div className="course-detail-header">
-                    <h3>코스를 선택하세요</h3>
+                    <div className="course-detail-title-row">
+                      <h3>코스를 선택하세요</h3>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        {courses.length > 0 && (
+                          <button 
+                            onClick={(e) => {
+                              e.currentTarget.blur() // 포커스 제거
+                              showAllCourses()
+                            }}
+                            className="show-all-courses-btn"
+                          >
+                            전체 코스 보기
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.currentTarget.blur()
+                            toggleLodgingMarkers()
+                          }}
+                          className="show-all-courses-btn"
+                          style={{ backgroundColor: lodgingsVisible ? '#FF7043' : '#ffffff', color: lodgingsVisible ? '#ffffff' : '#333' }}
+                        >
+                          주변 숙소
+                        </button>
+                      </div>
+                    </div>
                     <p className="course-detail-description">왼쪽 목록에서 코스를 선택하면 상세 정보와 지도가 표시됩니다.</p>
                   </div>
                 )}
                 {/* 지도는 항상 렌더링 */}
-                <div className="map-container">
-                  <div id="course-map" ref={mapRef}></div>
-                </div>
+            <div className="map-container">
+              <div id="course-map" ref={mapRef}></div>
+            </div>
+            
+            {/* 주변 숙소 목록 */}
+            {lodgingsVisible && (
+              <div className="lodging-list-section">
+                {lodgings && lodgings.length > 0 ? (
+                  <>
+                    <div className="lodging-list-header">
+                      <h3>총 {lodgings.length}개 숙소</h3>
+                    </div>
+                    <div className="lodging-list">
+                      {lodgings.map((lodging, index) => {
+                        const lodgingName = lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소'
+                        const lodgingAddress = lodging.lodging?.address || lodging.address || ''
+                        const lodgingDescription = lodging.lodging?.description || lodging.description || lodging.review_snippet || ''
+                        const lodgingRating = lodging.lodging?.rating || lodging.rating || null
+                        const lodgingUserRatingsTotal = lodging.lodging?.user_ratings_total || lodging.user_ratings_total || 0
+                        const lodgingMapsUrl = lodging.lodging?.maps_url || lodging.maps_url || ''
+                        const lodgingPhoto = lodging.lodging?.photo_reference || lodging.photo_reference || null
+                        const lodgingImage = lodging.image || lodging.thumbnail || null
+                        
+                        return (
+                      <div 
+                        key={index} 
+                        className="lodging-card"
+                        onClick={() => {
+                          setSelectedLodging(lodging)
+                          setShowLodgingModal(true)
+                        }}
+                      >
+                        <div className="lodging-card-content">
+                          <div className="lodging-info">
+                            <h4 className="lodging-name">{lodgingName}</h4>
+                            {lodgingAddress && (
+                              <p className="lodging-address">{lodgingAddress}</p>
+                            )}
+                            {lodgingMapsUrl && (
+                              <a 
+                                href={lodgingMapsUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="lodging-directions-link"
+                              >
+                                길찾기 →
+                              </a>
+                            )}
+                            {lodgingDescription && (
+                              <p className="lodging-description">{lodgingDescription}</p>
+                            )}
+                            {lodgingRating && (
+                              <div className="lodging-rating">
+                                <span className="lodging-rating-stars">
+                                  {'⭐'.repeat(Math.floor(lodgingRating))}
+                                  {lodgingRating % 1 >= 0.5 && '⭐'}
+                                </span>
+                                <span className="lodging-rating-text">
+                                  {lodgingRating.toFixed(1)} ({lodgingUserRatingsTotal}개 리뷰)
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          {(lodgingImage || lodgingPhoto) && (
+                            <div className="lodging-image">
+                              {lodgingImage ? (
+                                <img 
+                                  src={lodgingImage.startsWith('http') ? lodgingImage : `${API_URL}${lodgingImage}`}
+                                  alt={lodgingName}
+                                  onError={(e) => {
+                                    e.target.style.display = 'none'
+                                  }}
+                                />
+                              ) : lodgingPhoto ? (
+                                <img 
+                                  src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${lodgingPhoto}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}`}
+                                  alt={lodgingName}
+                                  onError={(e) => {
+                                    e.target.style.display = 'none'
+                                  }}
+                                />
+                              ) : null}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                    </div>
+                  </>
+                ) : (
+                  <div className="lodging-list-header">
+                    <h3>등록된 주변 숙소 정보가 없습니다.</h3>
+                  </div>
+                )}
+              </div>
+            )}
               </div>
             </div>
           </section>
@@ -1248,128 +1990,243 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       {/* 난이도 안내 모달 */}
       {showDifficultyModal && (
         <div className="modal-overlay" onClick={() => setShowDifficultyModal(false)}>
-          <div className="difficulty-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="difficulty-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="modal-header">
               <button className="modal-close" onClick={() => setShowDifficultyModal(false)}>×</button>
-              <h2>코스 난이도 안내</h2>
-            </div>
-            <p className="modal-subtitle">국립공원 관리공단에서 분류한 기준을 참고하였습니다.</p>
-            
-            <div className="difficulty-levels">
-              <div 
-                className={`difficulty-level-item ${selectedDifficultyLevel === 'very-easy' ? 'active' : ''}`}
-                onClick={() => setSelectedDifficultyLevel('very-easy')}
-              >
-                <div className="difficulty-dot" style={{ backgroundColor: '#FFD700' }}></div>
-                <span>매우쉬움</span>
-              </div>
-              <div 
-                className={`difficulty-level-item ${selectedDifficultyLevel === 'easy' ? 'active' : ''}`}
-                onClick={() => setSelectedDifficultyLevel('easy')}
-              >
-                <div className="difficulty-dot" style={{ backgroundColor: '#4CAF50' }}></div>
-                <span>쉬움</span>
-              </div>
-              <div 
-                className={`difficulty-level-item ${selectedDifficultyLevel === 'normal' ? 'active' : ''}`}
-                onClick={() => setSelectedDifficultyLevel('normal')}
-              >
-                <div className="difficulty-dot" style={{ backgroundColor: '#FF9800' }}></div>
-                <span>보통</span>
-              </div>
-              <div 
-                className={`difficulty-level-item ${selectedDifficultyLevel === 'hard' ? 'active' : ''}`}
-                onClick={() => setSelectedDifficultyLevel('hard')}
-              >
-                <div className="difficulty-dot" style={{ backgroundColor: '#F44336' }}></div>
-                <span>어려움</span>
-              </div>
-              <div 
-                className={`difficulty-level-item ${selectedDifficultyLevel === 'very-hard' ? 'active' : ''}`}
-                onClick={() => setSelectedDifficultyLevel('very-hard')}
-              >
-                <div className="difficulty-dot" style={{ backgroundColor: '#616161' }}></div>
-                <span>매우어려움</span>
-              </div>
+              <h2>등산 코스 난이도 기준</h2>
             </div>
             
+            <div style={{ padding: '20px' }}>
+              {/* 거리 기반 점수 */}
+              <div style={{ marginBottom: '30px' }}>
+                <h3 style={{ marginBottom: '15px', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>거리 기반 점수</h3>
+                <div style={{ 
+                  background: '#f8f9fa', 
+                  padding: '15px', 
+                  borderRadius: '8px',
+                  border: '1px solid #e0e0e0'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>1km 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>0점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>2km 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>0점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>5km 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#FF9800' }}>+1점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>10km 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#FF9800' }}>+2점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>15km 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#F44336' }}>+3점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
+                    <span>15km 이상</span>
+                    <span style={{ fontWeight: 'bold', color: '#F44336' }}>+4점</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 시간 기반 점수 */}
+              <div style={{ marginBottom: '30px' }}>
+                <h3 style={{ marginBottom: '15px', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>시간 기반 점수</h3>
+                <div style={{ 
+                  background: '#f8f9fa', 
+                  padding: '15px', 
+                  borderRadius: '8px',
+                  border: '1px solid #e0e0e0'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>30분 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>0점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>60분 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>0점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>120분 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#FF9800' }}>+1점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>180분 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#FF9800' }}>+2점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>240분 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#F44336' }}>+3점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>360분 미만</span>
+                    <span style={{ fontWeight: 'bold', color: '#F44336' }}>+4점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
+                    <span>360분 이상</span>
+                    <span style={{ fontWeight: 'bold', color: '#F44336' }}>+5점</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 노면 재질 기반 점수 */}
+              <div style={{ marginBottom: '30px' }}>
+                <h3 style={{ marginBottom: '15px', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>노면 재질 기반 점수</h3>
+                <div style={{ 
+                  background: '#f8f9fa', 
+                  padding: '15px', 
+                  borderRadius: '8px',
+                  border: '1px solid #e0e0e0'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>어려운 노면 (암석, 바위, 암벽, 절벽)</span>
+                    <span style={{ fontWeight: 'bold', color: '#F44336' }}>+3점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e0e0e0' }}>
+                    <span>중간 노면 (토사, 자갈, 돌)</span>
+                    <span style={{ fontWeight: 'bold', color: '#FF9800' }}>+1점</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
+                    <span>쉬운 노면 (포장, 콘크리트, 데크)</span>
+                    <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>-1점</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 최종 난이도 결정 */}
+              <div style={{ 
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                padding: '20px',
+                borderRadius: '8px',
+                color: 'white',
+                marginBottom: '20px'
+              }}>
+                <h3 style={{ marginBottom: '15px', fontSize: '18px', fontWeight: 'bold' }}>최종 난이도 결정</h3>
+                <div style={{ background: 'rgba(255,255,255,0.2)', padding: '15px', borderRadius: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.3)' }}>
+                    <span style={{ fontSize: '16px' }}>점수 2점 이하</span>
+                    <span style={{ fontWeight: 'bold', fontSize: '16px' }}>쉬움</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.3)' }}>
+                    <span style={{ fontSize: '16px' }}>점수 3~5점</span>
+                    <span style={{ fontWeight: 'bold', fontSize: '16px' }}>보통</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
+                    <span style={{ fontSize: '16px' }}>점수 6점 이상</span>
+                    <span style={{ fontWeight: 'bold', fontSize: '16px' }}>어려움</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div style={{ padding: '0 20px 20px', textAlign: 'center' }}>
+              <button 
+                className="modal-close-btn" 
+                onClick={() => setShowDifficultyModal(false)}
+                style={{
+                  padding: '12px 40px',
+                  backgroundColor: '#667eea',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#5568d3'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#667eea'}
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 숙소 상세 모달 */}
+      {showLodgingModal && selectedLodging && (
+        <div className="modal-overlay" onClick={() => setShowLodgingModal(false)}>
+          <div className="lodging-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <button className="modal-close" onClick={() => setShowLodgingModal(false)}>×</button>
+              <h2>상세보기</h2>
+            </div>
             {(() => {
-              const difficultyInfo = {
-                'very-easy': {
-                  target: '장애인, 임산부, 휠체어, 유모차 등',
-                  slope: '아주 평탄',
-                  surface: '단단하고 매끈한 포장',
-                  width: '2m 이상',
-                  stairs: '없음',
-                  items: '-'
-                },
-                'easy': {
-                  target: '어린이, 노령자 등',
-                  slope: '평탄',
-                  surface: '비교적 매끈한 노면',
-                  width: '1.5m 이상',
-                  stairs: '약간의 계단',
-                  items: '운동화'
-                },
-                'normal': {
-                  target: '등산 경험자',
-                  slope: '약간의 경사',
-                  surface: '비교적 거친 노면',
-                  width: '1m 이상',
-                  stairs: '-',
-                  items: '경등산화, 배낭, 물 등 등산장비'
-                },
-                'hard': {
-                  target: '등산 숙련자',
-                  slope: '심한 경사',
-                  surface: '거친 노면',
-                  width: '-',
-                  stairs: '-',
-                  items: '등산화, 배낭, 물, 스틱 등 등산장비'
-                },
-                'very-hard': {
-                  target: '등산 전문가',
-                  slope: '매우 심한 경사',
-                  surface: '매우 거친 노면',
-                  width: '-',
-                  stairs: '-',
-                  items: '전문 등산장비 필수'
-                }
-              }
-              
-              const info = difficultyInfo[selectedDifficultyLevel] || difficultyInfo['normal']
-              
+              const lodging = selectedLodging
+              const lodgingName = lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소'
+              const lodgingAddress = lodging.lodging?.address || lodging.address || ''
+              const lodgingDescription = lodging.lodging?.description || lodging.description || lodging.review_snippet || ''
+              const lodgingRating = lodging.lodging?.rating || lodging.rating || null
+              const lodgingUserRatingsTotal = lodging.lodging?.user_ratings_total || lodging.user_ratings_total || 0
+              const lodgingMapsUrl = lodging.lodging?.maps_url || lodging.maps_url || ''
+              const lodgingPhoto = lodging.lodging?.photo_reference || lodging.photo_reference || null
+              const lodgingImage = lodging.image || lodging.thumbnail || null
+
               return (
-                <div className="difficulty-details">
-                  <div className="detail-item">
-                    <span className="detail-label">이용대상</span>
-                    <span className="detail-value">{info.target}</span>
+                <div className="lodging-modal-content">
+                  <div className="lodging-modal-image-wrapper">
+                    {(lodgingImage || lodgingPhoto) && (
+                      <>
+                        {lodgingImage ? (
+                          <img 
+                            src={lodgingImage.startsWith('http') ? lodgingImage : `${API_URL}${lodgingImage}`}
+                            alt={lodgingName}
+                            className="lodging-modal-image"
+                            onError={(e) => {
+                              e.target.style.display = 'none'
+                            }}
+                          />
+                        ) : lodgingPhoto ? (
+                          <img 
+                            src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=${lodgingPhoto}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}`}
+                            alt={lodgingName}
+                            className="lodging-modal-image"
+                            onError={(e) => {
+                              e.target.style.display = 'none'
+                            }}
+                          />
+                        ) : null}
+                      </>
+                    )}
                   </div>
-                  <div className="detail-item">
-                    <span className="detail-label">경사도</span>
-                    <span className="detail-value">{info.slope}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">노면상태</span>
-                    <span className="detail-value">{info.surface}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">노면폭</span>
-                    <span className="detail-value">{info.width}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">계단</span>
-                    <span className="detail-value">{info.stairs}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">필요물품</span>
-                    <span className="detail-value">{info.items}</span>
+                  <div className="lodging-modal-info">
+                    <h3 className="lodging-modal-name">{lodgingName}</h3>
+                    {lodgingAddress && (
+                      <p className="lodging-modal-address">{lodgingAddress}</p>
+                    )}
+                    {lodgingMapsUrl && (
+                      <a 
+                        href={lodgingMapsUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="lodging-directions-link"
+                      >
+                        길찾기 →
+                      </a>
+                    )}
+                    {lodgingDescription && (
+                      <p className="lodging-modal-description">{lodgingDescription}</p>
+                    )}
+                    {lodgingRating && (
+                      <div className="lodging-rating">
+                        <span className="lodging-rating-stars">
+                          {'⭐'.repeat(Math.floor(lodgingRating))}
+                          {lodgingRating % 1 >= 0.5 && '⭐'}
+                        </span>
+                        <span className="lodging-rating-text">
+                          {lodgingRating.toFixed(1)} ({lodgingUserRatingsTotal}개 리뷰)
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )
             })()}
-            
-            <button className="modal-close-btn" onClick={() => setShowDifficultyModal(false)}>닫기</button>
           </div>
         </div>
       )}
