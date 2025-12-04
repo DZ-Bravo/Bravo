@@ -184,10 +184,10 @@ function MountainsMap() {
             }
             const position = new window.kakao.maps.LatLng(lat, lon)
             
-            // 커스텀 마커 이미지 생성
+            // 커스텀 마커 이미지 생성 (주황색)
             const imageSrc = 'data:image/svg+xml;base64,' + btoa(`
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                <circle cx="10" cy="10" r="8" fill="#2d8659" stroke="white" stroke-width="3"/>
+                <circle cx="10" cy="10" r="8" fill="#ff8800" stroke="white" stroke-width="3"/>
               </svg>
             `)
             const imageSize = new window.kakao.maps.Size(20, 20)
