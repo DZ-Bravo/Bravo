@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import User from '../models/User.js'
 import Post from '../models/Post.js'
 import Comment from '../models/Comment.js'
+import Schedule from '../models/Schedule.js'
 import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -601,23 +602,17 @@ router.get('/stats', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId
     
-    // 등반한 산 수 (현재는 구현되지 않음, 추후 확장 가능)
-    const climbedMountains = 0
-    
-    // 누적고도 (m) - 등반한 산들의 고도 합계 (현재는 구현되지 않음, 추후 확장 가능)
-    const totalElevation = 0
-    
-    // 누적시간 (시간) - 등반한 산들의 소요시간 합계 (현재는 구현되지 않음, 추후 확장 가능)
-    const totalTime = 0
+    // 아래에서 등산일지 기반으로 계산
     
     // 작성한 글 수
     const postCount = await Post.countDocuments({ author: userId })
     
-    // 등산일지 수 (카테고리가 정확히 'diary'인 게시글만 카운트)
-    const hikingLogs = await Post.countDocuments({ 
+    // 등산일지 수 및 내역 (카테고리가 정확히 'diary'인 게시글만 카운트)
+    const diaryPosts = await Post.find({ 
       author: userId, 
       category: { $eq: 'diary' } 
-    })
+    }).select('title createdAt mountainCode courseDurationMinutes courseDistance').sort({ createdAt: -1 }).lean()
+    const hikingLogs = diaryPosts.length
     
     // 디버깅: 사용자의 모든 게시글 카테고리 확인
     const allUserPosts = await Post.find({ author: userId }).select('category title').lean()
@@ -637,7 +632,7 @@ router.get('/stats', authenticateToken, async (req, res) => {
     const communityLikes = totalLikes
     
     // 즐겨찾기 수 (찜 목록) - 실제 존재하는 게시글만 카운트
-    const user = await User.findById(userId).select('favorites').lean()
+    const user = await User.findById(userId).select('favorites points').lean()
     let favoriteCount = 0
     if (user && user.favorites && user.favorites.length > 0) {
       // 실제 존재하는 게시글만 카운트
@@ -655,8 +650,63 @@ router.get('/stats', authenticateToken, async (req, res) => {
       }
     }
     
-    console.log('사용자 ID:', userId, '즐겨찾기 수:', favoriteCount, '원본 배열 길이:', user?.favorites?.length || 0)
+    console.log(
+      '사용자 ID:',
+      userId,
+      '즐겨찾기 수:',
+      favoriteCount,
+      '원본 배열 길이:',
+      user?.favorites?.length || 0,
+      '포인트:',
+      user?.points ?? 0
+    )
     
+    // 누적 시간/다녀온 산 수 계산
+    const totalDurationMinutes = diaryPosts.reduce(
+      (sum, post) => sum + (post.courseDurationMinutes || 0),
+      0
+    )
+    // 시간(시간 단위, 소수 1자리까지)
+    const totalTime = Number((totalDurationMinutes / 60).toFixed(1))
+
+    // 다녀온 산 수 계산
+    const mountainCodes = diaryPosts
+      .map(post => post.mountainCode)
+      .filter(code => !!code)
+    const uniqueMountainCodes = Array.from(new Set(mountainCodes))
+    const climbedMountains = uniqueMountainCodes.length
+
+    // 누적고도 계산 (등산 코스의 거리 km 합산)
+    const totalElevation = diaryPosts.reduce(
+      (sum, post) => {
+        const distance = post.courseDistance || 0
+        console.log('누적고도 계산 - 포스트:', post.title, '거리:', distance, '타입:', typeof distance)
+        return sum + (typeof distance === 'number' ? distance : parseFloat(distance) || 0)
+      },
+      0
+    )
+    console.log('누적고도 최종 계산 결과:', totalElevation, '등산일지 수:', diaryPosts.length)
+
+    // 포인트 요약 및 내역 구성
+    const currentPoints = user?.points ?? 0
+    const earnedPoints = currentPoints // 현재는 적립만 존재하므로 earned = total
+    const usedPoints = 0
+
+    const pointHistory = diaryPosts.map(post => {
+      const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+      const [year, month, day] = dateStr.split('-')
+      const formattedDate = `${year}.${month}.${day}`
+      return {
+        title: post.title || '등산일지',
+        type: 'earned',
+        points: 100,
+        date: formattedDate
+      }
+    })
+
+    // 등산일정 수
+    const scheduleCount = await Schedule.countDocuments({ user: userId })
+
     res.json({
       totalElevation,
       totalTime,
@@ -666,8 +716,11 @@ router.get('/stats', authenticateToken, async (req, res) => {
       diaryLikes,
       communityLikes,
       hikingLogs,
-      points: 0, // 추후 확장 가능
-      schedules: 0, // 추후 확장 가능
+      points: currentPoints,
+      earnedPoints,
+      usedPoints,
+      history: pointHistory,
+      schedules: scheduleCount,
       items: favoriteCount // 즐겨찾기 수
     })
   } catch (error) {

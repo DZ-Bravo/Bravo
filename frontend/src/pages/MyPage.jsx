@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Header from '../components/Header'
@@ -7,6 +7,7 @@ import './MyPage.css'
 
 function MyPage() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [activeTab, setActiveTab] = useState('hiking') // 'hiking' or 'profile'
   const [showLevelGuide, setShowLevelGuide] = useState(false)
   const [showCalendar, setShowCalendar] = useState(false)
@@ -27,8 +28,47 @@ function MyPage() {
     items: 0
   })
   const [isLoading, setIsLoading] = useState(true)
+  const [recentRecords, setRecentRecords] = useState([])
+  const [schedules, setSchedules] = useState([])
   const hasChecked = useRef(false)
 
+  // URL 파라미터 확인하여 탭과 캘린더 자동 열기
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    const openCalendar = searchParams.get('openCalendar')
+    const scheduleId = searchParams.get('scheduleId')
+    
+    if (tab === 'profile') {
+      setActiveTab('profile')
+    }
+    
+    if (openCalendar === 'true') {
+      if (scheduleId && schedules.length > 0) {
+        // 특정 등산일정으로 포커스
+        const schedule = schedules.find(s => s._id === scheduleId || s.id === scheduleId)
+        if (schedule && schedule.scheduledDate) {
+          const scheduleDate = new Date(schedule.scheduledDate)
+          setCurrentDate(new Date(scheduleDate.getFullYear(), scheduleDate.getMonth(), 1))
+          setSelectedDate(scheduleDate)
+          setShowCalendar(true)
+        } else {
+          // 일정을 찾을 수 없으면 오늘 날짜로
+          const today = new Date()
+          setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1))
+          setSelectedDate(today)
+          setShowCalendar(true)
+        }
+      } else {
+        // scheduleId가 없으면 오늘 날짜로
+        const today = new Date()
+        setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1))
+        setSelectedDate(today)
+        setShowCalendar(true)
+      }
+      // URL에서 파라미터 제거 (한 번만 실행되도록)
+      setSearchParams({})
+    }
+  }, [searchParams, setSearchParams, schedules])
 
   useEffect(() => {
     // 중복 체크 방지
@@ -75,6 +115,61 @@ function MyPage() {
             hikingLogs: statsData.hikingLogs || 0,
             items: statsData.items || 0,
           })
+        }
+
+        // 최근 등산일지 가져오기 (사용자 본인의 등산일지만, 최대 5개)
+        const recordsResponse = await fetch(`${API_URL}/api/posts/my?category=diary&limit=5`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        
+        if (recordsResponse.ok) {
+          const recordsData = await recordsResponse.json()
+          const records = (recordsData.posts || []).slice(0, 5)
+          
+          console.log('최근 등산일지 조회 결과:', records.length, '개')
+          
+          // 산 이름 가져오기
+          const recordsWithMountainName = await Promise.all(
+            records.map(async (record) => {
+              if (record.mountainCode) {
+                try {
+                  const mountainResponse = await fetch(`${API_URL}/api/mountains/${record.mountainCode}`)
+                  if (mountainResponse.ok) {
+                    const mountainData = await mountainResponse.json()
+                    return {
+                      ...record,
+                      mountainName: mountainData.name || '알 수 없음'
+                    }
+                  }
+                } catch (e) {
+                  console.error('산 정보 조회 오류:', e)
+                }
+              }
+              return {
+                ...record,
+                mountainName: '알 수 없음'
+              }
+            })
+          )
+          
+          console.log('산 이름 포함 최근 등산일지:', recordsWithMountainName)
+          setRecentRecords(recordsWithMountainName)
+        } else {
+          console.error('등산일지 조회 실패:', recordsResponse.status, recordsResponse.statusText)
+        }
+
+        // 등산일정 가져오기
+        const schedulesResponse = await fetch(`${API_URL}/api/schedules`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        
+        if (schedulesResponse.ok) {
+          const schedulesData = await schedulesResponse.json()
+          setSchedules(schedulesData.schedules || [])
         }
       } catch (error) {
         console.error('사용자 정보 파싱 오류:', error)
@@ -210,8 +305,8 @@ function MyPage() {
                 </div>
                 <div className="hiking-stat-item">
                   <div className="stat-icon">↗️</div>
-                  <div className="stat-label">누적고도</div>
-                  <div className="stat-value">{(stats.totalElevation || 0).toLocaleString()}m</div>
+                  <div className="stat-label">누적거리</div>
+                  <div className="stat-value">{Number((stats.totalElevation || 0).toFixed(2)).toLocaleString()}km</div>
                 </div>
               </div>
 
@@ -224,10 +319,48 @@ function MyPage() {
                   </Link>
                 </div>
                 <div className="records-content">
-                  <div className="records-empty">
-                    <p>기록이 없어요 😊</p>
-                    <p className="records-empty-hint">등산일지를 작성해보세요</p>
-                  </div>
+                  {recentRecords.length === 0 ? (
+                    <div className="records-empty">
+                      <p>기록이 없어요 😊</p>
+                      <p className="records-empty-hint">등산일지를 작성해보세요</p>
+                    </div>
+                  ) : (
+                    <div className="records-list">
+                      {recentRecords.map((record) => {
+                        const date = new Date(record.date || record.createdAt)
+                        const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`
+                        
+                        return (
+                          <Link 
+                            key={record.id} 
+                            to={`/community/${record.id}`}
+                            className="record-item"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            {record.images && record.images.length > 0 && (
+                              <div className="record-image">
+                                <img 
+                                  src={record.images[0].startsWith('http') ? record.images[0] : `${API_URL}${record.images[0]}`}
+                                  alt={record.title}
+                                />
+                              </div>
+                            )}
+                            <div className="record-info">
+                              <div className="record-title">{record.title}</div>
+                              <div className="record-details">
+                                {record.mountainName && (
+                                  <span className="record-mountain">⛰️ {record.mountainName}</span>
+                                )}
+                              </div>
+                              <div className="record-meta">
+                                <span className="record-date">{formattedDate}</span>
+                              </div>
+                            </div>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -272,7 +405,12 @@ function MyPage() {
                 </Link>
                 <button 
                   className="summary-stat-item" 
-                  onClick={() => setShowCalendar(true)}
+                  onClick={() => {
+                    const today = new Date()
+                    setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1))
+                    setSelectedDate(today)
+                    setShowCalendar(true)
+                  }}
                 >
                   <div className="summary-stat-label">등산 일정</div>
                   <div className="summary-stat-value">{stats.schedules}</div>
@@ -482,8 +620,15 @@ function MyPage() {
                         selectedDate.getDate() === day && 
                         selectedDate.getMonth() === month && 
                         selectedDate.getFullYear() === year
-                      const hasEvent = day === 3 || day === 4 || day === 7 || day === 9 || day === 24
-                      const hasYellowMarker = day === 3 || day === 4 || day === 7 || day === 9
+                      
+                      // 해당 날짜의 등산일정 확인
+                      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+                      const daySchedules = schedules.filter(schedule => {
+                        const scheduleDate = new Date(schedule.scheduledDate)
+                        const scheduleDateStr = `${scheduleDate.getFullYear()}-${String(scheduleDate.getMonth() + 1).padStart(2, '0')}-${String(scheduleDate.getDate()).padStart(2, '0')}`
+                        return scheduleDateStr === dateStr
+                      })
+                      const hasEvent = daySchedules.length > 0
                       
                       days.push(
                         <div 
@@ -493,7 +638,6 @@ function MyPage() {
                         >
                           <span className="calendar-day-number">{day}</span>
                           {hasEvent && <span className="calendar-marker red-dot"></span>}
-                          {hasYellowMarker && <span className="calendar-marker yellow-triangle"></span>}
                         </div>
                       )
                     }
@@ -504,23 +648,101 @@ function MyPage() {
               </div>
 
               {/* 일정 정보 카드 */}
-              {selectedDate && (
-                <div className="calendar-event-card">
-                  <div className="event-image">
-                    <div style={{ width: '100%', height: '100%', background: '#e0e0e0', borderRadius: '8px' }}></div>
-                  </div>
-                  <div className="event-details">
-                    <div className="event-d-day">D-7</div>
-                    <div className="event-mountain">북한산</div>
-                    <div className="event-height">836m</div>
-                    <div className="event-time">🕐 25년 12월 06일 09:00</div>
-                    <div className="event-actions">
-                      <button className="event-cancel-btn">일정 취소</button>
-                      <button className="event-info-btn">산 정보 보기</button>
+              {selectedDate && (() => {
+                const dateStr = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`
+                const daySchedules = schedules.filter(schedule => {
+                  const scheduleDate = new Date(schedule.scheduledDate)
+                  const scheduleDateStr = `${scheduleDate.getFullYear()}-${String(scheduleDate.getMonth() + 1).padStart(2, '0')}-${String(scheduleDate.getDate()).padStart(2, '0')}`
+                  return scheduleDateStr === dateStr
+                })
+
+                if (daySchedules.length === 0) {
+                  return (
+                    <div className="calendar-event-card">
+                      <div className="event-details">
+                        <div className="event-mountain">등산일정이 없습니다</div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  )
+                }
+
+                return daySchedules.map((schedule) => {
+                  const scheduleDate = new Date(schedule.scheduledDate)
+                  const today = new Date()
+                  today.setHours(0, 0, 0, 0)
+                  scheduleDate.setHours(0, 0, 0, 0)
+                  const diffTime = scheduleDate - today
+                  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+                  const dDay = diffDays > 0 ? `D-${diffDays}` : diffDays === 0 ? 'D-Day' : '지난 일정'
+
+                  const handleDeleteSchedule = async () => {
+                    if (!window.confirm('등산일정을 삭제하시겠습니까?')) return
+
+                    const token = localStorage.getItem('token')
+                    try {
+                      const response = await fetch(`${API_URL}/api/schedules/${schedule._id}`, {
+                        method: 'DELETE',
+                        headers: {
+                          'Authorization': `Bearer ${token}`
+                        }
+                      })
+
+                      if (response.ok) {
+                        alert('등산일정이 삭제되었습니다.')
+                        const updatedSchedules = schedules.filter(s => s._id !== schedule._id)
+                        setSchedules(updatedSchedules)
+                        setSelectedDate(null)
+                        // 통계 다시 불러오기
+                        const statsResponse = await fetch(`${API_URL}/api/auth/stats`, {
+                          headers: {
+                            'Authorization': `Bearer ${token}`
+                          }
+                        })
+                        if (statsResponse.ok) {
+                          const statsData = await statsResponse.json()
+                          setStats(prev => ({ ...prev, schedules: statsData.schedules || 0 }))
+                        }
+                      } else {
+                        alert('등산일정 삭제에 실패했습니다.')
+                      }
+                    } catch (error) {
+                      console.error('등산일정 삭제 오류:', error)
+                      alert('등산일정 삭제 중 오류가 발생했습니다.')
+                    }
+                  }
+
+                  const formattedDate = `${scheduleDate.getFullYear()}년 ${scheduleDate.getMonth() + 1}월 ${scheduleDate.getDate()}일 ${schedule.scheduledTime || '09:00'}`
+
+                  return (
+                    <div key={schedule._id} className="calendar-event-card">
+                      <div className="event-image">
+                        <div style={{ width: '100%', height: '100%', background: '#e0e0e0', borderRadius: '8px' }}></div>
+                      </div>
+                      <div className="event-details">
+                        <div className="event-d-day">{dDay}</div>
+                        <div className="event-mountain">{schedule.mountainName}</div>
+                        <div className="event-time">🕐 {formattedDate}</div>
+                        {schedule.courseName && (
+                          <div className="event-course">📍 {schedule.courseName}</div>
+                        )}
+                        {schedule.notes && (
+                          <div className="event-notes">{schedule.notes}</div>
+                        )}
+                        <div className="event-actions">
+                          <button className="event-cancel-btn" onClick={handleDeleteSchedule}>일정 취소</button>
+                          <Link 
+                            to={`/mountain/${schedule.mountainCode}`}
+                            className="event-info-btn"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            산 정보 보기
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })
+              })()}
             </div>
             <div className="calendar-modal-footer">
               <button 
