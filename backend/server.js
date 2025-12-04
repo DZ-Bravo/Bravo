@@ -186,16 +186,72 @@ app.get('/api/mountains', async (req, res) => {
       // center/coordinates 필드 찾기
       let center = null
       if (m.center) {
-        center = { lat: m.center.lat, lon: m.center.lon }
-      } else if (m.MNTN_CTR) {
-        center = { 
-          lat: m.MNTN_CTR.lat || m.MNTN_CTR[0] || m.MNTN_CTR.y, 
-          lon: m.MNTN_CTR.lon || m.MNTN_CTR[1] || m.MNTN_CTR.x 
+        if (typeof m.center === 'object') {
+          if (m.center.lat !== undefined && m.center.lon !== undefined) {
+            center = { lat: m.center.lat, lon: m.center.lon }
+          } else if (Array.isArray(m.center) && m.center.length >= 2) {
+            center = { lat: m.center[0], lon: m.center[1] }
+          }
         }
-      } else if (m.coordinates) {
-        center = { lat: m.coordinates.lat, lon: m.coordinates.lon }
-      } else if (m.lat && m.lon) {
-        center = { lat: m.lat, lon: m.lon }
+      }
+      
+      if (!center && m.MNTN_CTR) {
+        if (Array.isArray(m.MNTN_CTR) && m.MNTN_CTR.length >= 2) {
+          center = { lat: m.MNTN_CTR[0], lon: m.MNTN_CTR[1] }
+        } else if (typeof m.MNTN_CTR === 'object') {
+          center = { 
+            lat: m.MNTN_CTR.lat || m.MNTN_CTR[0] || m.MNTN_CTR.y, 
+            lon: m.MNTN_CTR.lon || m.MNTN_CTR[1] || m.MNTN_CTR.x 
+          }
+        }
+      }
+      
+      if (!center && m.coordinates) {
+        if (typeof m.coordinates === 'object') {
+          if (m.coordinates.lat !== undefined && m.coordinates.lon !== undefined) {
+            center = { lat: m.coordinates.lat, lon: m.coordinates.lon }
+          } else if (Array.isArray(m.coordinates) && m.coordinates.length >= 2) {
+            center = { lat: m.coordinates[0], lon: m.coordinates[1] }
+          }
+        }
+      }
+      
+      // lat, lon 또는 lat, lng 필드 확인
+      if (!center) {
+        const latValue = m.lat !== undefined ? m.lat : (m.LAT !== undefined ? m.LAT : null)
+        const lonValue = (m.lon !== undefined ? m.lon : null) || 
+                        (m.lng !== undefined ? m.lng : null) || 
+                        (m.LON !== undefined ? m.LON : null) || 
+                        (m.LNG !== undefined ? m.LNG : null)
+        
+        if (latValue !== null && latValue !== undefined && lonValue !== null && lonValue !== undefined) {
+          center = { lat: latValue, lon: lonValue }
+        }
+      }
+      
+      // trail_match.mountain_info에서도 좌표 찾기
+      if (!center && m.trail_match && m.trail_match.mountain_info) {
+        const info = m.trail_match.mountain_info
+        const latValue = info.lat !== undefined ? info.lat : (info.LAT !== undefined ? info.LAT : null)
+        const lonValue = (info.lon !== undefined ? info.lon : null) || 
+                        (info.lng !== undefined ? info.lng : null) || 
+                        (info.LON !== undefined ? info.LON : null) || 
+                        (info.LNG !== undefined ? info.LNG : null)
+        
+        if (latValue !== null && latValue !== undefined && lonValue !== null && lonValue !== undefined) {
+          center = { lat: latValue, lon: lonValue }
+        }
+      }
+      
+      // 좌표 유효성 검사
+      if (center) {
+        const lat = Number(center.lat)
+        const lon = Number(center.lon)
+        if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+          center = null
+        } else {
+          center = { lat, lon }
+        }
       }
       
       // zoom 필드
