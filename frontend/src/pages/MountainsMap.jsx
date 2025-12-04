@@ -129,20 +129,65 @@ function MountainsMap() {
       
       const data = await response.json()
       
+      console.log('산 데이터 받음:', {
+        total: data.mountains?.length || 0,
+        sample: data.mountains?.[0]
+      })
+      
       if (data.mountains && data.mountains.length > 0 && mapInstanceRef.current && window.kakao && window.kakao.maps) {
         const bounds = new window.kakao.maps.LatLngBounds()
+        let displayedCount = 0
+        let skippedCount = 0
         
         data.mountains.forEach((mountain) => {
-          const mountainInfo = getMountainInfo(mountain.code)
+          // API에서 받은 center 정보를 우선 사용, 없으면 하드코딩된 정보 사용
+          let center = null
+          let centerSource = 'none'
           
-          if (mountainInfo && mountainInfo.center) {
-            const [lat, lon] = mountainInfo.center
+          if (mountain.center) {
+            if (mountain.center.lat !== undefined && mountain.center.lat !== null && 
+                mountain.center.lon !== undefined && mountain.center.lon !== null) {
+              // API에서 받은 center 객체 형식 {lat, lon}
+              const lat = Number(mountain.center.lat)
+              const lon = Number(mountain.center.lon)
+              if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+                center = [lat, lon]
+                centerSource = 'api-object'
+              }
+            } else if (Array.isArray(mountain.center) && mountain.center.length >= 2) {
+              // API에서 받은 center 배열 형식 [lat, lon]
+              const lat = Number(mountain.center[0])
+              const lon = Number(mountain.center[1])
+              if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+                center = [lat, lon]
+                centerSource = 'api-array'
+              }
+            }
+          }
+          
+          // center가 없으면 하드코딩된 정보에서 찾기
+          if (!center) {
+            const mountainInfo = getMountainInfo(mountain.code)
+            if (mountainInfo && mountainInfo.center && Array.isArray(mountainInfo.center) && mountainInfo.center.length >= 2) {
+              center = mountainInfo.center
+              centerSource = 'hardcoded'
+            }
+          }
+          
+          // center 정보가 있으면 마커 표시
+          if (center && Array.isArray(center) && center.length >= 2) {
+            const [lat, lon] = center
+            if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+              console.warn(`유효하지 않은 좌표: ${mountain.name} (${mountain.code}) - lat: ${lat}, lon: ${lon}`)
+              skippedCount++
+              return
+            }
             const position = new window.kakao.maps.LatLng(lat, lon)
             
-            // 커스텀 마커 이미지 생성
+            // 커스텀 마커 이미지 생성 (주황색)
             const imageSrc = 'data:image/svg+xml;base64,' + btoa(`
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                <circle cx="10" cy="10" r="8" fill="#2d8659" stroke="white" stroke-width="3"/>
+                <circle cx="10" cy="10" r="8" fill="#ff8800" stroke="white" stroke-width="3"/>
               </svg>
             `)
             const imageSize = new window.kakao.maps.Size(20, 20)
@@ -188,8 +233,29 @@ function MountainsMap() {
             
             markersRef.current.push(marker)
             bounds.extend(position)
+            displayedCount++
+            
+            if (displayedCount <= 5) {
+              console.log(`산 마커 표시: ${mountain.name} (${mountain.code}) - 좌표: [${lat}, ${lon}], 출처: ${centerSource}`)
+            }
+          } else {
+            skippedCount++
+            if (skippedCount <= 10) {
+              console.log(`산 마커 건너뜀: ${mountain.name} (${mountain.code}) - center:`, mountain.center)
+            }
           }
         })
+        
+        console.log(`산 지도 표시 완료: 총 ${data.mountains.length}개 중 ${displayedCount}개 표시, ${skippedCount}개 건너뜀`)
+        
+        if (displayedCount === 0) {
+          console.error('표시된 산이 없습니다. center 정보를 확인하세요.')
+          console.log('샘플 데이터:', data.mountains.slice(0, 3).map(m => ({
+            name: m.name,
+            code: m.code,
+            center: m.center
+          })))
+        }
         
         // 모든 마커가 보이도록 지도 범위 조정
         if (markersRef.current.length > 0) {
