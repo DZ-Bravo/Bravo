@@ -188,7 +188,9 @@ function Home() {
                   className="notice-item"
                 >
                   <div className="notice-content">
-                    <span className="notice-title">📢 {notice.title}</span>
+                    <span className="notice-title">
+                      {notice.icon || '📢'} {notice.title}
+                    </span>
                     <span className="notice-date">{notice.date}</span>
                   </div>
                   <span className="notice-arrow">→</span>
