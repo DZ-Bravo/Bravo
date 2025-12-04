@@ -231,15 +231,15 @@ function Signup() {
 
   return (
     <div className="signup-page">
-      <Header />
+      <Header hideNav={true} />
       <main className="signup-main">
         <div className="signup-container">
-          <h1 className="signup-title">Hello! Today's Hike</h1>
+          <h1 className="signup-title">회원가입</h1>
           
           <form onSubmit={handleSubmit} className="signup-form">
-            <div className="form-group">
-              <label htmlFor="id">ID</label>
-              <div className="id-input-group">
+            <div className="form-field">
+              <label htmlFor="id" className="form-label">아이디</label>
+              <div className="id-input-wrapper">
                 <input
                   type="text"
                   id="id"
@@ -251,11 +251,12 @@ function Signup() {
                   }}
                   required
                   className="form-input id-input"
+                  placeholder="아이디를 입력해주세요."
                 />
                 <button
                   type="button"
                   onClick={handleCheckIdDuplicate}
-                  className="check-id-btn"
+                  className="duplicate-check-btn"
                 >
                   중복체크
                 </button>
@@ -263,13 +264,13 @@ function Signup() {
               {isIdChecked && (
                 <span className="id-check-message">✓ 사용 가능한 ID입니다</span>
               )}
-            {errorMessage && !isIdChecked && (
+              {errorMessage && !isIdChecked && formData.id && (
                 <span className="id-check-message error">{errorMessage}</span>
               )}
             </div>
 
-            <div className="form-group">
-              <label htmlFor="password">비밀번호</label>
+            <div className="form-field">
+              <label htmlFor="password" className="form-label">비밀번호</label>
               <input
                 type="password"
                 id="password"
@@ -279,11 +280,12 @@ function Signup() {
                 autoComplete="new-password"
                 required
                 className="form-input"
+                placeholder="비밀번호를 입력해주세요."
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="confirmPassword">비밀번호 확인</label>
+            <div className="form-field">
+              <label htmlFor="confirmPassword" className="form-label">비밀번호 확인</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -293,11 +295,12 @@ function Signup() {
                 autoComplete="new-password"
                 required
                 className="form-input"
+                placeholder="비밀번호를 다시 입력해주세요."
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="name">이름/닉네임</label>
+            <div className="form-field">
+              <label htmlFor="name" className="form-label">이름/닉네임</label>
               <input
                 type="text"
                 id="name"
@@ -306,11 +309,12 @@ function Signup() {
                 onChange={handleChange}
                 required
                 className="form-input"
+                placeholder="이름 또는 닉네임을 입력해주세요."
               />
             </div>
 
-            <div className="form-group">
-              <label>성별</label>
+            <div className="form-field">
+              <label className="form-label">성별</label>
               <div className="radio-group">
                 <label className="radio-label">
                   <input
@@ -337,15 +341,15 @@ function Signup() {
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="fitnessLevel">등력</label>
+            <div className="form-field">
+              <label className="form-label">등력</label>
               <div className="fitness-dropdown-container" ref={fitnessDropdownRef}>
                 <button
                   type="button"
                   onClick={() => setIsFitnessDropdownOpen(!isFitnessDropdownOpen)}
                   className={`fitness-dropdown-trigger ${formData.fitnessLevel ? 'selected' : ''}`}
                 >
-                  {selectedFitnessLabel}
+                  {formData.fitnessLevel ? selectedFitnessLabel : '등력을 선택해 주세요.'}
                 </button>
                 {isFitnessDropdownOpen && (
                   <div className="fitness-dropdown">
@@ -368,8 +372,8 @@ function Signup() {
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="birthYear">출생년도</label>
+            <div className="form-field">
+              <label htmlFor="birthYear" className="form-label">출생년도</label>
               <select
                 id="birthYear"
                 name="birthYear"
@@ -378,7 +382,7 @@ function Signup() {
                 required
                 className="form-input"
               >
-                <option value="">선택하세요</option>
+                <option value="">몇 년도에 태어나셨나요?</option>
                 {Array.from({ length: 100 }, (_, i) => {
                   const year = new Date().getFullYear() - i
                   return (
@@ -390,8 +394,8 @@ function Signup() {
               </select>
             </div>
 
-            <div className="form-group">
-              <label>프로필 사진 첨부</label>
+            <div className="form-field">
+              <label className="form-label">프로필 사진</label>
               <div className="file-upload-group">
                 <input
                   type="file"
@@ -410,7 +414,10 @@ function Signup() {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="terms-section">
+              <div className="terms-link">
+                이용약관 <Link to="#" className="terms-view-link">[보기]</Link>
+              </div>
               <label className="checkbox-label">
                 <input
                   type="checkbox"
@@ -419,12 +426,12 @@ function Signup() {
                   onChange={handleChange}
                   required
                 />
-                <span>이용약관에 동의합니다</span>
+                <span>모두 동의합니다</span>
               </label>
             </div>
 
             <button type="submit" className="signup-submit-btn" disabled={isLoading}>
-              {isLoading ? '처리 중...' : '회원가입'}
+              {isLoading ? '처리 중...' : '가입하기'}
             </button>
             {errorMessage && (
               <div className="error-message">{errorMessage}</div>
@@ -440,7 +447,7 @@ function Signup() {
                 onClick={() => handleSocialLogin('naver')}
                 aria-label="네이버로 가입"
               >
-                N
+                <img src="/images/login_naver_icon.png" alt="네이버 가입" />
               </button>
               <button
                 type="button"
@@ -448,15 +455,9 @@ function Signup() {
                 onClick={() => handleSocialLogin('kakao')}
                 aria-label="카카오로 가입"
               >
-                K
+                <img src="/images/login_kakao_icon.png" alt="카카오 가입" />
               </button>
             </div>
-          </div>
-
-          <div className="auth-links">
-            <Link to="/find-id" className="auth-link">아이디 찾기</Link>
-            <Link to="/find-password" className="auth-link">비밀번호 찾기</Link>
-            <Link to="/login" className="auth-link">로그인</Link>
           </div>
         </div>
       </main>
