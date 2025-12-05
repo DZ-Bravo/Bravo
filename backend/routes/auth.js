@@ -631,13 +631,15 @@ router.get('/stats', authenticateToken, async (req, res) => {
     // 커뮤니티 좋아요 수 (전체 게시글의 likes 합계)
     const communityLikes = totalLikes
     
-    // 즐겨찾기 수 (찜 목록) - 실제 존재하는 게시글만 카운트
-    const user = await User.findById(userId).select('favorites points').lean()
+    // 즐겨찾기 수 (찜 목록) - 게시글 + 산 즐겨찾기 모두 카운트
+    const user = await User.findById(userId).select('favorites favoriteMountains favoriteStores points').lean()
     let favoriteCount = 0
+    
+    // 게시글 즐겨찾기 카운트
     if (user && user.favorites && user.favorites.length > 0) {
       // 실제 존재하는 게시글만 카운트
       const existingPosts = await Post.find({ _id: { $in: user.favorites } }).select('_id').lean()
-      favoriteCount = existingPosts.length
+      favoriteCount += existingPosts.length
       
       // 존재하지 않는 게시글 ID 제거 (정리)
       const existingPostIds = existingPosts.map(p => p._id.toString())
@@ -650,14 +652,28 @@ router.get('/stats', authenticateToken, async (req, res) => {
       }
     }
     
+    // 산 즐겨찾기 카운트
+    if (user && user.favoriteMountains && user.favoriteMountains.length > 0) {
+      favoriteCount += user.favoriteMountains.length
+    }
+    
+    // 스토어 즐겨찾기 카운트
+    if (user && user.favoriteStores && user.favoriteStores.length > 0) {
+      favoriteCount += user.favoriteStores.length
+    }
+    
     console.log(
       '사용자 ID:',
       userId,
       '즐겨찾기 수:',
       favoriteCount,
-      '원본 배열 길이:',
+      '(게시글:',
       user?.favorites?.length || 0,
-      '포인트:',
+      '산:',
+      user?.favoriteMountains?.length || 0,
+      '스토어:',
+      user?.favoriteStores?.length || 0,
+      ') 포인트:',
       user?.points ?? 0
     )
     

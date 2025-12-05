@@ -143,10 +143,10 @@ function Mountain() {
             code: data.code,
             height: data.height || '정보 없음',
             location: data.location || '정보 없음',
-            description: data.description || `${data.name}은(는) 한국의 대표적인 명산입니다.`,
+            description: data.description || '',
             center: data.center ? [data.center.lat, data.center.lon] : [36.5, 127.8],
             zoom: data.zoom || 13,
-            origin: data.origin || `${data.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+            origin: data.origin || ''
           })
         } else if (response.status === 404) {
           console.log('API 404 - 폴백 데이터 사용')
@@ -156,9 +156,9 @@ function Mountain() {
             const mountainInfo = MOUNTAIN_INFO[actualCode] || {
               height: '정보 없음',
               location: '정보 없음',
-              description: `${fallbackData.name}은(는) 한국의 대표적인 명산입니다.`
+              description: ''
             }
-            const origin = MOUNTAIN_ORIGINS[actualCode] || `${fallbackData.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+            const origin = MOUNTAIN_ORIGINS[actualCode] || ''
             
             setMountainData({
               name: fallbackData.name,
@@ -184,9 +184,9 @@ function Mountain() {
           const mountainInfo = MOUNTAIN_INFO[actualCode] || {
             height: '정보 없음',
             location: '정보 없음',
-            description: `${fallbackData.name}은(는) 한국의 대표적인 명산입니다.`
+            description: ''
           }
-          const origin = MOUNTAIN_ORIGINS[actualCode] || `${fallbackData.name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+          const origin = MOUNTAIN_ORIGINS[actualCode] || ''
           
           setMountainData({
             name: fallbackData.name,

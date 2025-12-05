@@ -66,6 +66,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post'
   }],
+  favoriteMountains: [{
+    type: String // 산 코드 (mountainCode)
+  }],
+  favoriteStores: [{
+    type: mongoose.Schema.Types.ObjectId // 상품 ID
+  }],
   points: {
     type: Number,
     default: 0,

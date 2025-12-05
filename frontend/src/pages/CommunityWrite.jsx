@@ -25,21 +25,81 @@ function CommunityWrite() {
   const [mountains, setMountains] = useState([])
   const [courses, setCourses] = useState([])
   const [isLoadingCourses, setIsLoadingCourses] = useState(false)
+  const [mountainSearchTerm, setMountainSearchTerm] = useState(null)
+  const [showMountainDropdown, setShowMountainDropdown] = useState(false)
   const navigate = useNavigate()
 
-  // 산 목록 가져오기
+  // 산 이름에서 지역명 추출 (예: "서울특별시 강남구" -> "서울특별시")
+  const extractRegion = (location) => {
+    if (!location) return null
+    // 시/도 단위 추출 (예: "서울특별시", "경기도", "강원도", "부산광역시" 등)
+    const match = location.match(/([가-힣]+(?:시|도|특별시|광역시))/)
+    if (match) {
+      return match[1].trim()
+    }
+    // 시/도가 없으면 첫 번째 단어 반환
+    const parts = location.split(/\s+/)
+    return parts[0] || null
+  }
+
+
+  // 산 목록 가져오기 및 중복 처리
   useEffect(() => {
     const fetchMountains = async () => {
       try {
         const response = await fetch(`${API_URL}/api/mountains`)
         if (response.ok) {
           const data = await response.json()
-          setMountains(data.mountains || [])
+          const rawMountains = data.mountains || []
+          
+          // 산 이름별로 그룹화하여 중복 확인
+          const nameCount = {}
+          rawMountains.forEach(m => {
+            const name = m.name || '이름 없음'
+            nameCount[name] = (nameCount[name] || 0) + 1
+          })
+          
+          // 중복된 이름이 있는 경우 지역명 포함하여 표시
+          const processedMountains = rawMountains.map(m => {
+            const name = m.name || '이름 없음'
+            const location = m.location || ''
+            const region = extractRegion(location)
+            const code = String(m.code || '')
+            
+            // 북한산 특별 처리: "북한산 백운대"로 표시
+            if (code === '287201304' || name === '북한산' || name.includes('북한산')) {
+              // 이미 "백운대"가 포함되어 있지 않으면 추가
+              const displayName = name.includes('백운대') ? name : '북한산 백운대'
+              return {
+                ...m,
+                displayName: displayName,
+                originalName: name
+              }
+            }
+            
+            // 같은 이름이 여러 개 있으면 지역명을 괄호로 표시
+            if (nameCount[name] > 1 && region) {
+              return {
+                ...m,
+                displayName: `${name} (${region})`,
+                originalName: name
+              }
+            }
+            return {
+              ...m,
+              displayName: name,
+              originalName: name
+            }
+          })
+          
+          setMountains(processedMountains)
         } else {
           // API가 없으면 MOUNTAIN_ROUTES 사용
           const mountainList = Object.values(MOUNTAIN_ROUTES).map(m => ({
             code: m.code,
-            name: m.name
+            name: m.name,
+            displayName: m.name,
+            originalName: m.name
           }))
           setMountains(mountainList)
         }
@@ -48,7 +108,9 @@ function CommunityWrite() {
         // 에러 시 MOUNTAIN_ROUTES 사용
         const mountainList = Object.values(MOUNTAIN_ROUTES).map(m => ({
           code: m.code,
-          name: m.name
+          name: m.name,
+          displayName: m.name,
+          originalName: m.name
         }))
         setMountains(mountainList)
       }
@@ -69,8 +131,15 @@ function CommunityWrite() {
               const props = course.properties || {}
               // 코스 이름 추출 (여러 필드에서 시도)
               const courseName = props.name || props.PMNTN_NM || props.PMNTN_MAIN || props.courseName || `코스 ${index + 1}`
-              // 거리 (km)
-              const distance = props.PMNTN_LT || props.distance
+              // 거리 (km) - 소수점 둘째자리까지만 표시
+              const rawDistance = props.PMNTN_LT || props.distance
+              let distance = null
+              if (rawDistance !== null && rawDistance !== undefined && rawDistance !== '') {
+                const numDistance = typeof rawDistance === 'number' ? rawDistance : parseFloat(rawDistance)
+                if (!isNaN(numDistance) && numDistance > 0) {
+                  distance = parseFloat(numDistance.toFixed(2))
+                }
+              }
               // 소요시간 계산 (duration이 있으면 사용, 없으면 PMNTN_UPPL + PMNTN_GODN)
               let duration = props.duration || ''
               if (!duration) {
@@ -119,9 +188,17 @@ function CommunityWrite() {
         hashtags: []
       }))
         setCurrentHashtag('')
+        setMountainSearchTerm(null)
       } else {
         setFormData(prev => ({ ...prev, courseName: '' }))
       }
+    }
+  }, [formData.mountainCode, formData.category])
+
+  // 산이 선택되지 않았을 때 검색어 초기화
+  useEffect(() => {
+    if (!formData.mountainCode && formData.category === 'diary') {
+      setMountainSearchTerm(null)
     }
   }, [formData.mountainCode, formData.category])
 
@@ -149,6 +226,7 @@ function CommunityWrite() {
         hashtags: []
       })
       setCurrentHashtag('')
+      setMountainSearchTerm(null)
     } else if (name === 'courseName') {
       // 코스 선택 시 해당 코스의 거리와 시간 정보 저장
       const selectedCourse = courses.find(c => c.name === value)
@@ -282,7 +360,12 @@ function CommunityWrite() {
         if (formData.courseDuration) {
           submitData.append('courseDuration', formData.courseDuration)
         }
-        if (formData.hashtags.length > 0) {
+        if (formData.hashtags && formData.hashtags.length > 0) {
+          // FormData에서 배열을 전송하는 방법: 각 해시태그를 개별 필드로 추가
+          formData.hashtags.forEach((tag, index) => {
+            submitData.append(`hashtags[${index}]`, tag)
+          })
+          // 또는 JSON 문자열로도 전송 (백엔드에서 두 가지 모두 처리)
           submitData.append('hashtags', JSON.stringify(formData.hashtags))
         }
       } else {
@@ -409,26 +492,135 @@ function CommunityWrite() {
                   </div>
                 </div>
 
-                {/* 산 선택 */}
+                {/* 산 선택 (검색 가능) */}
                 <div className="form-group">
                   <label htmlFor="mountainCode" className="form-label">
                     산 <span className="required">*</span>
                   </label>
-                  <select
-                    id="mountainCode"
-                    name="mountainCode"
-                    value={formData.mountainCode}
-                    onChange={handleChange}
-                    required
-                    className="form-select"
-                  >
-                    <option value="">산을 선택해주세요</option>
-                    {mountains.map((mountain) => (
-                      <option key={mountain.code} value={mountain.code}>
-                        {mountain.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="mountain-search-container">
+                    <input
+                      type="text"
+                      id="mountainCode"
+                      name="mountainCode"
+                      value={mountainSearchTerm !== null ? mountainSearchTerm : (mountains.find(m => String(m.code) === String(formData.mountainCode))?.displayName || '')}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setMountainSearchTerm(value)
+                        // 검색어가 변경되면 항상 드롭다운 표시
+                        setShowMountainDropdown(true)
+                      }}
+                      onFocus={() => {
+                        setShowMountainDropdown(true)
+                      }}
+                      onBlur={(e) => {
+                        // 드롭다운 내부 클릭인지 확인
+                        const relatedTarget = e.relatedTarget || document.activeElement
+                        const dropdown = e.currentTarget.parentElement?.querySelector('.mountain-dropdown')
+                        if (dropdown && dropdown.contains(relatedTarget)) {
+                          return // 드롭다운 내부 클릭이면 닫지 않음
+                        }
+                        // 드롭다운 클릭을 위해 약간의 지연
+                        setTimeout(() => {
+                          setShowMountainDropdown(false)
+                        }, 200)
+                      }}
+                      placeholder="산 이름을 검색하세요"
+                      required
+                      className="form-input mountain-search-input"
+                    />
+                    {showMountainDropdown && mountains.length > 0 && (() => {
+                      // 필터링된 산 목록
+                      const searchTerm = mountainSearchTerm !== null ? String(mountainSearchTerm).trim() : ''
+                      const filteredMountains = mountains.filter((mountain) => {
+                        // 검색어가 없으면 모든 산 표시
+                        if (!searchTerm) return true
+                        
+                        const searchLower = searchTerm.toLowerCase().trim()
+                        const displayName = (mountain.displayName || mountain.name || '').toLowerCase().trim()
+                        const originalName = (mountain.originalName || mountain.name || '').toLowerCase().trim()
+                        
+                        // 산 이름만으로 검색 (location 제외)
+                        // 정확한 일치 또는 검색어로 시작하는 것만 허용 (부분 일치 제거)
+                        const exactMatch = displayName === searchLower || originalName === searchLower
+                        const startsWith = displayName.startsWith(searchLower) || originalName.startsWith(searchLower)
+                        
+                        // 단어 단위로 시작하는지 확인 (예: "북한산" 검색 시 "북한산 백운대"는 매칭, "아미산"은 매칭 안됨)
+                        const displayWords = displayName.split(/\s+/)
+                        const originalWords = originalName.split(/\s+/)
+                        const wordStartsWith = displayWords.some(word => word.startsWith(searchLower)) || 
+                                               originalWords.some(word => word.startsWith(searchLower))
+                        
+                        // 정확한 일치 > 시작 일치 > 단어 시작 일치만 허용
+                        return exactMatch || startsWith || wordStartsWith
+                      })
+                      .sort((a, b) => {
+                        // 정확한 일치를 가장 위로, 그 다음 시작 일치, 마지막으로 단어 시작 일치
+                        const searchLower = searchTerm.toLowerCase().trim()
+                        const aDisplay = (a.displayName || a.name || '').toLowerCase().trim()
+                        const bDisplay = (b.displayName || b.name || '').toLowerCase().trim()
+                        const aOriginal = (a.originalName || a.name || '').toLowerCase().trim()
+                        const bOriginal = (b.originalName || b.name || '').toLowerCase().trim()
+                        
+                        // 정확한 일치
+                        const aExact = aDisplay === searchLower || aOriginal === searchLower
+                        const bExact = bDisplay === searchLower || bOriginal === searchLower
+                        if (aExact && !bExact) return -1
+                        if (!aExact && bExact) return 1
+                        
+                        // 시작 일치
+                        const aStarts = aDisplay.startsWith(searchLower) || aOriginal.startsWith(searchLower)
+                        const bStarts = bDisplay.startsWith(searchLower) || bOriginal.startsWith(searchLower)
+                        if (aStarts && !bStarts) return -1
+                        if (!aStarts && bStarts) return 1
+                        
+                        // 단어 시작 일치
+                        const aWords = aDisplay.split(/\s+/)
+                        const bWords = bDisplay.split(/\s+/)
+                        const aOriginalWords = aOriginal.split(/\s+/)
+                        const bOriginalWords = bOriginal.split(/\s+/)
+                        const aWordStarts = aWords.some(word => word.startsWith(searchLower)) || 
+                                           aOriginalWords.some(word => word.startsWith(searchLower))
+                        const bWordStarts = bWords.some(word => word.startsWith(searchLower)) || 
+                                           bOriginalWords.some(word => word.startsWith(searchLower))
+                        if (aWordStarts && !bWordStarts) return -1
+                        if (!aWordStarts && bWordStarts) return 1
+                        
+                        return 0
+                      })
+                      .slice(0, 50) // 최대 50개만 표시
+                      
+                      return (
+                        <div className="mountain-dropdown">
+                          {filteredMountains.length > 0 ? (
+                            filteredMountains.map((mountain) => (
+                              <div
+                                key={mountain.code}
+                                className="mountain-dropdown-item"
+                                onMouseDown={(e) => {
+                                  // 마우스 다운 이벤트로 클릭 처리 (onBlur보다 먼저 실행)
+                                  e.preventDefault()
+                                }}
+                                onClick={() => {
+                                  setFormData({
+                                    ...formData,
+                                    mountainCode: String(mountain.code)
+                                  })
+                                  setMountainSearchTerm(mountain.displayName || mountain.name)
+                                  setShowMountainDropdown(false)
+                                }}
+                              >
+                                {mountain.displayName || mountain.name}
+                              </div>
+                            ))
+                          ) : (
+                            <div className="mountain-dropdown-item no-results">
+                              검색 결과가 없습니다
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })()}
+                  </div>
                 </div>
 
                 {/* 등산 코스 선택 */}
@@ -449,12 +641,19 @@ function CommunityWrite() {
                         className="form-select"
                       >
                         <option value="">등산 코스를 선택해주세요</option>
-                        {courses.map((course) => (
-                          <option key={course.id} value={course.name}>
-                            {course.name}
-                            {course.distance && ` (${course.distance}km)`}
-                          </option>
-                        ))}
+                        {courses.map((course) => {
+                          const distanceStr = course.distance !== null && course.distance !== undefined 
+                            ? (typeof course.distance === 'number' 
+                                ? course.distance.toFixed(2) 
+                                : parseFloat(course.distance).toFixed(2))
+                            : null
+                          return (
+                            <option key={course.id} value={course.name}>
+                              {course.name}
+                              {distanceStr && ` (${distanceStr}km)`}
+                            </option>
+                          )
+                        })}
                       </select>
                     )}
                   </div>
@@ -534,27 +733,31 @@ function CommunityWrite() {
               /* Q&A/자유게시판 작성 폼 */
               <>
                 <div className="form-group">
-                  <label htmlFor="title">제목</label>
+                  <label htmlFor="title">
+                    {formData.category === 'qa' ? '질문 제목' : '제목'}
+                  </label>
                   <input
                     type="text"
                     id="title"
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
-                    placeholder="제목을 입력해주세요"
+                    placeholder={formData.category === 'qa' ? '질문 제목을 입력해주세요' : '제목을 입력해주세요'}
                     required
                     className="form-input"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="content">내용</label>
+                  <label htmlFor="content">
+                    {formData.category === 'qa' ? '질문 내용' : '내용'}
+                  </label>
                   <textarea
                     id="content"
                     name="content"
                     value={formData.content}
                     onChange={handleChange}
-                    placeholder="내용을 입력해주세요"
+                    placeholder={formData.category === 'qa' ? '질문 내용을 입력해주세요' : '내용을 입력해주세요'}
                     rows={15}
                     required
                     className="form-textarea"

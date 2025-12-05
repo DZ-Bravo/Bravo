@@ -7,8 +7,8 @@ services:
     volumes:
       - mongodb_data:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -31,18 +31,25 @@ services:
       - ./backend:/app
       - /app/node_modules
       - ./backend/uploads:/app/uploads
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
       - PORT=5000
-      - MONGODB_URI=mongodb://admin:admin123@mongodb:27017/hiking?authSource=admin
-      - KAKAO_REST_API_KEY=75218448ddb01cb67aec079a8dbd61ae
-      - KAKAO_CLIENT_SECRET=jqAC1gVOlf7cBhb500rReivNfJ3o5F59
-      - KAKAO_REDIRECT_URI=http://192.168.0.242:5000/api/auth/kakao/callback
-      - FRONTEND_URL=http://192.168.0.242:3000
-      - NAVER_CLIENT_ID=bPUAgB6QZBRBZrL3G1CN
-      - NAVER_CLIENT_SECRET=9TzCuTvpBJ
-      - NAVER_REDIRECT_URI=http://192.168.0.242:5000/api/auth/naver/callback
-      - OPENWEATHER_API_KEY=5845f67e1cb9eac922b39d43844a8fc1
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/hiking?authSource=admin
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+      - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
+      - KAKAO_REDIRECT_URI=${KAKAO_REDIRECT_URI}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - NAVER_CLIENT_ID=${NAVER_CLIENT_ID}
+      - NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
+      - NAVER_REDIRECT_URI=${NAVER_REDIRECT_URI}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - BEDROCK_AGENT_ID=${BEDROCK_AGENT_ID}
+      - BEDROCK_AGENT_ALIAS_ID=${BEDROCK_AGENT_ALIAS_ID}
     depends_on:
       mongodb:
         condition: service_healthy
@@ -60,9 +67,11 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    env_file:
+      - .env
     environment:
-      - VITE_KAKAO_MAP_API_KEY=2558d942f5694586673df72d72e089b8
-      - VITE_NAVER_MAP_CLIENT_ID=amwq6xvj0j
+      - VITE_KAKAO_MAP_API_KEY=${VITE_KAKAO_MAP_API_KEY}
+      - VITE_NAVER_MAP_CLIENT_ID=${VITE_NAVER_MAP_CLIENT_ID}
     depends_on:
       - backend
     restart: unless-stopped

@@ -94,13 +94,21 @@ function Community() {
               <Link
                 key={post.id}
                 to={`/community/${post.id}`}
-                  className={`post-card ${post.thumbnail ? 'has-thumbnail' : ''}`}
+                  className={`post-card ${post.thumbnail ? 'has-thumbnail' : ''} ${post.category === 'qa' ? 'qa-card' : ''} ${post.category === 'diary' ? 'diary-card' : ''} ${post.category === 'free' ? 'free-card' : ''}`}
               >
                   <div className="post-card-content">
                     <div className="post-card-header">
-                      <span className="post-category-badge">
+                      <span className={`post-category-badge ${post.category === 'qa' ? 'qa-badge-card' : ''} ${post.category === 'diary' ? 'diary-badge-card' : ''} ${post.category === 'free' ? 'free-badge-card' : ''}`}>
+                        {post.category === 'qa' && <span className="qa-icon-small">❓</span>}
+                        {post.category === 'diary' && <span className="diary-icon-small">⛰️</span>}
+                        {post.category === 'free' && <span className="free-icon-small">💬</span>}
                         {categories.find(c => c.id === post.category)?.name}
                       </span>
+                      {post.category === 'diary' && post.mountainName && (
+                        <span className="post-mountain-badge">
+                          ⛰️ {post.mountainName}
+                        </span>
+                      )}
                     </div>
                     <h3 className="post-card-title">{post.title}</h3>
                     {post.content && (
@@ -115,7 +123,9 @@ function Community() {
                         <span className="post-time">{post.date}</span>
                         <span className="post-views-count">조회 {post.views}</span>
                         <span className="post-likes-count">❤️ {post.likes || 0}</span>
-                        <span className="post-comments-count">💬 {post.comments || 0}</span>
+                        <span className="post-comments-count">
+                          {post.category === 'qa' ? '💡' : '💬'} {post.comments || 0}
+                        </span>
                       </div>
                     </div>
                   </div>

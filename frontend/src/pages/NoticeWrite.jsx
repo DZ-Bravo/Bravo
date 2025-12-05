@@ -9,7 +9,6 @@ function NoticeWrite() {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    icon: '📢',
     type: 'announcement',
     images: []
   })
@@ -91,7 +90,6 @@ function NoticeWrite() {
       const submitData = new FormData()
       submitData.append('title', formData.title)
       submitData.append('content', formData.content)
-      submitData.append('icon', formData.icon)
       submitData.append('type', formData.type)
 
       // 이미지 추가
@@ -150,28 +148,9 @@ function NoticeWrite() {
         <div className="notice-write-container">
           <div className="write-header">
             <h1 className="write-title">공지사항 작성</h1>
-            <button onClick={() => navigate('/notice')} className="cancel-btn">
-              취소
-            </button>
           </div>
 
           <form onSubmit={handleSubmit} className="notice-form">
-            <div className="form-group">
-              <label htmlFor="icon">아이콘</label>
-              <select
-                id="icon"
-                name="icon"
-                value={formData.icon}
-                onChange={handleChange}
-                className="form-input"
-              >
-                <option value="📢">📢 공지</option>
-                <option value="💡">💡 정보</option>
-                <option value="🎁">🎁 이벤트</option>
-                <option value="👤">👤 업데이트</option>
-              </select>
-            </div>
-
             <div className="form-group">
               <label htmlFor="type">유형</label>
               <select
@@ -179,7 +158,7 @@ function NoticeWrite() {
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className="form-input"
+                className="form-input type-select"
               >
                 <option value="announcement">공지</option>
                 <option value="info">정보</option>
@@ -265,6 +244,13 @@ function NoticeWrite() {
             )}
 
             <div className="form-actions">
+              <button 
+                type="button"
+                onClick={() => navigate('/notice')} 
+                className="cancel-btn"
+              >
+                취소
+              </button>
               <button type="submit" className="submit-btn" disabled={isLoading}>
                 {isLoading ? '작성 중...' : '작성하기'}
               </button>

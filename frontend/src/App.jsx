@@ -26,6 +26,7 @@ import SearchResults from './pages/SearchResults'
 import AuthSuccess from './pages/AuthSuccess'
 import Chatbot from './components/Chatbot'
 import TopButton from './components/TopButton'
+import ScrollToTop from './components/ScrollToTop'
 import Footer from './components/Footer'
 import './App.css'
 
@@ -38,6 +39,7 @@ function App() {
           v7_relativeSplatPath: true
         }}
       >
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/mountain/:code" element={<Mountain />} />
@@ -70,9 +72,9 @@ function App() {
           <Route path="/auth/success" element={<AuthSuccess />} />
         </Routes>
         <Footer />
+        <Chatbot />
+        <TopButton />
       </Router>
-      <Chatbot />
-      <TopButton />
     </>
   )
 }
