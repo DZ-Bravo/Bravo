@@ -9,4 +9,9 @@ node_modules/
 backend/uploads/
 uploads/
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 
