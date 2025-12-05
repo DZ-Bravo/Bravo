@@ -32,6 +32,64 @@ function MyPage() {
   const [schedules, setSchedules] = useState([])
   const hasChecked = useRef(false)
 
+  // 찜목록 개수 직접 계산
+  const refreshFavoritesCount = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) return
+
+    try {
+      // 게시글 즐겨찾기 개수
+      const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      // 산 즐겨찾기 개수
+      const mountainsResponse = await fetch(`${API_URL}/api/mountains/favorites/my`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      // 스토어 즐겨찾기 개수
+      const storesResponse = await fetch(`${API_URL}/api/store/favorites/my`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      let postsCount = 0
+      let mountainsCount = 0
+      let storesCount = 0
+
+      if (postsResponse.ok) {
+        const postsData = await postsResponse.json()
+        postsCount = postsData.posts?.length || 0
+      }
+
+      if (mountainsResponse.ok) {
+        const mountainsData = await mountainsResponse.json()
+        mountainsCount = mountainsData.mountains?.length || 0
+      }
+
+      if (storesResponse.ok) {
+        const storesData = await storesResponse.json()
+        storesCount = storesData.products?.length || storesData.count || 0
+      }
+
+      const totalCount = postsCount + mountainsCount + storesCount
+      console.log('찜목록 개수:', totalCount, '(게시글:', postsCount, '산:', mountainsCount, '스토어:', storesCount, ')')
+      
+      setStats(prevStats => ({
+        ...prevStats,
+        items: totalCount
+      }))
+    } catch (err) {
+      console.error('찜목록 개수 조회 오류:', err)
+    }
+  }
+
   // URL 파라미터 확인하여 탭과 캘린더 자동 열기
   useEffect(() => {
     const tab = searchParams.get('tab')
@@ -69,6 +127,48 @@ function MyPage() {
       setSearchParams({})
     }
   }, [searchParams, setSearchParams, schedules])
+
+  // 즐겨찾기 업데이트 이벤트 리스너 (별도 useEffect로 분리)
+  useEffect(() => {
+    const handleFavoritesUpdate = () => {
+      console.log('즐겨찾기 업데이트 이벤트 수신 - MyPage')
+      refreshFavoritesCount()
+    }
+
+    window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
+    
+    // 페이지 포커스 시에도 찜목록 개수 갱신
+    const handleFocus = () => {
+      refreshFavoritesCount()
+    }
+    
+    window.addEventListener('focus', handleFocus)
+    
+    // localStorage 플래그 확인 (주기적으로)
+    const checkInterval = setInterval(() => {
+      const favoritesUpdated = localStorage.getItem('favoritesUpdated')
+      if (favoritesUpdated) {
+        console.log('localStorage 플래그 발견 - 찜목록 개수 갱신')
+        refreshFavoritesCount()
+        localStorage.removeItem('favoritesUpdated')
+      }
+    }, 500) // 0.5초마다 확인
+    
+    // 초기 마운트 시에도 플래그 확인
+    const favoritesUpdated = localStorage.getItem('favoritesUpdated')
+    if (favoritesUpdated) {
+      setTimeout(() => {
+        refreshFavoritesCount()
+        localStorage.removeItem('favoritesUpdated')
+      }, 100)
+    }
+    
+    return () => {
+      window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
+      window.removeEventListener('focus', handleFocus)
+      clearInterval(checkInterval)
+    }
+  }, [API_URL])
 
   useEffect(() => {
     // 중복 체크 방지
@@ -113,8 +213,60 @@ function MyPage() {
             points: statsData.points || 0,
             schedules: statsData.schedules || 0,
             hikingLogs: statsData.hikingLogs || 0,
-            items: statsData.items || 0,
+            items: 0, // 초기값은 0, 아래에서 직접 계산
           })
+        } else {
+          console.error('Stats 조회 실패:', statsResponse.status)
+        }
+
+        // 찜목록 개수 직접 계산
+        try {
+          const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
+          
+          const mountainsResponse = await fetch(`${API_URL}/api/mountains/favorites/my`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
+
+          const storesResponse = await fetch(`${API_URL}/api/store/favorites/my`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
+
+          let postsCount = 0
+          let mountainsCount = 0
+          let storesCount = 0
+
+          if (postsResponse.ok) {
+            const postsData = await postsResponse.json()
+            postsCount = postsData.posts?.length || 0
+          }
+
+          if (mountainsResponse.ok) {
+            const mountainsData = await mountainsResponse.json()
+            mountainsCount = mountainsData.mountains?.length || 0
+          }
+
+          if (storesResponse.ok) {
+            const storesData = await storesResponse.json()
+            storesCount = storesData.products?.length || storesData.count || 0
+          }
+
+          const totalCount = postsCount + mountainsCount + storesCount
+          console.log('초기 찜목록 개수:', totalCount, '(게시글:', postsCount, '산:', mountainsCount, '스토어:', storesCount, ')')
+          
+          setStats(prevStats => ({
+            ...prevStats,
+            items: totalCount
+          }))
+        } catch (err) {
+          console.error('찜목록 개수 조회 오류:', err)
         }
 
         // 최근 등산일지 가져오기 (사용자 본인의 등산일지만, 최대 5개)

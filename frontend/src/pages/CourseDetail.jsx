@@ -213,7 +213,7 @@ function CourseDetail() {
       <Header />
       <main className="course-detail-main">
         <div className="course-detail-container">
-          <Link to="/" className="back-link">← 홈으로</Link>
+          <Link to="/" className="back-link">←</Link>
           
           <div className="course-header">
             <h1 className="course-title">{course.title}</h1>

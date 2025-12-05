@@ -29,6 +29,16 @@ function Home() {
     }
   }
 
+  const [popularMountains, setPopularMountains] = useState([
+    { id: '287201304', name: '북한산', image: '/images/popularity_img1.png' },
+    { id: '428302602', name: '설악산', image: '/images/popularity_img2.png' },
+    { id: '488605302', name: '지리산', image: '/images/popularity_img3.png' },
+    { id: '421902904', name: '태백산', image: '/images/popularity_img4.png' },
+    { id: '483100401', name: '계룡산', image: '/images/popularity_img5.png' },
+    { id: '457300301', name: '덕유산', image: '/images/popularity_img6.png' },
+    { id: '438001301', name: '소백산', image: '/images/popularity_img7.png' }
+  ])
+
   // 공지사항 가져오기
   useEffect(() => {
     const fetchNotices = async () => {
@@ -48,16 +58,24 @@ function Home() {
     fetchNotices()
   }, [API_URL])
 
-  // 인기 있는 산 데이터
-  const popularMountains = [
-    { id: '287201304', name: '북한산', image: '/images/popularity_img1.png' },
-    { id: '428302602', name: '설악산', image: '/images/popularity_img2.png' },
-    { id: '488605302', name: '지리산', image: '/images/popularity_img3.png' },
-    { id: '421902904', name: '태백산', image: '/images/popularity_img4.png' },
-    { id: '483100401', name: '계룡산', image: '/images/popularity_img5.png' },
-    { id: '457300301', name: '덕유산', image: '/images/popularity_img6.png' },
-    { id: '438001301', name: '소백산', image: '/images/popularity_img7.png' }
-  ]
+  // 인기 있는 산 가져오기
+  useEffect(() => {
+    const fetchPopularMountains = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/mountains/popular`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.mountains && data.mountains.length > 0) {
+            setPopularMountains(data.mountains)
+          }
+        }
+      } catch (error) {
+        console.error('인기 있는 산 조회 오류:', error)
+      }
+    }
+
+    fetchPopularMountains()
+  }, [API_URL])
 
   return (
     <div className="home">

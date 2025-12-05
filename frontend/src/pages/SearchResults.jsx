@@ -20,6 +20,19 @@ function SearchResults() {
   const [productResults, setProductResults] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
+  // 산 이름에서 지역명 추출 (예: "서울특별시 강남구" -> "서울특별시")
+  const extractRegion = (location) => {
+    if (!location) return null
+    // 시/도 단위 추출 (예: "서울특별시", "경기도", "강원도", "부산광역시" 등)
+    const match = location.match(/([가-힣]+(?:시|도|특별시|광역시))/)
+    if (match) {
+      return match[1].trim()
+    }
+    // 시/도가 없으면 첫 번째 단어 반환
+    const parts = location.split(/\s+/)
+    return parts[0] || null
+  }
+
   // 인기 검색어
   const popularSearches = [
     '소백산', '도봉산', '관악산', '지리산', '설악산', 
@@ -89,17 +102,89 @@ function SearchResults() {
           const allMountains = mountainsData.mountains || []
           console.log('전체 산 개수:', allMountains.length)
           
+          // 산 이름별로 그룹화하여 중복 확인
+          const nameCount = {}
+          allMountains.forEach(m => {
+            const name = m.name || '이름 없음'
+            nameCount[name] = (nameCount[name] || 0) + 1
+          })
+          
+          // 중복된 괄호 제거 함수
+          const cleanDuplicateParentheses = (name) => {
+            if (!name || typeof name !== 'string') return name
+            
+            // 모든 괄호 쌍 찾기
+            const allMatches = name.match(/\(([^)]+)\)/g)
+            if (allMatches && allMatches.length >= 2) {
+              const lastTwo = allMatches.slice(-2)
+              const firstLoc = lastTwo[0].replace(/[()]/g, '').trim()
+              const secondLoc = lastTwo[1].replace(/[()]/g, '').trim()
+              
+              const firstParts = firstLoc.split(',').map(p => p.trim())
+              const lastPartOfFirst = firstParts[firstParts.length - 1]
+              
+              // 두 번째가 첫 번째의 마지막 부분과 일치하면 제거
+              if (secondLoc === lastPartOfFirst || firstLoc.includes(secondLoc)) {
+                const lastParenIndex = name.lastIndexOf('(')
+                if (lastParenIndex !== -1) {
+                  return name.substring(0, lastParenIndex).trim()
+                }
+              }
+            }
+            
+            return name
+          }
+          
+          // 중복된 이름이 있는 경우 지역명 포함하여 표시
+          const processedMountains = allMountains.map(m => {
+            let name = m.name || '이름 없음'
+            // 먼저 중복된 괄호 제거
+            name = cleanDuplicateParentheses(name)
+            
+            const location = m.location || ''
+            const region = extractRegion(location)
+            const code = String(m.code || '')
+            
+            // 북한산 특별 처리: "북한산 백운대"로 표시
+            if (code === '287201304' || name === '북한산' || name.includes('북한산')) {
+              // 이미 "백운대"가 포함되어 있지 않으면 추가
+              const displayName = name.includes('백운대') ? name : '북한산 백운대'
+              return {
+                ...m,
+                displayName: displayName,
+                originalName: name.replace(/\s*\([^)]*\)\s*/g, '').trim()
+              }
+            }
+            
+            // 같은 이름이 여러 개 있으면 지역명을 괄호로 표시
+            const baseName = name.replace(/\s*\([^)]*\)\s*/g, '').trim()
+            if (nameCount[baseName] > 1 && region) {
+              return {
+                ...m,
+                displayName: `${baseName} (${region})`,
+                originalName: baseName
+              }
+            }
+            return {
+              ...m,
+              displayName: name,
+              originalName: baseName
+            }
+          })
+          
           // 검색어로 필터링 ("산"이라는 단어만 검색하면 모든 산 표시)
           let filtered = []
           if (searchTerm.trim() === '산' || searchTerm.trim() === '') {
             // "산"만 검색하면 모든 산 표시
-            filtered = allMountains
+            filtered = processedMountains
           } else {
-            filtered = allMountains.filter(mountain => {
-              const nameMatch = mountain.name && mountain.name.toLowerCase().includes(searchTerm.toLowerCase())
-              const locationMatch = mountain.location && mountain.location.toLowerCase().includes(searchTerm.toLowerCase())
+            filtered = processedMountains.filter(mountain => {
+              const searchLower = searchTerm.toLowerCase()
+              const nameMatch = mountain.originalName && mountain.originalName.toLowerCase().includes(searchLower)
+              const displayNameMatch = mountain.displayName && mountain.displayName.toLowerCase().includes(searchLower)
+              const locationMatch = mountain.location && mountain.location.toLowerCase().includes(searchLower)
               const codeMatch = mountain.code && String(mountain.code).includes(searchTerm)
-              return nameMatch || locationMatch || codeMatch
+              return nameMatch || displayNameMatch || locationMatch || codeMatch
             })
           }
           
@@ -358,7 +443,7 @@ function SearchResults() {
                             >
                               <div className="result-icon">⛰️</div>
                               <div className="result-content">
-                                <div className="result-name">{mountain.name}</div>
+                                <div className="result-name">{mountain.displayName || mountain.name}</div>
                                 <div className="result-location">
                                   {courseCount > 0 
                                     ? `등산 코스 ${courseCount}개` 

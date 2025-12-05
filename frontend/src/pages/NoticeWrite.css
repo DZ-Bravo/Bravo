@@ -10,18 +10,16 @@
 }
 
 .notice-write-container {
-  background: var(--card-bg);
-  border-radius: 16px;
+  background: transparent;
+  border-radius: 0;
   padding: 48px 40px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border);
+  box-shadow: none;
+  border: none;
 }
 
 .write-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 80px;
+  text-align: center;
 }
 
 .write-title {
@@ -33,19 +31,19 @@
 
 .cancel-btn {
   padding: 10px 20px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-main);
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #000;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .cancel-btn:hover {
-  border-color: var(--text-muted);
-  background: var(--border);
+  border-color: #000;
+  background: #f5f5f5;
 }
 
 .notice-form {
@@ -78,16 +76,41 @@
   transition: border-color 0.2s;
 }
 
+.form-input:hover,
+.form-textarea:hover {
+  border-color: #333;
+}
+
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #00BF93;
+  border-color: #ffa04a;
+}
+
+/* 유형 선택 필드를 클릭 가능하다는 것을 더 명확하게 표현 */
+.type-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.type-select:hover {
+  border-color: #333;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
 .form-textarea {
   resize: vertical;
   min-height: 300px;
   line-height: 1.6;
+  cursor: text;
+}
+
+.form-textarea:hover {
+  border-color: #333;
 }
 
 .error-message {
@@ -103,23 +126,24 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 32px;
+  padding-top: 24px;
 }
 
 .submit-btn {
   padding: 12px 24px;
-  background: #00BF93;
+  background: #333;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #00a67d;
+  background: #000;
 }
 
 .submit-btn:disabled {

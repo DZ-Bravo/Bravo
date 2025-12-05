@@ -16,6 +16,10 @@ import postsRoutes from './routes/posts.js'
 import noticesRoutes from './routes/notices.js'
 import schedulesRoutes from './routes/schedules.js'
 import notificationsRoutes from './routes/notifications.js'
+import storeRoutes from './routes/store.js'
+import chatbotRoutes from './routes/chatbot.js'
+import { authenticateToken } from './routes/auth.js'
+import User from './models/User.js'
 
 dotenv.config()
 
@@ -49,6 +53,12 @@ app.use('/api/schedules', schedulesRoutes)
 
 // 알림 라우트
 app.use('/api/notifications', notificationsRoutes)
+
+// 스토어 라우트
+app.use('/api/store', storeRoutes)
+
+// 챗봇 라우트
+app.use('/api/chatbot', chatbotRoutes)
 
 // 디버깅: Mountain_list 컬렉션 구조 확인
 app.get('/api/debug/mountain-list', async (req, res) => {
@@ -168,6 +178,35 @@ app.get('/api/mountains', async (req, res) => {
       console.log('Course 컬렉션 조회 실패:', e.message)
     }
     
+    // 위치 문자열에서 시/군/구와 도 추출
+    const parseCityProvince = (locationStr) => {
+      if (!locationStr || typeof locationStr !== 'string') {
+        return { province: null, city: null }
+      }
+      const parts = locationStr.replace(/\s+/g, ' ').trim().split(' ')
+      if (parts.length < 2) {
+        return { province: null, city: null }
+      }
+      
+      // 첫 번째 단어는 도/특별시/광역시
+      const province = parts[0] || null
+      
+      // 시/군/구로 끝나는 두 번째 단어 찾기
+      let city = null
+      for (let i = 1; i < parts.length; i++) {
+        if (/시$|군$|구$/.test(parts[i])) {
+          city = parts[i]
+          break
+        }
+      }
+      // 시/군/구를 못 찾으면 두 번째 단어 사용
+      if (!city && parts[1]) {
+        city = parts[1]
+      }
+      
+      return { province, city }
+    }
+    
     // 필드명 매핑 - 실제 DB 필드명 사용
     // mntilistno가 있는 산만 반환 (등산 코스 파일과 매칭하기 위해)
     const mappedMountains = mountains
@@ -183,7 +222,11 @@ app.get('/api/mountains', async (req, res) => {
       const code = String(mntilistno) // mntilistno를 우선 사용 (필터링했으므로 항상 존재)
       const mountainInfo = m.trail_match?.mountain_info || {}
       const name = m.mntiname || mountainInfo.mntiname || m.name || m.MNTN_NM || m.mountainName || '이름 없음'
-      const location = m.mntiadd || mountainInfo.mntiadd || m.location || m.MNTN_LOC || m.mountainLocation
+      let location = m.location || m.mntiadd || mountainInfo.mntiadd || m.MNTN_LOC || m.mountainLocation
+      // 오른쪽 끝의 하이픈 제거
+      if (location && typeof location === 'string') {
+        location = location.replace(/-+$/, '').trim()
+      }
       // mntihigh 처리: 문자열 "0" 또는 숫자 0이면 null, 그 외에는 값 + 'm'
       const mntihighValue = m.mntihigh !== undefined && m.mntihigh !== null ? m.mntihigh : (mountainInfo.mntihigh !== undefined && mountainInfo.mntihigh !== null ? mountainInfo.mntihigh : null)
       const height = mntihighValue !== null && mntihighValue !== undefined
@@ -286,14 +329,109 @@ app.get('/api/mountains', async (req, res) => {
       }
     }).filter(m => m.code && m.name !== '이름 없음') // code가 없거나 이름이 없는 것은 제외
     
-    console.log('매핑된 산 개수:', mappedMountains.length)
-    console.log('반환할 산 개수:', mappedMountains.length)
+    // 이름이 중복되는 산은 위치(시, 도) 정보를 괄호에 추가
+    const nameCounts = mappedMountains.reduce((acc, m) => {
+      acc[m.name] = (acc[m.name] || 0) + 1
+      return acc
+    }, {})
+    
+    // 모든 산 이름에서 중복된 괄호 제거 (중복 여부와 관계없이)
+    const cleanDuplicateParentheses = (name) => {
+      if (!name || typeof name !== 'string') return name
+      
+      // 모든 괄호 쌍 찾기 (닫는 괄호가 없는 경우도 처리)
+      // 패턴 1: "산이름 (시, 도) (도)" - 정상적인 두 개의 괄호
+      let match = name.match(/^(.+?)\s*\(([^)]+)\)\s*\(([^)]+)\)\s*$/)
+      if (match) {
+        const baseName = match[1].trim()
+        const firstLocation = match[2].trim()
+        const secondLocation = match[3].trim()
+        
+        // 두 번째 괄호가 첫 번째 괄호의 끝 부분과 일치하는지 확인
+        const firstParts = firstLocation.split(',').map(p => p.trim())
+        const lastPartOfFirst = firstParts[firstParts.length - 1]
+        
+        if (secondLocation === lastPartOfFirst || firstLocation.includes(secondLocation)) {
+          return `${baseName} (${firstLocation})`
+        }
+      }
+      
+      // 패턴 2: "산이름 (시, 도 (도)" - 닫는 괄호가 하나 빠진 경우
+      match = name.match(/^(.+?)\s*\(([^)]+)\s*\(([^)]+)\)\s*$/)
+      if (match) {
+        const baseName = match[1].trim()
+        const firstLocation = match[2].trim()
+        const secondLocation = match[3].trim()
+        
+        const firstParts = firstLocation.split(',').map(p => p.trim())
+        const lastPartOfFirst = firstParts[firstParts.length - 1]
+        
+        if (secondLocation === lastPartOfFirst || firstLocation.includes(secondLocation)) {
+          return `${baseName} (${firstLocation})`
+        }
+      }
+      
+      // 패턴 3: 마지막에 반복되는 괄호가 있는 경우 (더 일반적인 패턴)
+      // "산이름 (시, 도) (도)" 또는 "산이름 (시, 도) (시, 도)" 형식
+      // 마지막 두 개의 괄호를 찾아서 비교
+      const allMatches = name.match(/\(([^)]+)\)/g)
+      if (allMatches && allMatches.length >= 2) {
+        const lastTwo = allMatches.slice(-2)
+        const firstLoc = lastTwo[0].replace(/[()]/g, '').trim()
+        const secondLoc = lastTwo[1].replace(/[()]/g, '').trim()
+        
+        const firstParts = firstLoc.split(',').map(p => p.trim())
+        const lastPartOfFirst = firstParts[firstParts.length - 1]
+        
+        // 두 번째가 첫 번째의 마지막 부분과 일치하면 제거
+        if (secondLoc === lastPartOfFirst || firstLoc.includes(secondLoc)) {
+          // 마지막 괄호 제거
+          const lastParenIndex = name.lastIndexOf('(')
+          if (lastParenIndex !== -1) {
+            return name.substring(0, lastParenIndex).trim()
+          }
+        }
+      }
+      
+      return name
+    }
+    
+    const dedupedMountains = mappedMountains.map((m) => {
+      // 먼저 중복된 괄호 제거
+      let cleanedName = cleanDuplicateParentheses(m.name)
+      
+      if (nameCounts[m.name] > 1) {
+        // 기존 이름에서 모든 괄호 안의 내용 제거 (중복 방지)
+        const baseName = cleanedName.replace(/\s*\([^)]*\)\s*/g, '').trim()
+        
+        const { province, city } = parseCityProvince(m.location)
+        const locationLabel = city && province ? `${city}, ${province}` : (city || province || '')
+        if (locationLabel) {
+          const newName = `${baseName} (${locationLabel})`
+          console.log(`중복 산 이름 변경: "${m.name}" -> "${newName}" (location: ${m.location})`)
+          return { ...m, name: newName }
+        } else {
+          console.log(`중복 산이지만 location 파싱 실패: "${m.name}" (location: ${m.location})`)
+        }
+      }
+      
+      // 중복이 아니어도 중복된 괄호가 있으면 제거
+      if (cleanedName !== m.name) {
+        console.log(`중복 괄호 제거: "${m.name}" -> "${cleanedName}"`)
+        return { ...m, name: cleanedName }
+      }
+      
+      return m
+    })
+    
+    console.log('매핑된 산 개수:', dedupedMountains.length)
+    console.log('반환할 산 개수:', dedupedMountains.length)
     
     // 디버깅 정보 포함 (개발 환경에서만)
     const response = { 
-      mountains: mappedMountains,
+      mountains: dedupedMountains,
       total: totalMountainListCount,
-      returned: mappedMountains.length
+      returned: dedupedMountains.length
     }
     
     // 첫 번째 샘플 데이터도 포함 (필드명 확인용)
@@ -301,7 +439,7 @@ app.get('/api/mountains', async (req, res) => {
       response.debug = {
         sampleFields: Object.keys(mountains[0]),
         sampleData: mountains[0],
-        firstMapped: mappedMountains[0]
+        firstMapped: dedupedMountains[0]
       }
     }
     
@@ -319,7 +457,969 @@ app.get('/api/mountains', async (req, res) => {
   }
 })
 
-// 특정 산의 상세 정보 가져오기 (Mountain_list에서)
+// 인기 있는 산 가져오기 (등산일지에 가장 많이 언급된 산)
+app.get('/api/mountains/popular', async (req, res) => {
+  try {
+    const Post = (await import('./models/Post.js')).default
+    
+    // 등산일지(diary) 카테고리에서 mountainCode별로 집계
+    const popularMountains = await Post.aggregate([
+      {
+        $match: {
+          category: 'diary',
+          mountainCode: { $exists: true, $ne: null }
+        }
+      },
+      {
+        $group: {
+          _id: '$mountainCode',
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { count: -1 }
+      },
+      {
+        $limit: 7 // 상위 7개
+      }
+    ])
+    
+    // mountainCode로 산 정보 가져오기
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    
+    let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+    if (!mountainListCollectionName) {
+      mountainListCollectionName = collectionNames.find(name => name.toLowerCase() === 'mountain_list') || 'Mountain_list'
+    }
+    const actualCollection = db.collection(mountainListCollectionName)
+    
+    const popularMountainsWithInfo = await Promise.all(
+      popularMountains.map(async (item) => {
+        const code = String(item._id)
+        const codeNum = parseInt(code)
+        
+        // ObjectId 형식인지 확인
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+        let mountain = null
+        
+        if (isObjectId) {
+          try {
+            const objectId = new mongoose.default.Types.ObjectId(code)
+            mountain = await actualCollection.findOne({ _id: objectId })
+          } catch (e) {
+            console.error('ObjectId 변환 실패:', e)
+          }
+        } else {
+          // 더 넓은 범위로 검색 시도
+          const searchQueries = [
+            { mntilistno: codeNum },
+            { mntilistno: Number(code) },
+            { mntilistno: code },
+            { mntilistno: String(codeNum) },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': Number(code) },
+            { 'trail_match.mountain_info.mntilistno': code },
+            { 'trail_match.mountain_info.mntilistno': String(codeNum) },
+            { code: codeNum },
+            { code: Number(code) },
+            { code: code },
+            { code: String(codeNum) }
+          ]
+          
+          console.log(`인기 산 검색 - code: ${code}, codeNum: ${codeNum}, 쿼리 개수: ${searchQueries.length}`)
+          
+          for (const query of searchQueries) {
+            mountain = await actualCollection.findOne(query)
+            if (mountain) {
+              console.log(`인기 산 찾음 - 쿼리:`, query, '결과:', mountain.mntiname || mountain.name)
+              break
+            }
+          }
+          
+          // 그래도 못 찾으면 모든 문서를 확인 (디버깅용)
+          if (!mountain && code === '287201304') {
+            console.log('북한산을 찾지 못함 - 모든 문서 확인 중...')
+            const allMountains = await actualCollection.find({}).limit(10).toArray()
+            console.log('샘플 문서들:', allMountains.map(m => ({
+              mntilistno: m.mntilistno,
+              mntiname: m.mntiname,
+              name: m.name,
+              _id: m._id
+            })))
+          }
+        }
+        
+        if (mountain) {
+          // DB에 저장된 실제 필드에서 산 이름 가져오기
+          // mntiname 필드를 우선 사용 (DB에 실제 저장된 필드)
+          const fullName = mountain.mntiname || 
+                      mountain.trail_match?.mountain_info?.mntiname || 
+                      mountain.name ||
+                      mountain.MNTN_NM ||
+                      mountain.mountainName ||
+                      '이름 없음'
+          
+          // 목록에서는 짧은 이름 사용 (예: "북한산 백운대" -> "북한산")
+          // "백운대", "대청봉", "천왕봉" 등 봉우리 이름 제거
+          const name = fullName
+            .replace(/\s+(백운대|대청봉|천왕봉|인수봉|만경대|주봉|정상).*$/, '')
+            .trim()
+          
+          // 이미지 경로 매핑 (기존 하드코딩된 이미지 사용)
+          const imageMap = {
+            '287201304': '/images/popularity_img1.png',
+            '428302602': '/images/popularity_img2.png',
+            '488605302': '/images/popularity_img3.png',
+            '421902904': '/images/popularity_img4.png',
+            '483100401': '/images/popularity_img5.png',
+            '457300301': '/images/popularity_img6.png',
+            '438001301': '/images/popularity_img7.png'
+          }
+          
+          return {
+            id: code,
+            name: name,
+            image: imageMap[code] || '/images/popularity_img1.png', // 기본 이미지
+            count: item.count
+          }
+        } else {
+          // 산 정보를 찾지 못한 경우에도 기본 정보로 반환
+          console.log(`산 정보를 찾지 못함 - code: ${code}, codeNum: ${codeNum}`)
+          
+          // 기본 이름 매핑 (하드코딩)
+          const nameMap = {
+            '287201304': '북한산',
+            '428302602': '설악산',
+            '488605302': '지리산',
+            '421902904': '태백산',
+            '483100401': '계룡산',
+            '457300301': '덕유산',
+            '438001301': '소백산'
+          }
+          
+          const imageMap = {
+            '287201304': '/images/popularity_img1.png',
+            '428302602': '/images/popularity_img2.png',
+            '488605302': '/images/popularity_img3.png',
+            '421902904': '/images/popularity_img4.png',
+            '483100401': '/images/popularity_img5.png',
+            '457300301': '/images/popularity_img6.png',
+            '438001301': '/images/popularity_img7.png'
+          }
+          
+          // 기본 이름 매핑에 있으면 반환
+          if (nameMap[code]) {
+            return {
+              id: code,
+              name: nameMap[code],
+              image: imageMap[code] || '/images/popularity_img1.png',
+              count: item.count
+            }
+          }
+        }
+        return null
+      })
+    )
+    
+    // null 제거 및 정렬
+    const result = popularMountainsWithInfo
+      .filter(item => item !== null)
+      .sort((a, b) => b.count - a.count)
+    
+    // 최소 7개가 되도록 기본 산 추가 (DB에 없는 경우)
+    const defaultMountains = [
+      { id: '287201304', name: '북한산', image: '/images/popularity_img1.png' },
+      { id: '428302602', name: '설악산', image: '/images/popularity_img2.png' },
+      { id: '488605302', name: '지리산', image: '/images/popularity_img3.png' },
+      { id: '421902904', name: '태백산', image: '/images/popularity_img4.png' },
+      { id: '483100401', name: '계룡산', image: '/images/popularity_img5.png' },
+      { id: '457300301', name: '덕유산', image: '/images/popularity_img6.png' },
+      { id: '438001301', name: '소백산', image: '/images/popularity_img7.png' }
+    ]
+    
+    // DB에서 가져온 산의 ID 목록
+    const existingIds = new Set(result.map(m => m.id))
+    
+    // 기본 산 중에서 DB에 없는 것만 추가
+    defaultMountains.forEach(mountain => {
+      if (!existingIds.has(mountain.id) && result.length < 7) {
+        result.push({ ...mountain, count: 0 })
+      }
+    })
+    
+    // 최대 7개로 제한
+    res.json({ mountains: result.slice(0, 7) })
+  } catch (error) {
+    console.error('인기 있는 산 가져오기 오류:', error)
+    // 에러 발생 시 기본 목록 반환
+    res.json({
+      mountains: [
+        { id: '287201304', name: '북한산', image: '/images/popularity_img1.png' },
+        { id: '428302602', name: '설악산', image: '/images/popularity_img2.png' },
+        { id: '488605302', name: '지리산', image: '/images/popularity_img3.png' },
+        { id: '421902904', name: '태백산', image: '/images/popularity_img4.png' },
+        { id: '483100401', name: '계룡산', image: '/images/popularity_img5.png' },
+        { id: '457300301', name: '덕유산', image: '/images/popularity_img6.png' },
+        { id: '438001301', name: '소백산', image: '/images/popularity_img7.png' }
+      ]
+    })
+  }
+})
+
+// 즐겨찾기한 산 목록 조회 (인증 필요) - /api/mountains/:code보다 먼저 정의해야 함
+app.get('/api/mountains/favorites/my', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const user = await User.findById(userId).select('favoriteMountains').lean()
+    
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    const favoriteMountainCodes = user.favoriteMountains || []
+    
+    console.log('즐겨찾기한 산 목록 조회 - userId:', userId, 'codes:', favoriteMountainCodes)
+    
+    if (favoriteMountainCodes.length === 0) {
+      console.log('즐겨찾기한 산이 없음')
+      return res.json({ mountains: [] })
+    }
+
+    // MongoDB 연결 확인
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    
+    let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+    if (!mountainListCollectionName) {
+      mountainListCollectionName = collectionNames.find(name => 
+        name.toLowerCase() === 'mountain_list'
+      ) || 'Mountain_list'
+    }
+    
+    const actualCollection = db.collection(mountainListCollectionName)
+    
+    // 즐겨찾기한 산 코드들로 산 정보 조회
+    // 산 상세 정보 API를 재사용하여 일관된 데이터 형식 보장
+    const mountains = []
+    for (const code of favoriteMountainCodes) {
+      console.log('산 정보 조회 시도 - code:', code, 'type:', typeof code)
+      
+      try {
+        // 내부적으로 산 상세 정보 조회 로직 재사용
+        const codeNum = parseInt(code)
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+        
+        let mountain = null
+        if (isObjectId) {
+          try {
+            const objectId = new mongoose.default.Types.ObjectId(code)
+            mountain = await actualCollection.findOne({ _id: objectId })
+          } catch (e) {
+            console.log('ObjectId 변환 실패:', e)
+          }
+        } else {
+          // 여러 형식으로 검색 시도
+          const searchQueries = [
+            { mntilistno: codeNum },
+            { mntilistno: Number(code) },
+            { mntilistno: code },
+            { mntilistno: String(codeNum) },
+            { code: codeNum },
+            { code: Number(code) },
+            { code: code },
+            { code: String(codeNum) },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': code }
+          ]
+          
+          for (const query of searchQueries) {
+            mountain = await actualCollection.findOne(query)
+            if (mountain) {
+              console.log('산 정보 찾음 (query:', query, ')')
+              break
+            }
+          }
+        }
+        
+        if (mountain) {
+          console.log('산 정보 찾음:', mountain.mntiname || mountain.name)
+          const mountainInfo = mountain.trail_match?.mountain_info || {}
+          const mappedMountain = {
+            code: String(mountain.mntilistno || mountainInfo.mntilistno || mountain.code || mountain.MNTN_CD || code),
+            name: mountain.mntiname || mountainInfo.mntiname || mountain.name || mountain.MNTN_NM || '이름 없음',
+            height: (() => {
+              const mntihighValue = mountain.mntihigh !== undefined && mountain.mntihigh !== null 
+                ? mountain.mntihigh 
+                : (mountainInfo.mntihigh !== undefined && mountainInfo.mntihigh !== null 
+                  ? mountainInfo.mntihigh 
+                  : null)
+              if (mntihighValue !== null && mntihighValue !== undefined) {
+                if (mntihighValue === 0 || mntihighValue === '0' || String(mntihighValue).trim() === '0') {
+                  return null
+                }
+                return String(mntihighValue) + 'm'
+              }
+              return mountain.height || mountain.MNTN_HG || null
+            })(),
+            location: (() => {
+              const loc = mountain.mntiadd || mountainInfo.mntiadd || mountain.location || mountain.MNTN_LOC || null
+              if (loc && typeof loc === 'string') {
+                return loc.replace(/-+$/, '').trim()
+              }
+              return loc
+            })(),
+            center: mountain.center || (mountain.MNTN_CTR ? { lat: mountain.MNTN_CTR.lat || mountain.MNTN_CTR[0], lon: mountain.MNTN_CTR.lon || mountain.MNTN_CTR[1] } : null) || null
+          }
+          mountains.push(mappedMountain)
+        } else {
+          console.log('DB에서 산 정보를 찾지 못함, MOUNTAIN_ROUTES에서 검색 - code:', code)
+          // DB에 없으면 MOUNTAIN_ROUTES에서 찾기
+          const mountainInfo = getMountainInfo(code)
+          if (mountainInfo) {
+            console.log('MOUNTAIN_ROUTES에서 산 정보 찾음:', mountainInfo.name)
+            mountains.push({
+              code: code,
+              name: mountainInfo.name,
+              height: null,
+              location: null,
+              center: mountainInfo.center ? { lat: mountainInfo.center[0], lon: mountainInfo.center[1] } : null
+            })
+          } else {
+            console.log('MOUNTAIN_ROUTES에서도 산 정보를 찾지 못함 - code:', code)
+            // 그래도 코드와 함께 추가 (최소한 링크는 작동하도록)
+            mountains.push({
+              code: code,
+              name: `산 (코드: ${code})`,
+              height: null,
+              location: null,
+              center: null
+            })
+          }
+        }
+      } catch (err) {
+        console.error('산 정보 조회 중 오류 - code:', code, 'error:', err)
+        // 오류가 발생해도 최소한 코드는 포함
+        mountains.push({
+          code: code,
+          name: `산 (코드: ${code})`,
+          height: null,
+          location: null,
+          center: null
+        })
+      }
+    }
+    
+    console.log('최종 반환할 산 목록:', mountains.length, '개', mountains.map(m => m.name))
+    res.json({ mountains })
+  } catch (error) {
+    console.error('즐겨찾기한 산 목록 조회 오류:', error)
+    res.status(500).json({ error: '즐겨찾기한 산 목록을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 산 즐겨찾기 토글 (인증 필요) - /api/mountains/:code보다 먼저 정의해야 함
+app.post('/api/mountains/:code/favorite', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const { code } = req.params
+    const mountainCode = String(code)
+
+    console.log('산 즐겨찾기 토글 요청 - userId:', userId, 'code:', mountainCode)
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    // 즐겨찾기 목록 초기화 (없으면)
+    if (!user.favoriteMountains) {
+      user.favoriteMountains = []
+    }
+
+    console.log('현재 즐겨찾기 목록:', user.favoriteMountains)
+
+    const favoriteIndex = user.favoriteMountains.indexOf(mountainCode)
+    if (favoriteIndex > -1) {
+      // 이미 즐겨찾기에 있으면 제거
+      user.favoriteMountains.splice(favoriteIndex, 1)
+      await user.save()
+      console.log('즐겨찾기 제거 완료 - 새로운 목록:', user.favoriteMountains)
+      res.json({ 
+        isFavorited: false, 
+        message: '즐겨찾기에서 제거되었습니다.' 
+      })
+    } else {
+      // 즐겨찾기에 추가
+      user.favoriteMountains.push(mountainCode)
+      await user.save()
+      console.log('즐겨찾기 추가 완료 - 새로운 목록:', user.favoriteMountains)
+      res.json({ 
+        isFavorited: true, 
+        message: '즐겨찾기에 추가되었습니다.' 
+      })
+    }
+  } catch (error) {
+    console.error('산 즐겨찾기 처리 오류:', error)
+    res.status(500).json({ error: '즐겨찾기 처리 중 오류가 발생했습니다.' })
+  }
+})
+
+// 특정 산 주변 숙소 조회 (더 구체적인 라우트를 먼저 정의)
+app.get('/api/mountains/:code/lodgings', async (req, res) => {
+  try {
+    const { code } = req.params
+    const mountainCode = String(code)
+
+    // 거리 계산 함수 (Haversine 공식) - km 단위
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+      const R = 6371 // 지구 반지름 (km)
+      const dLat = (lat2 - lat1) * Math.PI / 180
+      const dLon = (lon2 - lon1) * Math.PI / 180
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      return R * c
+    }
+
+    // MongoDB 연결
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+
+    // mountain_lodging 컬렉션 찾기
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    const lodgingCollectionName = collectionNames.find(name => 
+      name.toLowerCase().includes('lodging')
+    ) || 'mountain_lodging'
+
+    // 모델이 이미 존재하면 삭제 후 재생성
+    if (mongoose.default.models.Lodging) {
+      delete mongoose.default.models.Lodging
+    }
+    const Lodging = mongoose.default.model('Lodging', 
+      new mongoose.default.Schema({}, { strict: false }), 
+      lodgingCollectionName
+    )
+
+    // mountainRoutes에서 산 이름 가져오기
+    const mountainInfo = getMountainInfo(mountainCode)
+    let mountainName = null
+    let mountainCenter = null
+
+    if (mountainInfo && mountainInfo.name) {
+      mountainName = mountainInfo.name
+      if (mountainInfo.center && Array.isArray(mountainInfo.center) && mountainInfo.center.length >= 2) {
+        mountainCenter = { lat: mountainInfo.center[0], lon: mountainInfo.center[1] }
+      }
+    } else {
+      // Mountain_list에서 산 이름 찾기
+      const actualCollections = await db.listCollections().toArray()
+      const actualCollectionNames = actualCollections.map(c => c.name)
+      let mountainListCollectionName = actualCollectionNames.find(name => name === 'Mountain_list')
+      if (!mountainListCollectionName) {
+        mountainListCollectionName = actualCollectionNames.find(name => 
+          name.toLowerCase() === 'mountain_list'
+        ) || 'Mountain_list'
+      }
+      const actualCollection = db.collection(mountainListCollectionName)
+      
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+      let mountain = null
+      
+      if (isObjectId) {
+        try {
+          const objectId = new mongoose.default.Types.ObjectId(code)
+          mountain = await actualCollection.findOne({ _id: objectId })
+        } catch (e) {
+          console.error('ObjectId 변환 실패:', e)
+        }
+      } else {
+        const codeNum = parseInt(code)
+        mountain = await actualCollection.findOne({
+          $or: [
+            { mntilistno: codeNum },
+            { mntilistno: code },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': code },
+            { code: codeNum },
+            { code: code }
+          ]
+        })
+      }
+      
+      if (mountain) {
+        mountainName = mountain.mntiname || mountain.trail_match?.mountain_info?.mntiname || mountain.name
+        
+        // 산의 좌표 가져오기
+        if (mountain.center) {
+          if (typeof mountain.center === 'object' && mountain.center.lat !== undefined && mountain.center.lon !== undefined) {
+            mountainCenter = { lat: mountain.center.lat, lon: mountain.center.lon }
+          } else if (Array.isArray(mountain.center) && mountain.center.length >= 2) {
+            mountainCenter = { lat: mountain.center[0], lon: mountain.center[1] }
+          }
+        }
+        // trail_match.mountain_info에서도 좌표 찾기
+        if (!mountainCenter && mountain.trail_match?.mountain_info) {
+          const info = mountain.trail_match.mountain_info
+          if (info.lat !== undefined && info.lon !== undefined) {
+            mountainCenter = { lat: info.lat, lon: info.lon }
+          } else if (info.LAT !== undefined && info.LON !== undefined) {
+            mountainCenter = { lat: info.LAT, lon: info.LON }
+          }
+        }
+      }
+    }
+
+    let lodgings = []
+    // 산 코드/이름으로 바로 필터 (필드 존재 여부와 상관없이 OR로 시도)
+    const lodgingFields = ['mountainCode', 'mountain_code', 'mntilistno', 'mountain_name', 'mountainName', 'code', 'mtn_cd', 'mountainId', 'area']
+    const lodgingIds = [mountainCode, String(mountainCode), parseInt(mountainCode), mountainName].filter(v => v !== undefined && v !== null && v !== '' && !Number.isNaN(v))
+    const lodgingOr = []
+    lodgingFields.forEach(f => lodgingIds.forEach(id => lodgingOr.push({ [f]: id })))
+    const lodgingQuery = lodgingOr.length > 0 ? { $or: lodgingOr } : {}
+    console.log(`숙소 조회 - 산 코드/이름으로 OR 필터, 조건 수: ${lodgingOr.length}`)
+    
+    // 산 좌표가 없어도 데이터는 조회하여 반환 (거리 계산만 생략)
+    lodgings = await Lodging.find(lodgingQuery).lean()
+    console.log(`숙소 조회 - 총 ${lodgings.length}개 숙소 (산 좌표 ${mountainCenter ? '있음' : '없음'})`)
+    
+    // 컬렉션에 데이터가 있는지 확인
+    const totalCount = await Lodging.countDocuments({})
+    console.log(`mountain_lodging 컬렉션 총 문서 수: ${totalCount}`)
+    
+    // 좌표가 있는 숙소 개수 확인
+    const withCoords = lodgings.filter(l => {
+      const lat = l.lodging_lat || l.lat || l.geometry?.location?.lat
+      const lng = l.lodging_lng || l.lng || l.geometry?.location?.lng
+      return lat && lng && !isNaN(lat) && !isNaN(lng)
+    })
+    console.log(`좌표가 있는 숙소: ${withCoords.length}개 / ${lodgings.length}개`)
+
+    // 숙소 데이터 형식 변환 (거리 제한 없음)
+    console.log(`=== 숙소 필터링 시작 ===`)
+    console.log(`산 이름: ${mountainName}`)
+    console.log(`산 좌표:`, mountainCenter)
+    console.log(`총 ${lodgings.length}개 숙소 발견`)
+    
+    // 처음 3개 숙소의 데이터 구조 확인
+    if (lodgings.length > 0) {
+      console.log(`첫 번째 숙소 샘플:`, {
+        name: lodgings[0].lodging_name || lodgings[0].name,
+        lat: lodgings[0].lodging_lat || lodgings[0].lat || lodgings[0].geometry?.location?.lat,
+        lng: lodgings[0].lodging_lng || lodgings[0].lng || lodgings[0].geometry?.location?.lng,
+        keys: Object.keys(lodgings[0])
+      })
+    }
+    
+    const lodgingList = lodgings
+      .map(lodging => {
+        // 산 코드/이름 매칭 여부 확인
+        const matchesMountain = (() => {
+          const fields = ['mountainCode', 'mountain_code', 'mntilistno', 'mountain_name', 'mountainName', 'code']
+          const targets = [mountainCode, String(mountainCode), parseInt(mountainCode), mountainName].filter(Boolean)
+          for (const f of fields) {
+            if (lodging[f] !== undefined && lodging[f] !== null) {
+              const value = String(lodging[f]).trim()
+              if (targets.some(t => String(t).trim() === value)) return true
+            }
+          }
+          return null // 매칭 정보가 없는 경우
+        })()
+
+        const lat = lodging.lodging_lat || lodging.lat || lodging.geometry?.location?.lat
+        const lng = lodging.lodging_lng || lodging.lng || lodging.geometry?.location?.lng
+        
+        // 거리 계산 (산의 좌표가 있고 숙소의 좌표가 있는 경우만)
+        let distance = null
+        if (mountainCenter && lat && lng && !isNaN(lat) && !isNaN(lng)) {
+          distance = calculateDistance(mountainCenter.lat, mountainCenter.lon, lat, lng)
+          // 처음 10개만 상세 로그 출력
+          if (lodgings.indexOf(lodging) < 10) {
+            console.log(`숙소 거리 계산 - ${lodging.lodging_name || lodging.name}: 산(${mountainCenter.lat}, ${mountainCenter.lon}) -> 숙소(${lat}, ${lng}) = ${distance?.toFixed(2)}km`)
+          }
+        } else {
+          if (lodgings.indexOf(lodging) < 5) {
+            console.log(`숙소 거리 계산 실패 - ${lodging.lodging_name || lodging.name}: mountainCenter=${!!mountainCenter}, lat=${lat}, lng=${lng}`)
+          }
+        }
+        
+        return {
+          name: lodging.lodging_name || lodging.name,
+          address: lodging.lodging_address || lodging.address || lodging.vicinity,
+          rating: lodging.lodging_rating || lodging.rating,
+          user_ratings_total: lodging.lodging_user_ratings_total || lodging.user_ratings_total || 0,
+          place_id: lodging.lodging_place_id || lodging.place_id,
+          lat: lat,
+          lng: lng,
+          geometry: {
+            location: {
+              lat: lat,
+              lng: lng
+            }
+          },
+          maps_url: lodging.lodging_detail_url || lodging.maps_url,
+          // photo_reference는 별도 필드로만 전달, photo에는 직접 URL만
+          photo: (() => {
+            const photoUrl = lodging.lodging_photo_url || lodging.photo
+            // 직접 URL인 경우만 반환 (http/https로 시작)
+            if (photoUrl && (photoUrl.startsWith('http') || photoUrl.startsWith('https'))) {
+              return photoUrl
+            }
+            return null
+          })(),
+          photo_reference: lodging.lodging_photo_reference || lodging.photo_reference,
+          image: lodging.image || lodging.thumbnail,
+          thumbnail: lodging.thumbnail || lodging.image,
+          mountainName: mountainName,
+          distance: distance, // 거리 정보 추가
+          __matchesMountain: matchesMountain
+        }
+      })
+    
+    console.log(`=== 최종 응답 ===`)
+    console.log(`반환할 숙소 개수: ${lodgingList.length}개 (필터링 없음, DB 데이터 그대로)`)
+    
+    res.json({ lodgings: lodgingList })
+  } catch (error) {
+    console.error('주변 숙소 조회 오류:', error)
+    console.error('오류 스택:', error.stack)
+    res.status(500).json({ error: '주변 숙소 정보를 불러오는 중 오류가 발생했습니다.', details: error.message })
+  }
+})
+
+// 특정 산 주변 맛집 조회 (더 구체적인 라우트를 먼저 정의)
+app.get('/api/mountains/:code/restaurants', async (req, res) => {
+  try {
+    const { code } = req.params
+    const mountainCode = String(code)
+
+    // 거리 계산 함수 (Haversine 공식) - km 단위
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+      const R = 6371 // 지구 반지름 (km)
+      const dLat = (lat2 - lat1) * Math.PI / 180
+      const dLon = (lon2 - lon1) * Math.PI / 180
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      return R * c
+    }
+
+    // MongoDB 연결
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+
+    // mountain_rastaurant 컬렉션 찾기
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    const restaurantCollectionName = collectionNames.find(name => 
+      name.toLowerCase().includes('rastaurant') || name.toLowerCase().includes('restaurant')
+    ) || 'mountain_rastaurant'
+
+    // 모델이 이미 존재하면 삭제 후 재생성
+    if (mongoose.default.models.Restaurant) {
+      delete mongoose.default.models.Restaurant
+    }
+    const Restaurant = mongoose.default.model('Restaurant', 
+      new mongoose.default.Schema({}, { strict: false }), 
+      restaurantCollectionName
+    )
+
+    // mountainRoutes에서 산 이름 가져오기
+    const mountainInfo = getMountainInfo(mountainCode)
+    let mountainName = null
+    let mountainCenter = null
+
+    if (mountainInfo && mountainInfo.name) {
+      mountainName = mountainInfo.name
+      if (mountainInfo.center && Array.isArray(mountainInfo.center) && mountainInfo.center.length >= 2) {
+        mountainCenter = { lat: mountainInfo.center[0], lon: mountainInfo.center[1] }
+      }
+    } else {
+      // Mountain_list에서 산 이름 찾기
+      const actualCollections = await db.listCollections().toArray()
+      const actualCollectionNames = actualCollections.map(c => c.name)
+      let mountainListCollectionName = actualCollectionNames.find(name => name === 'Mountain_list')
+      if (!mountainListCollectionName) {
+        mountainListCollectionName = actualCollectionNames.find(name => 
+          name.toLowerCase() === 'mountain_list'
+        ) || 'Mountain_list'
+      }
+      const actualCollection = db.collection(mountainListCollectionName)
+      
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+      let mountain = null
+      
+      if (isObjectId) {
+        try {
+          const objectId = new mongoose.default.Types.ObjectId(code)
+          mountain = await actualCollection.findOne({ _id: objectId })
+        } catch (e) {
+          console.error('ObjectId 변환 실패:', e)
+        }
+      } else {
+        const codeNum = parseInt(code)
+        mountain = await actualCollection.findOne({
+          $or: [
+            { mntilistno: codeNum },
+            { mntilistno: code },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': code },
+            { code: codeNum },
+            { code: code }
+          ]
+        })
+      }
+      
+      if (mountain) {
+        mountainName = mountain.mntiname || mountain.trail_match?.mountain_info?.mntiname || mountain.name
+        
+        // 산의 좌표 가져오기
+        if (mountain.center) {
+          if (typeof mountain.center === 'object' && mountain.center.lat !== undefined && mountain.center.lon !== undefined) {
+            mountainCenter = { lat: mountain.center.lat, lon: mountain.center.lon }
+          } else if (Array.isArray(mountain.center) && mountain.center.length >= 2) {
+            mountainCenter = { lat: mountain.center[0], lon: mountain.center[1] }
+          }
+        }
+        // trail_match.mountain_info에서도 좌표 찾기
+        if (!mountainCenter && mountain.trail_match?.mountain_info) {
+          const info = mountain.trail_match.mountain_info
+          if (info.lat !== undefined && info.lon !== undefined) {
+            mountainCenter = { lat: info.lat, lon: info.lon }
+          } else if (info.LAT !== undefined && info.LON !== undefined) {
+            mountainCenter = { lat: info.LAT, lon: info.LON }
+          }
+        }
+      }
+    }
+
+    let restaurants = []
+    // 산 코드/이름으로 바로 필터 (필드 존재 여부와 상관없이 OR로 시도)
+    const restaurantFields = ['mountainCode', 'mountain_code', 'mntilistno', 'mountain_name', 'mountainName', 'code', 'mtn_cd', 'mountainId', 'area']
+    const restaurantIds = [mountainCode, String(mountainCode), parseInt(mountainCode), mountainName].filter(v => v !== undefined && v !== null && v !== '' && !Number.isNaN(v))
+    console.log(`맛집 쿼리 생성 - mountainCode: ${mountainCode}, mountainName: ${mountainName}, restaurantIds:`, restaurantIds)
+    const restaurantOr = []
+    restaurantFields.forEach(f => restaurantIds.forEach(id => restaurantOr.push({ [f]: id })))
+    
+    // 쿼리 조건 생성 (숙소와 동일)
+    const restaurantQuery = restaurantOr.length > 0 ? { $or: restaurantOr } : {}
+    console.log(`맛집 조회 - 산 코드/이름으로 OR 필터, 조건 수: ${restaurantOr.length}`)
+    if (restaurantOr.length > 0) {
+      console.log(`맛집 쿼리 조건 (처음 3개):`, JSON.stringify(restaurantOr.slice(0, 3), null, 2))
+    } else {
+      console.log(`⚠️ 맛집 쿼리 조건이 비어있음 - 산 코드: ${mountainCode}, 산 이름: ${mountainName}, restaurantIds:`, restaurantIds)
+    }
+    
+    // 산 좌표가 없어도 데이터는 조회하여 반환 (거리 계산만 생략)
+    restaurants = await Restaurant.find(restaurantQuery).lean()
+    console.log(`맛집 조회 - 총 ${restaurants.length}개 맛집 문서 (산 좌표 ${mountainCenter ? '있음' : '없음'})`)
+    console.log(`맛집 쿼리 조건:`, JSON.stringify(restaurantQuery, null, 2))
+    console.log(`맛집 쿼리 조건 상세 - restaurantOr.length: ${restaurantOr.length}, restaurantIds:`, restaurantIds)
+    
+    // 컬렉션에 데이터가 있는지 확인
+    const totalCount = await Restaurant.countDocuments({})
+    console.log(`mountain_rastaurant 컬렉션 총 문서 수: ${totalCount}`)
+    
+    // 쿼리 결과가 없고 컬렉션에 데이터가 있으면 샘플 문서 확인 후 쿼리 조건 수정 시도
+    if (restaurants.length === 0 && totalCount > 0) {
+      console.log(`⚠️ 맛집 쿼리 결과가 없음. 샘플 문서 확인 후 쿼리 조건 수정 시도...`)
+      console.log(`  - 산 코드: ${mountainCode}`)
+      console.log(`  - 산 이름: ${mountainName}`)
+      console.log(`  - 쿼리 조건:`, JSON.stringify(restaurantQuery, null, 2))
+      
+      // 샘플 문서 확인
+      const sampleDoc = await Restaurant.findOne({}).lean()
+      if (sampleDoc) {
+        console.log(`  - 샘플 문서 필드:`, Object.keys(sampleDoc))
+        // 산 관련 필드 확인
+        const mountainFields = ['mountainCode', 'mountain_code', 'mntilistno', 'mountain_name', 'mountainName', 'code', 'mtn_cd', 'mountainId', 'area']
+        const foundFields = mountainFields.filter(f => sampleDoc[f] !== undefined)
+        console.log(`  - 샘플 문서의 산 관련 필드:`, foundFields)
+        if (foundFields.length > 0) {
+          foundFields.forEach(f => {
+            console.log(`    - ${f}: ${sampleDoc[f]} (타입: ${typeof sampleDoc[f]})`)
+          })
+          
+          // 실제 DB 필드에 맞는 쿼리 조건 재생성
+          const newRestaurantOr = []
+          foundFields.forEach(f => {
+            restaurantIds.forEach(id => {
+              // 타입 변환 시도
+              const fieldValue = sampleDoc[f]
+              const fieldType = typeof fieldValue
+              if (fieldType === 'number') {
+                newRestaurantOr.push({ [f]: Number(id) })
+                newRestaurantOr.push({ [f]: String(id) })
+              } else if (fieldType === 'string') {
+                newRestaurantOr.push({ [f]: String(id) })
+                if (!isNaN(id)) {
+                  newRestaurantOr.push({ [f]: Number(id) })
+                }
+              } else {
+                newRestaurantOr.push({ [f]: id })
+              }
+            })
+          })
+          
+          if (newRestaurantOr.length > 0) {
+            console.log(`  - 수정된 쿼리 조건으로 재시도 (조건 수: ${newRestaurantOr.length})`)
+            restaurants = await Restaurant.find({ $or: newRestaurantOr }).lean()
+            console.log(`  - 재시도 결과: ${restaurants.length}개 문서`)
+          }
+        }
+      }
+      
+      // 여전히 결과가 없으면 전체 컬렉션 조회 (임시)
+      if (restaurants.length === 0) {
+        console.log(`  - 여전히 결과가 없음. 전체 컬렉션 조회 (임시)`)
+        restaurants = await Restaurant.find({}).lean()
+        console.log(`  - 전체 컬렉션 조회 결과: ${restaurants.length}개 문서`)
+      }
+    }
+    
+    // 좌표가 있는 맛집 개수 확인
+    let withCoords = 0
+    restaurants.forEach(r => {
+      const items = r.restaurants && Array.isArray(r.restaurants) ? r.restaurants : [r]
+      items.forEach(item => {
+        const lat = item.lat || item.geometry?.location?.lat
+        const lng = item.lng || item.geometry?.location?.lng
+        if (lat && lng && !isNaN(lat) && !isNaN(lng)) withCoords++
+      })
+    })
+    console.log(`좌표가 있는 맛집: ${withCoords}개`)
+
+    // 맛집 데이터 형식 변환 (거리 제한 없음)
+    console.log(`=== 맛집 필터링 시작 ===`)
+    console.log(`산 이름: ${mountainName}`)
+    console.log(`산 좌표:`, mountainCenter)
+    console.log(`총 ${restaurants.length}개 맛집 문서 발견`)
+    
+    // 처음 3개 맛집의 데이터 구조 확인
+    if (restaurants.length > 0) {
+      const firstRestaurant = restaurants[0]
+      const firstItem = firstRestaurant.restaurants && Array.isArray(firstRestaurant.restaurants) 
+        ? firstRestaurant.restaurants[0] 
+        : firstRestaurant
+      console.log(`첫 번째 맛집 샘플:`, {
+        name: firstItem.name,
+        lat: firstItem.lat || firstItem.geometry?.location?.lat,
+        lng: firstItem.lng || firstItem.geometry?.location?.lng,
+        keys: Object.keys(firstItem)
+      })
+    }
+    
+    const restaurantList = []
+
+    const pushRestaurant = (restaurant) => {
+      if (!restaurant) return
+      
+      // 산 코드/이름 매칭 여부 확인
+      const matchesMountain = (() => {
+        const fields = ['mountainCode', 'mountain_code', 'mntilistno', 'mountain_name', 'mountainName', 'code']
+        const targets = [mountainCode, String(mountainCode), parseInt(mountainCode), mountainName].filter(Boolean)
+        for (const f of fields) {
+          if (restaurant[f] !== undefined && restaurant[f] !== null) {
+            const value = String(restaurant[f]).trim()
+            if (targets.some(t => String(t).trim() === value)) return true
+          }
+        }
+        return null // 매칭 정보가 없는 경우
+      })()
+
+      const lat = restaurant.lat || restaurant.geometry?.location?.lat
+      const lng = restaurant.lng || restaurant.geometry?.location?.lng
+      
+      // 거리 계산 (산의 좌표가 있고 맛집의 좌표가 있는 경우만)
+      let distance = null
+      if (mountainCenter && lat && lng && !isNaN(lat) && !isNaN(lng)) {
+        distance = calculateDistance(mountainCenter.lat, mountainCenter.lon, lat, lng)
+        // 처음 10개만 상세 로그 출력
+        if (restaurantList.length < 10) {
+          console.log(`맛집 거리 계산 - ${restaurant.name}: 산(${mountainCenter.lat}, ${mountainCenter.lon}) -> 맛집(${lat}, ${lng}) = ${distance?.toFixed(2)}km`)
+        }
+      } else {
+        if (restaurantList.length < 5) {
+          console.log(`맛집 거리 계산 실패 - ${restaurant.name}: mountainCenter=${!!mountainCenter}, lat=${lat}, lng=${lng}`)
+        }
+      }
+
+      restaurantList.push({
+        name: restaurant.name,
+        address: restaurant.address || restaurant.vicinity,
+        rating: restaurant.rating,
+        user_ratings_total: restaurant.user_ratings_total || 0,
+        place_id: restaurant.place_id,
+        lat: lat,
+        lng: lng,
+        geometry: {
+          location: {
+            lat: lat,
+            lng: lng
+          }
+        },
+        maps_url: restaurant.maps_url,
+        photo: (() => {
+          const photoUrl = restaurant.photo
+          // 직접 URL인 경우만 반환 (http/https로 시작)
+          if (photoUrl && (photoUrl.startsWith('http') || photoUrl.startsWith('https'))) {
+            return photoUrl
+          }
+          return null
+        })(),
+        photo_reference: restaurant.photo_reference,
+        image: restaurant.image || restaurant.thumbnail,
+        thumbnail: restaurant.thumbnail || restaurant.image,
+        phone: restaurant.phone || restaurant.international_phone_number,
+        mountainName: mountainName,
+        distance: distance, // 거리 정보 추가
+        __matchesMountain: matchesMountain
+      })
+    }
+
+    restaurants.forEach(restaurantData => {
+      if (restaurantData.restaurants && Array.isArray(restaurantData.restaurants)) {
+        restaurantData.restaurants.forEach(r => pushRestaurant(r))
+      } else {
+        // 문서가 개별 맛집인 경우도 처리
+        pushRestaurant(restaurantData)
+      }
+    })
+    
+    console.log(`=== 최종 응답 ===`)
+    console.log(`반환할 맛집 개수: ${restaurantList.length}개 (필터링 없음, DB 데이터 그대로)`)
+    
+    // 디버깅 정보 포함 (쿼리 결과가 없을 때)
+    const response = { restaurants: restaurantList }
+    if (restaurants.length === 0 && totalCount > 0) {
+      response.debug = {
+        query: restaurantQuery,
+        queryCount: restaurantOr.length,
+        restaurantIds: restaurantIds,
+        mountainCode: mountainCode,
+        mountainName: mountainName,
+        totalCount: totalCount
+      }
+    }
+    
+    res.json(response)
+  } catch (error) {
+    console.error('주변 맛집 조회 오류:', error)
+    console.error('오류 스택:', error.stack)
+    res.status(500).json({ error: '주변 맛집 정보를 불러오는 중 오류가 발생했습니다.', details: error.message })
+  }
+})
+
+// 특정 산의 상세 정보 가져오기 (Mountain_list에서) - 더 일반적인 라우트는 나중에
 app.get('/api/mountains/:code', async (req, res) => {
   try {
     const { code } = req.params
@@ -432,6 +1532,45 @@ app.get('/api/mountains/:code', async (req, res) => {
       if (sample) {
         console.log('샘플 데이터의 mntilistno:', sample.mntilistno, '타입:', typeof sample.mntilistno)
         console.log('샘플 데이터의 모든 필드:', Object.keys(sample))
+        console.log('샘플 데이터 전체:', JSON.stringify(sample, null, 2).substring(0, 1000))
+        
+        // 북한산 관련 필드 찾기
+        const bukhansanFields = Object.keys(sample).filter(k => 
+          k.toLowerCase().includes('mnt') || 
+          k.toLowerCase().includes('mountain') ||
+          k.toLowerCase().includes('code') ||
+          k.toLowerCase().includes('name')
+        )
+        console.log('산 관련 필드들:', bukhansanFields)
+        
+        // 287201304 값이 있는 필드 찾기
+        for (const key of Object.keys(sample)) {
+          const value = sample[key]
+          if (value === 287201304 || value === '287201304' || String(value).includes('287201304')) {
+            console.log(`287201304 값을 가진 필드 발견: ${key} = ${value}`)
+          }
+        }
+      }
+      
+      // 북한산 이름으로 검색 시도
+      if (code === '287201304') {
+        console.log('북한산 이름으로 검색 시도...')
+        const nameSearch = await actualCollection.findOne({
+          $or: [
+            { mntiname: /북한산/ },
+            { name: /북한산/ },
+            { MNTN_NM: /북한산/ },
+            { 'trail_match.mountain_info.mntiname': /북한산/ }
+          ]
+        })
+        if (nameSearch) {
+          console.log('이름으로 북한산 찾음!', {
+            mntiname: nameSearch.mntiname,
+            name: nameSearch.name,
+            모든필드: Object.keys(nameSearch)
+          })
+          mountain = nameSearch
+        }
       }
     }
     
@@ -484,47 +1623,37 @@ app.get('/api/mountains/:code', async (req, res) => {
     
     console.log('매핑된 데이터:', JSON.stringify(mappedMountain, null, 2))
     
-    res.json(mappedMountain)
+    // 즐겨찾기 상태 확인 (인증된 사용자인 경우)
+    let isFavorited = false
+    const authHeader = req.headers['authorization']
+    if (authHeader) {
+      const token = authHeader.split(' ')[1]
+      if (token) {
+        try {
+          const jwt = await import('jsonwebtoken')
+          const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+          const decoded = jwt.default.verify(token, JWT_SECRET)
+          const user = await User.findById(decoded.userId).select('favoriteMountains').lean()
+          if (user && user.favoriteMountains) {
+            const mountainCode = String(mappedMountain.code)
+            isFavorited = user.favoriteMountains.includes(mountainCode)
+          }
+        } catch (err) {
+          // 토큰이 유효하지 않으면 무시
+        }
+      }
+    }
+    
+    res.json({
+      ...mappedMountain,
+      isFavorited
+    })
   } catch (error) {
     console.error('Error loading mountain detail:', error)
     res.status(500).json({ error: 'Failed to load mountain detail', details: error.message })
   }
 })
 
-// 특정 산 주변 숙소 조회
-app.get('/api/mountains/:code/lodgings', async (req, res) => {
-  try {
-    const { code } = req.params
-    const mountainCode = String(code)
-
-    let lodgings = []
-
-    // 1차: mountainCode 로 직접 매칭
-    lodgings = await Lodging.find({
-      $or: [
-        { mountainCode },
-        { mountain_code: mountainCode },
-        { mntilistno: mountainCode },
-        { 'mountain.code': mountainCode }
-      ]
-    }).lean()
-
-    // 2차: mountainRoutes 에서 산 이름을 얻어서 이름 기반 매칭
-    if (!lodgings || lodgings.length === 0) {
-      const mountainInfo = getMountainInfo(mountainCode)
-      if (mountainInfo && mountainInfo.name) {
-        lodgings = await Lodging.find({
-          'mountain.name': mountainInfo.name
-        }).lean()
-      }
-    }
-
-    res.json({ lodgings: lodgings || [] })
-  } catch (error) {
-    console.error('주변 숙소 조회 오류:', error)
-    res.status(500).json({ error: '주변 숙소 정보를 불러오는 중 오류가 발생했습니다.' })
-  }
-})
 
 // 특정 산의 등산 코스 가져오기
 app.get('/api/mountains/:code/courses', async (req, res) => {
@@ -1998,6 +3127,159 @@ async function checkScheduleReminders() {
 setInterval(checkScheduleReminders, 24 * 60 * 60 * 1000) // 24시간
 // 서버 시작 시 즉시 한 번 실행
 setTimeout(checkScheduleReminders, 10000) // 10초 후 실행 (DB 연결 대기)
+
+
+// 즐겨찾기한 산 목록 조회 (인증 필요) - /api/mountains/:code보다 먼저 정의해야 함
+app.get('/api/mountains/favorites/my', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const user = await User.findById(userId).select('favoriteMountains').lean()
+    
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    const favoriteMountainCodes = user.favoriteMountains || []
+    
+    console.log('즐겨찾기한 산 목록 조회 - userId:', userId, 'codes:', favoriteMountainCodes)
+    
+    if (favoriteMountainCodes.length === 0) {
+      console.log('즐겨찾기한 산이 없음')
+      return res.json({ mountains: [] })
+    }
+
+    // MongoDB 연결 확인
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    
+    let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+    if (!mountainListCollectionName) {
+      mountainListCollectionName = collectionNames.find(name => 
+        name.toLowerCase() === 'mountain_list'
+      ) || 'Mountain_list'
+    }
+    
+    const actualCollection = db.collection(mountainListCollectionName)
+    
+    // 즐겨찾기한 산 코드들로 산 정보 조회
+    const mountains = []
+    for (const code of favoriteMountainCodes) {
+      console.log('산 정보 조회 시도 - code:', code, 'type:', typeof code)
+      
+      try {
+        // 내부적으로 산 상세 정보 조회 로직 재사용
+        const codeNum = parseInt(code)
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+        
+        let mountain = null
+        if (isObjectId) {
+          try {
+            const objectId = new mongoose.default.Types.ObjectId(code)
+            mountain = await actualCollection.findOne({ _id: objectId })
+          } catch (e) {
+            console.log('ObjectId 변환 실패:', e)
+          }
+        } else {
+          // 여러 형식으로 검색 시도
+          const searchQueries = [
+            { mntilistno: codeNum },
+            { mntilistno: Number(code) },
+            { mntilistno: code },
+            { mntilistno: String(codeNum) },
+            { code: codeNum },
+            { code: Number(code) },
+            { code: code },
+            { code: String(codeNum) },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': code }
+          ]
+          
+          for (const query of searchQueries) {
+            mountain = await actualCollection.findOne(query)
+            if (mountain) {
+              console.log('산 정보 찾음 (query:', query, ')')
+              break
+            }
+          }
+        }
+        
+        if (mountain) {
+          console.log('산 정보 찾음:', mountain.mntiname || mountain.name)
+          const mountainInfo = mountain.trail_match?.mountain_info || {}
+          const mappedMountain = {
+            code: String(mountain.mntilistno || mountainInfo.mntilistno || mountain.code || mountain.MNTN_CD || code),
+            name: mountain.mntiname || mountainInfo.mntiname || mountain.name || mountain.MNTN_NM || '이름 없음',
+            height: (() => {
+              const mntihighValue = mountain.mntihigh !== undefined && mountain.mntihigh !== null 
+                ? mountain.mntihigh 
+                : (mountainInfo.mntihigh !== undefined && mountainInfo.mntihigh !== null 
+                  ? mountainInfo.mntihigh 
+                  : null)
+              if (mntihighValue !== null && mntihighValue !== undefined) {
+                if (mntihighValue === 0 || mntihighValue === '0' || String(mntihighValue).trim() === '0') {
+                  return null
+                }
+                return String(mntihighValue) + 'm'
+              }
+              return mountain.height || mountain.MNTN_HG || null
+            })(),
+            location: (() => {
+              const loc = mountain.mntiadd || mountainInfo.mntiadd || mountain.location || mountain.MNTN_LOC || null
+              if (loc && typeof loc === 'string') {
+                return loc.replace(/-+$/, '').trim()
+              }
+              return loc
+            })(),
+            center: mountain.center || (mountain.MNTN_CTR ? { lat: mountain.MNTN_CTR.lat || mountain.MNTN_CTR[0], lon: mountain.MNTN_CTR.lon || mountain.MNTN_CTR[1] } : null) || null
+          }
+          mountains.push(mappedMountain)
+        } else {
+          console.log('DB에서 산 정보를 찾지 못함, MOUNTAIN_ROUTES에서 검색 - code:', code)
+          // DB에 없으면 MOUNTAIN_ROUTES에서 찾기
+          const mountainInfo = getMountainInfo(code)
+          if (mountainInfo) {
+            console.log('MOUNTAIN_ROUTES에서 산 정보 찾음:', mountainInfo.name)
+            mountains.push({
+              code: code,
+              name: mountainInfo.name,
+              height: null,
+              location: null,
+              center: mountainInfo.center ? { lat: mountainInfo.center[0], lon: mountainInfo.center[1] } : null
+            })
+          } else {
+            console.log('MOUNTAIN_ROUTES에서도 산 정보를 찾지 못함 - code:', code)
+            // 그래도 코드와 함께 추가 (최소한 링크는 작동하도록)
+            mountains.push({
+              code: code,
+              name: `산 (코드: ${code})`,
+              height: null,
+              location: null,
+              center: null
+            })
+          }
+        }
+      } catch (err) {
+        console.error('산 정보 조회 중 오류 - code:', code, 'error:', err)
+        // 오류가 발생해도 최소한 코드는 포함
+        mountains.push({
+          code: code,
+          name: `산 (코드: ${code})`,
+          height: null,
+          location: null,
+          center: null
+        })
+      }
+    }
+    
+    console.log('최종 반환할 산 목록:', mountains.length, '개', mountains.map(m => m.name))
+    res.json({ mountains })
+  } catch (error) {
+    console.error('즐겨찾기한 산 목록 조회 오류:', error)
+    res.status(500).json({ error: '즐겨찾기한 산 목록을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${PORT}`)
