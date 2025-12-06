@@ -525,6 +525,154 @@
   border-color: var(--text-muted);
 }
 
+/* Q&A 스타일 */
+.qa-post {
+  position: relative;
+}
+
+.qa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1976d2;
+  line-height: 1;
+  min-height: 24px;
+}
+
+.qa-icon {
+  font-size: 0.9rem;
+}
+
+.qa-label {
+  font-weight: 600;
+}
+
+.qa-section .comments-title {
+  color: #1976d2;
+}
+
+.qa-section .comment-submit-btn {
+  background: #2196f3;
+}
+
+.qa-section .comment-submit-btn:hover:not(:disabled) {
+  background: #1976d2;
+}
+
+.qa-answer {
+  border-left: 4px solid #2196f3;
+  background: #f5f9ff;
+}
+
+.qa-answer .comment-author {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+/* 등산일지 스타일 */
+.diary-post {
+  position: relative;
+}
+
+.diary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2e7d32;
+  line-height: 1;
+  min-height: 24px;
+}
+
+.diary-icon {
+  font-size: 0.9rem;
+}
+
+.diary-label {
+  font-weight: 600;
+}
+
+/* 자유게시판 스타일 */
+.free-post {
+  position: relative;
+}
+
+.free-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: #f3e5f5;
+  border: 1px solid #9c27b0;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7b1fa2;
+  line-height: 1;
+  min-height: 24px;
+}
+
+.free-icon {
+  font-size: 0.9rem;
+}
+
+.free-label {
+  font-weight: 600;
+}
+
+/* 해시태그 스타일 */
+.post-hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.hashtag-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1976d2;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hashtag-tag:hover {
+  background: #bbdefb;
+  border-color: #1976d2;
+}
+
+.diary-post .hashtag-tag {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+.diary-post .hashtag-tag:hover {
+  background: #c8e6c9;
+  border-color: #388e3c;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .community-detail-container {

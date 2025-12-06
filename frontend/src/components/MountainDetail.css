@@ -7,12 +7,49 @@
 .mountain-header {
   text-align: center;
   margin-bottom: 40px;
+  position: relative;
+}
+
+.mountain-header-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  padding-right: 0;
+}
+
+.mountain-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .mountain-header h1 {
   font-size: 2.5rem;
   color: var(--primary);
-  margin-bottom: 16px;
+  margin: 0;
+}
+
+.mountain-favorite-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.mountain-favorite-btn:hover {
+  transform: scale(1.1);
+}
+
+.mountain-favorite-btn.favorited {
+  color: #FFD700;
 }
 
 .mountain-info {
@@ -275,8 +312,8 @@
 .course-layout {
   display: flex;
   gap: 0;
-  height: calc(100vh - 300px);
-  min-height: 600px;
+  height: calc(100vh - 200px);
+  min-height: 750px;
 }
 
 .course-list-panel {
@@ -288,12 +325,22 @@
   background: var(--bg);
 }
 
+.course-detail-panel-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  background: var(--card-bg);
+  min-height: 0;
+}
+
 .course-detail-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: var(--card-bg);
+  min-height: 0;
 }
 
 .course-list-panel .courses-header {
@@ -425,11 +472,25 @@
 
 .map-container {
   position: relative;
+  min-height: 650px;
+  height: 650px;
   flex: 1;
-  min-height: 400px;
   border-radius: 0;
   overflow: hidden;
   border: none;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.lists-horizontal-container {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg);
+  border-top: none;
+  flex-shrink: 0;
+  margin-top: 0;
+  width: 100%;
 }
 
 #course-map {
@@ -891,12 +952,17 @@
 }
 
 /* 주변 숙소 목록 스타일 */
-.lodging-list-section {
-  margin-top: 24px;
-  padding: 24px;
+.lists-horizontal-container .lodging-list-section {
+  flex: 1;
+  padding: 20px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 8px;
+  max-height: 400px;
+  height: auto;
+  overflow-y: auto;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .lodging-list-header {

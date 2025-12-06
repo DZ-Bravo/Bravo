@@ -167,6 +167,30 @@
   color: var(--text-muted);
   white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+  height: auto;
+  min-height: 24px;
+}
+
+.post-mountain-badge {
+  padding: 4px 12px;
+  background: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #2e7d32;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+  height: auto;
+  min-height: 24px;
 }
 
 .post-card-title {
@@ -292,6 +316,77 @@
   object-fit: cover;
   display: block;
   box-sizing: border-box;
+}
+
+/* Q&A 게시글 스타일 */
+.qa-card {
+  border-left: 4px solid #2196f3;
+}
+
+.qa-card:hover {
+  border-left-color: #1976d2;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.15);
+}
+
+.qa-badge-card {
+  background: #e3f2fd !important;
+  border-color: #2196f3 !important;
+  color: #1976d2 !important;
+  font-weight: 600;
+  padding: 4px 12px !important;
+  font-size: 0.75rem !important;
+  line-height: 1 !important;
+  min-height: 24px !important;
+}
+
+.qa-icon-small,
+.diary-icon-small,
+.free-icon-small {
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 등산일지 게시글 스타일 */
+.diary-card {
+  border-left: 4px solid #4caf50;
+}
+
+.diary-card:hover {
+  border-left-color: #388e3c;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+}
+
+.diary-badge-card {
+  background: #e8f5e9 !important;
+  border-color: #4caf50 !important;
+  color: #2e7d32 !important;
+  font-weight: 600;
+  padding: 4px 12px !important;
+  font-size: 0.75rem !important;
+  line-height: 1 !important;
+  min-height: 24px !important;
+}
+
+/* 자유게시판 게시글 스타일 */
+.free-card {
+  border-left: 4px solid #9c27b0;
+}
+
+.free-card:hover {
+  border-left-color: #7b1fa2;
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.15);
+}
+
+.free-badge-card {
+  background: #f3e5f5 !important;
+  border-color: #9c27b0 !important;
+  color: #7b1fa2 !important;
+  font-weight: 600;
+  padding: 4px 12px !important;
+  font-size: 0.75rem !important;
+  line-height: 1 !important;
+  min-height: 24px !important;
 }
 
 /* 반응형 디자인 */

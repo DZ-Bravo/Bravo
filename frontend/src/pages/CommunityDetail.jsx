@@ -69,6 +69,7 @@ function CommunityDetail() {
         const data = await response.json()
         console.log('게시글 데이터:', data) // 디버깅용
         console.log('isLiked 상태:', data.isLiked) // 디버깅용
+        console.log('해시태그 데이터:', data.hashtags) // 디버깅용
         
         // id가 여전히 같은지 확인 (컴포넌트가 언마운트되었거나 id가 변경되었을 수 있음)
         if (currentId.current === id) {
@@ -299,6 +300,8 @@ function CommunityDetail() {
         const data = await response.json()
         setIsFavorited(data.isFavorited)
         alert(data.message)
+        // 찜목록 카운터 갱신을 위한 이벤트 발생
+        window.dispatchEvent(new CustomEvent('favoritesUpdated'))
       } else {
         const errorData = await response.json()
         alert(errorData.error || '즐겨찾기 처리 중 오류가 발생했습니다.')
@@ -441,7 +444,26 @@ function CommunityDetail() {
             </div>
           </div>
 
-          <div className="post-detail">
+          <div className={`post-detail ${post.category === 'qa' ? 'qa-post' : ''} ${post.category === 'diary' ? 'diary-post' : ''} ${post.category === 'free' ? 'free-post' : ''}`}>
+            {/* 카테고리 배지 */}
+            {post.category === 'qa' && (
+              <div className="qa-badge">
+                <span className="qa-icon">❓</span>
+                <span className="qa-label">Q&A</span>
+              </div>
+            )}
+            {post.category === 'diary' && (
+              <div className="diary-badge">
+                <span className="diary-icon">⛰️</span>
+                <span className="diary-label">등산일지</span>
+              </div>
+            )}
+            {post.category === 'free' && (
+              <div className="free-badge">
+                <span className="free-icon">💬</span>
+                <span className="free-label">자유게시판</span>
+              </div>
+            )}
             {/* 제목 */}
             <h1 className="post-title">{post.title}</h1>
 
@@ -487,6 +509,26 @@ function CommunityDetail() {
                   <p>내용이 없습니다.</p>
                 )}
               </div>
+              {/* 해시태그 표시 (등산일지인 경우) */}
+              {post.category === 'diary' && (() => {
+                const hashtags = post.hashtags || []
+                console.log('해시태그 표시 체크:', {
+                  category: post.category,
+                  hashtags: hashtags,
+                  isArray: Array.isArray(hashtags),
+                  length: hashtags.length
+                })
+                if (Array.isArray(hashtags) && hashtags.length > 0) {
+                  return (
+                    <div className="post-hashtags">
+                      {hashtags.map((tag, index) => (
+                        <span key={index} className="hashtag-tag">#{tag}</span>
+                      ))}
+                    </div>
+                  )
+                }
+                return null
+              })()}
             </div>
 
             {/* 메타 정보 */}
@@ -502,16 +544,18 @@ function CommunityDetail() {
             </div>
           </div>
 
-          {/* 댓글 섹션 */}
-          <div className="comments-section">
-            <h2 className="comments-title">댓글 {comments.length}</h2>
+          {/* 댓글/답변 섹션 */}
+          <div className={`comments-section ${post.category === 'qa' ? 'qa-section' : ''}`}>
+            <h2 className="comments-title">
+              {post.category === 'qa' ? `답변 ${comments.length}` : `댓글 ${comments.length}`}
+            </h2>
             
-            {/* 댓글 작성 폼 */}
+            {/* 댓글/답변 작성 폼 */}
             <form onSubmit={handleSubmitComment} className="comment-form">
               <textarea
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
-                placeholder="댓글을 입력해주세요..."
+                placeholder={post.category === 'qa' ? '답변을 입력해주세요...' : '댓글을 입력해주세요...'}
                 className="comment-input"
                 rows="3"
               />
@@ -520,17 +564,19 @@ function CommunityDetail() {
                 className="comment-submit-btn"
                 disabled={isSubmittingComment || !commentContent.trim()}
               >
-                {isSubmittingComment ? '작성 중...' : '댓글 작성'}
+                {isSubmittingComment ? '작성 중...' : post.category === 'qa' ? '답변 작성' : '댓글 작성'}
               </button>
             </form>
 
-            {/* 댓글 목록 */}
+            {/* 댓글/답변 목록 */}
             <div className="comments-list">
               {comments.length === 0 ? (
-                <div className="no-comments">댓글이 없습니다.</div>
+                <div className="no-comments">
+                  {post.category === 'qa' ? '아직 답변이 없습니다.' : '댓글이 없습니다.'}
+                </div>
               ) : (
                 comments.map((comment) => (
-                  <div key={comment.id} className="comment-item">
+                  <div key={comment.id} className={`comment-item ${post.category === 'qa' ? 'qa-answer' : ''}`}>
                     {editingCommentId === comment.id ? (
                       <div className="comment-edit-form">
                         <textarea

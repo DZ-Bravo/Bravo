@@ -10,11 +10,11 @@
 }
 
 .notice-detail-container {
-  background: var(--card-bg);
-  border-radius: 16px;
+  background: transparent;
+  border-radius: 0;
   padding: 48px 40px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border);
+  box-shadow: none;
+  border: none;
 }
 
 .detail-header {
@@ -24,8 +24,10 @@
   margin-bottom: 32px;
 }
 
-.back-link {
-  color: var(--text-main);
+.notice-detail-page .back-link,
+.notice-detail-container .back-link,
+.detail-header .back-link {
+  color: #333 !important;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
@@ -35,13 +37,18 @@
   gap: 4px;
 }
 
-.back-link:hover {
-  color: #00BF93;
+.notice-detail-page .back-link:hover,
+.notice-detail-container .back-link:hover,
+.detail-header .back-link:hover {
+  color: #333 !important;
 }
 
 .notice-actions {
   display: flex;
   gap: 8px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
 }
 
 .edit-btn,
@@ -61,8 +68,8 @@
 }
 
 .edit-btn:hover {
-  border-color: #00BF93;
-  color: #00BF93;
+  border-color: #333;
+  color: #333;
 }
 
 .delete-btn {
@@ -87,13 +94,11 @@
   gap: 16px;
 }
 
-.notice-icon-large {
-  font-size: 2.5rem;
-}
-
-.notice-title {
-  font-size: 1.75rem;
-  font-weight: 700;
+.notice-detail-page .notice-title,
+.notice-detail-container .notice-title,
+.notice-detail-header .notice-title {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
   color: var(--text-main);
   margin: 0;
   flex: 1;
@@ -107,6 +112,18 @@
   border-bottom: 1px solid var(--border);
   font-size: 0.9rem;
   color: var(--text-muted);
+  justify-content: space-between;
+}
+
+.notice-author {
+  margin-right: auto;
+}
+
+.notice-date-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .notice-author {
@@ -152,8 +169,10 @@
     gap: 16px;
   }
 
-  .notice-title {
-    font-size: 1.5rem;
+  .notice-detail-page .notice-title,
+  .notice-detail-container .notice-title,
+  .notice-detail-header .notice-title {
+    font-size: 2rem !important;
   }
 
   .notice-meta {
