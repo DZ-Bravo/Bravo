@@ -20,9 +20,11 @@ function EditProfile() {
   const [profileImageName, setProfileImageName] = useState('')
   const [profileImagePreview, setProfileImagePreview] = useState('')
   const [isFitnessDropdownOpen, setIsFitnessDropdownOpen] = useState(false)
+  const [isBirthYearDropdownOpen, setIsBirthYearDropdownOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const fitnessDropdownRef = useRef(null)
+  const birthYearDropdownRef = useRef(null)
 
   const fitnessLevels = [
     { value: 'level1', label: '등산 3회 이하' },
@@ -34,6 +36,15 @@ function EditProfile() {
   ]
 
   const selectedFitnessLabel = fitnessLevels.find(level => level.value === formData.fitnessLevel)?.label || '선택하세요'
+
+  // 출생년도 목록 생성 (1950년부터 현재년도까지)
+  const currentYear = new Date().getFullYear()
+  const birthYears = []
+  for (let year = currentYear; year >= 1950; year--) {
+    birthYears.push(year)
+  }
+
+  const selectedBirthYear = formData.birthYear || '선택하세요'
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -210,21 +221,32 @@ function EditProfile() {
     setIsFitnessDropdownOpen(false)
   }
 
+  const handleBirthYearSelect = (year) => {
+    setFormData({
+      ...formData,
+      birthYear: year
+    })
+    setIsBirthYearDropdownOpen(false)
+  }
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (fitnessDropdownRef.current && !fitnessDropdownRef.current.contains(event.target)) {
         setIsFitnessDropdownOpen(false)
       }
+      if (birthYearDropdownRef.current && !birthYearDropdownRef.current.contains(event.target)) {
+        setIsBirthYearDropdownOpen(false)
+      }
     }
 
-    if (isFitnessDropdownOpen) {
+    if (isFitnessDropdownOpen || isBirthYearDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isFitnessDropdownOpen])
+  }, [isFitnessDropdownOpen, isBirthYearDropdownOpen])
 
   return (
     <div className="mypage-page">
@@ -323,18 +345,29 @@ function EditProfile() {
 
             <div className="form-field">
               <label htmlFor="birthYear" className="form-label">출생년도</label>
-              <input
-                type="number"
-                id="birthYear"
-                name="birthYear"
-                value={formData.birthYear}
-                onChange={handleChange}
-                required
-                className="form-input"
-                placeholder="출생년도를 입력해주세요. (예: 1990)"
-                min="1900"
-                max={new Date().getFullYear()}
-              />
+              <div className="fitness-dropdown-wrapper" ref={birthYearDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsBirthYearDropdownOpen(!isBirthYearDropdownOpen)}
+                  className={`form-input fitness-dropdown-trigger ${isBirthYearDropdownOpen ? 'open' : ''}`}
+                >
+                  {selectedBirthYear}
+                  <span className="dropdown-arrow">▼</span>
+                </button>
+                {isBirthYearDropdownOpen && (
+                  <div className="fitness-dropdown">
+                    {birthYears.map((year) => (
+                      <div
+                        key={year}
+                        onClick={() => handleBirthYearSelect(year)}
+                        className={`fitness-option ${formData.birthYear === year ? 'selected' : ''}`}
+                      >
+                        {year}년
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="form-field">
@@ -352,7 +385,7 @@ function EditProfile() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="profileImage" className="form-label">프로필 이미지 (선택)</label>
+              <div className="form-label">프로필 이미지 (선택)</div>
               <div className="profile-image-upload">
                 {profileImagePreview && (
                   <div className="profile-image-preview">
@@ -368,9 +401,13 @@ function EditProfile() {
                     onChange={handleFileChange}
                     className="file-input"
                   />
-                  <label htmlFor="profileImage" className="file-input-label">
-                    {profileImageName || '이미지 선택'}
-                  </label>
+                  <button
+                    type="button"
+                    onClick={() => document.getElementById('profileImage').click()}
+                    className="file-input-label"
+                  >
+                    {profileImageName || '프로필 이미지 선택'}
+                  </button>
                 </div>
               </div>
             </div>

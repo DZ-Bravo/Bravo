@@ -40,6 +40,9 @@ const postSchema = new mongoose.Schema({
   courseDurationMinutes: {
     type: Number // 분 단위
   },
+  hashtags: [{
+    type: String // 해시태그 배열
+  }],
   views: {
     type: Number,
     default: 0

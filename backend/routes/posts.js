@@ -65,13 +65,24 @@ router.get('/favorites/my', authenticateToken, async (req, res) => {
     const favoritePostIds = user.favorites || []
     const total = favoritePostIds.length
 
-    const posts = await Post.find({ _id: { $in: favoritePostIds } })
+    // 모든 게시글 조회 (정렬 없이)
+    const allPosts = await Post.find({ _id: { $in: favoritePostIds } })
       .populate('author', 'id name profileImage')
       .select('title content category author authorName views likes createdAt images')
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
       .lean()
+
+    // user.favorites 배열의 순서를 유지하면서 게시글 정렬 (최신 즐겨찾기 순)
+    const postMap = new Map(allPosts.map(post => [post._id.toString(), post]))
+    const orderedPosts = favoritePostIds
+      .map(id => {
+        const postId = id.toString()
+        return postMap.get(postId)
+      })
+      .filter(Boolean) // 존재하지 않는 게시글 제거
+      .reverse() // 최신 즐겨찾기 순 (배열의 마지막이 최신)
+
+    // 페이지네이션 적용
+    const posts = orderedPosts.slice(skip, skip + limit)
 
     // 날짜 포맷팅 및 본문 미리보기 생성
     const formattedPosts = await Promise.all(posts.map(async (post) => {
@@ -131,7 +142,7 @@ router.get('/my', authenticateToken, async (req, res) => {
     
     const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes')
+      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes hashtags')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -285,7 +296,7 @@ router.get('/', async (req, res) => {
     
     const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes')
+      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes hashtags')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -336,6 +347,94 @@ router.get('/', async (req, res) => {
       // 즐겨찾기 상태 확인
       const isFavorited = userFavorites.includes(post._id.toString())
       
+      // 등산일지인 경우 산 이름 가져오기
+      let mountainName = null
+      if (post.category === 'diary' && post.mountainCode) {
+        try {
+          const mongoose = await import('mongoose')
+          const db = mongoose.default.connection.db
+          const collections = await db.listCollections().toArray()
+          const collectionNames = collections.map(c => c.name)
+          
+          let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+          if (!mountainListCollectionName) {
+            mountainListCollectionName = collectionNames.find(name => name.toLowerCase() === 'mountain_list') || 'Mountain_list'
+          }
+          const actualCollection = db.collection(mountainListCollectionName)
+          
+          const code = String(post.mountainCode)
+          const codeNum = parseInt(code)
+          const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+          
+          let mountain = null
+          if (isObjectId) {
+            try {
+              const objectId = new mongoose.default.Types.ObjectId(code)
+              mountain = await actualCollection.findOne({ _id: objectId })
+            } catch (e) {
+              // ObjectId 변환 실패
+            }
+          } else {
+            // 더 넓은 범위로 검색 시도
+            const searchQueries = [
+              { mntilistno: codeNum },
+              { mntilistno: Number(code) },
+              { mntilistno: code },
+              { mntilistno: String(codeNum) },
+              { 'trail_match.mountain_info.mntilistno': codeNum },
+              { 'trail_match.mountain_info.mntilistno': Number(code) },
+              { 'trail_match.mountain_info.mntilistno': code },
+              { 'trail_match.mountain_info.mntilistno': String(codeNum) },
+              { code: codeNum },
+              { code: Number(code) },
+              { code: code },
+              { code: String(codeNum) }
+            ]
+            
+            for (const query of searchQueries) {
+              mountain = await actualCollection.findOne(query)
+              if (mountain) {
+                console.log(`게시글 산 이름 찾음 - code: ${code}, 쿼리:`, query)
+                break
+              }
+            }
+            
+            // 그래도 못 찾으면 모든 문서를 확인 (디버깅용)
+            if (!mountain && code === '287201304') {
+              console.log('게시글 - 북한산을 찾지 못함 - 모든 문서 확인 중...')
+              const allMountains = await actualCollection.find({}).limit(10).toArray()
+              console.log('샘플 문서들:', allMountains.map(m => ({
+                mntilistno: m.mntilistno,
+                mntiname: m.mntiname,
+                name: m.name,
+                _id: m._id
+              })))
+            }
+          }
+          
+          if (mountain) {
+            // DB에 저장된 실제 필드에서 산 이름 가져오기
+            // mntiname 필드를 우선 사용 (DB에 실제 저장된 필드)
+            const fullName = mountain.mntiname || 
+                          mountain.trail_match?.mountain_info?.mntiname || 
+                          mountain.name ||
+                          mountain.MNTN_NM ||
+                          mountain.mountainName ||
+                          null
+            
+            // 목록에서는 짧은 이름 사용 (예: "북한산 백운대" -> "북한산")
+            // "백운대", "대청봉", "천왕봉" 등 봉우리 이름 제거
+            if (fullName) {
+              mountainName = fullName
+                .replace(/\s+(백운대|대청봉|천왕봉|인수봉|만경대|주봉|정상).*$/, '')
+                .trim()
+            }
+          }
+        } catch (error) {
+          console.error('산 이름 조회 오류:', error)
+        }
+      }
+      
       return {
         id: post._id,
         title: post.title,
@@ -348,7 +447,10 @@ router.get('/', async (req, res) => {
         likes: post.likes || 0,
         isFavorited,
         thumbnail: thumbnail,
-        comments: commentCount
+        comments: commentCount,
+        mountainCode: post.mountainCode || null,
+        mountainName: mountainName || null,
+        hashtags: post.hashtags || []
       }
     }))
 
@@ -375,12 +477,18 @@ router.get('/:id', async (req, res) => {
     
     const post = await Post.findById(id)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes likedBy createdAt updatedAt images mountainCode courseName courseDistance courseDurationMinutes')
+      .select('title content category author authorName views likes likedBy createdAt updatedAt images mountainCode courseName courseDistance courseDurationMinutes hashtags')
       .lean()
 
     if (!post) {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
+
+    // 해시태그가 없거나 undefined인 경우 빈 배열로 설정
+    if (!post.hashtags || !Array.isArray(post.hashtags)) {
+      post.hashtags = []
+    }
+    console.log('게시글 상세 조회 - 해시태그:', post.hashtags, '타입:', typeof post.hashtags, '배열 여부:', Array.isArray(post.hashtags))
 
     // 조회수 증가 (한 번만 실행되도록 await 사용)
     const updatedPost = await Post.findByIdAndUpdate(
@@ -449,6 +557,7 @@ router.get('/:id', async (req, res) => {
       isFavorited,
       isLiked,
       images: post.images || [],
+      hashtags: post.hashtags || [],
       createdAt: post.createdAt,
       updatedAt: post.updatedAt
     })
@@ -580,6 +689,47 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
       })
     }
 
+    // 해시태그 처리
+    let hashtags = []
+    console.log('해시태그 처리 시작 - req.body 키:', Object.keys(req.body))
+    console.log('해시태그 원본 데이터:', req.body.hashtags, '타입:', typeof req.body.hashtags)
+    
+    // FormData에서 배열로 전송된 경우 (hashtags[0], hashtags[1] 형식)
+    if (req.body.hashtags && Array.isArray(req.body.hashtags)) {
+      hashtags = req.body.hashtags
+    } 
+    // JSON 문자열로 전송된 경우
+    else if (req.body.hashtags && typeof req.body.hashtags === 'string') {
+      try {
+        hashtags = JSON.parse(req.body.hashtags)
+      } catch (e) {
+        console.error('해시태그 JSON 파싱 오류:', e)
+        hashtags = []
+      }
+    }
+    // 개별 필드로 전송된 경우 (hashtags[0], hashtags[1] 등)
+    else {
+      const hashtagKeys = Object.keys(req.body).filter(key => key.startsWith('hashtags['))
+      if (hashtagKeys.length > 0) {
+        hashtags = hashtagKeys
+          .sort()
+          .map(key => req.body[key])
+          .filter(tag => tag && typeof tag === 'string')
+      }
+    }
+    
+    // 해시태그 유효성 검사 (최대 15자, 최대 5개)
+    if (hashtags.length > 0) {
+      hashtags = hashtags
+        .filter(tag => tag && typeof tag === 'string' && tag.length > 0 && tag.length <= 15)
+        .slice(0, 5)
+        .map(tag => tag.replace(/^#+/, '').trim()) // # 제거 및 공백 제거
+        .filter(tag => tag.length > 0)
+      console.log('처리된 해시태그:', hashtags)
+    } else {
+      console.log('해시태그가 없거나 처리할 수 없음')
+    }
+
     const post = new Post({
       title,
       content,
@@ -590,11 +740,12 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
       mountainCode,
       courseName,
       courseDistance,
-      courseDurationMinutes
+      courseDurationMinutes,
+      hashtags
     })
 
     await post.save()
-    console.log('게시글 작성 완료 - 원본 카테고리:', category, '정규화된 카테고리:', normalizedCategory, '저장된 카테고리:', post.category, '제목:', title)
+    console.log('게시글 작성 완료 - 원본 카테고리:', category, '정규화된 카테고리:', normalizedCategory, '저장된 카테고리:', post.category, '제목:', title, '해시태그:', post.hashtags)
     
     // 등산일지 작성 시 포인트 +100 지급 및 알림 생성
     if (normalizedCategory === 'diary') {

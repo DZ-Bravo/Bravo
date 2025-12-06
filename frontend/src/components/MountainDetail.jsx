@@ -15,11 +15,20 @@ function MountainDetail({ name, code, height, location, description, center, zoo
   const [lodgingsVisible, setLodgingsVisible] = useState(false)
   const [selectedLodging, setSelectedLodging] = useState(null)
   const [showLodgingModal, setShowLodgingModal] = useState(false)
+  const [lodgingImageModal, setLodgingImageModal] = useState(null) // 숙소 이미지 확대 모달
+  const [lodgingImageLoadFailed, setLodgingImageLoadFailed] = useState(new Set()) // 이미지 로드 실패한 숙소 인덱스
+  const [lodgingImageLoadFailedIds, setLodgingImageLoadFailedIds] = useState(new Set()) // 이미지 로드 실패한 숙소 고유 ID (place_id 또는 name)
+  const [restaurants, setRestaurants] = useState([])
+  const [restaurantsVisible, setRestaurantsVisible] = useState(false)
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+  const [showRestaurantModal, setShowRestaurantModal] = useState(false)
+  const [restaurantImageModal, setRestaurantImageModal] = useState(null) // 맛집 이미지 확대 모달
   const [sortBy, setSortBy] = useState('difficulty-asc') // difficulty-asc/desc, time-asc/desc, distance-asc/desc
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(null)
   const courseLayerRef = useRef([]) // 카카오맵에서는 배열로 관리
   const markersRef = useRef([]) // 카카오맵 마커 배열
   const lodgingMarkersRef = useRef([]) // 주변 숙소 마커
+  const restaurantMarkersRef = useRef([]) // 주변 맛집 마커
   const spotsRef = useRef([]) // SPOT 데이터 저장 (편의시설)
   const courseItemRefs = useRef({}) // 코스 아이템 DOM 참조 저장
   const eventListenersRef = useRef([]) // 이벤트 리스너 저장 (제거용)
@@ -32,6 +41,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
   const [scheduleNotes, setScheduleNotes] = useState('')
   const [scheduleLoading, setScheduleLoading] = useState(false)
   const [selectedScheduleCourseIndex, setSelectedScheduleCourseIndex] = useState(null)
+  const [isFavorited, setIsFavorited] = useState(false)
 
   // 등산일정 추가 함수
   const handleAddSchedule = async () => {
@@ -394,9 +404,10 @@ function MountainDetail({ name, code, height, location, description, center, zoo
         if (courseLayerRef.current.length > 0) {
           try {
             // bounds에 포인트가 추가되었는지 확인
+            if (bounds && typeof bounds.getSW === 'function' && typeof bounds.getNE === 'function') {
             const sw = bounds.getSW()
             const ne = bounds.getNE()
-            if (sw && ne && sw.getLat && ne.getLat) {
+              if (sw && ne && typeof sw.getLat === 'function' && typeof ne.getLat === 'function') {
               // bounds에 패딩 추가 (여유 공간)
               const latDiff = ne.getLat() - sw.getLat()
               const lngDiff = ne.getLng() - sw.getLng()
@@ -410,7 +421,10 @@ function MountainDetail({ name, code, height, location, description, center, zoo
               mapInstanceRef.current.setBounds(paddedBounds)
               console.log('전체 코스 보기: 지도 범위 조정 완료')
             } else {
-              console.warn('전체 코스 보기: bounds가 유효하지 않음', { sw, ne })
+                console.warn('전체 코스 보기: bounds 좌표가 유효하지 않음', { sw, ne })
+              }
+            } else {
+              console.warn('전체 코스 보기: bounds 객체가 유효하지 않음', bounds)
             }
           } catch (error) {
             console.error('전체 코스 보기: 지도 범위 조정 실패:', error)
@@ -1181,23 +1195,26 @@ function MountainDetail({ name, code, height, location, description, center, zoo
 
   // 주변 숙소 데이터 로드
   const loadLodgingData = async (mountainCode) => {
-    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
-      return []
-    }
-
     try {
       const apiUrl = API_URL
+      console.log(`[숙소] 요청 시작 - 산 코드: ${mountainCode}`)
       const response = await fetch(`${apiUrl}/api/mountains/${mountainCode}/lodgings`)
+      console.log(`[숙소] 응답 상태: ${response.status}`)
+      
       if (!response.ok) {
+        const errorText = await response.text()
+        console.error(`[숙소] HTTP 오류: ${response.status}`, errorText)
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const data = await response.json()
       const list = data.lodgings || []
+      console.log(`[숙소] 받은 데이터: ${list.length}개`)
       setLodgings(list)
       return list
     } catch (error) {
-      console.error('Failed to load lodging data:', error)
+      console.error('[숙소] 데이터 로드 실패:', error)
+      setLodgings([])
       return []
     }
   }
@@ -1252,16 +1269,18 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       currentLodgings = await loadLodgingData(code)
       if (!currentLodgings || currentLodgings.length === 0) {
         // 숙소가 없으면 코스 다시 표시
-        courseLayerRef.current.forEach(polyline => {
-          if (polyline && polyline.setMap) {
-            polyline.setMap(mapInstanceRef.current)
-          }
-        })
-        markersRef.current.forEach(marker => {
-          if (marker && marker.setMap) {
-            marker.setMap(mapInstanceRef.current)
-          }
-        })
+        if (mapInstanceRef.current) {
+          courseLayerRef.current.forEach(polyline => {
+            if (polyline && polyline.setMap) {
+              polyline.setMap(mapInstanceRef.current)
+            }
+          })
+          markersRef.current.forEach(marker => {
+            if (marker && marker.setMap) {
+              marker.setMap(mapInstanceRef.current)
+            }
+          })
+        }
         alert('등록된 주변 숙소 정보가 없습니다.')
         return
       }
@@ -1275,8 +1294,18 @@ function MountainDetail({ name, code, height, location, description, center, zoo
     })
     lodgingMarkersRef.current = []
 
+    // 숙소 마커 추가 (지도 없으면 목록만 표시)
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
+      console.warn('지도 인스턴스 없음: 숙소 목록만 표시합니다.')
+      setLodgingsVisible(true)
+      return
+    }
+
     // 숙소 마커 추가
-    const bounds = new window.kakao.maps.LatLngBounds()
+    let minLat = Infinity
+    let maxLat = -Infinity
+    let minLng = Infinity
+    let maxLng = -Infinity
     let hasValidBounds = false
 
     currentLodgings.forEach(lodging => {
@@ -1285,14 +1314,19 @@ function MountainDetail({ name, code, height, location, description, center, zoo
       if (!lat || !lon || isNaN(lat) || isNaN(lon)) return
 
       const position = new window.kakao.maps.LatLng(lat, lon)
-      bounds.extend(position)
+      
+      // bounds 수동 계산
+      minLat = Math.min(minLat, lat)
+      maxLat = Math.max(maxLat, lat)
+      minLng = Math.min(minLng, lon)
+      maxLng = Math.max(maxLng, lon)
       hasValidBounds = true
 
       const lodgingName = lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소'
       
       const content = document.createElement('div')
       content.style.cssText = `
-        background-color: #FF7043;
+        background-color: #5B9BD5;
         border-radius: 16px;
         padding: 4px 10px;
         color: #fff;
@@ -1310,10 +1344,12 @@ function MountainDetail({ name, code, height, location, description, center, zoo
         yAnchor: 1
       })
 
-      // 마커 클릭 시 상세 모달 열기
+      // 마커 클릭 시 길찾기 링크로 이동
       content.addEventListener('click', () => {
-        setSelectedLodging(lodging)
-        setShowLodgingModal(true)
+        const lodgingMapsUrl = lodging.lodging?.maps_url || lodging.maps_url || ''
+        if (lodgingMapsUrl) {
+          window.open(lodgingMapsUrl, '_blank', 'noopener,noreferrer')
+        }
       })
 
       overlay.setMap(mapInstanceRef.current)
@@ -1321,20 +1357,19 @@ function MountainDetail({ name, code, height, location, description, center, zoo
     })
 
     // 지도 범위를 숙소에 맞게 조정
-    if (hasValidBounds) {
+    if (hasValidBounds && minLat !== Infinity) {
       try {
-        const sw = bounds.getSW()
-        const ne = bounds.getNE()
-        if (sw && ne) {
-          // 약간의 패딩 추가
-          const latDiff = ne.getLat() - sw.getLat()
-          const lngDiff = ne.getLng() - sw.getLng()
-          const padding = 0.1
-          
-          const paddedBounds = new window.kakao.maps.LatLngBounds(
-            new window.kakao.maps.LatLng(sw.getLat() - latDiff * padding, sw.getLng() - lngDiff * padding),
-            new window.kakao.maps.LatLng(ne.getLat() + latDiff * padding, ne.getLng() + lngDiff * padding)
-          )
+        // 수동으로 계산한 bounds 사용
+        const latDiff = maxLat - minLat
+        const lngDiff = maxLng - minLng
+        const padding = Math.max(latDiff * 0.1, lngDiff * 0.1, 0.005) // 10% 또는 최소 0.005도
+        
+        const sw = new window.kakao.maps.LatLng(minLat - padding, minLng - padding)
+        const ne = new window.kakao.maps.LatLng(maxLat + padding, maxLng + padding)
+        
+        const paddedBounds = new window.kakao.maps.LatLngBounds(sw, ne)
+        
+        if (mapInstanceRef.current) {
           mapInstanceRef.current.setBounds(paddedBounds)
       }
     } catch (error) {
@@ -1343,6 +1378,311 @@ function MountainDetail({ name, code, height, location, description, center, zoo
     }
 
     setLodgingsVisible(true)
+  }
+
+  // 맛집 좌표 추출 헬퍼
+  const getRestaurantLatLng = (restaurant) => {
+    if (!restaurant || typeof restaurant !== 'object') return { lat: null, lon: null }
+
+    const lat =
+      restaurant.lat ??
+      restaurant.latitude ??
+      restaurant.coordinates?.lat ??
+      restaurant.location?.lat ??
+      restaurant.geometry?.location?.lat
+
+    const lon =
+      restaurant.lon ??
+      restaurant.lng ??
+      restaurant.longitude ??
+      restaurant.coordinates?.lon ??
+      restaurant.coordinates?.lng ??
+      restaurant.location?.lon ??
+      restaurant.location?.lng ??
+      restaurant.geometry?.location?.lng ??
+      restaurant.geometry?.location?.lon
+
+    return { lat, lon }
+  }
+
+  // 주변 맛집 데이터 로드
+  const loadRestaurantData = async (mountainCode) => {
+    try {
+      const apiUrl = API_URL
+      console.log(`[맛집] 요청 시작 - 산 코드: ${mountainCode}`)
+      const response = await fetch(`${apiUrl}/api/mountains/${mountainCode}/restaurants`)
+      console.log(`[맛집] 응답 상태: ${response.status}`)
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error(`[맛집] HTTP 오류: ${response.status}`, errorText)
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      const list = data.restaurants || []
+      console.log(`[맛집] 받은 데이터: ${list.length}개`)
+      if (data.debug) {
+        console.log(`[맛집] 디버깅 정보:`, data.debug)
+      }
+      setRestaurants(list)
+      return list
+    } catch (error) {
+      console.error('[맛집] 데이터 로드 실패:', error)
+      setRestaurants([])
+      return []
+    }
+  }
+
+  // 주변 맛집 마커 표시/숨김
+  const toggleRestaurantMarkers = async () => {
+    // 이미 보이는 경우 -> 제거하고 코스 다시 표시
+    if (restaurantsVisible) {
+      restaurantMarkersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(null)
+        }
+      })
+      restaurantMarkersRef.current = []
+      setRestaurantsVisible(false)
+      
+      // 코스 레이어 다시 표시
+      courseLayerRef.current.forEach(polyline => {
+        if (polyline && polyline.setMap) {
+          polyline.setMap(mapInstanceRef.current)
+        }
+      })
+      // 코스 이름 마커도 다시 표시
+      markersRef.current.forEach(marker => {
+        if (marker && marker.setMap) {
+          marker.setMap(mapInstanceRef.current)
+        }
+      })
+      return
+    }
+
+    // 코스 레이어 숨기기
+    courseLayerRef.current.forEach(polyline => {
+      if (polyline && polyline.setMap) {
+        polyline.setMap(null)
+      }
+    })
+    // 코스 이름 마커도 숨기기
+    markersRef.current.forEach(marker => {
+      if (marker && marker.setMap) {
+        marker.setMap(null)
+      }
+    })
+
+    // 아직 맛집 데이터를 안 불러왔다면 먼저 로드
+    let currentRestaurants = restaurants
+    if (!currentRestaurants || currentRestaurants.length === 0) {
+      currentRestaurants = await loadRestaurantData(code)
+      if (!currentRestaurants || currentRestaurants.length === 0) {
+        // 맛집이 없으면 코스 다시 표시
+        if (mapInstanceRef.current) {
+          courseLayerRef.current.forEach(polyline => {
+            if (polyline && polyline.setMap) {
+              polyline.setMap(mapInstanceRef.current)
+            }
+          })
+          markersRef.current.forEach(marker => {
+            if (marker && marker.setMap) {
+              marker.setMap(mapInstanceRef.current)
+            }
+          })
+        }
+        alert('등록된 주변 맛집 정보가 없습니다.')
+        return
+      }
+    }
+
+    // 기존 맛집 마커 제거
+    restaurantMarkersRef.current.forEach(marker => {
+      if (marker && marker.setMap) {
+        marker.setMap(null)
+      }
+    })
+    restaurantMarkersRef.current = []
+
+    // 맛집 마커 추가 (지도 없으면 목록만 표시)
+    if (!mapInstanceRef.current || !window.kakao || !window.kakao.maps) {
+      console.warn('지도 인스턴스 없음: 맛집 목록만 표시합니다.')
+      setRestaurantsVisible(true)
+      return
+    }
+
+    let minLat = Infinity
+    let maxLat = -Infinity
+    let minLng = Infinity
+    let maxLng = -Infinity
+    let hasValidBounds = false
+    let validMarkerCount = 0
+
+    console.log('맛집 마커 생성 시작 - 총 맛집 수:', currentRestaurants.length, '지도 인스턴스:', mapInstanceRef.current)
+
+    currentRestaurants.forEach((restaurant, index) => {
+      const { lat, lon } = getRestaurantLatLng(restaurant)
+
+      if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
+        console.warn(`맛집 ${index + 1} 좌표가 유효하지 않음:`, restaurant.name, { lat, lon })
+        return
+      }
+
+      const position = new window.kakao.maps.LatLng(lat, lon)
+      
+      // bounds 수동 계산
+      minLat = Math.min(minLat, lat)
+      maxLat = Math.max(maxLat, lat)
+      minLng = Math.min(minLng, lon)
+      maxLng = Math.max(maxLng, lon)
+      hasValidBounds = true
+      validMarkerCount++
+
+      const restaurantName = restaurant.name || '맛집'
+      
+      const content = document.createElement('div')
+      content.style.cssText = `
+        background-color: #FF9A5B;
+        border-radius: 16px;
+        padding: 4px 10px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        white-space: nowrap;
+        cursor: pointer;
+        z-index: 1000;
+        pointer-events: auto;
+      `
+      content.textContent = restaurantName
+
+      const overlay = new window.kakao.maps.CustomOverlay({
+        position,
+        content,
+        yAnchor: 1,
+        zIndex: 1000
+      })
+
+      // 마커 클릭 시 길찾기 링크로 이동
+      content.addEventListener('click', (e) => {
+        e.stopPropagation()
+        const restaurantMapsUrl = restaurant.maps_url || ''
+        if (restaurantMapsUrl) {
+          window.open(restaurantMapsUrl, '_blank', 'noopener,noreferrer')
+        }
+      })
+
+      // 지도에 마커 추가
+      try {
+        overlay.setMap(mapInstanceRef.current)
+        restaurantMarkersRef.current.push(overlay)
+        console.log(`맛집 마커 추가 완료: ${restaurantName} (${lat}, ${lon})`)
+      } catch (error) {
+        console.error(`맛집 마커 추가 실패: ${restaurantName}`, error)
+      }
+    })
+
+    console.log(`맛집 마커 생성 완료 - 유효한 마커 수: ${validMarkerCount}/${currentRestaurants.length}`)
+
+    // 지도 범위를 맛집에 맞게 조정
+    if (hasValidBounds && validMarkerCount > 0 && minLat !== Infinity) {
+      try {
+        // 수동으로 계산한 bounds 사용
+        const latDiff = maxLat - minLat
+        const lngDiff = maxLng - minLng
+        const padding = Math.max(latDiff * 0.1, lngDiff * 0.1, 0.005) // 10% 또는 최소 0.005도
+        
+        const sw = new window.kakao.maps.LatLng(minLat - padding, minLng - padding)
+        const ne = new window.kakao.maps.LatLng(maxLat + padding, maxLng + padding)
+        
+        const paddedBounds = new window.kakao.maps.LatLngBounds(sw, ne)
+        
+        // 약간의 지연 후 범위 조정 (마커가 완전히 렌더링된 후)
+        setTimeout(() => {
+          if (mapInstanceRef.current) {
+            mapInstanceRef.current.setBounds(paddedBounds)
+            console.log('맛집 지도 범위 조정 완료')
+          }
+        }, 100)
+      } catch (error) {
+        console.error('맛집 지도 범위 조정 실패:', error)
+      }
+    } else {
+      console.warn('맛집 마커가 없어서 지도 범위를 조정할 수 없습니다.')
+    }
+
+    setRestaurantsVisible(true)
+  }
+
+  // 즐겨찾기 상태 가져오기
+  useEffect(() => {
+    const fetchFavoriteStatus = async () => {
+      if (!code) return
+      
+      const token = localStorage.getItem('token')
+      if (!token) {
+        setIsFavorited(false)
+        return
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/api/mountains/${code}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          setIsFavorited(data.isFavorited || false)
+        }
+      } catch (error) {
+        console.error('즐겨찾기 상태 조회 오류:', error)
+      }
+    }
+
+    fetchFavoriteStatus()
+  }, [code])
+
+  // 즐겨찾기 토글
+  const handleFavorite = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      alert('로그인이 필요합니다.')
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/mountains/${code}/favorite`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setIsFavorited(data.isFavorited)
+        alert(data.message)
+        // 찜목록 카운터 갱신을 위한 이벤트 발생
+        console.log('산 즐겨찾기 이벤트 발생:', data.isFavorited, 'code:', code)
+        const event = new CustomEvent('favoritesUpdated', { 
+          detail: { type: 'mountain', code: code, isFavorited: data.isFavorited }
+        })
+        window.dispatchEvent(event)
+        // localStorage에 플래그 설정 (MyPage가 나중에 마운트될 때 확인)
+        localStorage.setItem('favoritesUpdated', Date.now().toString())
+        console.log('이벤트 및 localStorage 플래그 설정 완료')
+      } else {
+        const errorData = await response.json()
+        alert(errorData.error || '즐겨찾기 처리 중 오류가 발생했습니다.')
+      }
+    } catch (error) {
+      console.error('즐겨찾기 처리 오류:', error)
+      alert('즐겨찾기 처리 중 오류가 발생했습니다.')
+    }
   }
 
   // 날씨 데이터 가져오기 (1시간마다 자동 업데이트)
@@ -1431,14 +1771,27 @@ function MountainDetail({ name, code, height, location, description, center, zoo
     return `${month}.${day} ${dayName} ${period}`
   }
 
-  const originText = origin || `${name}은(는) 한국의 대표적인 명산으로, 등산객들에게 사랑받는 산입니다.`
+  const originText = origin || ''
 
   return (
     <div className="mountain-detail">
       <Header />
       <main>
         <div className="mountain-header">
+          <div className="mountain-header-top">
+            {localStorage.getItem('token') && (
+              <button
+                onClick={handleFavorite}
+                className={`mountain-favorite-btn ${isFavorited ? 'favorited' : ''}`}
+                title={isFavorited ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+              >
+                {isFavorited ? '⭐' : '☆'}
+              </button>
+            )}
+          </div>
+          <div className="mountain-title-row">
           <h1>{name}</h1>
+          </div>
           <div className="mountain-info">
             <span>높이: {height}</span>
             <span>위치: {location}</span>
@@ -1455,14 +1808,31 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                 <div className="info-label">입산 통제</div>
                 <div className="info-value">통제 없음</div>
               </div>
-              <a 
-                href="https://www.knps.or.kr/common/cctv/cctv4.do" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <button
+                onClick={() => {
+                  const width = 1200
+                  const height = 800
+                  const left = (window.screen.width - width) / 2
+                  const top = (window.screen.height - height) / 2
+                  window.open(
+                    'https://www.knps.or.kr/common/cctv/cctv4.do',
+                    'CCTV',
+                    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+                  )
+                }}
                 className="cctv-link"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  padding: 0,
+                  font: 'inherit',
+                  textDecoration: 'underline'
+                }}
               >
                 🎥 실시간 CCTV
-              </a>
+              </button>
             </div>
           </section>
 
@@ -1839,6 +2209,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
               </div>
               
               {/* 오른쪽 패널: 상세 정보 + 지도 */}
+              <div className="course-detail-panel-wrapper">
               <div className="course-detail-panel">
                 {selectedCourseIndex !== null && courses[selectedCourseIndex] ? (
                   <>
@@ -1876,9 +2247,20 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                                     toggleLodgingMarkers()
                                   }}
                                   className="show-all-courses-btn"
-                                  style={{ backgroundColor: lodgingsVisible ? '#FF7043' : '#ffffff', color: lodgingsVisible ? '#ffffff' : '#333' }}
+                                  style={{ backgroundColor: lodgingsVisible ? '#6C9BD5' : '#6C9BD5', color: '#ffffff', border: 'none' }}
                                 >
                                   주변 숙소
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.currentTarget.blur()
+                                    toggleRestaurantMarkers()
+                                  }}
+                                  className="show-all-courses-btn"
+                                  style={{ backgroundColor: restaurantsVisible ? '#FF9A5B' : '#FF9A5B', color: '#ffffff', border: 'none' }}
+                                >
+                                  주변 맛집
                                 </button>
                                 <button
                                   type="button"
@@ -1887,7 +2269,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                                     setShowScheduleModal(true)
                                   }}
                                   className="show-all-courses-btn"
-                                  style={{ backgroundColor: '#00BF93', color: '#ffffff' }}
+                                  style={{ backgroundColor: '#00BF93', color: '#ffffff', border: 'none' }}
                                 >
                                   등산일정 추가
                                 </button>
@@ -1942,9 +2324,20 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                             toggleLodgingMarkers()
                           }}
                           className="show-all-courses-btn"
-                          style={{ backgroundColor: lodgingsVisible ? '#FF7043' : '#ffffff', color: lodgingsVisible ? '#ffffff' : '#333' }}
+                          style={{ backgroundColor: lodgingsVisible ? '#6C9BD5' : '#6C9BD5', color: '#ffffff', border: 'none' }}
                         >
                           주변 숙소
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.currentTarget.blur()
+                            toggleRestaurantMarkers()
+                          }}
+                          className="show-all-courses-btn"
+                          style={{ backgroundColor: restaurantsVisible ? '#FF9A5B' : '#FF9A5B', color: '#ffffff', border: 'none' }}
+                        >
+                          주변 맛집
                         </button>
                         <button
                           type="button"
@@ -1953,7 +2346,7 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                             setShowScheduleModal(true)
                           }}
                           className="show-all-courses-btn"
-                          style={{ backgroundColor: '#00BF93', color: '#ffffff' }}
+                          style={{ backgroundColor: '#00BF93', color: '#ffffff', border: 'none' }}
                         >
                           등산일정 추가
                         </button>
@@ -1962,38 +2355,62 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                     <p className="course-detail-description">왼쪽 목록에서 코스를 선택하면 상세 정보와 지도가 표시됩니다.</p>
                   </div>
                 )}
-                {/* 지도는 항상 렌더링 */}
+                
+                {/* 지도 컨테이너 */}
             <div className="map-container">
               <div id="course-map" ref={mapRef}></div>
+                </div>
             </div>
             
+              {/* 숙소/맛집 목록을 가로로 배치 (지도 밖으로) */}
+              {(lodgingsVisible || restaurantsVisible) && (
+                <div className="lists-horizontal-container">
             {/* 주변 숙소 목록 */}
             {lodgingsVisible && (
               <div className="lodging-list-section">
                 {lodgings && lodgings.length > 0 ? (
                   <>
                     <div className="lodging-list-header">
-                      <h3>총 {lodgings.length}개 숙소</h3>
+                            <h3>총 {lodgings.filter((lodging, idx) => {
+                              const lodgingPlaceId = lodging.place_id || lodging.lodging?.place_id || (lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소')
+                              return !lodgingImageLoadFailed.has(idx) && !lodgingImageLoadFailedIds.has(lodgingPlaceId)
+                            }).length}개 숙소</h3>
                     </div>
                     <div className="lodging-list">
-                      {lodgings.map((lodging, index) => {
-                        const lodgingName = lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소'
-                        const lodgingAddress = lodging.lodging?.address || lodging.address || ''
-                        const lodgingDescription = lodging.lodging?.description || lodging.description || lodging.review_snippet || ''
-                        const lodgingRating = lodging.lodging?.rating || lodging.rating || null
-                        const lodgingUserRatingsTotal = lodging.lodging?.user_ratings_total || lodging.user_ratings_total || 0
-                        const lodgingMapsUrl = lodging.lodging?.maps_url || lodging.maps_url || ''
-                        const lodgingPhoto = lodging.lodging?.photo_reference || lodging.photo_reference || null
+                            {lodgings
+                              .filter((lodging, idx) => {
+                                const lodgingPlaceId = lodging.place_id || lodging.lodging?.place_id || (lodging.lodging?.name || lodging.name || lodging.lodgingName || lodging.title || '숙소')
+                                // 이미지 로드에 실패한 항목만 제외하고 사진이 없어도 노출
+                                return !lodgingImageLoadFailed.has(idx) && !lodgingImageLoadFailedIds.has(lodgingPlaceId)
+                              })
+                              .map((lodging, index) => {
+                              const lodgingName = lodging.name || '숙소'
+                              const lodgingAddress = lodging.address || ''
+                              const lodgingDescription = lodging.description || lodging.review_snippet || ''
+                              const lodgingRating = lodging.rating || null
+                              const lodgingUserRatingsTotal = lodging.user_ratings_total || 0
+                              const lodgingMapsUrl = lodging.maps_url || ''
+                              const lodgingPlaceId = lodging.place_id || lodgingName // 고유 식별자
+                              // 백엔드에서 반환하는 필드 직접 사용 (평탄화된 구조)
+                              const lodgingPhoto = lodging.photo || null
                         const lodgingImage = lodging.image || lodging.thumbnail || null
+                              
+                              // 이미지 로드 실패한 항목은 렌더링하지 않음
+                              if (lodgingImageLoadFailed.has(index) || lodgingImageLoadFailedIds.has(lodgingPlaceId)) {
+                                return null
+                              }
                         
                         return (
                       <div 
                         key={index} 
                         className="lodging-card"
                         onClick={() => {
-                          setSelectedLodging(lodging)
-                          setShowLodgingModal(true)
-                        }}
+                                    // 길찾기 링크가 있으면 이동
+                                    if (lodgingMapsUrl) {
+                                      window.open(lodgingMapsUrl, '_blank', 'noopener,noreferrer')
+                                    }
+                                  }}
+                                  style={{ cursor: lodgingMapsUrl ? 'pointer' : 'default' }}
                       >
                         <div className="lodging-card-content">
                           <div className="lodging-info">
@@ -2026,27 +2443,165 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                               </div>
                             )}
                           </div>
-                          {(lodgingImage || lodgingPhoto) && (
-                            <div className="lodging-image">
-                              {lodgingImage ? (
-                                <img 
-                                  src={lodgingImage.startsWith('http') ? lodgingImage : `${API_URL}${lodgingImage}`}
+                                    {(() => {
+                                      // 맛집처럼 단순하게 처리: photo 또는 image 필드 직접 사용
+                                      const imageSrc = lodgingPhoto || lodgingImage
+                                      
+                                      if (!imageSrc || typeof imageSrc !== 'string' || imageSrc.trim() === '') {
+                                        return (
+                                          <div 
+                                            className="lodging-image"
+                                            style={{ 
+                                              width: '140px',
+                                              height: '120px',
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              justifyContent: 'center',
+                                              backgroundColor: '#f5f5f5',
+                                              color: '#666',
+                                              borderRadius: '8px',
+                                              fontSize: '12px'
+                                            }}
+                                          >
+                                            사진 없음
+                                          </div>
+                                        )
+                                      }
+                                      
+                                      return (
+                                        <div 
+                                          className="lodging-image"
+                                          onClick={(e) => {
+                                            e.stopPropagation()
+                                            setLodgingImageModal(imageSrc)
+                                          }}
+                                          style={{ cursor: 'pointer' }}
+                                        >
+                                          <img 
+                                            src={imageSrc}
                                   alt={lodgingName}
+                                  onError={(e) => {
+                                              // 이미지 로드 실패 시 해당 카드 숨김 (고유 ID 사용)
+                                              setLodgingImageLoadFailedIds(prev => new Set([...prev, lodgingPlaceId]))
+                                    e.target.style.display = 'none'
+                                  }}
+                                />
+                                        </div>
+                                      )
+                                    })()}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </>
+                        ) : (
+                          <div className="lodging-list-header">
+                            <h3>등록된 주변 숙소 정보가 없습니다.</h3>
+                          </div>
+                        )}
+                    </div>
+                  )}
+
+                  {/* 주변 맛집 목록 */}
+                  {restaurantsVisible && (
+                    <div className="lodging-list-section">
+                      {restaurants && restaurants.length > 0 ? (
+                        <>
+                          <div className="lodging-list-header">
+                            <h3>총 {restaurants.length}개 맛집</h3>
+                          </div>
+                          <div className="lodging-list">
+                            {restaurants.map((restaurant, index) => {
+                              const restaurantName = restaurant.name || '맛집'
+                              const restaurantAddress = restaurant.address || restaurant.vicinity || ''
+                              const restaurantRating = restaurant.rating || null
+                              const restaurantUserRatingsTotal = restaurant.user_ratings_total || 0
+                              const restaurantMapsUrl = restaurant.maps_url || ''
+                              const restaurantPhoto = restaurant.photo || null
+                              const restaurantPhone = restaurant.phone || restaurant.international_phone_number || ''
+                              
+                              return (
+                                <div 
+                                  key={index} 
+                                  className="lodging-card"
+                                  onClick={() => {
+                                    // 길찾기 링크가 있으면 이동
+                                    if (restaurantMapsUrl) {
+                                      window.open(restaurantMapsUrl, '_blank', 'noopener,noreferrer')
+                                    }
+                                  }}
+                                  style={{ cursor: restaurantMapsUrl ? 'pointer' : 'default' }}
+                                >
+                                  <div className="lodging-card-content">
+                                    <div className="lodging-info">
+                                      <h4 className="lodging-name">{restaurantName}</h4>
+                                      {restaurantAddress && (
+                                        <p className="lodging-address">{restaurantAddress}</p>
+                                      )}
+                                      {restaurantMapsUrl && (
+                                        <a 
+                                          href={restaurantMapsUrl} 
+                                          target="_blank" 
+                                          rel="noopener noreferrer"
+                                          className="lodging-directions-link"
+                                        >
+                                          길찾기 →
+                                        </a>
+                                      )}
+                                      {restaurantRating && (
+                                        <div className="lodging-rating">
+                                          <span className="lodging-rating-stars">
+                                            {'⭐'.repeat(Math.floor(restaurantRating))}
+                                            {restaurantRating % 1 >= 0.5 && '⭐'}
+                                          </span>
+                                          <span className="lodging-rating-text">
+                                            {restaurantRating.toFixed(1)} ({restaurantUserRatingsTotal}개 리뷰)
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
+                                    {(() => {
+                                      if (!restaurantPhoto || restaurantPhoto.trim() === '') {
+                                        return (
+                                          <div 
+                                            className="lodging-image"
+                                            style={{ 
+                                              width: '140px',
+                                              height: '120px',
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              justifyContent: 'center',
+                                              backgroundColor: '#f5f5f5',
+                                              color: '#666',
+                                              borderRadius: '8px',
+                                              fontSize: '12px'
+                                            }}
+                                          >
+                                            사진 없음
+                                          </div>
+                                        )
+                                      }
+                                      
+                                      return (
+                                        <div 
+                                          className="lodging-image"
+                                          onClick={(e) => {
+                                            e.stopPropagation()
+                                            setRestaurantImageModal(restaurantPhoto)
+                                          }}
+                                          style={{ cursor: 'pointer' }}
+                                        >
+                                          <img 
+                                            src={restaurantPhoto}
+                                            alt={restaurantName}
                                   onError={(e) => {
                                     e.target.style.display = 'none'
                                   }}
                                 />
-                              ) : lodgingPhoto ? (
-                                <img 
-                                  src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${lodgingPhoto}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}`}
-                                  alt={lodgingName}
-                                  onError={(e) => {
-                                    e.target.style.display = 'none'
-                                  }}
-                                />
-                              ) : null}
-                            </div>
-                          )}
+                                        </div>
+                                      )
+                                    })()}
                         </div>
                       </div>
                     )
@@ -2055,7 +2610,9 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                   </>
                 ) : (
                   <div className="lodging-list-header">
-                    <h3>등록된 주변 숙소 정보가 없습니다.</h3>
+                            <h3>등록된 주변 맛집 정보가 없습니다.</h3>
+                          </div>
+                        )}
                   </div>
                 )}
               </div>
@@ -2310,6 +2867,89 @@ function MountainDetail({ name, code, height, location, description, center, zoo
         </div>
       )}
 
+      {/* 맛집 상세 모달 */}
+      {showRestaurantModal && selectedRestaurant && (
+        <div className="modal-overlay" onClick={() => setShowRestaurantModal(false)}>
+          <div className="lodging-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <button className="modal-close" onClick={() => setShowRestaurantModal(false)}>×</button>
+              <h2>상세보기</h2>
+            </div>
+            {(() => {
+              const restaurant = selectedRestaurant
+              const restaurantName = restaurant.name || '맛집'
+              const restaurantAddress = restaurant.address || restaurant.vicinity || ''
+              const restaurantRating = restaurant.rating || null
+              const restaurantUserRatingsTotal = restaurant.user_ratings_total || 0
+              const restaurantMapsUrl = restaurant.maps_url || ''
+              const restaurantPhoto = restaurant.photo || null
+              const restaurantPhone = restaurant.phone || restaurant.international_phone_number || ''
+              const restaurantLatestReview = restaurant.latest_review || null
+
+              return (
+                <div className="lodging-modal-content">
+                  <div className="lodging-modal-image-wrapper">
+                    {restaurantPhoto && (
+                      <img 
+                        src={restaurantPhoto}
+                        alt={restaurantName}
+                        className="lodging-modal-image"
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="lodging-modal-info">
+                    <h3 className="lodging-modal-name">{restaurantName}</h3>
+                    {restaurantAddress && (
+                      <p className="lodging-modal-address">{restaurantAddress}</p>
+                    )}
+                    {restaurantPhone && (
+                      <p className="lodging-modal-phone">📞 {restaurantPhone}</p>
+                    )}
+                    {restaurantMapsUrl && (
+                      <a 
+                        href={restaurantMapsUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="lodging-directions-link"
+                      >
+                        길찾기 →
+                      </a>
+                    )}
+                    {restaurantRating && (
+                      <div className="lodging-rating">
+                        <span className="lodging-rating-stars">
+                          {'⭐'.repeat(Math.floor(restaurantRating))}
+                          {restaurantRating % 1 >= 0.5 && '⭐'}
+                        </span>
+                        <span className="lodging-rating-text">
+                          {restaurantRating.toFixed(1)} ({restaurantUserRatingsTotal}개 리뷰)
+                        </span>
+                      </div>
+                    )}
+                    {restaurantLatestReview && (
+                      <div className="lodging-modal-description" style={{ marginTop: '16px' }}>
+                        <h4 style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>최근 리뷰</h4>
+                        <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.5' }}>
+                          {restaurantLatestReview.text}
+                        </p>
+                        {restaurantLatestReview.author_name && (
+                          <p style={{ fontSize: '12px', color: '#999', marginTop: '8px' }}>
+                            - {restaurantLatestReview.author_name}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })()}
+          </div>
+        </div>
+      )}
+
       {/* 등산일정 추가 모달 */}
       {showScheduleModal && (
         <div className="modal-overlay" onClick={() => setShowScheduleModal(false)}>
@@ -2389,6 +3029,110 @@ function MountainDetail({ name, code, height, location, description, center, zoo
                 {scheduleLoading ? '추가 중...' : '추가하기'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 숙소 이미지 확대 모달 */}
+      {lodgingImageModal && (
+        <div className="modal-overlay" onClick={() => setLodgingImageModal(null)}>
+          <div 
+            className="image-modal" 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+              padding: 0
+            }}
+          >
+            <button 
+              className="modal-close" 
+              onClick={() => setLodgingImageModal(null)}
+              style={{
+                position: 'absolute',
+                top: '-40px',
+                right: '0',
+                background: 'rgba(0, 0, 0, 0.5)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                fontSize: '20px',
+                cursor: 'pointer',
+                zIndex: 1001
+              }}
+            >
+              ×
+            </button>
+            <img 
+              src={lodgingImageModal}
+              alt="숙소 이미지"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '90vh',
+                objectFit: 'contain',
+                borderRadius: '8px'
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 맛집 이미지 확대 모달 */}
+      {restaurantImageModal && (
+        <div className="modal-overlay" onClick={() => setRestaurantImageModal(null)}>
+          <div 
+            className="image-modal" 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+              padding: 0
+            }}
+          >
+            <button 
+              className="modal-close" 
+              onClick={() => setRestaurantImageModal(null)}
+              style={{
+                position: 'absolute',
+                top: '-40px',
+                right: '0',
+                background: 'rgba(0, 0, 0, 0.5)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                fontSize: '20px',
+                cursor: 'pointer',
+                zIndex: 1001
+              }}
+            >
+              ×
+            </button>
+            <img 
+              src={restaurantImageModal}
+              alt="맛집 이미지"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '90vh',
+                objectFit: 'contain',
+                borderRadius: '8px'
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
           </div>
         </div>
       )}

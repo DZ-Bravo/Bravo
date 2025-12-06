@@ -164,35 +164,19 @@ function NoticeDetail() {
             <Link to="/notice" className="back-link">
               ←
             </Link>
-            
-            {isAdmin && (
-              <div className="notice-actions">
-                <button
-                  onClick={() => navigate(`/notice/edit/${id}`)}
-                  className="edit-btn"
-                >
-                  수정
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="delete-btn"
-                >
-                  삭제
-                </button>
-              </div>
-            )}
           </div>
 
           <div className="notice-detail">
             <div className="notice-detail-header">
-              <span className="notice-icon-large">{notice.icon}</span>
               <h1 className="notice-title">{notice.title}</h1>
             </div>
 
             <div className="notice-meta">
               <span className="notice-author">{notice.author}</span>
-              <span className="notice-date">{notice.date}</span>
-              <span className="notice-views">조회 {notice.views}</span>
+              <div className="notice-date-wrapper">
+                <span className="notice-views">조회 {notice.views || 0}</span>
+                <span className="notice-date">{notice.date}</span>
+              </div>
             </div>
 
             {notice.images && notice.images.length > 0 && (
@@ -220,6 +204,23 @@ function NoticeDetail() {
                 <p>내용이 없습니다.</p>
               )}
             </div>
+
+            {isAdmin && (
+              <div className="notice-actions">
+                <button
+                  onClick={() => navigate(`/notice/edit/${id}`)}
+                  className="edit-btn"
+                >
+                  수정
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="delete-btn"
+                >
+                  삭제
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </main>

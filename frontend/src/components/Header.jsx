@@ -112,7 +112,10 @@ function Header({ hideNav = false }) {
 
     // 관련 페이지로 이동
     if (notification.relatedId) {
-      if (notification.type === 'comment' || notification.type === 'point_earned') {
+      if (notification.type === 'point_earned') {
+        // 포인트 적립 알림인 경우 포인트 페이지로 이동
+        navigate('/mypage/points')
+      } else if (notification.type === 'comment') {
         navigate(`/community/${notification.relatedId}`)
       } else if (notification.type === 'schedule_reminder') {
         // 등산일정 알림인 경우, 일정 날짜를 URL에 포함
@@ -125,6 +128,9 @@ function Header({ hideNav = false }) {
       // relatedId가 없어도 schedule_reminder 타입이면 마이페이지로 이동
       if (notification.type === 'schedule_reminder') {
         navigate('/mypage?tab=profile&openCalendar=true')
+      } else if (notification.type === 'point_earned') {
+        // 포인트 적립 알림인 경우 포인트 페이지로 이동
+        navigate('/mypage/points')
       }
     }
     setShowNotifications(false)
