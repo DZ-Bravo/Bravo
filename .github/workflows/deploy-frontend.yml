@@ -1,0 +1,46 @@
+name: "🚀 Deploy frontend service"
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Harbor 이미지 태그 (예: latest, 1.5 등)"
+        required: true
+        default: "latest"
+
+jobs:
+  deploy:
+    runs-on: self-hosted       # Runner가 설치된 배포 서버
+    env:
+      REGISTRY_HOST: "192.168.0.240"
+      HARBOR_PROJECT: "mywork"
+      SERVICE_NAME: "services-frontend"   # docker images 이름과 매칭
+      COMPOSE_FILE: "/home/bravo/LABs/services/docker-compose.yml"
+
+    steps:
+      - name: 🔎 태그 출력
+        run: echo "Deploying tag: ${{ github.event.inputs.image_tag }}"
+
+      - name: 📥 이미지 Pull
+        run: |
+          IMAGE="${REGISTRY_HOST}/${HARBOR_PROJECT}/${SERVICE_NAME}:${{ github.event.inputs.image_tag }}"
+          echo "Pulling $IMAGE"
+          docker pull "$IMAGE"
+
+      - name: 🏷 latest 태그 갱신 (optional)
+        run: |
+          LATEST="${REGISTRY_HOST}/${HARBOR_PROJECT}/${SERVICE_NAME}:latest"
+          IMAGE="${REGISTRY_HOST}/${HARBOR_PROJECT}/${SERVICE_NAME}:${{ github.event.inputs.image_tag }}"
+          docker tag "$IMAGE" "$LATEST"
+          docker push "$LATEST" || true
+
+      - name: 🔄 서비스만 재배포
+        run: |
+          cd "$(dirname "$COMPOSE_FILE")"
+          docker compose pull $SERVICE_NAME
+          docker compose up -d $SERVICE_NAME
+
+      - name: 🧪 Health Check
+        run: |
+          sleep 5
+          docker ps | grep $SERVICE_NAME || exit 1
