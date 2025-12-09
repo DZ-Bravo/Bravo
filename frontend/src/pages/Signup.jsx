@@ -126,6 +126,7 @@ function Signup() {
       submitData.append('gender', formData.gender || '')
       submitData.append('fitnessLevel', formData.fitnessLevel || '')
       submitData.append('birthYear', formData.birthYear ? formData.birthYear.toString() : '')
+      submitData.append('phone', formData.phone || '')
       submitData.append('termsAgreed', formData.termsAgreed.toString())
       
       if (formData.profileImage) {
@@ -390,25 +391,17 @@ function Signup() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="phone" className="form-label">휴대폰 번호</label>
-              <div className="phone-input-wrapper">
-                <input
-                  type="text"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handlePhoneChange}
-                  placeholder="휴대폰 번호를 입력해 주세요."
-                  maxLength="13"
-                  className="form-input phone-input"
-                />
-                <button
-                  type="button"
-                  className="send-code-btn"
-                >
-                  인증번호전송
-                </button>
-              </div>
+              <label htmlFor="phone" className="form-label">휴대폰 번호 (선택사항)</label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handlePhoneChange}
+                placeholder="휴대폰 번호를 입력해 주세요. (선택사항)"
+                maxLength="13"
+                className="form-input"
+              />
             </div>
 
             <div className="form-field">

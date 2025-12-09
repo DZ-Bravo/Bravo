@@ -13,10 +13,10 @@
 
 .mypage-container {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 0;
   padding: 48px 40px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
+  box-shadow: none;
+  border: none;
   position: relative;
   z-index: 10;
 }
@@ -54,7 +54,7 @@
 }
 
 .tab-button.active {
-  color: #00BF93;
+  color: #000000;
   font-weight: 600;
 }
 
@@ -65,7 +65,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: #00BF93;
+  background: #000000;
 }
 
 .tab-content {
@@ -74,7 +74,7 @@
 
 /* 나의 하이킹 탭 */
 .welcome-card {
-  background: linear-gradient(135deg, #f0f8ff 0%, #e8f5e9 100%);
+  background: linear-gradient(135deg, #f0f8ff 0%, #f5f5f5 100%);
   border-radius: 16px;
   padding: 32px;
   margin-bottom: 32px;
@@ -125,7 +125,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #00BF93;
+  background: #000000;
   border: 3px solid #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -167,7 +167,7 @@
 .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: #00BF93;
+  color: #000000;
 }
 
 /* 최근 기록 섹션 */
@@ -197,7 +197,7 @@
 }
 
 .view-all-link:hover {
-  color: #00BF93;
+  color: #000000;
 }
 
 .records-content {
@@ -226,9 +226,9 @@
 
 .record-item:hover {
   background: #e9ecef;
-  border-color: #00BF93;
+  border-color: #000000;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 191, 147, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .record-image {
@@ -315,21 +315,21 @@
   max-width: 200px;
   margin: 32px auto 0;
   padding: 14px 24px;
-  background: #00BF93;
+  background: #000000;
   color: white;
   border: none;
   border-radius: 24px;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(0, 191, 147, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.2s;
 }
 
 .record-btn:hover {
-  background: #00a67d;
+  background: #333333;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 191, 147, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* 프로필 탭 */
@@ -395,7 +395,7 @@
 }
 
 .level-guide-btn {
-  background: #00BF93;
+  background: #000000;
   color: #ffffff;
   border: none;
   font-size: 14px;
@@ -458,7 +458,7 @@
 .summary-stat-value {
   font-size: 32px;
   font-weight: 700;
-  color: #00BF93;
+  color: #000000;
 }
 
 /* 내 컨텐츠 */
@@ -494,8 +494,8 @@
 }
 
 .content-item.active {
-  background: #e8f5e9;
-  border-color: #00BF93;
+  background: #f5f5f5;
+  border-color: #000000;
 }
 
 .content-icon {
@@ -513,7 +513,7 @@
 .content-count {
   font-size: 28px;
   font-weight: 700;
-  color: #00BF93;
+  color: #000000;
   margin-bottom: 8px;
 }
 
@@ -557,13 +557,13 @@
 }
 
 .community-category-tab:hover {
-  border-color: #00BF93;
-  color: #00BF93;
+  border-color: #000000;
+  color: #000000;
 }
 
 .community-category-tab.active {
-  background: #00BF93;
-  border-color: #00BF93;
+  background: #000000;
+  border-color: #000000;
   color: white;
 }
 
@@ -585,8 +585,8 @@
 }
 
 .community-post-item:hover {
-  border-color: #00BF93;
-  box-shadow: 0 2px 8px rgba(0, 191, 147, 0.1);
+  border-color: #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .community-post-content {
@@ -698,8 +698,8 @@
 }
 
 .my-post-item:hover {
-  border-color: #00BF93;
-  box-shadow: 0 2px 8px rgba(0, 191, 147, 0.1);
+  border-color: #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .my-post-content {
@@ -762,7 +762,7 @@
 }
 
 .settings-item:hover {
-  color: #00BF93;
+  color: #000000;
 }
 
 .settings-item:last-child {
@@ -777,7 +777,7 @@
 
 .settings-item:hover .settings-arrow {
   transform: translateX(4px);
-  color: #00BF93;
+  color: #000000;
 }
 
 /* 회원수정 페이지 버튼 스타일 */
@@ -804,12 +804,12 @@
 }
 
 .edit-profile-submit-btn {
-  background: #00BF93;
+  background: #000000;
   color: #fff;
 }
 
 .edit-profile-submit-btn:hover:not(:disabled) {
-  background: #00a67d;
+  background: #333333;
 }
 
 .edit-profile-cancel-btn:disabled,
@@ -1249,7 +1249,7 @@
 .event-d-day {
   display: inline-block;
   padding: 4px 12px;
-  background: #e8f5e9;
+  background: #f5f5f5;
   color: #4caf50;
   border-radius: 12px;
   font-size: 12px;
@@ -1302,13 +1302,13 @@
 }
 
 .event-info-btn {
-  background: #00BF93;
+  background: #000000;
   color: #ffffff;
-  border-color: #00BF93;
+  border-color: #000000;
 }
 
 .event-info-btn:hover {
-  background: #00a67d;
+  background: #333333;
 }
 
 .calendar-modal-footer {

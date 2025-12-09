@@ -3,6 +3,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .home-container {
@@ -11,6 +13,7 @@
   position: relative;
   min-height: calc(100vh - 80px);
   margin-top: 0;
+  overflow-x: hidden;
 }
 
 .home main {
@@ -21,6 +24,7 @@
   max-width: 1200px;
   margin: 0 auto;
   min-width: 0;
+  overflow-x: hidden;
 }
 
 /* 사이드 배너 */
@@ -212,8 +216,9 @@
 /* 인기 있는 산 섹션 */
 .popular-mountains {
   margin: 80px auto;
-  padding: 0 24px;
-  max-width: 1200px;
+  padding: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .popular-mountains h2 {
@@ -221,64 +226,157 @@
   margin-bottom: 8px;
   color: #333;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
 }
 
 .section-subtitle {
   font-size: 1rem;
   margin-bottom: 40px;
   color: #666;
-  text-align: left;
+  text-align: center;
 }
 
-.mountain-list {
+/* 인기 있는 산 캐러셀 */
+.mountain-carousel-container {
+  position: relative;
+  width: 100vw;
+  margin: 40px 0;
+  padding: 0 120px;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
+
+.mountain-carousel {
+  position: relative;
+  width: 100%;
+  overflow: visible;
   display: flex;
   justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  padding: 20px 0;
 }
 
-.mountain-item {
+.mountain-carousel-track {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  gap: 8px;
+  width: fit-content;
+  justify-content: center;
+}
+
+.mountain-card {
+  flex: 0 0 320px;
+  min-width: 320px;
+  max-width: 320px;
   text-decoration: none;
-  color: #333;
-  transition: transform 0.2s;
+  color: inherit;
+  transition: filter 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
+  position: relative;
 }
 
-.mountain-item:hover {
-  transform: translateY(-4px);
+.mountain-card.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.mountain-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+.mountain-card {
+  filter: blur(0);
+  transform: scale(1);
+  opacity: 1;
+}
+
+.mountain-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
   overflow: hidden;
-  background: #f0f0f0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.mountain-image img {
+.mountain-card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.mountain-name {
-  font-size: 1rem;
+.mountain-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent);
+  color: white;
+}
+
+.mountain-card-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.mountain-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mountain-info-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.mountain-info-label {
   font-weight: 500;
-  text-align: center;
+  opacity: 0.9;
+}
+
+.mountain-info-value {
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-btn-left {
+  left: 40px;
+}
+
+.carousel-btn-right {
+  right: 40px;
+}
+
+.carousel-btn:hover {
+  background: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-50%) scale(1.1);
 }
 
 /* AI 등산 코스 추천 섹션 */
 .ai-course-section {
-  margin: 80px auto;
-  padding: 0 24px;
-  max-width: 1200px;
+  margin: 80px 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .ai-course-section h2 {
@@ -286,65 +384,82 @@
   margin-bottom: 8px;
   color: #333;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.ai-course-section .section-subtitle {
+  padding: 0 24px;
 }
 
 .ai-course-banner {
   display: block;
   position: relative;
-  border-radius: 16px;
-  overflow: hidden;
+  width: 100%;
+  min-height: 300px;
+  background: linear-gradient(135deg, #a8b6b6 0%, #b6ada8 100%);
   margin-top: 32px;
-}
-
-.ai-banner-background {
-  width: 100%;
-  position: relative;
-}
-
-.ai-banner-background img {
-  width: 100%;
-  height: auto;
-  display: block;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .ai-banner-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 40px 60px;
-  background: transparent;
-  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  gap: 40px;
+}
+
+.ai-banner-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.ai-text-line {
+  font-size: 3rem;
+  font-weight: 900;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-out;
+  line-height: 1.2;
+  cursor: default;
+}
+
+@media (max-width: 768px) {
+  .ai-text-line {
+    font-size: 2rem;
+  }
 }
 
 .ai-banner-btn {
   border: none;
   background: transparent;
   cursor: pointer;
-  padding: 0;
-  padding-right: 30px;
-  transition: transform 0.2s;
-  pointer-events: auto;
+  padding: 12px 24px;
+  transition: transform 0.2s, opacity 0.2s;
   text-decoration: none;
   display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid white;
+  border-radius: 8px;
 }
 
 .ai-banner-btn:hover {
   transform: scale(1.05);
-}
-
-.ai-banner-btn img {
-  height: auto;
-  width: auto;
-  max-width: 120px;
-  max-height: 40px;
-  display: block;
+  opacity: 0.9;
 }
 
 /* 테마별 코스 큐레이션 */
@@ -359,7 +474,7 @@
   margin-bottom: 8px;
   color: #333;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
 }
 
 .course-grid {
@@ -455,7 +570,7 @@
   margin-bottom: 8px;
   color: #333;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
 }
 
 .notice-list {
@@ -668,23 +783,68 @@
     margin: 60px auto;
   }
 
+  .mountain-carousel-container {
+    padding: 0 50px;
+  }
+
+  .mountain-carousel {
+    padding: 0 60px;
+  }
+
+  .mountain-card {
+    flex: 0 0 280px;
+    min-width: 280px;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .mountain-card-name {
+    font-size: 1.1rem;
+  }
+
+  .mountain-card-overlay {
+    padding: 16px;
+  }
+
+  .mountain-info-item {
+    font-size: 0.8rem;
+  }
+
   .course-grid {
     grid-template-columns: 1fr;
     gap: 20px !important;
     margin-top: 12px !important;
   }
 
-  .mountain-list {
-    gap: 20px;
+  .mountain-carousel-container {
+    padding: 0 50px;
   }
 
-  .mountain-item {
-    min-width: 100px;
+  .mountain-carousel {
+    padding: 0 80px;
   }
 
-  .mountain-image {
-    width: 100px;
-    height: 100px;
+  .mountain-card {
+    flex: 0 0 300px;
+    min-width: 300px;
+  }
+
+  .carousel-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .mountain-card-name {
+    font-size: 1.2rem;
+  }
+
+  .mountain-info-item {
+    font-size: 0.85rem;
   }
 
   .ai-banner-content {
