@@ -10,6 +10,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import fs from 'fs'
+import AWS from 'aws-sdk'
+import { createClient } from 'redis'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -158,6 +160,7 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
       gender,
       fitnessLevel,
       birthYear: birthYearNum,
+      phone: req.body.phone || '',
       profileImage: profileImagePath
     })
     
@@ -256,10 +259,61 @@ router.post('/login', async (req, res) => {
   }
 })
 
-// 인증번호 전송 (간단한 구현 - 실제로는 SMS API 연동 필요)
-const verificationCodes = new Map() // 메모리에 저장 (실제로는 Redis 등 사용)
+// AWS SNS 설정
+const sns = new AWS.SNS({
+  region: process.env.AWS_REGION || 'ap-northeast-2',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+})
 
-router.post('/send-verification-code', async (req, res) => {
+// Redis 클라이언트 (인증번호 저장용)
+let redisClient = null
+let redisConnecting = false
+
+const getRedisClient = async () => {
+  if (redisClient && redisClient.isOpen) {
+    return redisClient
+  }
+  
+  if (redisConnecting) {
+    await new Promise(resolve => setTimeout(resolve, 100))
+    return getRedisClient()
+  }
+  
+  if (!redisClient) {
+    redisConnecting = true
+    try {
+      redisClient = createClient({
+        socket: {
+          host: process.env.REDIS_HOST || '192.168.0.243',
+          port: parseInt(process.env.REDIS_PORT || '6379')
+        }
+      })
+      redisClient.on('error', (err) => {
+        console.error('Redis 오류:', err)
+        redisClient = null
+        redisConnecting = false
+      })
+      redisClient.on('connect', () => {
+        console.log('Redis 연결 성공 (auth.js)')
+        redisConnecting = false
+      })
+      await redisClient.connect()
+      redisConnecting = false
+      return redisClient
+    } catch (error) {
+      console.error('Redis 연결 실패:', error)
+      redisClient = null
+      redisConnecting = false
+      return null
+    }
+  }
+  
+  return redisClient
+}
+
+// 회원가입용 인증번호 전송 (기존 회원 확인 없음)
+router.post('/send-verification-code-signup', async (req, res) => {
   try {
     const { phone } = req.body
 
@@ -273,32 +327,115 @@ router.post('/send-verification-code', async (req, res) => {
       return res.status(400).json({ error: '올바른 휴대폰 번호 형식이 아닙니다. (010-1111-2222)' })
     }
 
-    // 해당 휴대폰 번호로 가입된 사용자 확인
-    const user = await User.findOne({ phone })
-    if (!user) {
-      return res.status(404).json({ error: '해당 휴대폰 번호로 가입된 회원이 없습니다.' })
+    // 회원가입 시에는 중복된 휴대폰 번호 확인
+    const existingUser = await User.findOne({ phone })
+    if (existingUser) {
+      return res.status(409).json({ error: '이미 사용 중인 휴대폰 번호입니다.' })
     }
 
     // 인증번호 생성 (6자리)
     const code = Math.floor(100000 + Math.random() * 900000).toString()
     
-    // 메모리에 저장 (5분 유효)
-    verificationCodes.set(phone, {
-      code,
-      expiresAt: Date.now() + 5 * 60 * 1000
-    })
+    // Redis에 저장 (5분 TTL - 자동 만료)
+    const client = await getRedisClient()
+    if (client) {
+      const key = `verification:signup:${phone}`
+      await client.setEx(key, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
+      console.log(`회원가입 인증번호 Redis 저장: ${phone} -> ${code} (5분 TTL)`)
+    } else {
+      console.warn('Redis 연결 실패, 인증번호 저장 불가')
+      return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
+    }
 
-    // 실제로는 SMS API로 전송해야 함
-    console.log(`인증번호 전송: ${phone} -> ${code}`)
+    // AWS SNS로 SMS 전송
+    try {
+      // 하이픈 제거하고 국가 코드 추가 (한국: +82)
+      // 010-1234-5678 → +821012345678
+      const phoneNumber = `+82${phone.replace(/-/g, '').substring(1)}`
+      const message = `[오늘의 등산] 인증번호는 ${code}입니다. 5분 내에 입력해주세요.`
+      
+      console.log(`SMS 전송 시도: ${phoneNumber}`)
+      
+      const result = await sns.publish({
+        PhoneNumber: phoneNumber,
+        Message: message
+      }).promise()
+      
+      console.log(`SMS 전송 성공: ${result.MessageId}`)
+      
+      res.json({
+        message: '인증번호가 전송되었습니다.',
+        // 개발 환경에서만 인증번호 반환 (실제 운영에서는 제거)
+        code: process.env.NODE_ENV === 'development' ? code : undefined
+      })
+    } catch (snsError) {
+      console.error('SNS 전송 오류:', snsError)
+      console.error('SNS 오류 상세:', {
+        code: snsError.code,
+        message: snsError.message,
+        statusCode: snsError.statusCode,
+        requestId: snsError.requestId,
+        stack: snsError.stack
+      })
+      
+      // Sandbox 모드 오류 확인
+      if (snsError.code === 'OptedOut' || snsError.message?.includes('sandbox') || snsError.message?.includes('Sandbox')) {
+        return res.status(400).json({ 
+          error: 'SMS 전송 실패: AWS SNS Sandbox 모드입니다. AWS 콘솔에서 Production 모드로 전환하거나 Sandbox에서 번호를 인증해주세요.',
+          details: snsError.message,
+          code: process.env.NODE_ENV === 'development' ? code : undefined
+        })
+      }
+      
+      // SNS 전송 실패해도 인증번호는 생성되었으므로 개발 환경에서는 반환
+      res.json({
+        message: '인증번호가 전송되었습니다.',
+        code: process.env.NODE_ENV === 'development' ? code : undefined,
+        warning: `SMS 전송 중 오류가 발생했습니다: ${snsError.message}. 개발 모드에서는 인증번호를 확인할 수 있습니다.`
+      })
+    }
+  } catch (error) {
+    console.error('회원가입 인증번호 전송 오류:', error)
+    res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
+  }
+})
 
+// 회원가입용 인증번호 검증
+router.post('/verify-code-signup', async (req, res) => {
+  try {
+    const { phone, verificationCode } = req.body
+
+    if (!phone || !verificationCode) {
+      return res.status(400).json({ error: '휴대폰 번호와 인증번호를 입력해주세요.' })
+    }
+
+    // Redis에서 인증번호 확인
+    const client = await getRedisClient()
+    if (!client) {
+      return res.status(500).json({ error: '인증번호 확인에 실패했습니다.' })
+    }
+
+    const key = `verification:signup:${phone}`
+    const storedCode = await client.get(key)
+    
+    if (!storedCode) {
+      return res.status(400).json({ error: '인증번호가 만료되었거나 존재하지 않습니다. 다시 요청해주세요.' })
+    }
+
+    if (storedCode !== verificationCode) {
+      return res.status(400).json({ error: '인증번호가 일치하지 않습니다.' })
+    }
+
+    // 인증번호 확인 후 삭제하지 않음 (회원가입 완료 시까지 유지)
+    // 회원가입 완료 시 삭제됨
+    
     res.json({
-      message: '인증번호가 전송되었습니다.',
-      // 개발 환경에서는 인증번호 반환 (실제 운영에서는 제거)
-      code: process.env.NODE_ENV === 'development' ? code : undefined
+      message: '인증번호가 확인되었습니다.',
+      verified: true
     })
   } catch (error) {
-    console.error('인증번호 전송 오류:', error)
-    res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
+    console.error('회원가입 인증번호 검증 오류:', error)
+    res.status(500).json({ error: '인증번호 검증 중 오류가 발생했습니다.' })
   }
 })
 
@@ -311,23 +448,25 @@ router.post('/find-id', async (req, res) => {
       return res.status(400).json({ error: '휴대폰 번호와 인증번호를 입력해주세요.' })
     }
 
-    // 인증번호 확인
-    const stored = verificationCodes.get(phone)
-    if (!stored) {
-      return res.status(400).json({ error: '인증번호를 먼저 요청해주세요.' })
+    // Redis에서 인증번호 확인
+    const client = await getRedisClient()
+    if (!client) {
+      return res.status(500).json({ error: '인증번호 확인에 실패했습니다.' })
     }
 
-    if (Date.now() > stored.expiresAt) {
-      verificationCodes.delete(phone)
-      return res.status(400).json({ error: '인증번호가 만료되었습니다. 다시 요청해주세요.' })
+    const key = `verification:${phone}`
+    const storedCode = await client.get(key)
+    
+    if (!storedCode) {
+      return res.status(400).json({ error: '인증번호가 만료되었거나 존재하지 않습니다. 다시 요청해주세요.' })
     }
 
-    if (stored.code !== verificationCode) {
+    if (storedCode !== verificationCode) {
       return res.status(400).json({ error: '인증번호가 일치하지 않습니다.' })
     }
 
     // 인증번호 확인 후 삭제
-    verificationCodes.delete(phone)
+    await client.del(key)
 
     // 사용자 찾기
     const user = await User.findOne({ phone })
@@ -372,21 +511,63 @@ router.post('/send-verification-code-password', async (req, res) => {
     // 인증번호 생성 (6자리)
     const code = Math.floor(100000 + Math.random() * 900000).toString()
     
-    // 메모리에 저장 (5분 유효) - ID와 phone을 키로 사용
-    const key = `${id}:${phone}`
-    verificationCodes.set(key, {
-      code,
-      expiresAt: Date.now() + 5 * 60 * 1000
-    })
+    // Redis에 저장 (5분 TTL - 자동 만료)
+    const client = await getRedisClient()
+    if (client) {
+      const redisKey = `verification:password:${id}:${phone}`
+      await client.setEx(redisKey, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
+      console.log(`비밀번호 찾기 인증번호 Redis 저장: ${id} / ${phone} -> ${code} (5분 TTL)`)
+    } else {
+      console.warn('Redis 연결 실패, 인증번호 저장 불가')
+      return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
+    }
 
-    // 실제로는 SMS API로 전송해야 함
-    console.log(`비밀번호 찾기 인증번호 전송: ${id} / ${phone} -> ${code}`)
-
-    res.json({
-      message: '인증번호가 전송되었습니다.',
-      // 개발 환경에서는 인증번호 반환 (실제 운영에서는 제거)
-      code: process.env.NODE_ENV === 'development' ? code : undefined
-    })
+    // AWS SNS로 SMS 전송
+    try {
+      // 하이픈 제거하고 국가 코드 추가 (한국: +82)
+      const phoneNumber = `+82${phone.replace(/-/g, '').substring(1)}`
+      const message = `[오늘의 등산] 비밀번호 찾기 인증번호는 ${code}입니다. 5분 내에 입력해주세요.`
+      
+      console.log(`비밀번호 찾기 SMS 전송 시도: ${phoneNumber}`)
+      
+      const result = await sns.publish({
+        PhoneNumber: phoneNumber,
+        Message: message
+      }).promise()
+      
+      console.log(`비밀번호 찾기 SMS 전송 성공: ${result.MessageId}`)
+      
+      res.json({
+        message: '인증번호가 전송되었습니다.',
+        // 개발 환경에서만 인증번호 반환 (실제 운영에서는 제거)
+        code: process.env.NODE_ENV === 'development' ? code : undefined
+      })
+    } catch (snsError) {
+      console.error('비밀번호 찾기 SNS 전송 오류:', snsError)
+      console.error('SNS 오류 상세:', {
+        code: snsError.code,
+        message: snsError.message,
+        statusCode: snsError.statusCode,
+        requestId: snsError.requestId,
+        stack: snsError.stack
+      })
+      
+      // Sandbox 모드 오류 확인
+      if (snsError.code === 'OptedOut' || snsError.message?.includes('sandbox') || snsError.message?.includes('Sandbox')) {
+        return res.status(400).json({ 
+          error: 'SMS 전송 실패: AWS SNS Sandbox 모드입니다. AWS 콘솔에서 Production 모드로 전환하거나 Sandbox에서 번호를 인증해주세요.',
+          details: snsError.message,
+          code: process.env.NODE_ENV === 'development' ? code : undefined
+        })
+      }
+      
+      // SNS 전송 실패해도 인증번호는 생성되었으므로 개발 환경에서는 반환
+      res.json({
+        message: '인증번호가 전송되었습니다.',
+        code: process.env.NODE_ENV === 'development' ? code : undefined,
+        warning: `SMS 전송 중 오류가 발생했습니다: ${snsError.message}. 개발 모드에서는 인증번호를 확인할 수 있습니다.`
+      })
+    }
   } catch (error) {
     console.error('인증번호 전송 오류:', error)
     res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
@@ -402,24 +583,25 @@ router.post('/find-password', async (req, res) => {
       return res.status(400).json({ error: 'ID, 휴대폰 번호, 인증번호를 모두 입력해주세요.' })
     }
 
-    // 인증번호 확인
-    const key = `${id}:${phone}`
-    const stored = verificationCodes.get(key)
-    if (!stored) {
-      return res.status(400).json({ error: '인증번호를 먼저 요청해주세요.' })
+    // Redis에서 인증번호 확인
+    const client = await getRedisClient()
+    if (!client) {
+      return res.status(500).json({ error: '인증번호 확인에 실패했습니다.' })
     }
 
-    if (Date.now() > stored.expiresAt) {
-      verificationCodes.delete(key)
-      return res.status(400).json({ error: '인증번호가 만료되었습니다. 다시 요청해주세요.' })
+    const redisKey = `verification:password:${id}:${phone}`
+    const storedCode = await client.get(redisKey)
+    
+    if (!storedCode) {
+      return res.status(400).json({ error: '인증번호가 만료되었거나 존재하지 않습니다. 다시 요청해주세요.' })
     }
 
-    if (stored.code !== verificationCode) {
+    if (storedCode !== verificationCode) {
       return res.status(400).json({ error: '인증번호가 일치하지 않습니다.' })
     }
 
     // 인증번호 확인 후 삭제
-    verificationCodes.delete(key)
+    await client.del(redisKey)
 
     // 사용자 찾기
     const user = await User.findOne({ id, phone })
@@ -460,6 +642,26 @@ export const authenticateToken = (req, res, next) => {
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ error: '유효하지 않은 토큰입니다.' })
+    }
+    req.user = user
+    next()
+  })
+}
+
+// Optional 인증 미들웨어 (토큰이 있으면 req.user 설정, 없으면 통과)
+export const optionalAuthenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN 형식
+  
+  if (!token) {
+    // 토큰이 없으면 그냥 통과 (req.user는 undefined)
+    return next()
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      // 토큰이 유효하지 않아도 통과 (req.user는 undefined)
+      return next()
     }
     req.user = user
     next()

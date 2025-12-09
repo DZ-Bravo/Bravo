@@ -47,6 +47,14 @@ function AICourse() {
         <div className="ai-course-container">
           <h1 className="ai-course-title">AI 등산 코스 추천</h1>
           
+          <div className="ai-course-description">
+            <p>
+              {selectedCategory === 'course' && '원하는 조건을 입력하시면 AI가 최적의 등산 코스를 추천해드립니다.'}
+              {selectedCategory === 'auto' && 'AI가 자동으로 당신에게 맞는 등산 코스를 추천해드립니다.'}
+              {selectedCategory === 'equipment' && '원하는 조건을 입력하시면 AI가 최적의 등산 장비를 추천해드립니다.'}
+            </p>
+          </div>
+
           <div className="category-tabs">
             {categories.map((category) => (
               <button
@@ -62,14 +70,6 @@ function AICourse() {
                 {category.name}
               </button>
             ))}
-          </div>
-
-          <div className="ai-course-description">
-            <p>
-              {selectedCategory === 'course' && '원하는 조건을 입력하시면 AI가 최적의 등산 코스를 추천해드립니다.'}
-              {selectedCategory === 'auto' && 'AI가 자동으로 당신에게 맞는 등산 코스를 추천해드립니다.'}
-              {selectedCategory === 'equipment' && '원하는 조건을 입력하시면 AI가 최적의 등산 장비를 추천해드립니다.'}
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="ai-course-form">

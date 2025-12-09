@@ -19,3 +19,6 @@ echo "2. '하이' 또는 '괄롬쉘롬' 같은 메시지 보내기"
 echo "3. 이 스크립트 다시 실행: ./check_bedrock_logs.sh"
 echo "또는 실시간 모니터링: docker logs hiking-backend -f"
 
+
+
+

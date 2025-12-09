@@ -7,6 +7,12 @@ const chatMessageSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
   role: {
     type: String,
     enum: ['user', 'assistant'],
@@ -27,5 +33,8 @@ const chatMessageSchema = new mongoose.Schema({
 const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema)
 
 export default ChatMessage
+
+
+
 
 

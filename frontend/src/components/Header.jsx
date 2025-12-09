@@ -8,8 +8,10 @@ function Header({ hideNav = false }) {
   const [notifications, setNotifications] = useState([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [showNotifications, setShowNotifications] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
   const navigate = useNavigate()
   const notificationRef = useRef(null)
+  const userMenuRef = useRef(null)
 
   useEffect(() => {
     // localStorage에서 사용자 정보 확인
@@ -77,16 +79,19 @@ function Header({ hideNav = false }) {
       if (notificationRef.current && !notificationRef.current.contains(event.target)) {
         setShowNotifications(false)
       }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false)
+      }
     }
 
-    if (showNotifications) {
+    if (showNotifications || showUserMenu) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [showNotifications])
+  }, [showNotifications, showUserMenu])
 
   const handleNotificationClick = async (notification) => {
     const token = localStorage.getItem('token')
@@ -214,7 +219,11 @@ function Header({ hideNav = false }) {
                   className="notification-btn"
                   onClick={() => setShowNotifications(!showNotifications)}
                 >
-                  🔔
+                  <img 
+                    src="/images/bell_icon.png" 
+                    alt="알림" 
+                    className="notification-icon"
+                  />
                   {unreadCount > 0 && (
                     <span className="notification-dot"></span>
                   )}
@@ -275,8 +284,35 @@ function Header({ hideNav = false }) {
                   </div>
                 )}
               </div>
-              <span className="user-name-display">{user.role === 'admin' ? '관리자' : (user.name || user.id)}</span>
-              <button onClick={handleLogout} className="btn-logout">로그아웃</button>
+              <div className="user-menu-container" ref={userMenuRef}>
+                <button 
+                  className="user-menu-btn"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                >
+                  <span className="user-name-display">{user.role === 'admin' ? '관리자' : (user.name || user.id)}</span>
+                  <span className="user-menu-arrow">▼</span>
+                </button>
+                {showUserMenu && (
+                  <div className="user-menu-dropdown">
+                    <Link 
+                      to="/mypage" 
+                      className="user-menu-item"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      마이페이지
+                    </Link>
+                    <button 
+                      onClick={() => {
+                        setShowUserMenu(false)
+                        handleLogout()
+                      }} 
+                      className="user-menu-item user-menu-logout"
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <>
@@ -293,7 +329,6 @@ function Header({ hideNav = false }) {
             <li><Link to="/ai-course">AI 등산 코스 추천</Link></li>
             <li><Link to="/store">스토어</Link></li>
             <li><Link to="/community">커뮤니티</Link></li>
-            <li><Link to="/mypage">마이페이지</Link></li>
           </ul>
         </nav>
       )}

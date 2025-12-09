@@ -138,15 +138,57 @@ function Mountain() {
           }
           
           // API에서 가져온 데이터로 설정
+          const centerArray = data.center ? [data.center.lat, data.center.lon] : [36.5, 127.8]
+          console.log('[Mountain.jsx] 무등산 좌표:', {
+            code: data.code,
+            name: data.name,
+            center: data.center,
+            centerArray: centerArray,
+            lat: centerArray[0],
+            lon: centerArray[1]
+          })
+          
+          // CCTV URL 설정
+          let defaultCctvUrl = data.cctvUrl || data.cctv_url || null
+          const dataCode = String(data.code || '')
+          const actualCodeStr = String(actualCode || '')
+          
+          // CCTV URL 매핑
+          const cctvUrlMap = {
+            '113050202': 'https://www.knps.or.kr/common/cctv/cctv4.do', // 북한산 백운대
+            '287201304': 'https://www.knps.or.kr/common/cctv/cctv4.do', // 북한산 백운대
+            '447102201': 'https://www.knps.or.kr/common/cctv/cctv11.do', // 오대산
+            '487403601': 'https://www.knps.or.kr/common/cctv/cctv6.do', // 태백산
+            '483100401': 'https://www.knps.or.kr/common/cctv/cctv16.do', // 계룡산
+            '438001301': 'https://www.knps.or.kr/common/cctv/cctv5.do', // 소백산
+            '477502301': 'https://www.knps.or.kr/common/cctv/cctv9.do', // 주왕산
+            '437500201': 'https://www.knps.or.kr/common/cctv/cctv10.do', // 덕유산
+            '488605302': 'https://www.knps.or.kr/common/cctv/cctv1.do' // 지리산 천왕봉
+          }
+          
+          // 코드로 CCTV URL 확인
+          if (!defaultCctvUrl) {
+            defaultCctvUrl = cctvUrlMap[dataCode] || cctvUrlMap[actualCodeStr] || null
+          }
+          
+          // bukhansan 별칭 처리
+          if (actualCode === 'bukhansan' && !defaultCctvUrl) {
+            defaultCctvUrl = 'https://www.knps.or.kr/common/cctv/cctv4.do'
+          }
+          
+          console.log('Mountain data - actualCode:', actualCode, 'actualCodeStr:', actualCodeStr, 'data.code:', data.code, 'dataCode:', dataCode, 'cctvUrl:', defaultCctvUrl)
+          
           setMountainData({
             name: data.name,
             code: data.code,
             height: data.height || '정보 없음',
             location: data.location || '정보 없음',
             description: data.description || '',
-            center: data.center ? [data.center.lat, data.center.lon] : [36.5, 127.8],
+            center: centerArray,
             zoom: data.zoom || 13,
-            origin: data.origin || ''
+            origin: data.origin || '',
+            image: data.image || null,
+            cctvUrl: defaultCctvUrl
           })
         } else if (response.status === 404) {
           console.log('API 404 - 폴백 데이터 사용')
@@ -160,6 +202,23 @@ function Mountain() {
             }
             const origin = MOUNTAIN_ORIGINS[actualCode] || ''
             
+            // CCTV URL 설정
+            const cctvUrlMap = {
+              '113050202': 'https://www.knps.or.kr/common/cctv/cctv4.do', // 북한산 백운대
+              '287201304': 'https://www.knps.or.kr/common/cctv/cctv4.do', // 북한산 백운대
+              '447102201': 'https://www.knps.or.kr/common/cctv/cctv11.do', // 오대산
+              '487403601': 'https://www.knps.or.kr/common/cctv/cctv6.do', // 태백산
+              '483100401': 'https://www.knps.or.kr/common/cctv/cctv16.do', // 계룡산
+              '438001301': 'https://www.knps.or.kr/common/cctv/cctv5.do', // 소백산
+              '477502301': 'https://www.knps.or.kr/common/cctv/cctv9.do', // 주왕산
+              '437500201': 'https://www.knps.or.kr/common/cctv/cctv10.do', // 덕유산
+              '488605302': 'https://www.knps.or.kr/common/cctv/cctv1.do' // 지리산 천왕봉
+            }
+            let fallbackCctvUrl = cctvUrlMap[actualCode] || null
+            if (actualCode === 'bukhansan') {
+              fallbackCctvUrl = 'https://www.knps.or.kr/common/cctv/cctv4.do'
+            }
+            
             setMountainData({
               name: fallbackData.name,
               code: fallbackData.code,
@@ -168,7 +227,8 @@ function Mountain() {
               description: mountainInfo.description,
               center: fallbackData.center,
               zoom: fallbackData.zoom,
-              origin: origin
+              origin: origin,
+              cctvUrl: fallbackCctvUrl
             })
           } else {
             setError('산을 찾을 수 없습니다')
@@ -188,6 +248,23 @@ function Mountain() {
           }
           const origin = MOUNTAIN_ORIGINS[actualCode] || ''
           
+          // CCTV URL 설정
+          const cctvUrlMap = {
+            '113050202': 'https://www.knps.or.kr/common/cctv/cctv4.do', // 북한산 백운대
+            '287201304': 'https://www.knps.or.kr/common/cctv/cctv4.do', // 북한산 백운대
+            '447102201': 'https://www.knps.or.kr/common/cctv/cctv11.do', // 오대산
+            '487403601': 'https://www.knps.or.kr/common/cctv/cctv6.do', // 태백산
+            '483100401': 'https://www.knps.or.kr/common/cctv/cctv16.do', // 계룡산
+            '438001301': 'https://www.knps.or.kr/common/cctv/cctv5.do', // 소백산
+            '477502301': 'https://www.knps.or.kr/common/cctv/cctv9.do', // 주왕산
+            '437500201': 'https://www.knps.or.kr/common/cctv/cctv10.do', // 덕유산
+            '488605302': 'https://www.knps.or.kr/common/cctv/cctv1.do' // 지리산 천왕봉
+          }
+          let errorFallbackCctvUrl = cctvUrlMap[actualCode] || null
+          if (actualCode === 'bukhansan') {
+            errorFallbackCctvUrl = 'https://www.knps.or.kr/common/cctv/cctv4.do'
+          }
+          
           setMountainData({
             name: fallbackData.name,
             code: fallbackData.code,
@@ -196,7 +273,8 @@ function Mountain() {
             description: mountainInfo.description,
             center: fallbackData.center,
             zoom: fallbackData.zoom,
-            origin: origin
+            origin: origin,
+            cctvUrl: errorFallbackCctvUrl
           })
         } else {
           setError('산을 찾을 수 없습니다')
@@ -245,6 +323,8 @@ function Mountain() {
       center={mountainData.center}
       zoom={mountainData.zoom}
       origin={mountainData.origin}
+      image={mountainData.image}
+      cctvUrl={mountainData.cctvUrl}
     />
   )
 }

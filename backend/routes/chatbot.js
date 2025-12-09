@@ -2,7 +2,6 @@ import express from 'express'
 import { BedrockAgentRuntimeClient, InvokeAgentCommand } from '@aws-sdk/client-bedrock-agent-runtime'
 import { authenticateToken } from './auth.js'
 import ChatConversation from '../models/ChatConversation.js'
-import ChatMessage from '../models/ChatMessage.js'
 import User from '../models/User.js'
 
 const router = express.Router()
@@ -60,10 +59,9 @@ router.get('/conversations', authenticateToken, async (req, res) => {
     const userId = req.user.userId
     
     const conversations = await ChatConversation.find({ userId })
-      .populate('messages')
       .sort({ updatedAt: -1 })
       .limit(20)
-      .select('title sessionId createdAt updatedAt')
+      .select('title sessionId createdAt updatedAt messages')
     
     res.json({ conversations })
   } catch (error) {
@@ -81,14 +79,14 @@ router.get('/conversations/:sessionId', authenticateToken, async (req, res) => {
     const conversation = await ChatConversation.findOne({ 
       userId, 
       sessionId 
-    }).populate({
-      path: 'messages',
-      options: { sort: { createdAt: 1 } }
     })
     
     if (!conversation) {
       return res.status(404).json({ error: '대화를 찾을 수 없습니다.' })
     }
+    
+    // 메시지를 createdAt 순으로 정렬
+    conversation.messages.sort((a, b) => a.createdAt - b.createdAt)
     
     res.json({ conversation })
   } catch (error) {
@@ -125,6 +123,11 @@ router.post('/conversations', authenticateToken, async (req, res) => {
   }
 })
 
+// 한국 시간(KST) 변환 함수 (UTC 기준 +9시간)
+function getKoreaTime() {
+  return new Date(Date.now() + 9 * 60 * 60 * 1000)
+}
+
 // 챗봇 메시지 전송 및 응답 받기
 router.post('/message', authenticateToken, async (req, res) => {
   try {
@@ -134,6 +137,13 @@ router.post('/message', authenticateToken, async (req, res) => {
     if (!message || !message.trim()) {
       return res.status(400).json({ error: '메시지를 입력해주세요.' })
     }
+    
+    // 사용자 정보 조회 (id/이름 가져오기)
+    const user = await User.findById(userId).select('id name')
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+    const userIdentifier = user.id  // 로그인용 id (예: uuuuuu)
     
     // 세션이 없으면 새로 생성
     let conversation = await ChatConversation.findOne({ 
@@ -158,15 +168,14 @@ router.post('/message', authenticateToken, async (req, res) => {
       await conversation.save()
     }
     
-    // 사용자 메시지 저장
-    const userMessage = new ChatMessage({
-      conversationId: conversation._id,
+    // 사용자 메시지 저장 (ChatConversation의 messages 배열에 직접 저장)
+    const userMessage = {
+      userId: userIdentifier,  // 로그인 id 저장
       role: 'user',
-      content: message
-    })
-    await userMessage.save()
-    
-    conversation.messages.push(userMessage._id)
+      content: message,
+      createdAt: getKoreaTime()  // 한국 시간으로 저장
+    }
+    conversation.messages.push(userMessage)
     
     let assistantResponse = ''
     
@@ -235,15 +244,14 @@ router.post('/message', authenticateToken, async (req, res) => {
       console.log('==================')
     }
     
-    // 어시스턴트 응답 저장
-    const assistantMessage = new ChatMessage({
-      conversationId: conversation._id,
+    // 어시스턴트 응답 저장 (ChatConversation의 messages 배열에 직접 저장)
+    const assistantMessage = {
+      userId: userIdentifier,  // 로그인 id 저장
       role: 'assistant',
-      content: assistantResponse
-    })
-    await assistantMessage.save()
-    
-    conversation.messages.push(assistantMessage._id)
+      content: assistantResponse,
+      createdAt: getKoreaTime()  // 한국 시간으로 저장
+    }
+    conversation.messages.push(assistantMessage)
     conversation.updatedAt = new Date()
     
     // 첫 메시지면 제목 업데이트
@@ -253,16 +261,20 @@ router.post('/message', authenticateToken, async (req, res) => {
     
     await conversation.save()
     
+    // 저장 후 마지막 메시지의 _id 가져오기 (Mongoose가 subdocument에 자동으로 _id 생성)
+    const lastMessage = conversation.messages[conversation.messages.length - 1]
+    
     // 디버깅: JSON 전송 전 확인
     console.log('=== JSON 전송 전 디버깅 ===')
     console.log('assistantResponse 타입:', typeof assistantResponse)
     console.log('JSON.stringify 결과:', JSON.stringify({ response: assistantResponse }).substring(0, 300))
+    console.log('저장된 메시지 개수:', conversation.messages.length)
     console.log('==========================')
     
     res.json({
       response: assistantResponse,
       sessionId: conversation.sessionId,
-      messageId: assistantMessage._id
+      messageId: lastMessage?._id?.toString() || null
     })
     
   } catch (error) {
