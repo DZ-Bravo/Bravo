@@ -1,0 +1,16 @@
+name: "🚀 Deploy AI Service"
+on: { workflow_dispatch: { inputs: { image_tag: { required: true, default: "latest" }}}}
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    env:
+      REGISTRY_HOST: "192.168.0.240"
+      HARBOR_PROJECT: "mywork"
+      SERVICE_NAME: "ai-service"
+      IMAGE_NAME: "services-ai-service"
+      COMPOSE_DIR: "/home/bravo/LABs/services"
+    steps:
+      - run: docker pull ${REGISTRY_HOST}/${HARBOR_PROJECT}/${IMAGE_NAME}:${{ github.event.inputs.image_tag }}
+      - run: cd $COMPOSE_DIR && docker compose pull $SERVICE_NAME && docker compose up -d $SERVICE_NAME
+      - run: docker ps | grep hiking-ai-service
