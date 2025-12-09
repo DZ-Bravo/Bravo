@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import { API_URL } from '../utils/api'
@@ -12,6 +12,7 @@ function FindPassword() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [tempPassword, setTempPassword] = useState(null)
+  const [timeLeft, setTimeLeft] = useState(300) // 5분 = 300초
 
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/[^0-9]/g, '')
@@ -55,6 +56,7 @@ function FindPassword() {
 
       if (response.ok) {
         setIsCodeSent(true)
+        setTimeLeft(300) // 5분 타이머 시작
         alert('인증번호가 전송되었습니다.')
       } else {
         setErrorMessage(data.error || '인증번호 전송에 실패했습니다.')
@@ -103,6 +105,32 @@ function FindPassword() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // 5분 타이머
+  useEffect(() => {
+    if (isCodeSent && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setIsCodeSent(false)
+            setVerificationCode('')
+            setErrorMessage('인증번호가 만료되었습니다. 다시 요청해주세요.')
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+
+      return () => clearInterval(timer)
+    }
+  }, [isCodeSent, timeLeft])
+
+  // 시간 포맷팅 (MM:SS)
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
   return (
@@ -191,22 +219,27 @@ function FindPassword() {
 
               {isCodeSent && (
                 <div className="form-field">
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => {
-                      setVerificationCode(e.target.value.replace(/[^0-9]/g, ''))
-                      setErrorMessage('')
-                    }}
-                    placeholder="인증번호 입력"
-                    maxLength="6"
-                    className="form-input verification-code-input"
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter' && !isLoading && verificationCode) {
-                        handleVerifyCode()
-                      }
-                    }}
-                  />
+                  <div className="verification-code-wrapper">
+                    <input
+                      type="text"
+                      value={verificationCode}
+                      onChange={(e) => {
+                        setVerificationCode(e.target.value.replace(/[^0-9]/g, ''))
+                        setErrorMessage('')
+                      }}
+                      placeholder="인증번호 입력"
+                      maxLength="6"
+                      className="form-input verification-code-input"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !isLoading && verificationCode) {
+                          handleVerifyCode()
+                        }
+                      }}
+                    />
+                    <div className="timer-display">
+                      {formatTime(timeLeft)}
+                    </div>
+                  </div>
                 </div>
               )}
 

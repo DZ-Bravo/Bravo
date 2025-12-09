@@ -278,7 +278,7 @@ function CommunityDetail() {
     }
   }
 
-  // 즐겨찾기 토글
+  // 북마크 토글
   const handleFavorite = async () => {
     const token = localStorage.getItem('token')
     if (!token) {
@@ -288,7 +288,7 @@ function CommunityDetail() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/posts/${id}/favorite`, {
+      const response = await fetch(`${API_URL}/api/posts/${id}/bookmark`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -298,17 +298,20 @@ function CommunityDetail() {
 
       if (response.ok) {
         const data = await response.json()
-        setIsFavorited(data.isFavorited)
+        const isBookmarked = data.isBookmarked !== undefined ? data.isBookmarked : data.isFavorited
+        setIsFavorited(isBookmarked)
         alert(data.message)
         // 찜목록 카운터 갱신을 위한 이벤트 발생
         window.dispatchEvent(new CustomEvent('favoritesUpdated'))
+        // 북마크 추가/제거 시 커뮤니티 페이지 목록 갱신을 위한 이벤트
+        window.dispatchEvent(new CustomEvent('bookmarkUpdated', { detail: { postId: id, isBookmarked } }))
       } else {
         const errorData = await response.json()
-        alert(errorData.error || '즐겨찾기 처리 중 오류가 발생했습니다.')
+        alert(errorData.error || '북마크 처리 중 오류가 발생했습니다.')
       }
     } catch (error) {
-      console.error('즐겨찾기 처리 오류:', error)
-      alert('즐겨찾기 처리 중 오류가 발생했습니다.')
+      console.error('북마크 처리 오류:', error)
+      alert('북마크 처리 중 오류가 발생했습니다.')
     }
   }
 
@@ -417,29 +420,12 @@ function CommunityDetail() {
                   className={`favorite-btn-header ${isFavorited ? 'favorited' : ''}`}
                   title={isFavorited ? '즐겨찾기 해제' : '즐겨찾기 추가'}
                 >
-                  {isFavorited ? '⭐' : '☆'}
+                  <img 
+                    src="/images/cm_bookmark_btn_icon.png" 
+                    alt="북마크" 
+                    className="bookmark-icon"
+                  />
                 </button>
-              )}
-              
-              {localStorage.getItem('token') && (
-                <div className="post-actions">
-                  {isAuthor() && (
-                    <>
-                      <button
-                        onClick={() => navigate(`/community/edit/${id}`)}
-                        className="edit-btn"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={handleDelete}
-                        className="delete-btn"
-                      >
-                        삭제
-                      </button>
-                    </>
-                  )}
-                </div>
               )}
             </div>
           </div>
@@ -448,19 +434,16 @@ function CommunityDetail() {
             {/* 카테고리 배지 */}
             {post.category === 'qa' && (
               <div className="qa-badge">
-                <span className="qa-icon">❓</span>
                 <span className="qa-label">Q&A</span>
               </div>
             )}
             {post.category === 'diary' && (
               <div className="diary-badge">
-                <span className="diary-icon">⛰️</span>
                 <span className="diary-label">등산일지</span>
               </div>
             )}
             {post.category === 'free' && (
               <div className="free-badge">
-                <span className="free-icon">💬</span>
                 <span className="free-label">자유게시판</span>
               </div>
             )}
@@ -542,6 +525,24 @@ function CommunityDetail() {
               </button>
               <span className="post-views">조회 {post.views}</span>
             </div>
+
+            {/* 수정/삭제 버튼 */}
+            {localStorage.getItem('token') && isAuthor() && (
+              <div className="post-actions-footer">
+                <button
+                  onClick={() => navigate(`/community/edit/${id}`)}
+                  className="edit-btn"
+                >
+                  수정
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="delete-btn"
+                >
+                  삭제
+                </button>
+              </div>
+            )}
           </div>
 
           {/* 댓글/답변 섹션 */}

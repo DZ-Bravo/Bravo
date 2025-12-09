@@ -14,7 +14,7 @@ function Footer() {
           </div>
           <div className="footer-info-item">
             <strong>대표자</strong>
-            <span>민선재</span>
+            <span>민선재 장예라 김성혁 조하나 강우석</span>
           </div>
           <div className="footer-info-item">
             <strong>문의/제안</strong>

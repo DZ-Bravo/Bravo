@@ -18,8 +18,23 @@ const chatConversationSchema = new mongoose.Schema({
     default: '새 대화'
   },
   messages: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ChatMessage'
+    userId: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String,
+      enum: ['user', 'assistant'],
+      required: true
+    },
+    content: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      required: true
+    }
   }],
   createdAt: {
     type: Date,
@@ -42,5 +57,8 @@ chatConversationSchema.pre('save', function(next) {
 const ChatConversation = mongoose.model('ChatConversation', chatConversationSchema)
 
 export default ChatConversation
+
+
+
 
 

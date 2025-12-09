@@ -16,6 +16,7 @@ function Chatbot() {
       text: '안녕하세요! HIKER 챗봇입니다. 무엇을 도와드릴까요?'
     }
   ])
+  const [showQuickQuestions, setShowQuickQuestions] = useState(true)
 
   // 메시지가 추가될 때마다 스크롤을 맨 아래로
   useEffect(() => {
@@ -26,6 +27,90 @@ function Chatbot() {
 
   const toggleChat = () => {
     setIsOpen(!isOpen)
+  }
+
+  const handleReloadSession = () => {
+    // 세션 리로드: 세션 ID 초기화 및 메시지 리셋
+    setSessionId(null)
+    setMessages([
+      {
+        type: 'bot',
+        text: '안녕하세요! HIKER 챗봇입니다. 무엇을 도와드릴까요?'
+      }
+    ])
+    setShowQuickQuestions(true)
+  }
+
+  const handleQuickQuestion = async (questionText, isLink = false, linkPath = '') => {
+    if (isLink && linkPath) {
+      // 특정 페이지로 이동 (챗봇 창 닫기)
+      setIsOpen(false)
+      setShowQuickQuestions(false)
+      navigate(linkPath)
+      return
+    }
+    
+    // 질문 버튼 클릭 시 해당 질문을 메시지로 전송 (입력창에는 표시하지 않음)
+    setShowQuickQuestions(false)
+    
+    // 메시지 전송 로직 실행
+    const token = localStorage.getItem('token')
+    if (!token) {
+      alert('로그인이 필요한 서비스입니다.')
+      navigate('/login')
+      return
+    }
+
+    // 사용자 메시지 즉시 표시
+    setMessages(prev => [...prev, { type: 'user', text: questionText }])
+    setIsLoading(true)
+
+    try {
+      const response = await fetch(`${API_URL}/api/chatbot/message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          message: questionText,
+          sessionId: sessionId
+        })
+      })
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.removeItem('token')
+          alert('로그인이 만료되었습니다. 다시 로그인해주세요.')
+          navigate('/login')
+          return
+        }
+        const errorData = await response.json()
+        throw new Error(errorData.error || '메시지 전송에 실패했습니다.')
+      }
+
+      const data = await response.json()
+      
+      // 세션 ID 저장 (첫 메시지인 경우)
+      if (!sessionId && data.sessionId) {
+        setSessionId(data.sessionId)
+      }
+
+      // 챗봇 응답 추가
+      setMessages(prev => [...prev, {
+        type: 'bot',
+        text: data.response
+      }])
+
+    } catch (error) {
+      console.error('챗봇 메시지 전송 오류:', error)
+      setMessages(prev => [...prev, {
+        type: 'bot',
+        text: '죄송합니다. 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+      }])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSend = async (e) => {
@@ -89,6 +174,9 @@ function Chatbot() {
         setSessionId(data.sessionId)
       }
 
+      // 빠른 질문 버튼 숨기기
+      setShowQuickQuestions(false)
+
       // 챗봇 응답 추가
       setMessages(prev => [...prev, {
         type: 'bot',
@@ -125,7 +213,21 @@ function Chatbot() {
                   <div className="chatbot-status">온라인</div>
                 </div>
               </div>
-              <button className="chatbot-close" onClick={toggleChat}>×</button>
+              <div className="chatbot-header-actions">
+                <button 
+                  className="chatbot-reload" 
+                  onClick={handleReloadSession} 
+                  title="새 대화 시작"
+                  disabled={isLoading}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                </button>
+                <button className="chatbot-close" onClick={toggleChat}>×</button>
+              </div>
             </div>
             
             <div className="chatbot-messages">
@@ -146,6 +248,37 @@ function Chatbot() {
                   </div>
                 )
               })}
+              
+              {/* 빠른 질문 버튼들 (첫 화면에만 표시) */}
+              {showQuickQuestions && messages.length === 1 && !isLoading && (
+                <div className="quick-questions">
+                  <button 
+                    className="quick-question-btn"
+                    onClick={() => handleQuickQuestion('산 정보, 코스, 날씨를 알고 싶어요')}
+                  >
+                    산 정보, 코스, 날씨를 알고 싶어요
+                  </button>
+                  <button 
+                    className="quick-question-btn"
+                    onClick={() => handleQuickQuestion('나에게 맞는 등산 코스를 찾아보고 싶어요', true, '/ai-course')}
+                  >
+                    나에게 맞는 등산 코스를 찾아보고 싶어요
+                  </button>
+                  <button 
+                    className="quick-question-btn"
+                    onClick={() => handleQuickQuestion('어떤 걸 챙겨야 할지, 팁이 알고 싶어요')}
+                  >
+                    어떤 걸 챙겨야 할지, 팁이 알고 싶어요
+                  </button>
+                  <button 
+                    className="quick-question-btn"
+                    onClick={() => handleQuickQuestion('이 사이트를 어떻게 사용하면 되는지 알려주세요')}
+                  >
+                    이 사이트를 어떻게 사용하면 되는지 알려주세요
+                  </button>
+                </div>
+              )}
+              
               {isLoading && (
                 <div className="message bot">
                   <div className="message-bubble">

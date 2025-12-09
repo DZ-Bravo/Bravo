@@ -1,11 +1,44 @@
 import { useParams, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import Header from '../components/Header'
+import { API_URL } from '../utils/api'
 import './CourseDetail.css'
 
 function CourseDetail() {
   const { theme } = useParams()
+  const [courseData, setCourseData] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const courseData = {
+  // 테마별 제목과 설명 매핑
+  const themeConfig = {
+    winter: {
+      title: '설산의 절경',
+      description: '눈꽃 산행지 BEST 코스를 확인하세요!'
+    },
+    beginner: {
+      title: '초보 산쟁이 코스',
+      description: '심박수 140BPM 이하 초보 산쟁이 코스 BEST를 확인하세요!'
+    },
+    sunrise: {
+      title: '일몰&야경 코스',
+      description: '특별하게 즐기고 싶어! 일몰&야경 코스 BEST를 확인하세요!'
+    },
+    spring: {
+      title: '봄 산행지',
+      description: '따뜻한 봄날씨와 함께 만개한 꽃들을 감상하며 즐기는 산행 코스입니다.'
+    },
+    summer: {
+      title: '여름 산행지',
+      description: '시원한 계곡과 그늘진 숲길을 따라 즐기는 여름 산행 코스입니다.'
+    },
+    autumn: {
+      title: '가을 산행지',
+      description: '단풍이 물든 가을 산을 감상하며 즐기는 산행 코스입니다.'
+    }
+  }
+
+  // 하드코딩된 데이터 (fallback용)
+  const fallbackCourseData = {
     spring: {
       title: '봄 산행지',
       description: '따뜻한 봄날씨와 함께 만개한 꽃들을 감상하며 즐기는 산행 코스입니다.',
@@ -206,7 +239,76 @@ function CourseDetail() {
     }
   }
 
-  const course = courseData[theme] || courseData.spring
+  // API에서 테마별 코스 데이터 가져오기
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      if (!theme) return
+      
+      setLoading(true)
+      try {
+        // winter, beginner, sunrise는 API에서 가져오기
+        if (['winter', 'beginner', 'sunrise'].includes(theme)) {
+          const response = await fetch(`${API_URL}/api/courses/theme/${theme}?limit=20`)
+          if (response.ok) {
+            const data = await response.json()
+            const config = themeConfig[theme] || themeConfig.winter
+            setCourseData({
+              title: config.title,
+              description: config.description,
+              courses: data.courses || []
+            })
+          } else {
+            // API 실패 시 fallback 데이터 사용
+            const fallback = fallbackCourseData[theme] || fallbackCourseData.spring
+            setCourseData(fallback)
+          }
+        } else {
+          // spring, summer, autumn은 fallback 데이터 사용
+          const fallback = fallbackCourseData[theme] || fallbackCourseData.spring
+          setCourseData(fallback)
+        }
+      } catch (error) {
+        console.error('코스 데이터 조회 실패:', error)
+        // 에러 시 fallback 데이터 사용
+        const fallback = fallbackCourseData[theme] || fallbackCourseData.spring
+        setCourseData(fallback)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchCourseData()
+  }, [theme])
+
+  if (loading) {
+    return (
+      <div className="course-detail-page">
+        <Header />
+        <main className="course-detail-main">
+          <div className="course-detail-container">
+            <div style={{ textAlign: 'center', padding: '40px' }}>
+              코스를 불러오는 중...
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (!courseData) {
+    return (
+      <div className="course-detail-page">
+        <Header />
+        <main className="course-detail-main">
+          <div className="course-detail-container">
+            <div style={{ textAlign: 'center', padding: '40px' }}>
+              코스 데이터를 찾을 수 없습니다.
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className="course-detail-page">
@@ -216,36 +318,57 @@ function CourseDetail() {
           <Link to="/" className="back-link">←</Link>
           
           <div className="course-header">
-            <h1 className="course-title">{course.title}</h1>
-            <p className="course-description">{course.description}</p>
+            <h1 className="course-title">{courseData.title}</h1>
+            <p className="course-description">{courseData.description}</p>
           </div>
 
           <div className="courses-list">
-            {course.courses.map((item) => (
-              <div key={item.id} className="course-item">
-                <div className="course-item-header">
-                  <h3 className="course-item-name">{item.name}</h3>
-                  <span className="course-item-location">{item.location}</span>
-                </div>
-                <div className="course-item-info">
-                  <div className="info-item">
-                    <span className="info-label">난이도</span>
-                    <span className={`info-value difficulty-${item.difficulty === '초급' ? 'easy' : item.difficulty === '중급' ? 'medium' : 'hard'}`}>
-                      {item.difficulty}
-                    </span>
-                  </div>
-                  <div className="info-item">
-                    <span className="info-label">소요시간</span>
-                    <span className="info-value">{item.duration}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="info-label">거리</span>
-                    <span className="info-value">{item.distance}</span>
-                  </div>
-                </div>
-                <p className="course-item-description">{item.description}</p>
+            {courseData.courses.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px' }}>
+                해당 테마의 코스가 없습니다.
               </div>
-            ))}
+            ) : (
+              courseData.courses.map((item, index) => {
+                // 난이도에 따른 클래스 결정
+                const difficulty = (item.difficulty || '').toLowerCase()
+                let difficultyClass = 'medium'
+                if (difficulty.includes('쉬움') || difficulty.includes('초급') || difficulty.includes('easy')) {
+                  difficultyClass = 'easy'
+                } else if (difficulty.includes('어려움') || difficulty.includes('고급') || difficulty.includes('hard')) {
+                  difficultyClass = 'hard'
+                }
+                
+                return (
+                  <Link
+                    key={item.id || index}
+                    to={`/mountain/${item.mountainCode}?course=${encodeURIComponent(item.name)}`}
+                    className="course-item"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <div className="course-item-header">
+                      <h3 className="course-item-name">{item.name}</h3>
+                      <span className="course-item-location">{item.location || item.mountainLocation || item.mountainName || ''}</span>
+                    </div>
+                    <div className="course-item-info">
+                      <div className="info-item">
+                        <span className="info-label">난이도</span>
+                        <span className={`info-value difficulty-${difficultyClass}`}>
+                          {item.difficulty || '보통'}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">소요시간</span>
+                        <span className="info-value">{item.duration || '-'}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">거리</span>
+                        <span className="info-value">{item.distance || '-'}</span>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })
+            )}
           </div>
         </div>
       </main>
