@@ -41,12 +41,12 @@ function Home() {
     const centerX = rect.width / 2
     const centerY = rect.height / 2
     
-    const moveX = (x - centerX) / centerX * 20 // 최대 20px 이동
-    const moveY = (y - centerY) / centerY * 20 // 최대 20px 이동
+    const moveX = (x - centerX) / centerX * 40 // 최대 40px 이동 (범위 확대)
+    const moveY = (y - centerY) / centerY * 40 // 최대 40px 이동 (범위 확대)
     
     const textLines = aiBannerRef.current.querySelectorAll('.ai-text-line')
     textLines.forEach((line, index) => {
-      const delay = index * 0.1
+      const delay = index * 0.15
       const offsetX = moveX * (1 + delay)
       const offsetY = moveY * (1 + delay)
       line.style.transform = `translate(${offsetX}px, ${offsetY}px)`
@@ -395,9 +395,9 @@ function Home() {
           <div className="ai-course-banner" ref={aiBannerRef} onMouseMove={handleAiBannerMouseMove} onMouseLeave={handleAiBannerMouseLeave}>
             <div className="ai-banner-content">
               <div className="ai-banner-text">
-                <div className="ai-text-line" data-line="1">HIKER 만의</div>
-                <div className="ai-text-line" data-line="2">AI 등산 코스로</div>
-                <div className="ai-text-line" data-line="3">즐겨보세요!</div>
+                <div className="ai-text-line">HIKER 만의</div>
+                <div className="ai-text-line">AI 등산 코스로</div>
+                <div className="ai-text-line">즐겨보세요!</div>
               </div>
               <Link to="/ai-course" className="ai-banner-btn">
                 바로가기 &gt;
