@@ -11,7 +11,18 @@ function Store() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [favoriteProducts, setFavoriteProducts] = useState(new Set()) // 즐겨찾기한 상품 ID Set
+  const [recentProducts, setRecentProducts] = useState([]) // 최근 본 상품
   const itemsPerPage = 15
+
+  // 세션 ID 생성 또는 가져오기
+  const getSessionId = () => {
+    let sessionId = localStorage.getItem('sessionId')
+    if (!sessionId) {
+      sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      localStorage.setItem('sessionId', sessionId)
+    }
+    return sessionId
+  }
 
   const categories = [
     { id: 'all', name: '전체' },
@@ -57,6 +68,105 @@ function Store() {
 
     fetchFavoriteStatus()
   }, [])
+
+  // 최근 본 상품 가져오기 (회원만)
+  useEffect(() => {
+    const fetchRecentProducts = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        
+        // 비회원은 최근 본 상품 조회하지 않음
+        if (!token) {
+          console.log('[최근 본 상품] 비회원 - 조회하지 않음')
+          setRecentProducts([])
+          return
+        }
+        
+        const headers = {
+          'Authorization': `Bearer ${token}`
+        }
+
+        console.log('[최근 본 상품] 조회 - 회원')
+
+        const response = await fetch(`${API_URL}/api/store/recent`, {
+          headers
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          console.log('[최근 본 상품] 받은 데이터:', data.products?.length || 0, '개')
+          setRecentProducts(data.products || [])
+        } else {
+          const errorText = await response.text()
+          console.error('[최근 본 상품] 조회 실패:', errorText)
+        }
+      } catch (error) {
+        console.error('최근 본 상품 조회 오류:', error)
+      }
+    }
+
+    fetchRecentProducts()
+  }, [])
+
+  // 상품 조회 시 최근 본 상품에 기록 (회원만)
+  const recordRecentProduct = async (productId) => {
+    try {
+      const token = localStorage.getItem('token')
+      
+      // 비회원은 최근 본 상품 기록하지 않음
+      if (!token) {
+        console.log('[최근 본 상품] 비회원 - 기록하지 않음')
+        return
+      }
+      
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+
+      console.log('[최근 본 상품] 기록 시도 - productId:', productId, '회원')
+      
+      const recordResponse = await fetch(`${API_URL}/api/store/recent/${productId}`, {
+        method: 'POST',
+        headers
+      })
+      
+      console.log('[최근 본 상품] 기록 응답:', recordResponse.status, recordResponse.ok)
+      
+      if (!recordResponse.ok) {
+        const errorText = await recordResponse.text()
+        console.error('[최근 본 상품] 기록 실패:', errorText)
+        return // 실패하면 조회하지 않음
+      }
+
+      const recordData = await recordResponse.json()
+      console.log('[최근 본 상품] 기록 응답 데이터:', recordData)
+
+      // 약간의 지연 후 최근 본 상품 목록 갱신 (Redis 업데이트 반영 시간 확보)
+      await new Promise(resolve => setTimeout(resolve, 200))
+
+      // 최근 본 상품 목록 갱신
+      const response = await fetch(`${API_URL}/api/store/recent`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      console.log('[최근 본 상품] 조회 응답:', response.status, response.ok)
+      
+      if (response.ok) {
+        const data = await response.json()
+        console.log('[최근 본 상품] 받은 데이터:', data.products?.length || 0, '개')
+        console.log('[최근 본 상품] 상품 ID 목록:', data.products?.map(p => p._id || p.id))
+        setRecentProducts(data.products || [])
+      } else {
+        const errorText = await response.text()
+        console.error('[최근 본 상품] 조회 실패:', errorText)
+      }
+    } catch (error) {
+      console.error('최근 본 상품 기록 오류:', error)
+    }
+  }
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -260,22 +370,22 @@ function Store() {
       <Header />
       <main className="store-main">
         <div className="store-container">
-          <div className="store-header">
-            <h1 className="store-title">스토어</h1>
-            <p className="store-subtitle">인기 브랜드부터 전문 장비까지, 신뢰할 수 있는 스토어로 연결합니다.</p>
-          </div>
-          
-          <div className="store-categories">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-                onClick={() => handleCategoryChange(category.id)}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
+            <div className="store-header">
+              <h1 className="store-title">스토어</h1>
+              <p className="store-subtitle">인기 브랜드부터 전문 장비까지, 신뢰할 수 있는 스토어로 연결합니다.</p>
+            </div>
+            
+            <div className="store-categories">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
+                  onClick={() => handleCategoryChange(category.id)}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
 
           {isLoading ? (
             <div className="store-loading">상품을 불러오는 중...</div>
@@ -295,6 +405,8 @@ function Store() {
                   // 외부 링크가 있으면 외부 링크로, 없으면 클릭 불가
                   const handleCardClick = () => {
                     if (productUrl) {
+                      // 최근 본 상품에 기록
+                      recordRecentProduct(productId)
                       window.open(productUrl, '_blank', 'noopener,noreferrer')
                     }
                   }
@@ -406,6 +518,72 @@ function Store() {
             </>
           )}
         </div>
+
+        {/* 최근 본 상품 배너 - 오른쪽 고정 (회원만 표시) */}
+        {localStorage.getItem('token') && (
+        <aside className="store-recent-sidebar">
+            <div className="recent-products-banner">
+              <div className="recent-products-header">
+                <h3 className="recent-products-title">최근본상품</h3>
+                <span className="recent-products-count">{recentProducts.length}</span>
+              </div>
+              {recentProducts.length === 0 ? (
+                <div className="recent-products-empty">
+                  최근 본 상품이 없습니다.
+                </div>
+              ) : (
+                <div className="recent-products-list">
+                  {recentProducts.slice(0, 5).map((product) => {
+                    const productId = product._id?.toString() || product.id?.toString()
+                    const productUrl = product.url || null
+                    const discountRate = calculateDiscountRate(product.price, product.original_price)
+
+                    return (
+                      <div
+                        key={productId}
+                        className={`recent-product-item ${productUrl ? 'clickable' : ''}`}
+                        onClick={() => {
+                          if (productUrl) {
+                            recordRecentProduct(productId)
+                            window.open(productUrl, '_blank', 'noopener,noreferrer')
+                          }
+                        }}
+                        style={{ cursor: productUrl ? 'pointer' : 'default' }}
+                      >
+                        <div className="recent-product-image">
+                          <img 
+                            src={product.thumbnails || product.thumbnail || product.image || '/images/placeholder.png'} 
+                            alt={product.title || product.name}
+                            onError={(e) => {
+                              e.target.src = '/images/placeholder.png'
+                            }}
+                          />
+                        </div>
+                        <div className="recent-product-info">
+                          {product.brand && (
+                            <div className="recent-product-brand">{product.brand}</div>
+                          )}
+                          <div className="recent-product-name">{product.title || product.name}</div>
+                          <div className="recent-product-price-row">
+                            <span className="recent-product-price">{formatPrice(product.price)}</span>
+                            {product.original_price && product.original_price > product.price && (
+                              <>
+                                <span className="recent-product-original-price">{formatPrice(product.original_price)}</span>
+                                {discountRate > 0 && (
+                                  <span className="recent-product-discount">{discountRate}%</span>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </aside>
+        )}
       </main>
     </div>
   )

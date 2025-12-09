@@ -11,10 +11,10 @@
 
 .community-detail-container {
   background: var(--card-bg);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 48px 40px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border);
+  box-shadow: none;
+  border: none;
 }
 
 .detail-header {
@@ -33,7 +33,6 @@
 .favorite-btn-header {
   background: none;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
   padding: 4px 8px;
   transition: transform 0.2s;
@@ -47,7 +46,13 @@
 }
 
 .favorite-btn-header.favorited {
-  color: #FFD700;
+  opacity: 1;
+}
+
+.bookmark-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .back-link {
@@ -68,6 +73,14 @@
 .post-actions {
   display: flex;
   gap: 8px;
+}
+
+.post-actions-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 .edit-btn,
@@ -531,23 +544,18 @@
 }
 
 .qa-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-block;
   padding: 4px 12px;
-  background: #e3f2fd;
-  border: 1px solid #2196f3;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--text-main);
   border-radius: 20px;
   margin-bottom: 16px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #1976d2;
-  line-height: 1;
-  min-height: 24px;
-}
-
-.qa-icon {
-  font-size: 0.9rem;
+  color: var(--text-main);
+  line-height: 1.4;
+  width: fit-content;
+  vertical-align: middle;
 }
 
 .qa-label {
@@ -582,9 +590,7 @@
 }
 
 .diary-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-block;
   padding: 4px 12px;
   background: #e8f5e9;
   border: 1px solid #4caf50;
@@ -593,12 +599,9 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #2e7d32;
-  line-height: 1;
-  min-height: 24px;
-}
-
-.diary-icon {
-  font-size: 0.9rem;
+  line-height: 1.4;
+  width: fit-content;
+  vertical-align: middle;
 }
 
 .diary-label {
@@ -611,9 +614,7 @@
 }
 
 .free-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-block;
   padding: 4px 12px;
   background: #f3e5f5;
   border: 1px solid #9c27b0;
@@ -622,12 +623,9 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #7b1fa2;
-  line-height: 1;
-  min-height: 24px;
-}
-
-.free-icon {
-  font-size: 0.9rem;
+  line-height: 1.4;
+  width: fit-content;
+  vertical-align: middle;
 }
 
 .free-label {

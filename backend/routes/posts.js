@@ -49,7 +49,103 @@ const upload = multer({
   }
 })
 
-// 즐겨찾기 목록 조회 (인증 필요) - /:id보다 먼저 정의해야 함
+// 북마크 목록 조회 (인증 필요) - /:id보다 먼저 정의해야 함
+router.get('/bookmarks/my', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
+
+    const user = await User.findById(userId).populate('favorites')
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+
+    const favoritePostIds = user.favorites || []
+    const total = favoritePostIds.length
+    
+    console.log('북마크 목록 조회 - 사용자 ID:', userId, '북마크 개수:', total, '북마크 ID 목록:', favoritePostIds.map(id => id.toString()))
+
+    // 모든 게시글 조회 (정렬 없이)
+    const allPosts = await Post.find({ _id: { $in: favoritePostIds } })
+      .populate('author', 'id name profileImage')
+      .select('title content category author authorName views likes likedBy createdAt images')
+      .lean()
+    
+    console.log('조회된 게시글 개수:', allPosts.length)
+
+    // user.favorites 배열의 순서를 유지하면서 게시글 정렬 (최신 북마크 순)
+    const postMap = new Map(allPosts.map(post => [post._id.toString(), post]))
+    const orderedPosts = favoritePostIds
+      .map(id => {
+        const postId = id.toString()
+        return postMap.get(postId)
+      })
+      .filter(Boolean) // 존재하지 않는 게시글 제거
+      .reverse() // 최신 북마크 순 (배열의 마지막이 최신)
+
+    // 페이지네이션 적용
+    const posts = orderedPosts.slice(skip, skip + limit)
+    console.log('페이지네이션 후 게시글 개수:', posts.length)
+
+    // 날짜 포맷팅 및 본문 미리보기 생성
+    const formattedPosts = await Promise.all(posts.map(async (post) => {
+      const contentPreview = post.content
+        ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+        : ''
+      
+      const thumbnail = post.images && post.images.length > 0 ? post.images[0] : null
+      
+      const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+      const [year, month, day] = dateStr.split('-')
+      const formattedDate = `${year}.${month}.${day}`
+      
+      const commentCount = await Comment.countDocuments({ post: post._id })
+      
+      // 좋아요 상태 확인
+      let isLiked = false
+      if (post.likedBy && Array.isArray(post.likedBy)) {
+        const userIdStr = userId.toString()
+        isLiked = post.likedBy.some(likedUserId => {
+          const likedIdStr = likedUserId.toString ? likedUserId.toString() : String(likedUserId)
+          return likedIdStr === userIdStr
+        })
+      }
+      
+      return {
+        id: post._id,
+        title: post.title,
+        content: contentPreview,
+        category: post.category,
+        author: post.authorName || (post.author && post.author.name) || '알 수 없음',
+        authorId: post.author && post.author.id,
+        date: formattedDate,
+        views: post.views || 0,
+        likes: post.likes || 0,
+        isFavorited: true,
+        isBookmarked: true,
+        isLiked: isLiked,
+        thumbnail: thumbnail,
+        comments: commentCount
+      }
+    }))
+
+    console.log('북마크 목록 조회 완료 - 반환할 게시글 개수:', formattedPosts.length)
+    
+    res.json({
+      posts: formattedPosts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    })
+  } catch (error) {
+    console.error('북마크 목록 조회 오류:', error)
+    res.status(500).json({ error: '북마크 목록을 불러오는 중 오류가 발생했습니다.' })
+  }
+})
+
+// 즐겨찾기 목록 조회 (하위 호환성을 위해 유지)
 router.get('/favorites/my', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId
@@ -296,7 +392,7 @@ router.get('/', async (req, res) => {
     
     const posts = await Post.find(query)
       .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes createdAt images mountainCode courseName courseDistance courseDurationMinutes hashtags')
+      .select('title content category author authorName views likes likedBy createdAt images mountainCode courseName courseDistance courseDurationMinutes hashtags')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -306,8 +402,9 @@ router.get('/', async (req, res) => {
     
     console.log('게시글 목록 조회 결과 - 카테고리:', category, '조회된 게시글 수:', posts.length, '게시글 카테고리들:', posts.map(p => ({ title: p.title, category: p.category })))
 
-    // 즐겨찾기 상태 확인 (인증된 사용자인 경우)
+    // 즐겨찾기 및 좋아요 상태 확인 (인증된 사용자인 경우)
     let userFavorites = []
+    let userId = null
     const authHeader = req.headers['authorization']
     if (authHeader) {
       const token = authHeader.split(' ')[1]
@@ -316,7 +413,8 @@ router.get('/', async (req, res) => {
           const jwt = await import('jsonwebtoken')
           const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
           const decoded = jwt.default.verify(token, JWT_SECRET)
-          const user = await User.findById(decoded.userId).select('favorites').lean()
+          userId = decoded.userId
+          const user = await User.findById(userId).select('favorites').lean()
           if (user && user.favorites) {
             userFavorites = user.favorites.map(favId => favId.toString())
           }
@@ -346,6 +444,16 @@ router.get('/', async (req, res) => {
       
       // 즐겨찾기 상태 확인
       const isFavorited = userFavorites.includes(post._id.toString())
+      
+      // 좋아요 상태 확인
+      let isLiked = false
+      if (userId && post.likedBy && Array.isArray(post.likedBy)) {
+        const userIdStr = userId.toString()
+        isLiked = post.likedBy.some(likedUserId => {
+          const likedIdStr = likedUserId.toString ? likedUserId.toString() : String(likedUserId)
+          return likedIdStr === userIdStr
+        })
+      }
       
       // 등산일지인 경우 산 이름 가져오기
       let mountainName = null
@@ -446,6 +554,7 @@ router.get('/', async (req, res) => {
         views: post.views || 0,
         likes: post.likes || 0,
         isFavorited,
+        isLiked,
         thumbnail: thumbnail,
         comments: commentCount,
         mountainCode: post.mountainCode || null,
@@ -471,7 +580,7 @@ router.get('/:id', async (req, res) => {
   try {
     // "search", "my" 등의 특수 경로는 ObjectId가 아니므로 404 반환
     const id = req.params.id
-    if (id === 'search' || id === 'my' || id === 'favorites') {
+    if (id === 'search' || id === 'my' || id === 'favorites' || id === 'bookmarks') {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
     
@@ -1136,8 +1245,8 @@ router.post('/:id/like', authenticateToken, async (req, res) => {
   }
 })
 
-// 즐겨찾기 토글 (인증 필요)
-router.post('/:id/favorite', authenticateToken, async (req, res) => {
+// 북마크 토글 (인증 필요)
+router.post('/:id/bookmark', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const postId = req.params.id
@@ -1152,27 +1261,37 @@ router.post('/:id/favorite', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
     }
 
-    const favoriteIndex = user.favorites.indexOf(postId)
+    // ObjectId 비교를 위해 문자열로 변환
+    const postIdStr = postId.toString()
+    const favoriteIndex = user.favorites.findIndex(favId => {
+      const favIdStr = favId.toString ? favId.toString() : String(favId)
+      return favIdStr === postIdStr
+    })
+    
     if (favoriteIndex > -1) {
-      // 이미 즐겨찾기에 있으면 제거
+      // 이미 북마크에 있으면 제거
       user.favorites.splice(favoriteIndex, 1)
       await user.save()
+      console.log('북마크 제거:', postId, '현재 북마크 개수:', user.favorites.length)
       res.json({
         isFavorited: false,
-        message: '즐겨찾기가 해제되었습니다.'
+        isBookmarked: false,
+        message: '북마크가 해제되었습니다.'
       })
     } else {
-      // 즐겨찾기 추가
+      // 북마크 추가
       user.favorites.push(postId)
       await user.save()
+      console.log('북마크 추가:', postId, '현재 북마크 개수:', user.favorites.length)
       res.json({
         isFavorited: true,
-        message: '즐겨찾기에 추가되었습니다.'
+        isBookmarked: true,
+        message: '북마크에 추가되었습니다.'
       })
     }
   } catch (error) {
-    console.error('즐겨찾기 처리 오류:', error)
-    res.status(500).json({ error: '즐겨찾기 처리 중 오류가 발생했습니다.' })
+    console.error('북마크 처리 오류:', error)
+    res.status(500).json({ error: '북마크 처리 중 오류가 발생했습니다.' })
   }
 })
 

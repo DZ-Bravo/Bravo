@@ -2,6 +2,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# timezone data 설치 후 KST로 고정
+RUN apk add --no-cache tzdata && \
+    ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
+    echo "Asia/Seoul" > /etc/timezone
+
 # package.json과 package-lock.json 복사
 COPY package*.json ./
 
