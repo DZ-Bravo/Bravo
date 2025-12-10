@@ -10,21 +10,37 @@ BACKUP_NAME="hiking_backup_$(date +%Y%m%d_%H%M%S)"
 echo "MongoDB 백업 시작..."
 echo "백업 이름: $BACKUP_NAME"
 
-# MongoDB 컨테이너 이름 확인
-CONTAINER_NAME="hiking-mongodb"
+# MongoDB 컨테이너 이름 확인 (우선순위: ReplicaSet Primary -> 단독 인스턴스)
+PRIMARY_CONTAINER="mongodb-primary-243"
+STANDALONE_CONTAINER="hiking-mongodb"
+CONTAINER_NAME=""
+MONGO_URI=""
+
+# 우선 ReplicaSet Primary 확인
+if docker ps | grep -q "$PRIMARY_CONTAINER"; then
+    CONTAINER_NAME="$PRIMARY_CONTAINER"
+    MONGO_URI="mongodb://admin:admin123@localhost:27017/hiking?authSource=admin&replicaSet=rs0"
+else
+    # 단독 인스턴스 사용
+    if docker ps | grep -q "$STANDALONE_CONTAINER"; then
+        CONTAINER_NAME="$STANDALONE_CONTAINER"
+        MONGO_URI="mongodb://admin:admin123@localhost:27017/hiking?authSource=admin"
+    fi
+fi
 
 # 컨테이너가 실행 중인지 확인
-if ! docker ps | grep -q "$CONTAINER_NAME"; then
-    echo "오류: MongoDB 컨테이너($CONTAINER_NAME)가 실행 중이 아닙니다."
+if [ -z "$CONTAINER_NAME" ]; then
+    echo "오류: MongoDB 컨테이너(ReplicaSet Primary 또는 단독)가 실행 중이 아닙니다."
     exit 1
 fi
 
 echo "MongoDB 컨테이너 확인: $CONTAINER_NAME"
+echo "백업 대상 URI: $MONGO_URI"
 
 # 컨테이너 내부에서 백업 실행
 echo "백업 실행 중..."
 docker exec "$CONTAINER_NAME" mongodump \
-  --uri="mongodb://admin:admin123@localhost:27017/hiking?authSource=admin" \
+  --uri="$MONGO_URI" \
   --out="/tmp/$BACKUP_NAME"
 
 # 백업 결과 확인
