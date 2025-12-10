@@ -1099,7 +1099,7 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
           )
           
           if (courseFiles.length > 0) {
-            // 모든 코스 파일 읽기3
+            // 모든 코스 파일 읽기4
             let allRawCourses = []
             
             for (const courseFile of courseFiles) {
