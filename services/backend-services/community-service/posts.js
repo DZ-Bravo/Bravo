@@ -768,25 +768,50 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
           
           // mountain을 찾았으면 mntilistno 추출
           if (mountain) {
+            let extractedMntilistno = null
+            
             // trail_match.mountain_info.mntilistno 우선 확인
             if (mountain.trail_match?.mountain_info?.mntilistno) {
-              mountainCode = String(mountain.trail_match.mountain_info.mntilistno)
-              console.log(`[등산일지] mntilistno 추출 성공 (trail_match): ${mountainCode}`)
+              extractedMntilistno = mountain.trail_match.mountain_info.mntilistno
+              console.log(`[등산일지] mntilistno 추출 성공 (trail_match): ${extractedMntilistno}`)
             } 
             // 없으면 직접 mntilistno 필드 확인
             else if (mountain.mntilistno) {
-              mountainCode = String(mountain.mntilistno)
-              console.log(`[등산일지] mntilistno 추출 성공 (직접): ${mountainCode}`)
+              extractedMntilistno = mountain.mntilistno
+              console.log(`[등산일지] mntilistno 추출 성공 (직접): ${extractedMntilistno}`)
             }
-            // 둘 다 없으면 원본 코드 사용
-            else {
-              mountainCode = codeStr
-              console.log(`[등산일지] mntilistno를 찾을 수 없어 원본 코드 사용: ${mountainCode}`)
+            
+            // mntilistno를 숫자로 정규화한 후 문자열로 변환
+            if (extractedMntilistno !== null) {
+              const numValue = parseInt(extractedMntilistno)
+              if (!isNaN(numValue)) {
+                mountainCode = String(numValue)
+                console.log(`[등산일지] mntilistno 정규화 완료: ${mountainCode} (원본: ${extractedMntilistno})`)
+              } else {
+                mountainCode = String(extractedMntilistno)
+                console.log(`[등산일지] mntilistno 숫자 변환 실패, 문자열로 저장: ${mountainCode}`)
+              }
+            } else {
+              // 둘 다 없으면 원본 코드를 숫자로 정규화 시도
+              const numValue = parseInt(codeStr)
+              if (!isNaN(numValue)) {
+                mountainCode = String(numValue)
+                console.log(`[등산일지] 원본 코드를 숫자로 정규화: ${mountainCode}`)
+              } else {
+                mountainCode = codeStr
+                console.log(`[등산일지] mntilistno를 찾을 수 없어 원본 코드 사용: ${mountainCode}`)
+              }
             }
           } else {
-            // mountain을 찾지 못한 경우 원본 코드 사용
-            mountainCode = codeStr
-            console.log(`[등산일지] 산을 찾을 수 없어 원본 코드 사용: ${mountainCode}`)
+            // mountain을 찾지 못한 경우 원본 코드를 숫자로 정규화 시도
+            const numValue = parseInt(codeStr)
+            if (!isNaN(numValue)) {
+              mountainCode = String(numValue)
+              console.log(`[등산일지] 산을 찾지 못했지만 원본 코드를 숫자로 정규화: ${mountainCode}`)
+            } else {
+              mountainCode = codeStr
+              console.log(`[등산일지] 산을 찾을 수 없어 원본 코드 사용: ${mountainCode}`)
+            }
           }
         } catch (error) {
           console.error('[등산일지] mntilistno 변환 오류:', error)
