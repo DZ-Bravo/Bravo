@@ -20,7 +20,7 @@ const __dirname = dirname(__filename)
 
 const router = express.Router()
 
-// JWT 시크릿 키 (환경 변수에서 가져오기)
+// JWT 시크릿 키 (환경 변수에서 가져오기)3
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 
 // 프로필 이미지 업로드 설정
