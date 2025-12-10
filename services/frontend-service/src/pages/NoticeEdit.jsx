@@ -107,13 +107,31 @@ function NoticeEdit() {
     }
 
     try {
+      // FormData 생성 (multipart/form-data)
+      const formDataToSend = new FormData()
+      formDataToSend.append('title', formData.title)
+      formDataToSend.append('content', formData.content)
+      formDataToSend.append('type', formData.type)
+      
+      // removedImages를 JSON 문자열로 변환
+      if (formData.removedImages && formData.removedImages.length > 0) {
+        formDataToSend.append('removedImages', JSON.stringify(formData.removedImages))
+      }
+      
+      // 새 이미지 파일 추가
+      if (formData.images && formData.images.length > 0) {
+        formData.images.forEach((image) => {
+          formDataToSend.append('images', image)
+        })
+      }
+
       const response = await fetch(`${API_URL}/api/notices/${id}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
+          // FormData를 사용할 때는 Content-Type을 설정하지 않음 (브라우저가 자동으로 설정)
         },
-        body: JSON.stringify(formData)
+        body: formDataToSend
       })
 
       const data = await response.json()
