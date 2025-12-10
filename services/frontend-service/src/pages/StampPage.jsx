@@ -211,43 +211,32 @@ function StampPage() {
     if (!mountainCode) return false
     if (completedMountainCodes.length === 0) return false
     
-    const codeStr = String(mountainCode).trim()
+    // mountainCode를 정규화 (숫자로 변환 가능하면 숫자로, 아니면 문자열로)
+    let codeStr = String(mountainCode).trim()
     if (!codeStr || codeStr === 'null' || codeStr === 'undefined') return false
     
-    // 정확한 문자열 매칭 (대소문자 무시)
-    const codeStrLower = codeStr.toLowerCase()
-    if (completedMountainCodes.some(c => String(c).trim().toLowerCase() === codeStrLower)) {
-      return true
-    }
-    
-    // 숫자로 변환해서도 비교 (타입 차이 대응)
+    // 숫자로 변환 가능한 경우 숫자로 정규화
     const codeNum = parseInt(codeStr)
-    if (!isNaN(codeNum)) {
-      const numStr = String(codeNum)
-      if (completedMountainCodes.some(c => {
-        const cStr = String(c).trim()
-        return cStr === numStr || parseInt(cStr) === codeNum
-      })) {
-        return true
-      }
-    }
+    const normalizedCode = !isNaN(codeNum) ? String(codeNum) : codeStr
     
-    // 역방향 비교 (completedMountainCodes의 각 항목과 비교)
+    // completedMountainCodes의 각 항목과 비교
     const matched = completedMountainCodes.some(completedCode => {
-      const completedStr = String(completedCode).trim()
+      if (!completedCode) return false
       
-      // 정확한 문자열 매칭
-      if (completedStr === codeStr) return true
+      // completedCode 정규화
+      let completedStr = String(completedCode).trim()
+      if (!completedStr || completedStr === 'null' || completedStr === 'undefined') return false
       
-      // 숫자로 변환해서 비교
       const completedNum = parseInt(completedStr)
-      const codeNum = parseInt(codeStr)
-      if (!isNaN(completedNum) && !isNaN(codeNum) && completedNum === codeNum) {
+      const normalizedCompleted = !isNaN(completedNum) ? String(completedNum) : completedStr
+      
+      // 정규화된 값으로 정확한 매칭
+      if (normalizedCode === normalizedCompleted) {
         return true
       }
       
-      // 대소문자 무시 비교
-      if (completedStr.toLowerCase() === codeStr.toLowerCase()) {
+      // 숫자로 변환해서도 비교 (추가 안전장치)
+      if (!isNaN(codeNum) && !isNaN(completedNum) && codeNum === completedNum) {
         return true
       }
       
