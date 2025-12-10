@@ -1099,22 +1099,35 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
           )
           
           if (courseFiles.length > 0) {
-            // 첫 번째 코스 파일 읽기
-            const courseFilePath = join(geojsonDir, courseFiles[0])
-            const courseData = JSON.parse(await readFile(courseFilePath, 'utf-8'))
+            // 모든 코스 파일 읽기
+            let allRawCourses = []
             
-            // GeoJSON 형식으로 변환
-            let rawCourses = []
-            if (courseData.features) {
-              rawCourses = courseData.features
-            } else if (courseData.type === 'FeatureCollection') {
-              rawCourses = courseData.features || []
-            } else {
-              rawCourses = [courseData]
+            for (const courseFile of courseFiles) {
+              try {
+                const courseFilePath = join(geojsonDir, courseFile)
+                const courseData = JSON.parse(await readFile(courseFilePath, 'utf-8'))
+                
+                // GeoJSON 형식으로 변환
+                let rawCourses = []
+                if (courseData.features) {
+                  rawCourses = courseData.features
+                } else if (courseData.type === 'FeatureCollection') {
+                  rawCourses = courseData.features || []
+                } else {
+                  rawCourses = [courseData]
+                }
+                
+                allRawCourses = allRawCourses.concat(rawCourses)
+                console.log(`파일 ${courseFile}에서 ${rawCourses.length}개 코스 읽음`)
+              } catch (fileReadError) {
+                console.error(`파일 ${courseFile} 읽기 오류:`, fileReadError)
+              }
             }
             
+            console.log(`총 ${courseFiles.length}개 파일에서 ${allRawCourses.length}개 코스 읽음`)
+            
             // ArcGIS 형식인 경우 attributes를 properties로 변환
-            courses = rawCourses
+            courses = allRawCourses
               .map(course => {
                 // ArcGIS 형식 (attributes와 geometry.paths가 있는 경우)
                 if (course.attributes && course.geometry && course.geometry.paths) {
