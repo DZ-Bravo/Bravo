@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  haproxy:
+    image: haproxy:2.8-alpine
+    container_name: hiking-haproxy
+    ports:
+      - "80:80"
+      - "8404:8404"  # Stats 페이지
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+networks:
+  hiking-network:
+    driver: bridge
+

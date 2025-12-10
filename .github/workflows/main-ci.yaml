@@ -1,4 +1,4 @@
-name: Scan, Test, and Deploy to Harbor
+name: Smart CI/CD - Scan, Detect Changes, Build, Push
 
 on:
   push:
@@ -11,15 +11,17 @@ permissions:
 
 env:
   REGISTRY_HOST: 192.168.0.240
-  HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT || 'mywork' }}
+  HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT || 'service' }}
 
 jobs:
+  # ==============================
+  # 1) SonarQube 코드 분석
+  # ==============================
   sonarqube:
     name: SonarQube Analysis
     runs-on: [self-hosted, Linux, X64]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
@@ -30,136 +32,168 @@ jobs:
           args: >
             -Dsonar.projectKey=DZ-CI-CD-Project
             -Dsonar.projectName=DZ-CI-CD-Project
-            -Dsonar.sources=backend,frontend
-            -Dsonar.exclusions=**/node_modules/**,**/.next/**,frontend/app/public/**,**/build/**,**/dist/**,**/coverage/**
+            -Dsonar.sources=services
+            -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/build/**,**/dist/**,**/coverage/**,**/shared/**
 
-      # Quality Gate 체크 제거 (실패 시 빌드 중단 방지)
-      # - name: Check Quality Gate
-      #   continue-on-error: true
-      #   uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
+  # ==============================
+  # 2) Version 자동 증가 step
+  # ==============================
   prepare-version:
-    name: Determine Image Version
+    name: Determine Version
     runs-on: ubuntu-latest
-    needs:
-      - sonarqube
+    needs: sonarqube
     outputs:
-      image_version: ${{ steps.version.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
 
       - name: Determine next version
         id: version
         run: |
           git fetch --tags
-          latest_tag=$(git tag --list 'v1.*' --sort=-v:refname | head -n 1)
-          if [ -z "$latest_tag" ]; then
-            next_minor=0
-          else
-            latest_minor=${latest_tag#v1.}
-            next_minor=$((latest_minor + 1))
-          fi
-          version="1.${next_minor}"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          latest=$(git tag --list 'v1.*' --sort=-v:refname | head -n 1)
+          if [ -z "$latest" ]; then next=0; else next=$(( ${latest#v1.} + 1 )); fi
+          echo "version=1.${next}" >> "$GITHUB_OUTPUT"
 
+  # ==============================
+  # 3) 서비스 변경 감지 + Build + Push (병렬)
+  # ==============================
   build-and-push:
-    name: Build, Scan, and Push Images
+    name: Build Changed Services & Deploy to Harbor
     runs-on: [self-hosted, Linux, X64]
-    needs:
-      - prepare-version
-    env:
-      IMAGE_VERSION: ${{ needs.prepare-version.outputs.image_version }}
-      HARBOR_CA_CRT: ${{ secrets.HARBOR_CA_CRT }}
+    needs: prepare-version
+
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - image_name: backend
-            context: backend
-            dockerfile: backend/Dockerfile
-          - image_name: frontend
-            context: frontend
-            dockerfile: frontend/Dockerfile
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        service:
+          [
+            "frontend-service",
+            "backend-services/ai-service",
+            "backend-services/auth-service",
+            "backend-services/chatbot-service",
+            "backend-services/community-service",
+            "backend-services/mountain-service",
+            "backend-services/notice-service",
+            "backend-services/notification-service",
+            "backend-services/schedule-service",
+            "backend-services/stamp-service",
+            "backend-services/store-service",
+          ]
 
+    env:
+      VERSION: ${{ needs.prepare-version.outputs.version }}
+      HARBOR_CA_CRT: ${{ secrets.HARBOR_CA_CRT }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- Harbor CA 인증서 설치 ---
       - name: Install Harbor CA certificate
         if: ${{ env.HARBOR_CA_CRT != '' }}
         run: |
           mkdir -p ~/.docker/certs.d/${{ env.REGISTRY_HOST }}
           printf '%s\n' "$HARBOR_CA_CRT" > ~/.docker/certs.d/${{ env.REGISTRY_HOST }}/ca.crt
 
+      # --- Docker Buildx 설정 ---
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # --- 변경 감지 ---
+      - name: Detect changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            modified:
+              - 'services/${{ matrix.service }}/**'
+
+      # --- 변경 없으면 skip ---
+      - name: Skip if no changes
+        if: steps.changes.outputs.modified != 'true'
+        run: echo "⏭ No changes detected for ${{ matrix.service }}"
+
+      # --- Build & Push if changed ---
       - name: Login to Harbor
+        if: steps.changes.outputs.modified == 'true'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY_HOST }}
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
-      - name: Define image reference
-        id: image
+      - name: Determine image name and build context
+        if: steps.changes.outputs.modified == 'true'
+        id: build-config
         run: |
-          IMAGE_REF=${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ matrix.image_name }}:${{ env.IMAGE_VERSION }}
-          echo "image_ref=$IMAGE_REF" >> "$GITHUB_OUTPUT"
+          # 서비스 이름 추출 (슬래시 제거, 하이픈으로 변환)
+          IMAGE_NAME=$(echo "${{ matrix.service }}" | sed 's|backend-services/||' | sed 's|frontend-service|frontend|')
+          
+          # 프론트엔드는 frontend-service 디렉토리를 컨텍스트로, 백엔드는 services 디렉토리를 컨텍스트로
+          if [[ "${{ matrix.service }}" == "frontend-service" ]]; then
+            BUILD_CONTEXT="services/frontend-service"
+            DOCKERFILE="services/frontend-service/Dockerfile"
+          else
+            BUILD_CONTEXT="services"
+            DOCKERFILE="services/${{ matrix.service }}/Dockerfile"
+          fi
+          
+          echo "image_name=$IMAGE_NAME" >> "$GITHUB_OUTPUT"
+          echo "build_context=$BUILD_CONTEXT" >> "$GITHUB_OUTPUT"
+          echo "dockerfile=$DOCKERFILE" >> "$GITHUB_OUTPUT"
+          echo "image_ref=${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/$IMAGE_NAME:${{ env.VERSION }}" >> "$GITHUB_OUTPUT"
 
-      - name: Build image
+      - name: Build Image
+        if: steps.changes.outputs.modified == 'true'
         run: |
-          docker build -f ${{ matrix.dockerfile }} -t ${{ steps.image.outputs.image_ref }} ${{ matrix.context }}
+          docker build \
+            -f ${{ steps.build-config.outputs.dockerfile }} \
+            -t ${{ steps.build-config.outputs.image_ref }} \
+            ${{ steps.build-config.outputs.build_context }}
 
       - name: Trivy vulnerability scan
+        if: steps.changes.outputs.modified == 'true'
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ${{ steps.image.outputs.image_ref }}
+          image-ref: ${{ steps.build-config.outputs.image_ref }}
           format: table
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
           exit-code: '0'
 
-      - name: Push image
-        run: docker push ${{ steps.image.outputs.image_ref }}
-
-      - name: Tag and push latest
+      - name: Push Image
+        if: steps.changes.outputs.modified == 'true'
         run: |
-          docker tag ${{ steps.image.outputs.image_ref }} ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ matrix.image_name }}:latest
-          docker push ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ matrix.image_name }}:latest
+          docker push ${{ steps.build-config.outputs.image_ref }}
+          docker tag ${{ steps.build-config.outputs.image_ref }} \
+              ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest
+          docker push ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest
 
+  # ==============================
+  # 4) Git Tag 적용
+  # ==============================
   tag-release:
     name: Tag Release
     runs-on: ubuntu-latest
-    needs:
-      - build-and-push
-      - prepare-version
+    needs: build-and-push
     if: needs.build-and-push.result == 'success'
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
 
       - name: Configure git
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git fetch --tags
 
-      - name: Create and push tag
-        env:
-          VERSION: ${{ needs.prepare-version.outputs.image_version }}
+      - name: Create tag
+        env: { VERSION: ${{ needs.prepare-version.outputs.version }} }
         run: |
           TAG="v${VERSION}"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
-            echo "Tag $TAG already exists. Skipping."
-            exit 0
+            echo "Tag already exists, skipping"
+          else
+            git tag "$TAG"
+            git push origin "$TAG"
           fi
-          git tag "$TAG"
-          git push origin "$TAG"

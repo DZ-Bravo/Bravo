@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  stamp-service:
+    build:
+      context: ../..
+      dockerfile: backend-services/stamp-service/Dockerfile
+    container_name: hiking-stamp-service
+    env_file:
+      - ../../../.env
+    expose:
+      - "3010"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3010
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+networks:
+  hiking-network:
+    external: true
+
