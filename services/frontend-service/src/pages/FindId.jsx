@@ -5,32 +5,33 @@ import { API_URL } from '../utils/api'
 import './FindId.css'
 
 function FindId() {
-  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
   const [verificationCode, setVerificationCode] = useState('')
   const [isCodeSent, setIsCodeSent] = useState(false)
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [foundId, setFoundId] = useState(null)
   const [timeLeft, setTimeLeft] = useState(300) // 5분 = 300초
 
-  const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, '')
-    
-    // 하이픈 자동 추가
-    if (value.length > 3 && value.length <= 7) {
-      value = value.slice(0, 3) + '-' + value.slice(3)
-    } else if (value.length > 7) {
-      value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7, 11)
-    }
-    
-    setPhone(value)
+  const handleEmailChange = (e) => {
+    const value = e.target.value
+    setEmail(value)
     setErrorMessage('')
     setFoundId(null)
+    setIsCodeSent(false)
+    setIsEmailVerified(false)
+    setVerificationCode('')
   }
 
   const handleSendCode = async () => {
-    if (!phone || phone.length < 10) {
-      setErrorMessage('올바른 휴대폰 번호를 입력해주세요.')
+    if (!email) {
+      setErrorMessage('이메일을 입력해주세요.')
+      return
+    }
+
+    if (!email.includes('@')) {
+      setErrorMessage('올바른 이메일 형식을 입력해주세요.')
       return
     }
 
@@ -38,12 +39,12 @@ function FindId() {
     setErrorMessage('')
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/send-verification-code`, {
+      const response = await fetch(`${API_URL}/api/auth/send-email-verification-find-id`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ phone })
+        body: JSON.stringify({ email })
       })
 
       const data = await response.json()
@@ -51,7 +52,11 @@ function FindId() {
       if (response.ok) {
         setIsCodeSent(true)
         setTimeLeft(300) // 5분 타이머 시작
-        alert('인증번호가 전송되었습니다.')
+        alert('인증번호가 전송되었습니다. 이메일을 확인해주세요.')
+        if (data.code) {
+          console.log('인증번호:', data.code)
+          alert(`인증번호: ${data.code}\n\n(테스트 모드에서는 이메일 전송이 제한될 수 있습니다.)`)
+        }
       } else {
         setErrorMessage(data.error || '인증번호 전송에 실패했습니다.')
       }
@@ -73,14 +78,46 @@ function FindId() {
     setErrorMessage('')
 
     try {
+      const response = await fetch(`${API_URL}/api/auth/verify-email-code-find-id`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          verificationCode
+        })
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.verified) {
+        setIsEmailVerified(true)
+        // 인증 성공 후 아이디 찾기
+        await handleFindId()
+      } else {
+        setErrorMessage(data.error || '인증번호가 일치하지 않습니다.')
+      }
+    } catch (error) {
+      console.error('인증번호 검증 오류:', error)
+      setErrorMessage('서버 오류가 발생했습니다. 다시 시도해주세요.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleFindId = async () => {
+    setIsLoading(true)
+    setErrorMessage('')
+
+    try {
       const response = await fetch(`${API_URL}/api/auth/find-id`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          phone,
-          verificationCode
+          email
         })
       })
 
@@ -89,7 +126,7 @@ function FindId() {
       if (response.ok) {
         setFoundId(data.id)
       } else {
-        setErrorMessage(data.error || '인증번호가 일치하지 않거나 아이디를 찾을 수 없습니다.')
+        setErrorMessage(data.error || '아이디를 찾을 수 없습니다.')
       }
     } catch (error) {
       console.error('아이디 찾기 오류:', error)
@@ -98,6 +135,7 @@ function FindId() {
       setIsLoading(false)
     }
   }
+
 
   // 5분 타이머
   useEffect(() => {
@@ -143,41 +181,44 @@ function FindId() {
                 </div>
                 <div className="result-actions">
                   <Link to="/login" className="btn-primary">
-                    로그인하기
+                    로그인
                   </Link>
                   <button
                     onClick={() => {
                       setFoundId(null)
-                      setPhone('')
+                      setEmail('')
                       setVerificationCode('')
                       setIsCodeSent(false)
+                      setIsEmailVerified(false)
                     }}
                     className="btn-secondary"
                   >
                     다시 찾기
                   </button>
+                  <Link to="/find-password" className="btn-secondary">
+                    비밀번호 찾기
+                  </Link>
                 </div>
               </div>
             </div>
           ) : (
             <div className="find-id-form">
               <div className="form-field">
-                <label htmlFor="phone" className="form-label">휴대폰 번호</label>
+                <label htmlFor="email" className="form-label">이메일</label>
                 <div className="phone-input-wrapper">
                   <input
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    value={phone}
-                    onChange={handlePhoneChange}
-                    placeholder="휴대폰 번호를 입력해 주세요."
-                    maxLength="13"
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    placeholder="이메일을 입력해 주세요."
                     className="form-input phone-input"
                   />
                   <button
                     type="button"
                     onClick={handleSendCode}
-                    disabled={isLoading || !phone || phone.length < 10}
+                    disabled={isLoading || !email || !email.includes('@')}
                     className="send-code-btn"
                   >
                     인증번호전송
@@ -185,7 +226,7 @@ function FindId() {
                 </div>
               </div>
 
-              {isCodeSent && (
+              {isCodeSent && !isEmailVerified && (
                 <div className="form-field">
                   <div className="verification-code-wrapper">
                     <input
@@ -208,6 +249,23 @@ function FindId() {
                       {formatTime(timeLeft)}
                     </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={handleVerifyCode}
+                    disabled={isLoading || !verificationCode}
+                    className="verify-code-btn"
+                    style={{ marginTop: '8px', width: '100%' }}
+                  >
+                    인증 확인
+                  </button>
+                </div>
+              )}
+
+              {isEmailVerified && !foundId && (
+                <div className="form-field">
+                  <div className="verification-success">
+                    ✓ 이메일 인증이 완료되었습니다.
+                  </div>
                 </div>
               )}
 
@@ -217,10 +275,12 @@ function FindId() {
             </div>
           )}
 
-          <div className="auth-links">
-            <Link to="/login" className="auth-link">로그인</Link>
-            <Link to="/find-password" className="auth-link">비밀번호 찾기</Link>
-          </div>
+          {!foundId && (
+            <div className="auth-links">
+              <Link to="/login" className="auth-link">로그인</Link>
+              <Link to="/find-password" className="auth-link">비밀번호 찾기</Link>
+            </div>
+          )}
         </div>
       </main>
     </div>
