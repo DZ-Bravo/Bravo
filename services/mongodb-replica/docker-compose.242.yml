@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # MongoDB Secondary-2 (읽기 전용 복제본)
+  mongodb-secondary-2:
+    image: mongo:7
+    container_name: mongodb-secondary-2-242
+    user: "0:0" # keyfile 권한 문제 방지를 위해 root로 실행
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongodb_secondary2_data:/data/db
+      - mongodb_secondary2_config:/data/configdb
+      - ./mongodb-keyfile:/etc/mongodb-keyfile:ro
+    environment:
+      - TZ=Asia/Seoul
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-admin123}
+    command: ["/bin/sh", "-c", "cp /etc/mongodb-keyfile /data/keyfile && chown 999:999 /data/keyfile && chmod 400 /data/keyfile && exec mongod --replSet rs0 --bind_ip_all --keyFile /data/keyfile --auth"]
+    networks:
+      - mongodb-network
+    restart: unless-stopped
+
+  # Redis Master (242)
+  redis-master:
+    image: redis:7-alpine
+    container_name: redis-master-242
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_master_data:/data
+      - ./redis-master.conf:/usr/local/etc/redis/redis.conf:ro
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    networks:
+      - redis-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_secondary2_data:
+  mongodb_secondary2_config:
+  redis_master_data:
+
+networks:
+  mongodb-network:
+    driver: bridge
+  redis-network:
+    driver: bridge
+
