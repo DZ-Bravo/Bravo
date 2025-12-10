@@ -95,6 +95,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1  # 최신 커밋만 체크아웃 (전체 히스토리 불필요, 체크아웃 속도 향상)
 
       # --- Harbor CA 인증서 설치 ---
       - name: Install Harbor CA certificate
