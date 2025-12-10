@@ -46,7 +46,8 @@ jobs:
       version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
       - name: Determine next version
         id: version
@@ -180,7 +181,8 @@ jobs:
     if: needs.build-and-push.result == 'success'
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
       - name: Configure git
         run: |
@@ -188,7 +190,8 @@ jobs:
           git config user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Create tag
-        env: { VERSION: ${{ needs.prepare-version.outputs.version }} }
+        env:
+          VERSION: ${{ needs.prepare-version.outputs.version }}
         run: |
           TAG="v${VERSION}"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
