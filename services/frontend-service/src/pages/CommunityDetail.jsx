@@ -482,6 +482,34 @@ function CommunityDetail() {
               <span className="post-author">{post.author}</span>
             </div>
 
+            {/* 등산일지인 경우 산 및 코스 정보 표시 */}
+            {post.category === 'diary' && (post.mountainName || post.courseName) && (
+              <div className="diary-info">
+                {post.mountainName && (
+                  <div className="diary-info-item">
+                    <span className="diary-info-label">등산한 산:</span>
+                    <span className="diary-info-value">{post.mountainName}</span>
+                  </div>
+                )}
+                {post.courseName && (
+                  <div className="diary-info-item">
+                    <span className="diary-info-label">등산 코스:</span>
+                    <span className="diary-info-value">{post.courseName}</span>
+                  </div>
+                )}
+                {(post.courseDistance || post.courseDurationMinutes) && (
+                  <div className="diary-info-item">
+                    <span className="diary-info-label">코스 정보:</span>
+                    <span className="diary-info-value">
+                      {post.courseDistance && `${post.courseDistance}km`}
+                      {post.courseDistance && post.courseDurationMinutes && ' · '}
+                      {post.courseDurationMinutes && `${post.courseDurationMinutes}분`}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* 내용 */}
             <div className="post-content">
               {post.images && post.images.length > 0 && (
