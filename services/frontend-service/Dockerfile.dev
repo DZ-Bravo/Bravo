@@ -1,0 +1,19 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# timezone 설정
+RUN apk add --no-cache tzdata && \
+    ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
+    echo "Asia/Seoul" > /etc/timezone
+
+# package.json 복사 및 의존성 설치
+COPY package*.json ./
+RUN npm install
+
+# 포트 노출 (Vite dev server)
+EXPOSE 3000
+
+# 개발 서버 실행 (볼륨 마운트로 소스 코드는 외부에서 마운트)
+CMD ["npm", "run", "dev"]
+

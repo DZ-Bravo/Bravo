@@ -1,0 +1,564 @@
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
+import Header from '../components/Header'
+import { MOUNTAIN_ROUTES } from '../utils/mountainRoutes'
+import { API_URL } from '../utils/api'
+import './SearchResults.css'
+
+function SearchResults() {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const query = searchParams.get('q') || ''
+  const [searchInput, setSearchInput] = useState(query)
+  const [activeTab, setActiveTab] = useState('all') // 'all', 'mountains', 'posts', 'products'
+  const [recentSearches, setRecentSearches] = useState([])
+  
+  // 검색 결과
+  const [mountainResults, setMountainResults] = useState([])
+  const [mountainCourses, setMountainCourses] = useState({}) // 각 산의 등산 코스 정보
+  const [postResults, setPostResults] = useState([])
+  const [productResults, setProductResults] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  // 산 이름에서 지역명 추출 (예: "서울특별시 강남구" -> "서울특별시")
+  const extractRegion = (location) => {
+    if (!location) return null
+    // 시/도 단위 추출 (예: "서울특별시", "경기도", "강원도", "부산광역시" 등)
+    const match = location.match(/([가-힣]+(?:시|도|특별시|광역시))/)
+    if (match) {
+      return match[1].trim()
+    }
+    // 시/도가 없으면 첫 번째 단어 반환
+    const parts = location.split(/\s+/)
+    return parts[0] || null
+  }
+
+  // 인기 검색어
+  const popularSearches = [
+    '소백산', '도봉산', '관악산', '지리산', '설악산', 
+    '한라산', '북한산', '천마산', '태백산', '덕유산'
+  ]
+
+  // 테마별 등산일지
+  const themes = [
+    { icon: '☀️', name: '일출산행', link: '/course/sunrise' },
+    { icon: '☁️', name: '운해사냥', link: '/course/cloud' },
+    { icon: '🏆', name: '오등추천', link: '/course/recommended' },
+    { icon: '🌱', name: '초보산쟁이', link: '/course/beginner' }
+  ]
+
+  // 스토어 상품 데이터
+  const products = [
+    { id: 1, name: '등산화 A', price: '129,000원', category: 'shoes' },
+    { id: 2, name: '등산화 B', price: '159,000원', category: 'shoes' },
+    { id: 3, name: '등산용 상의', price: '89,000원', category: 'top' },
+    { id: 4, name: '등산용 티셔츠', price: '45,000원', category: 'top' },
+    { id: 5, name: '등산용 바지', price: '79,000원', category: 'bottom' },
+    { id: 6, name: '등산용 반바지', price: '55,000원', category: 'bottom' },
+    { id: 7, name: '등산용 백팩', price: '89,000원', category: 'accessories' },
+    { id: 8, name: '등산 스틱', price: '45,000원', category: 'accessories' },
+    { id: 9, name: '등산용 물병', price: '18,000원', category: 'accessories' }
+  ]
+
+  useEffect(() => {
+    // 최근 검색어 불러오기
+    const saved = localStorage.getItem('recentSearches')
+    if (saved) {
+      try {
+        setRecentSearches(JSON.parse(saved))
+      } catch (e) {
+        setRecentSearches([])
+      }
+    }
+
+    // 검색어가 있으면 검색 실행
+    if (query) {
+      performSearch(query)
+    }
+  }, [query])
+
+  const performSearch = async (searchTerm) => {
+    if (!searchTerm.trim()) {
+      setMountainResults([])
+      setPostResults([])
+      setProductResults([])
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      // 산 검색 - API에서 모든 산 목록 가져오기
+      try {
+        const mountainsResponse = await fetch(`${API_URL}/api/mountains`)
+        console.log('산 검색 API 응답 상태:', mountainsResponse.status)
+        if (mountainsResponse.ok) {
+          const mountainsData = await mountainsResponse.json()
+          console.log('산 검색 API 응답 데이터:', {
+            total: mountainsData.total,
+            returned: mountainsData.returned,
+            mountainsCount: mountainsData.mountains?.length
+          })
+          const allMountains = mountainsData.mountains || []
+          console.log('전체 산 개수:', allMountains.length)
+          
+          // 산 이름별로 그룹화하여 중복 확인
+          const nameCount = {}
+          allMountains.forEach(m => {
+            const name = m.name || '이름 없음'
+            nameCount[name] = (nameCount[name] || 0) + 1
+          })
+          
+          // 중복된 괄호 제거 함수
+          const cleanDuplicateParentheses = (name) => {
+            if (!name || typeof name !== 'string') return name
+            
+            // 모든 괄호 쌍 찾기
+            const allMatches = name.match(/\(([^)]+)\)/g)
+            if (allMatches && allMatches.length >= 2) {
+              const lastTwo = allMatches.slice(-2)
+              const firstLoc = lastTwo[0].replace(/[()]/g, '').trim()
+              const secondLoc = lastTwo[1].replace(/[()]/g, '').trim()
+              
+              const firstParts = firstLoc.split(',').map(p => p.trim())
+              const lastPartOfFirst = firstParts[firstParts.length - 1]
+              
+              // 두 번째가 첫 번째의 마지막 부분과 일치하면 제거
+              if (secondLoc === lastPartOfFirst || firstLoc.includes(secondLoc)) {
+                const lastParenIndex = name.lastIndexOf('(')
+                if (lastParenIndex !== -1) {
+                  return name.substring(0, lastParenIndex).trim()
+                }
+              }
+            }
+            
+            return name
+          }
+          
+          // 중복된 이름이 있는 경우 지역명 포함하여 표시
+          const processedMountains = allMountains.map(m => {
+            let name = m.name || '이름 없음'
+            // 먼저 중복된 괄호 제거
+            name = cleanDuplicateParentheses(name)
+            
+            const location = m.location || ''
+            const region = extractRegion(location)
+            const code = String(m.code || '')
+            
+            // 북한산 특별 처리: "북한산 백운대"로 표시
+            if (code === '287201304' || name === '북한산' || name.includes('북한산')) {
+              // 이미 "백운대"가 포함되어 있지 않으면 추가
+              const displayName = name.includes('백운대') ? name : '북한산 백운대'
+              return {
+                ...m,
+                displayName: displayName,
+                originalName: name.replace(/\s*\([^)]*\)\s*/g, '').trim()
+              }
+            }
+            
+            // 같은 이름이 여러 개 있으면 지역명을 괄호로 표시
+            const baseName = name.replace(/\s*\([^)]*\)\s*/g, '').trim()
+            if (nameCount[baseName] > 1 && region) {
+              return {
+                ...m,
+                displayName: `${baseName} (${region})`,
+                originalName: baseName
+              }
+            }
+            return {
+              ...m,
+              displayName: name,
+              originalName: baseName
+            }
+          })
+          
+          // 검색어로 필터링 ("산"이라는 단어만 검색하면 모든 산 표시)
+          let filtered = []
+          if (searchTerm.trim() === '산' || searchTerm.trim() === '') {
+            // "산"만 검색하면 모든 산 표시
+            filtered = processedMountains
+          } else {
+            filtered = processedMountains.filter(mountain => {
+              const searchLower = searchTerm.toLowerCase()
+              const nameMatch = mountain.originalName && mountain.originalName.toLowerCase().includes(searchLower)
+              const displayNameMatch = mountain.displayName && mountain.displayName.toLowerCase().includes(searchLower)
+              const locationMatch = mountain.location && mountain.location.toLowerCase().includes(searchLower)
+              const codeMatch = mountain.code && String(mountain.code).includes(searchTerm)
+              return nameMatch || displayNameMatch || locationMatch || codeMatch
+            })
+          }
+          
+          console.log('필터링된 산 개수:', filtered.length)
+          setMountainResults(filtered)
+          
+          // 각 산의 등산 코스 정보 가져오기
+          const coursesMap = {}
+          await Promise.all(
+            filtered.map(async (mountain) => {
+              try {
+                const coursesResponse = await fetch(`${API_URL}/api/mountains/${mountain.code}/courses`)
+                if (coursesResponse.ok) {
+                  const coursesData = await coursesResponse.json()
+                  const raw = coursesData.courses || []
+                  // 10분 이하 또는 0.5km 이하 코스는 제외, 모두 제외되면 가장 긴 코스 1개 남김
+                  let filtered = raw.filter(c => {
+                    const props = c.properties || {}
+                    const distRaw = props.distance ?? props.PMNTN_LT
+                    const durRaw = props.duration ?? props.upTime ?? props.PMNTN_UPPL
+                    const dist = distRaw !== undefined ? parseFloat(distRaw) : NaN
+                    const dur = durRaw !== undefined ? parseFloat(durRaw) : NaN
+                    if (!Number.isNaN(dist) && dist < 0.5) return false
+                    if (!Number.isNaN(dur) && dur < 10) return false
+                    return true
+                  })
+                  if (filtered.length === 0 && raw.length > 0) {
+                    filtered = [...raw].sort((a, b) => {
+                      const pa = a.properties || {}
+                      const pb = b.properties || {}
+                      const durA = parseFloat(pa.duration ?? pa.upTime ?? pa.PMNTN_UPPL ?? 0) || 0
+                      const durB = parseFloat(pb.duration ?? pb.upTime ?? pb.PMNTN_UPPL ?? 0) || 0
+                      if (durA !== durB) return durB - durA
+                      const distA = parseFloat(pa.distance ?? pa.PMNTN_LT ?? 0) || 0
+                      const distB = parseFloat(pb.distance ?? pb.PMNTN_LT ?? 0) || 0
+                      return distB - distA
+                    }).slice(0, 1)
+                  }
+                  coursesMap[mountain.code] = filtered
+                } else {
+                  coursesMap[mountain.code] = []
+                }
+              } catch (error) {
+                console.error(`산 ${mountain.name}의 코스 정보 가져오기 실패:`, error)
+                coursesMap[mountain.code] = []
+              }
+            })
+          )
+          setMountainCourses(coursesMap)
+        } else {
+          console.error('산 검색 API 실패:', mountainsResponse.status, mountainsResponse.statusText)
+          const errorText = await mountainsResponse.text()
+          console.error('에러 응답:', errorText)
+          // API 실패 시 기존 하드코딩된 목록으로 폴백
+          const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
+            mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
+          )
+          setMountainResults(mountains)
+        }
+      } catch (error) {
+        console.error('산 검색 API 오류:', error)
+        // API 실패 시 기존 하드코딩된 목록으로 폴백
+        const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
+          mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
+        )
+        setMountainResults(mountains)
+      }
+
+      // 커뮤니티 게시글 검색
+      try {
+        const searchUrl = `${API_URL}/api/posts/search?q=${encodeURIComponent(searchTerm)}`
+        console.log('게시글 검색 URL:', searchUrl)
+        const postsResponse = await fetch(searchUrl)
+        if (postsResponse.ok) {
+          const postsData = await postsResponse.json()
+          console.log('게시글 검색 결과:', postsData)
+          setPostResults(postsData.posts || [])
+        } else {
+          const errorData = await postsResponse.json()
+          console.error('게시글 검색 응답 오류:', errorData)
+          setPostResults([])
+        }
+      } catch (error) {
+        console.error('게시글 검색 오류:', error)
+        setPostResults([])
+      }
+
+      // 스토어 상품 검색
+      const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      setProductResults(filteredProducts)
+
+      // 최근 검색어에 추가
+      if (searchTerm.trim() && !recentSearches.includes(searchTerm.trim())) {
+        const updated = [searchTerm.trim(), ...recentSearches].slice(0, 10)
+        setRecentSearches(updated)
+        localStorage.setItem('recentSearches', JSON.stringify(updated))
+      }
+    } catch (error) {
+      console.error('검색 오류:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchInput.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchInput.trim())}`)
+    }
+  }
+
+  const handleRecentSearchClick = (term) => {
+    setSearchInput(term)
+    navigate(`/search?q=${encodeURIComponent(term)}`)
+  }
+
+  const handlePopularSearchClick = (term) => {
+    setSearchInput(term)
+    navigate(`/search?q=${encodeURIComponent(term)}`)
+  }
+
+  const removeRecentSearch = (term, e) => {
+    e.stopPropagation()
+    const updated = recentSearches.filter(s => s !== term)
+    setRecentSearches(updated)
+    localStorage.setItem('recentSearches', JSON.stringify(updated))
+  }
+
+  const clearRecentSearches = () => {
+    setRecentSearches([])
+    localStorage.removeItem('recentSearches')
+  }
+
+  const totalResults = mountainResults.length + postResults.length + productResults.length
+
+  return (
+    <div className="search-results-page">
+      <Header />
+      <main className="search-results-main">
+        <div className="search-results-container">
+          {/* 검색 바 */}
+          <div className="search-bar-section">
+            <button className="back-button" onClick={() => navigate(-1)}>
+              ←
+            </button>
+            <form onSubmit={handleSearch} className="search-form">
+              <input
+                type="text"
+                placeholder="검색어를 입력해주세요."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="search-input"
+              />
+              <button type="submit" className="search-icon-btn">
+                🔍
+              </button>
+            </form>
+          </div>
+
+          {/* 검색 결과가 없을 때 */}
+          {!query && (
+            <>
+              {/* 최근 검색어 */}
+              {recentSearches.length > 0 && (
+                <div className="search-section">
+                  <div className="section-header">
+                    <h2 className="section-title">최근 검색어</h2>
+                    <button className="clear-button" onClick={clearRecentSearches}>
+                      전체 삭제
+                    </button>
+                  </div>
+                  <div className="search-tags">
+                    {recentSearches.map((term, index) => (
+                      <div
+                        key={index}
+                        className="search-tag recent-tag"
+                        onClick={() => handleRecentSearchClick(term)}
+                      >
+                        {term}
+                        <button
+                          className="tag-remove"
+                          onClick={(e) => removeRecentSearch(term, e)}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 인기 검색어 */}
+              <div className="search-section">
+                <h2 className="section-title">인기 검색어</h2>
+                <div className="search-tags">
+                  {popularSearches.map((term, index) => (
+                    <div
+                      key={index}
+                      className="search-tag popular-tag"
+                      onClick={() => handlePopularSearchClick(term)}
+                    >
+                      {term}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 다양한 테마의 등산일지 */}
+              <div className="search-section">
+                <h2 className="section-title">다양한 테마의 등산일지</h2>
+                <div className="theme-grid">
+                  {themes.map((theme, index) => (
+                    <Link key={index} to={theme.link} className="theme-card">
+                      <div className="theme-icon">{theme.icon}</div>
+                      <div className="theme-name">{theme.name}</div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* 검색 결과 */}
+          {query && (
+            <div className="search-results-section">
+              <h2 className="results-title">
+                '{query}' 검색 결과 ({totalResults}개)
+              </h2>
+
+              {/* 탭 */}
+              <div className="results-tabs">
+                <button
+                  className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('all')}
+                >
+                  전체 ({totalResults})
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === 'mountains' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('mountains')}
+                >
+                  산 ({mountainResults.length})
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === 'posts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('posts')}
+                >
+                  커뮤니티 ({postResults.length})
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === 'products' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('products')}
+                >
+                  스토어 ({productResults.length})
+                </button>
+              </div>
+
+              {isLoading ? (
+                <div className="loading">검색 중...</div>
+              ) : (
+                <>
+                  {/* 전체 또는 산 탭 */}
+                  {(activeTab === 'all' || activeTab === 'mountains') && mountainResults.length > 0 && (
+                    <div className="results-category">
+                      <h3 className="category-title">산</h3>
+                      <div className="results-list">
+                        {mountainResults.map((mountain, index) => {
+                          const courses = mountainCourses[mountain.code] || []
+                          const courseCount = courses.length
+                          // 고유 key 생성: _id가 있으면 사용, 없으면 code와 index 조합
+                          const uniqueKey = mountain._id || `${mountain.code}-${index}`
+                          
+                          return (
+                            <Link
+                              key={uniqueKey}
+                              to={`/mountain/${mountain.code}`}
+                              className="result-item"
+                            >
+                              <div className="result-icon">⛰️</div>
+                              <div className="result-content">
+                                <div className="result-name">{mountain.displayName || mountain.name}</div>
+                                <div className="result-location">
+                                  {courseCount > 0 
+                                    ? `등산 코스 ${courseCount}개` 
+                                    : '등산 코스 정보'}
+                                </div>
+                              </div>
+                              <div className="result-arrow">→</div>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 전체 또는 커뮤니티 탭 */}
+                  {(activeTab === 'all' || activeTab === 'posts') && postResults.length > 0 && (
+                    <div className="results-category">
+                      <h3 className="category-title">커뮤니티</h3>
+                      <div className="results-list">
+                        {postResults.map((post) => {
+                          const categoryLabels = {
+                            'diary': '등산일지',
+                            'qa': 'Q&A',
+                            'free': '자유게시판'
+                          }
+                          const categoryLabel = categoryLabels[post.category] || post.category
+                          
+                          return (
+                            <Link
+                              key={post.id}
+                              to={`/community/${post.id}`}
+                              className="result-item"
+                            >
+                              <div className="result-icon">📝</div>
+                              <div className="result-content">
+                                <div className="result-name-row">
+                                  <div className="result-name">{post.title}</div>
+                                  <span className="result-category-badge">{categoryLabel}</span>
+                                </div>
+                                <div className="result-location">
+                                  {post.previewContent || '게시글 내용'}
+                                </div>
+                              </div>
+                              <div className="result-arrow">→</div>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 전체 또는 스토어 탭 */}
+                  {(activeTab === 'all' || activeTab === 'products') && productResults.length > 0 && (
+                    <div className="results-category">
+                      <h3 className="category-title">스토어</h3>
+                      <div className="results-list">
+                        {productResults.map((product) => (
+                          <Link
+                            key={product.id}
+                            to="/store"
+                            className="result-item"
+                          >
+                            <div className="result-icon">🛍️</div>
+                            <div className="result-content">
+                              <div className="result-name">{product.name}</div>
+                              <div className="result-location">{product.price}</div>
+                            </div>
+                            <div className="result-arrow">→</div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 검색 결과 없음 */}
+                  {totalResults === 0 && (
+                    <div className="no-results">
+                      <p>검색 결과가 없습니다.</p>
+                      <p className="no-results-sub">다른 검색어를 입력해보세요.</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  )
+}
+
+export default SearchResults

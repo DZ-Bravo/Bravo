@@ -1,0 +1,213 @@
+.ai-course-page {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.ai-course-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.ai-course-container {
+  background: var(--card-bg);
+  border-radius: 0;
+  padding: 48px 40px;
+  box-shadow: none;
+  border: none;
+}
+
+.ai-course-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.ai-course-description {
+  text-align: center;
+  margin-bottom: 50px;
+  color: var(--text-muted);
+}
+
+.category-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+  padding-top: 0;
+}
+
+.category-tab {
+  padding: 12px 24px;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.category-tab:hover {
+  color: var(--text-main) !important;
+  border-bottom-color: #000 !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid #000 !important;
+  border-radius: 0 !important;
+}
+
+.category-tab.active {
+  color: var(--text-main) !important;
+  border-bottom-color: #000 !important;
+  font-weight: 600;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid #000 !important;
+  border-radius: 0 !important;
+}
+
+.ai-course-form {
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.ai-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--card-bg);
+  color: var(--text-main);
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.ai-input:focus {
+  border-color: var(--text-main);
+}
+
+.ai-submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--text-main);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ai-submit-btn:hover {
+  background: #333;
+}
+
+.recommendations-section {
+  margin-top: 40px;
+}
+
+.recommendations-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.course-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+
+.course-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.course-info {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.course-description {
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* AI 응답 영역 */
+.ai-response-section {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.ai-response-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.ai-response-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  min-height: 150px;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .ai-course-container {
+    padding: 32px 24px;
+  }
+
+  .ai-course-title {
+    font-size: 1.75rem;
+  }
+}
+

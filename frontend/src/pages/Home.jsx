@@ -111,6 +111,11 @@ function Home() {
               urlMap[mountain.id] = imageUrl
             }
           }
+
+          // 여전히 페이지 URL(ibb.co) 형태라면 기본 이미지로 대체하여 로드 실패 방지
+          if (urlMap[mountain.id] && urlMap[mountain.id].includes('ibb.co/') && !urlMap[mountain.id].includes('i.ibb.co')) {
+            urlMap[mountain.id] = '/images/popularity_img1.png'
+          }
         })
       )
       

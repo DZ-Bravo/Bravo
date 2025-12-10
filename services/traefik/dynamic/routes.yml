@@ -1,0 +1,123 @@
+http:
+  routers:
+    # Auth Service
+    auth-router:
+      rule: "PathPrefix(`/api/auth`)"
+      service: auth-service
+      entryPoints:
+        - web
+    
+    # Community Service
+    community-router:
+      rule: "PathPrefix(`/api/posts`) || PathPrefix(`/uploads`)"
+      service: community-service
+      entryPoints:
+        - web
+      priority: 10
+    
+    # Notice Service
+    notice-router:
+      rule: "PathPrefix(`/api/notices`)"
+      service: notice-service
+      entryPoints:
+        - web
+    
+    # Schedule Service
+    schedule-router:
+      rule: "PathPrefix(`/api/schedules`)"
+      service: schedule-service
+      entryPoints:
+        - web
+    
+    # Notification Service
+    notification-router:
+      rule: "PathPrefix(`/api/notifications`)"
+      service: notification-service
+      entryPoints:
+        - web
+    
+    # Store Service
+    store-router:
+      rule: "PathPrefix(`/api/store`)"
+      service: store-service
+      entryPoints:
+        - web
+    
+    # Chatbot Service
+    chatbot-router:
+      rule: "PathPrefix(`/api/chatbot`)"
+      service: chatbot-service
+      entryPoints:
+        - web
+    
+    # Mountain Service (API + 정적 geojson/gpx/json)
+    # 정적 파일 필터링은 HAProxy에서 확장자별로 제한하고 여기서는 단순 프리픽스만 사용
+    mountain-router:
+      rule: "PathPrefix(`/api/mountains`) || PathPrefix(`/api/cctv`) || PathPrefix(`/api/courses`) || PathPrefix(`/api/utils/imgbb-url`) || PathPrefix(`/mountain`)"
+      service: mountain-service
+      entryPoints:
+        - web
+      priority: 10  # 프론트엔드보다 높은 우선순위
+    
+    # AI Service
+    ai-router:
+      rule: "PathPrefix(`/api/ai`)"
+      service: ai-service
+      entryPoints:
+        - web
+
+  services:
+    # Auth Service
+    auth-service:
+      loadBalancer:
+        servers:
+          - url: "http://auth-service:3001"
+    
+    # Community Service
+    community-service:
+      loadBalancer:
+        servers:
+          - url: "http://community-service:3002"
+    
+    # Notice Service
+    notice-service:
+      loadBalancer:
+        servers:
+          - url: "http://notice-service:3003"
+    
+    # Schedule Service
+    schedule-service:
+      loadBalancer:
+        servers:
+          - url: "http://schedule-service:3004"
+    
+    # Notification Service
+    notification-service:
+      loadBalancer:
+        servers:
+          - url: "http://notification-service:3005"
+    
+    # Store Service
+    store-service:
+      loadBalancer:
+        servers:
+          - url: "http://store-service:3006"
+    
+    # Chatbot Service
+    chatbot-service:
+      loadBalancer:
+        servers:
+          - url: "http://chatbot-service:3007"
+    
+    # Mountain Service
+    mountain-service:
+      loadBalancer:
+        servers:
+          - url: "http://mountain-service:3008"
+    
+    # AI Service
+    ai-service:
+      loadBalancer:
+        servers:
+          - url: "http://ai-service:3009"
+
