@@ -4,7 +4,7 @@ import { authenticateToken } from './shared/utils/auth.js'
 
 const router = express.Router()
 
-// 알림 목록 조회
+// 알림 목록 조회1
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId
