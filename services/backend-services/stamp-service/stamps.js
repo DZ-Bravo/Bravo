@@ -114,13 +114,19 @@ router.get('/completed', authenticateToken, async (req, res) => {
         }
         
         // String으로 변환하고 빈 문자열 체크
-        const codeStr = String(code).trim()
+        let codeStr = String(code).trim()
         if (codeStr === '' || codeStr === 'null' || codeStr === 'undefined') {
           console.log(`[스탬프] 유효하지 않은 mountainCode - 제목: ${diary.title}, 코드: ${codeStr}`)
           return null
         }
         
-        console.log(`[스탬프] 유효한 mountainCode - 제목: ${diary.title}, 코드: ${codeStr} (원본 타입: ${typeof code})`)
+        // 숫자로 변환 가능한 경우 숫자로 정규화 (앞뒤 공백 제거 후)
+        const codeNum = parseInt(codeStr)
+        if (!isNaN(codeNum)) {
+          codeStr = String(codeNum) // 숫자로 정규화
+        }
+        
+        console.log(`[스탬프] 유효한 mountainCode - 제목: ${diary.title}, 코드: ${codeStr} (원본: ${code}, 타입: ${typeof code})`)
         return codeStr
       })
       .filter(code => code !== null)
