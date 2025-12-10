@@ -65,8 +65,14 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     needs: prepare-version
 
+    # 각 서비스별로 독립적인 concurrency 그룹 설정 (병렬 실행 보장)
+    concurrency:
+      group: build-${{ matrix.service }}-${{ github.ref }}
+      cancel-in-progress: false
+
     strategy:
       fail-fast: false
+      max-parallel: 11  # 최대 11개까지 동시 실행
       matrix:
         service:
           [
