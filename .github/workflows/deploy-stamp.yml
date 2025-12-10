@@ -1,0 +1,46 @@
+name: Deploy Stamp Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend-services/stamp-service/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy stamp-service to Production
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Harbor Registry
+        uses: docker/login-action@v3
+        with:
+          registry: 192.168.0.240
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Pull latest stamp-service image
+        run: |
+          docker pull 192.168.0.240/mywork/services-stamp-service:latest
+
+      - name: Stop existing stamp-service container
+        run: |
+          docker compose -f /home/bravo/LABs/services/docker-compose.yml stop stamp-service
+
+      - name: Restart stamp-service with updated image
+        run: |
+          docker compose -f /home/bravo/LABs/services/docker-compose.yml up -d stamp-service
+
+      - name: (Optional) Health check
+        run: |
+          echo "⏳ Checking service health..."
+          sleep 5
+          curl -f http://192.168.0.242/api/stamps/health || (echo "❌ Service failed health check" && exit 1)
+
+      - name: Deployment Completed
+        run: echo "🎉 Stamp Service Deployment Done!"
