@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  store-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hiking-store-service
+    ports:
+      - "3006:3006"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3006
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/hiking?authSource=admin
+      - REDIS_HOST=${REDIS_HOST:-192.168.0.243}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+networks:
+  hiking-network:
+    driver: bridge
+

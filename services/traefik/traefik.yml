@@ -1,0 +1,23 @@
+api:
+  dashboard: true
+  insecure: true
+
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: hiking-network
+
+  file:
+    filename: /etc/traefik/dynamic/routes.yml
+    watch: true
+
+log:
+  level: INFO
+
+accessLog: {}
+

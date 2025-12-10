@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  schedule-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hiking-schedule-service
+    ports:
+      - "3004:3004"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3004
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/hiking?authSource=admin
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+networks:
+  hiking-network:
+    driver: bridge
+
