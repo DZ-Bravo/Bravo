@@ -25,7 +25,7 @@ if (!existsSync(indexHtmlPath)) {
   console.log(`✅ index.html 확인됨: ${indexHtmlPath}`)
 }
 
-// 정적 파일 서빙
+// 정적 파일 서빙1
 app.use(express.static(distPath, {
   maxAge: '1d',
   etag: true,
