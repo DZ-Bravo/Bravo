@@ -62,17 +62,16 @@ jobs:
   # ==============================
   build-and-push:
     name: Build Changed Services & Deploy to Harbor
+    # ⚠️ 주의: 192.168.0.240은 사설 IP이므로 GitHub-hosted runner에서 접근 불가
+    # self-hosted runner를 사용해야 함 (병렬 처리를 위해 여러 runner 등록 필요)
     runs-on: [self-hosted, Linux, X64]
     needs: prepare-version
 
-    # 각 서비스별로 독립적인 concurrency 그룹 설정 (병렬 실행 보장)
-    concurrency:
-      group: build-${{ matrix.service }}-${{ github.ref }}
-      cancel-in-progress: false
-
     strategy:
       fail-fast: false
-      max-parallel: 11  # 최대 11개까지 동시 실행
+      # 병렬 처리: self-hosted runner가 여러 개 등록되어 있어야 병렬 실행됨
+      # runner가 하나만 있으면 순차 실행됨
+      # 해결: 같은 라벨(self-hosted, Linux, X64)로 여러 VM에 runner 등록
       matrix:
         service:
           [
@@ -96,7 +95,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1  # 최신 커밋만 체크아웃 (전체 히스토리 불필요, 체크아웃 속도 향상)
+          fetch-depth: 1  # 최신 커밋만 (전체 히스토리 불필요)
+          # 백엔드는 services/ 전체가 빌드 컨텍스트로 필요하므로 sparse-checkout 사용 불가
+          # 체크아웃 시간은 저장소 크기에 비례하지만, fetch-depth: 1로 최소화
 
       # --- Harbor CA 인증서 설치 ---
       - name: Install Harbor CA certificate
@@ -117,11 +118,32 @@ jobs:
           filters: |
             modified:
               - 'services/${{ matrix.service }}/**'
+              - 'services/shared/**'  # shared 변경 시에도 빌드 필요
+
+      # --- 변경 감지 결과 출력 (디버깅) ---
+      - name: Show change detection result
+        run: |
+          echo "Service: ${{ matrix.service }}"
+          echo "Modified: ${{ steps.changes.outputs.modified }}"
+          echo "All changes: ${{ steps.changes.outputs.all_modified }}"
 
       # --- 변경 없으면 skip ---
       - name: Skip if no changes
         if: steps.changes.outputs.modified != 'true'
         run: echo "⏭ No changes detected for ${{ matrix.service }}"
+
+      # --- Harbor 접근 테스트 ---
+      - name: Test Harbor connectivity
+        if: steps.changes.outputs.modified == 'true'
+        run: |
+          echo "🔍 Testing Harbor connectivity..."
+          if curl -k -I https://${{ env.REGISTRY_HOST }} 2>&1 | grep -q "200 OK"; then
+            echo "✅ Harbor is accessible"
+          else
+            echo "❌ Harbor is NOT accessible from this runner"
+            echo "   Registry: ${{ env.REGISTRY_HOST }}"
+            exit 1
+          fi
 
       # --- Build & Push if changed ---
       - name: Login to Harbor
@@ -151,7 +173,10 @@ jobs:
           echo "image_name=$IMAGE_NAME" >> "$GITHUB_OUTPUT"
           echo "build_context=$BUILD_CONTEXT" >> "$GITHUB_OUTPUT"
           echo "dockerfile=$DOCKERFILE" >> "$GITHUB_OUTPUT"
-          echo "image_ref=${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/$IMAGE_NAME:${{ env.VERSION }}" >> "$GITHUB_OUTPUT"
+          IMAGE_REF="${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/$IMAGE_NAME:${{ env.VERSION }}"
+          echo "image_ref=$IMAGE_REF" >> "$GITHUB_OUTPUT"
+          echo "📦 Image will be built as: $IMAGE_REF"
+          echo "📦 Latest tag: ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/$IMAGE_NAME:latest"
 
       - name: Build Image
         if: steps.changes.outputs.modified == 'true'
@@ -174,10 +199,19 @@ jobs:
       - name: Push Image
         if: steps.changes.outputs.modified == 'true'
         run: |
-          docker push ${{ steps.build-config.outputs.image_ref }}
+          echo "🚀 Pushing image: ${{ steps.build-config.outputs.image_ref }}"
+          docker push ${{ steps.build-config.outputs.image_ref }} || exit 1
+          
+          echo "🏷️  Tagging as latest: ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest"
           docker tag ${{ steps.build-config.outputs.image_ref }} \
               ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest
-          docker push ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest
+          
+          echo "🚀 Pushing latest tag..."
+          docker push ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest || exit 1
+          
+          echo "✅ Successfully pushed to Harbor!"
+          echo "   - Version tag: ${{ steps.build-config.outputs.image_ref }}"
+          echo "   - Latest tag: ${{ env.REGISTRY_HOST }}/${{ env.HARBOR_PROJECT }}/${{ steps.build-config.outputs.image_name }}:latest"
 
   # ==============================
   # 4) Git Tag 적용
