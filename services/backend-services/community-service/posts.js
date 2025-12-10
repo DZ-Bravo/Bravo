@@ -599,6 +599,71 @@ router.get('/:id', async (req, res) => {
     }
     console.log('게시글 상세 조회 - 해시태그:', post.hashtags, '타입:', typeof post.hashtags, '배열 여부:', Array.isArray(post.hashtags))
 
+    // 등산일지인 경우 산 이름 조회
+    let mountainName = null
+    if (post.category === 'diary' && post.mountainCode) {
+      try {
+        const mongoose = await import('mongoose')
+        const db = mongoose.default.connection.db
+        const collections = await db.listCollections().toArray()
+        const collectionNames = collections.map(c => c.name)
+        
+        let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+        if (!mountainListCollectionName) {
+          mountainListCollectionName = collectionNames.find(name => name.toLowerCase() === 'mountain_list') || 'Mountain_list'
+        }
+        const actualCollection = db.collection(mountainListCollectionName)
+        
+        const code = String(post.mountainCode)
+        const codeNum = parseInt(code)
+        const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+        
+        let mountain = null
+        if (isObjectId) {
+          try {
+            const objectId = new mongoose.default.Types.ObjectId(code)
+            mountain = await actualCollection.findOne({ _id: objectId })
+          } catch (e) {
+            console.error('ObjectId 변환 실패:', e)
+          }
+        }
+        
+        if (!mountain) {
+          const searchQueries = [
+            { mntilistno: codeNum },
+            { mntilistno: Number(code) },
+            { mntilistno: code },
+            { mntilistno: String(codeNum) },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': Number(code) },
+            { 'trail_match.mountain_info.mntilistno': code },
+            { 'trail_match.mountain_info.mntilistno': String(codeNum) }
+          ]
+          
+          for (const query of searchQueries) {
+            mountain = await actualCollection.findOne(query)
+            if (mountain) break
+          }
+        }
+        
+        if (mountain) {
+          const fullName = mountain.trail_match?.mountain_info?.mntiname ||
+                          mountain.mntiname ||
+                          mountain.name ||
+                          mountain.mountainName ||
+                          null
+          
+          if (fullName) {
+            mountainName = fullName
+              .replace(/\s+(백운대|대청봉|천왕봉|인수봉|만경대|주봉|정상).*$/, '')
+              .trim()
+          }
+        }
+      } catch (error) {
+        console.error('산 이름 조회 오류:', error)
+      }
+    }
+
     // 조회수 증가 (한 번만 실행되도록 await 사용)
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
@@ -668,7 +733,13 @@ router.get('/:id', async (req, res) => {
       images: post.images || [],
       hashtags: post.hashtags || [],
       createdAt: post.createdAt,
-      updatedAt: post.updatedAt
+      updatedAt: post.updatedAt,
+      // 등산일지 전용 필드
+      mountainCode: post.mountainCode || null,
+      mountainName: mountainName || null,
+      courseName: post.courseName || null,
+      courseDistance: post.courseDistance || null,
+      courseDurationMinutes: post.courseDurationMinutes || null
     })
   } catch (error) {
     console.error('게시글 상세 조회 오류:', error)
