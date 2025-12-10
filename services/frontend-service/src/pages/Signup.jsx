@@ -357,14 +357,30 @@ function Signup() {
       const data = await response.json()
       
       if (response.ok) {
-        alert('인증번호가 전송되었습니다. 이메일을 확인해주세요.')
+        // 성공 메시지 표시
+        const message = data.message || '인증번호가 전송되었습니다.'
+        alert(message)
+        
+        // 개발 모드 또는 테스트 모드에서 인증번호가 반환된 경우
         if (data.code) {
-          console.log('개발 모드 인증번호:', data.code)
+          console.log('인증번호:', data.code)
+          alert(`인증번호: ${data.code}\n\n(테스트 모드에서는 이메일 전송이 제한될 수 있습니다.)`)
+        }
+        
+        // 경고 메시지가 있는 경우 콘솔에 출력
+        if (data.warning) {
+          console.warn('이메일 전송 경고:', data.warning)
         }
       } else {
-        const errorMsg = data.error || '이메일 전송에 실패했습니다.'
-        setEmailErrorMessage(errorMsg)
-        alert(errorMsg)
+        // 500 오류인 경우에도 인증번호가 반환될 수 있음
+        if (data.code) {
+          console.log('인증번호 (오류 발생했지만 인증번호는 생성됨):', data.code)
+          alert(`인증번호: ${data.code}\n\n이메일 전송 중 오류가 발생했지만, 인증번호는 생성되었습니다.`)
+        } else {
+          const errorMsg = data.error || '이메일 전송에 실패했습니다.'
+          setEmailErrorMessage(errorMsg)
+          alert(errorMsg)
+        }
       }
     } catch (error) {
       console.error('이메일 인증번호 전송 오류:', error)

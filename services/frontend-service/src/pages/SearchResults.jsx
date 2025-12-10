@@ -200,29 +200,70 @@ function SearchResults() {
                 if (coursesResponse.ok) {
                   const coursesData = await coursesResponse.json()
                   const raw = coursesData.courses || []
-                  // 10분 이하 또는 0.5km 이하 코스는 제외, 모두 제외되면 가장 긴 코스 1개 남김
+                  
+                  // 상세 페이지와 동일한 필터링 적용
+                  const extractNumber = (value) => {
+                    if (value === null || value === undefined || value === '') return NaN
+                    if (typeof value === 'number') return isNaN(value) ? NaN : value
+                    if (typeof value === 'string') {
+                      // 문자열에서 숫자 추출 (예: "2시간 30분" -> 150)
+                      const timeMatch = value.match(/(\d+)시간\s*(\d+)?분?/)
+                      if (timeMatch) {
+                        const hours = parseInt(timeMatch[1]) || 0
+                        const minutes = parseInt(timeMatch[2]) || 0
+                        return hours * 60 + minutes
+                      }
+                      // 숫자만 있는 경우
+                      const num = parseFloat(value.replace(/[^\d.-]/g, ''))
+                      return isNaN(num) ? NaN : num
+                    }
+                    return NaN
+                  }
+                  
+                  // 10분 미만이고 0.5km 미만인 코스는 제외, 단 모두 걸러지면 가장 긴 코스 1개 남김
                   let filtered = raw.filter(c => {
                     const props = c.properties || {}
-                    const distRaw = props.distance ?? props.PMNTN_LT
+                    
+                    // 거리 추출 (여러 필드 확인)
+                    const distRaw = props.distance ?? props.PMNTN_LT ?? props.courseLength
+                    const dist = extractNumber(distRaw)
+                    
+                    // 시간 추출 (여러 필드 확인, upTime + downTime도 고려)
                     const durRaw = props.duration ?? props.upTime ?? props.PMNTN_UPPL
-                    const dist = distRaw !== undefined ? parseFloat(distRaw) : NaN
-                    const dur = durRaw !== undefined ? parseFloat(durRaw) : NaN
-                    if (!Number.isNaN(dist) && dist < 0.5) return false
-                    if (!Number.isNaN(dur) && dur < 10) return false
+                    let dur = extractNumber(durRaw)
+                    
+                    // upTime과 downTime이 따로 있으면 합산
+                    if (!Number.isFinite(dur) && (props.upTime || props.downTime)) {
+                      const upTime = extractNumber(props.upTime)
+                      const downTime = extractNumber(props.downTime)
+                      if (Number.isFinite(upTime) || Number.isFinite(downTime)) {
+                        dur = (Number.isFinite(upTime) ? upTime : 0) + (Number.isFinite(downTime) ? downTime : 0)
+                      }
+                    }
+                    
+                    // 10분 미만 AND 0.5km 미만인 경우만 제외
+                    if (Number.isFinite(dist) && Number.isFinite(dur) && dist < 0.5 && dur < 10) {
+                      return false
+                    }
+                    
+                    // 둘 중 하나라도 유효하지 않으면 통과 (필터링 안 함)
                     return true
                   })
+                  
+                  // 모두 걸러지면 가장 긴 코스 1개 남김
                   if (filtered.length === 0 && raw.length > 0) {
                     filtered = [...raw].sort((a, b) => {
                       const pa = a.properties || {}
                       const pb = b.properties || {}
-                      const durA = parseFloat(pa.duration ?? pa.upTime ?? pa.PMNTN_UPPL ?? 0) || 0
-                      const durB = parseFloat(pb.duration ?? pb.upTime ?? pb.PMNTN_UPPL ?? 0) || 0
+                      const durA = extractNumber(pa.duration ?? pa.upTime ?? pa.PMNTN_UPPL ?? 0) || 0
+                      const durB = extractNumber(pb.duration ?? pb.upTime ?? pb.PMNTN_UPPL ?? 0) || 0
                       if (durA !== durB) return durB - durA
-                      const distA = parseFloat(pa.distance ?? pa.PMNTN_LT ?? 0) || 0
-                      const distB = parseFloat(pb.distance ?? pb.PMNTN_LT ?? 0) || 0
+                      const distA = extractNumber(pa.distance ?? pa.PMNTN_LT ?? 0) || 0
+                      const distB = extractNumber(pb.distance ?? pb.PMNTN_LT ?? 0) || 0
                       return distB - distA
                     }).slice(0, 1)
                   }
+                  
                   coursesMap[mountain.code] = filtered
                 } else {
                   coursesMap[mountain.code] = []
