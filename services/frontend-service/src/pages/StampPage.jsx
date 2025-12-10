@@ -157,31 +157,140 @@ function StampPage() {
 
   // 페이지 포커스 시 완료한 산 목록 다시 가져오기 (등산일지 작성 후 돌아왔을 때)
   useEffect(() => {
-    const handleFocus = () => {
+    const fetchCompletedMountainsOnFocus = async () => {
       if (mountains.length > 0) {
         const token = localStorage.getItem('token')
         if (token) {
-          fetch(`${API_URL}/api/stamps/completed`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          })
-            .then(response => response.json())
-            .then(data => {
+          try {
+            console.log('[스탬프] 완료 산 목록 갱신 시작...')
+            const response = await fetch(`${API_URL}/api/stamps/completed`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
+            if (response.ok) {
+              const data = await response.json()
               const codes = data.completedMountainCodes || []
               console.log('[스탬프] 페이지 포커스 시 완료한 산 목록 갱신:', codes)
+              console.log('[스탬프] 갱신된 완료 산 개수:', codes.length)
               setCompletedMountainCodes(codes)
-            })
-            .catch(error => {
-              console.error('[스탬프] 완료 산 목록 갱신 오류:', error)
-            })
+            } else {
+              console.error('[스탬프] 완료 산 목록 갱신 실패:', response.status, response.statusText)
+            }
+          } catch (error) {
+            console.error('[스탬프] 완료 산 목록 갱신 오류:', error)
+          }
         }
       }
     }
 
+    const handleFocus = () => {
+      fetchCompletedMountainsOnFocus()
+    }
+
+    // 페이지 로드 시에도 실행
+    fetchCompletedMountainsOnFocus()
+
     window.addEventListener('focus', handleFocus)
-    return () => window.removeEventListener('focus', handleFocus)
+    // visibilitychange 이벤트도 추가 (탭 전환 시)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        fetchCompletedMountainsOnFocus()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      window.removeEventListener('focus', handleFocus)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [mountains, API_URL])
+
+  // 스탬프가 찍힌 산인지 확인 - 여러 형식으로 비교 (강화된 매칭)
+  const isCompleted = useCallback((mountainCode) => {
+    if (!mountainCode) return false
+    if (completedMountainCodes.length === 0) return false
+    
+    const codeStr = String(mountainCode).trim()
+    if (!codeStr || codeStr === 'null' || codeStr === 'undefined') return false
+    
+    // 정확한 문자열 매칭 (대소문자 무시)
+    const codeStrLower = codeStr.toLowerCase()
+    if (completedMountainCodes.some(c => String(c).trim().toLowerCase() === codeStrLower)) {
+      return true
+    }
+    
+    // 숫자로 변환해서도 비교 (타입 차이 대응)
+    const codeNum = parseInt(codeStr)
+    if (!isNaN(codeNum)) {
+      const numStr = String(codeNum)
+      if (completedMountainCodes.some(c => {
+        const cStr = String(c).trim()
+        return cStr === numStr || parseInt(cStr) === codeNum
+      })) {
+        return true
+      }
+    }
+    
+    // 역방향 비교 (completedMountainCodes의 각 항목과 비교)
+    const matched = completedMountainCodes.some(completedCode => {
+      const completedStr = String(completedCode).trim()
+      
+      // 정확한 문자열 매칭
+      if (completedStr === codeStr) return true
+      
+      // 숫자로 변환해서 비교
+      const completedNum = parseInt(completedStr)
+      const codeNum = parseInt(codeStr)
+      if (!isNaN(completedNum) && !isNaN(codeNum) && completedNum === codeNum) {
+        return true
+      }
+      
+      // 대소문자 무시 비교
+      if (completedStr.toLowerCase() === codeStr.toLowerCase()) {
+        return true
+      }
+      
+      return false
+    })
+    
+    return matched
+  }, [completedMountainCodes])
+
+  // 페이지네이션 (useMemo로 최적화)
+  const filteredMountains = useMemo(() => {
+    try {
+      let filtered = mountains
+      
+      // 완등 탭 필터링 (완료한 산만)
+      if (activeTab === 'completed') {
+        filtered = filtered.filter(mountain => isCompleted(mountain.code))
+      } else if (activeTab !== 'all') {
+        // 일반 탭 필터링
+        filtered = filtered.filter(mountain => {
+          const name = (mountain.name || '').trim()
+          if (!name) return false
+          const firstChar = name[0]
+          const tab = getTabForChar(firstChar)
+          return tab === activeTab
+        })
+      }
+      
+      // 검색어 필터링
+      if (searchQuery.trim()) {
+        const query = searchQuery.trim().toLowerCase()
+        filtered = filtered.filter(mountain => {
+          const name = (mountain.name || '').toLowerCase()
+          return name.includes(query)
+        })
+      }
+      
+      return filtered
+    } catch (error) {
+      console.error('[스탬프] 필터링 오류:', error)
+      return []
+    }
+  }, [mountains, activeTab, searchQuery, isCompleted])
 
   // ibb.co URL을 실제 이미지 URL로 변환 (지연 로딩 및 배치 처리로 최적화)
   useEffect(() => {
@@ -193,10 +302,11 @@ function StampPage() {
       const DELAY_BETWEEN_BATCHES = 100 // 배치 간 지연 시간 (ms)
       
       // 현재 페이지에 보이는 산들만 우선 처리 (filteredMountains 기반)
-      const filtered = getFilteredMountains()
       const startIdx = (currentPage - 1) * itemsPerPage
       const endIdx = startIdx + itemsPerPage
-      const currentPageMountains = filtered.slice(startIdx, endIdx)
+      const currentPageMountains = filteredMountains && filteredMountains.length > 0 
+        ? filteredMountains.slice(startIdx, endIdx)
+        : []
       
       // 배치로 나누어 처리
       for (let i = 0; i < currentPageMountains.length; i += BATCH_SIZE) {
@@ -297,7 +407,7 @@ function StampPage() {
     if (mountains.length > 0) {
       convertImageUrls()
     }
-  }, [mountains, API_URL, activeTab, currentPage, searchQuery, completedMountainCodes, itemsPerPage])
+  }, [mountains, API_URL, activeTab, currentPage, searchQuery, completedMountainCodes, itemsPerPage, filteredMountains])
 
   // 각 탭별 산 개수 계산
   const getTabCounts = () => {
@@ -345,92 +455,6 @@ function StampPage() {
     
     return counts
   }
-
-  // 스탬프가 찍힌 산인지 확인 - 여러 형식으로 비교 (강화된 매칭)
-  const isCompleted = useCallback((mountainCode) => {
-    if (!mountainCode) return false
-    if (completedMountainCodes.length === 0) return false
-    
-    const codeStr = String(mountainCode).trim()
-    if (!codeStr || codeStr === 'null' || codeStr === 'undefined') return false
-    
-    // 정확한 문자열 매칭 (대소문자 무시)
-    const codeStrLower = codeStr.toLowerCase()
-    if (completedMountainCodes.some(c => String(c).trim().toLowerCase() === codeStrLower)) {
-      return true
-    }
-    
-    // 숫자로 변환해서도 비교 (타입 차이 대응)
-    const codeNum = parseInt(codeStr)
-    if (!isNaN(codeNum)) {
-      const numStr = String(codeNum)
-      if (completedMountainCodes.some(c => {
-        const cStr = String(c).trim()
-        return cStr === numStr || parseInt(cStr) === codeNum
-      })) {
-        return true
-      }
-    }
-    
-    // 역방향 비교 (completedMountainCodes의 각 항목과 비교)
-    const matched = completedMountainCodes.some(completedCode => {
-      const completedStr = String(completedCode).trim()
-      
-      // 정확한 문자열 매칭
-      if (completedStr === codeStr) return true
-      
-      // 숫자로 변환해서 비교
-      const completedNum = parseInt(completedStr)
-      const codeNum = parseInt(codeStr)
-      if (!isNaN(completedNum) && !isNaN(codeNum) && completedNum === codeNum) {
-        return true
-      }
-      
-      // 대소문자 무시 비교
-      if (completedStr.toLowerCase() === codeStr.toLowerCase()) {
-        return true
-      }
-      
-      return false
-    })
-    
-    return matched
-  }, [completedMountainCodes])
-
-  // 페이지네이션 (useMemo로 최적화)
-  const filteredMountains = useMemo(() => {
-    try {
-      let filtered = mountains
-      
-      // 완등 탭 필터링 (완료한 산만)
-      if (activeTab === 'completed') {
-        filtered = filtered.filter(mountain => isCompleted(mountain.code))
-      } else if (activeTab !== 'all') {
-        // 일반 탭 필터링
-        filtered = filtered.filter(mountain => {
-          const name = (mountain.name || '').trim()
-          if (!name) return false
-          const firstChar = name[0]
-          const tab = getTabForChar(firstChar)
-          return tab === activeTab
-        })
-      }
-      
-      // 검색어 필터링
-      if (searchQuery.trim()) {
-        const query = searchQuery.trim().toLowerCase()
-        filtered = filtered.filter(mountain => {
-          const name = (mountain.name || '').toLowerCase()
-          return name.includes(query)
-        })
-      }
-      
-      return filtered
-    } catch (error) {
-      console.error('[스탬프] 필터링 오류:', error)
-      return []
-    }
-  }, [mountains, activeTab, searchQuery, isCompleted])
   
   const totalPages = Math.ceil(filteredMountains.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -444,18 +468,36 @@ function StampPage() {
 
   // 이미지 URL 가져오기 - 변환된 URL 우선 사용
   const getImageUrl = (mountain) => {
+    if (!mountain || !mountain.code) return null
+    
     // 변환된 이미지 URL이 있으면 우선 사용
     if (imageUrls[mountain.code]) {
-      return imageUrls[mountain.code]
+      const convertedUrl = imageUrls[mountain.code]
+      if (convertedUrl && convertedUrl !== 'null' && convertedUrl !== 'undefined') {
+        return convertedUrl
+      }
     }
     
     // 변환된 URL이 없으면 원본 image 필드 사용
     if (mountain.image) {
+      let imageUrl = mountain.image
+      
       // ibb.co 페이지 URL이지만 아직 변환 중인 경우
-      if (mountain.image.includes('ibb.co/') && !mountain.image.includes('i.ibb.co')) {
+      if (imageUrl.includes('ibb.co/') && !imageUrl.includes('i.ibb.co')) {
         return null // 변환 대기 중
       }
-      return mountain.image
+      
+      // http:// 또는 https://로 시작하면 그대로 사용
+      if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+        return imageUrl
+      }
+      
+      // 상대 경로인 경우 API_URL 추가
+      if (imageUrl.startsWith('/')) {
+        return `${API_URL}${imageUrl}`
+      }
+      
+      return imageUrl
     }
     
     return null
