@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mountain-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hiking-mountain-service
+    ports:
+      - "3008:3008"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3008
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/hiking?authSource=admin
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+    volumes:
+      - ../../../mountain:/app/mountain:ro
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+networks:
+  hiking-network:
+    driver: bridge
+

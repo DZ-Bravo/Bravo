@@ -1,0 +1,439 @@
+services:
+  # HAProxy - 최상단 로드밸런서
+  haproxy:
+    image: haproxy:2.8-alpine
+    container_name: hiking-haproxy
+    ports:
+      - "80:80"
+      - "8404:8404"  # Stats 페이지
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - frontend
+      - traefik
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+  # Traefik - API Gateway
+  traefik:
+    image: traefik:v2.10
+    container_name: hiking-traefik
+    ports:
+      - "8080:8080"  # Traefik Dashboard
+    expose:
+      - "80"  # HAProxy에서 접근할 내부 포트
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic:/etc/traefik/dynamic:ro
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --entrypoints.web.address=:80
+    depends_on:
+      - auth-service
+      - community-service
+      - notice-service
+      - schedule-service
+      - notification-service
+      - store-service
+      - chatbot-service
+      - mountain-service
+      - ai-service
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+  # MongoDB (공유) - 기존 볼륨 사용
+  mongodb:
+    image: mongo:7
+    container_name: hiking-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - labs_mongodb_data:/data/db  # 기존 볼륨 사용
+    environment:
+      - TZ=Asia/Seoul
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-admin123}
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Redis (이메일 인증번호 저장용)
+  redis:
+    image: redis:7-alpine
+    container_name: hiking-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - labs_redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend-service
+      dockerfile: Dockerfile
+      args:
+        # 빌드 시 항상 같은 카카오 JS 키를 사용하도록 고정
+        - VITE_KAKAO_MAP_API_KEY=650caaa8d67f90186c6a48c0df81607b
+        - VITE_CESIUM_ACCESS_TOKEN=${VITE_CESIUM_ACCESS_TOKEN:-}
+    container_name: hiking-frontend
+    env_file:
+      - ../.env
+    # 포트 노출 제거 (HAProxy를 통해서만 접근)
+    expose:
+      - "80"
+    environment:
+      - TZ=Asia/Seoul
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`) && !PathPrefix(`/api`) && !PathPrefix(`/mountain`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.priority=1"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Auth Service
+  auth-service:
+    build:
+      context: .
+      dockerfile: backend-services/auth-service/Dockerfile
+    container_name: hiking-auth-service
+    # 포트 노출 제거 (Traefik을 통해서만 접근)
+    expose:
+      - "3001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
+      - "traefik.http.routers.auth.entrypoints=web"
+      - "traefik.http.services.auth.loadbalancer.server.port=3001"
+    env_file:
+      - ../.env
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3001
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+      - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
+      - KAKAO_REDIRECT_URI=${KAKAO_REDIRECT_URI}
+      - NAVER_CLIENT_ID=${NAVER_CLIENT_ID}
+      - NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
+      - NAVER_REDIRECT_URI=${NAVER_REDIRECT_URI}
+      - FRONTEND_URL=${FRONTEND_URL:-http://192.168.0.242}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+    volumes:
+      # 프로필/업로드 파일을 공용 경로로 마운트 (기존 이미지 포함)
+      - /home/bravo/LABs/backend/uploads:/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Community Service
+  community-service:
+    build:
+      context: .
+      dockerfile: backend-services/community-service/Dockerfile
+    container_name: hiking-community-service
+    env_file:
+      - ../.env
+    expose:
+      - "3002"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.community.rule=PathPrefix(`/api/posts`) || PathPrefix(`/uploads`)"
+      - "traefik.http.routers.community.entrypoints=web"
+      - "traefik.http.routers.community.priority=10"
+      - "traefik.http.services.community.loadbalancer.server.port=3002"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3002
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+    volumes:
+      # 기존 이미지 경로를 쓰기 가능하게 마운트 (기존 이미지 + 새 이미지 모두 접근 가능)
+      - /home/bravo/LABs/backend/uploads:/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Notice Service
+  notice-service:
+    build:
+      context: .
+      dockerfile: backend-services/notice-service/Dockerfile
+    container_name: hiking-notice-service
+    env_file:
+      - ../.env
+    expose:
+      - "3003"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.notice.rule=PathPrefix(`/api/notices`)"
+      - "traefik.http.routers.notice.entrypoints=web"
+      - "traefik.http.services.notice.loadbalancer.server.port=3003"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3003
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Schedule Service
+  schedule-service:
+    build:
+      context: .
+      dockerfile: backend-services/schedule-service/Dockerfile
+    container_name: hiking-schedule-service
+    env_file:
+      - ../.env
+    expose:
+      - "3004"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.schedule.rule=PathPrefix(`/api/schedules`)"
+      - "traefik.http.routers.schedule.entrypoints=web"
+      - "traefik.http.services.schedule.loadbalancer.server.port=3004"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3004
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Notification Service
+  notification-service:
+    build:
+      context: .
+      dockerfile: backend-services/notification-service/Dockerfile
+    container_name: hiking-notification-service
+    env_file:
+      - ../.env
+    expose:
+      - "3005"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.notification.rule=PathPrefix(`/api/notifications`)"
+      - "traefik.http.routers.notification.entrypoints=web"
+      - "traefik.http.services.notification.loadbalancer.server.port=3005"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3005
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Store Service
+  store-service:
+    build:
+      context: .
+      dockerfile: backend-services/store-service/Dockerfile
+    container_name: hiking-store-service
+    env_file:
+      - ../.env
+    expose:
+      - "3006"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.store.rule=PathPrefix(`/api/store`)"
+      - "traefik.http.routers.store.entrypoints=web"
+      - "traefik.http.services.store.loadbalancer.server.port=3006"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3006
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Chatbot Service
+  chatbot-service:
+    build:
+      context: .
+      dockerfile: backend-services/chatbot-service/Dockerfile
+    container_name: hiking-chatbot-service
+    env_file:
+      - ../.env
+    expose:
+      - "3007"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chatbot.rule=PathPrefix(`/api/chatbot`)"
+      - "traefik.http.routers.chatbot.entrypoints=web"
+      - "traefik.http.services.chatbot.loadbalancer.server.port=3007"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3007
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - BEDROCK_AGENT_ID=${BEDROCK_AGENT_ID}
+      - BEDROCK_AGENT_ALIAS_ID=${BEDROCK_AGENT_ALIAS_ID}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Mountain Service
+  mountain-service:
+    build:
+      context: .
+      dockerfile: backend-services/mountain-service/Dockerfile
+    container_name: hiking-mountain-service
+    env_file:
+      - ../.env
+    expose:
+      - "3008"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mountain-api.rule=PathPrefix(`/api/mountains`) || PathPrefix(`/api/cctv`) || PathPrefix(`/api/courses`) || PathPrefix(`/api/utils/imgbb-url`)"
+      - "traefik.http.routers.mountain-api.entrypoints=web"
+      - "traefik.http.routers.mountain-api.priority=10"
+      - "traefik.http.routers.mountain-api.service=mountain"
+      - "traefik.http.routers.mountain-static.rule=PathPrefix(`/mountain`)"
+      - "traefik.http.routers.mountain-static.entrypoints=web"
+      - "traefik.http.routers.mountain-static.priority=20"
+      - "traefik.http.routers.mountain-static.service=mountain"
+      - "traefik.http.services.mountain.loadbalancer.server.port=3008"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3008
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY:-5845f67e1cb9eac922b39d43844a8fc1}
+    volumes:
+      - /home/bravo/LABs/mountain:/app/mountain:ro
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # AI Service
+  ai-service:
+    build:
+      context: .
+      dockerfile: backend-services/ai-service/Dockerfile
+    container_name: hiking-ai-service
+    env_file:
+      - ../.env
+    expose:
+      - "3009"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ai.rule=PathPrefix(`/api/ai`)"
+      - "traefik.http.routers.ai.entrypoints=web"
+      - "traefik.http.services.ai.loadbalancer.server.port=3009"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3009
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - BEDROCK_AGENT_ID=${BEDROCK_AGENT_ID}
+      - BEDROCK_AGENT_ALIAS_ID=${BEDROCK_AGENT_ALIAS_ID}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Stamp Service
+  stamp-service:
+    build:
+      context: .
+      dockerfile: backend-services/stamp-service/Dockerfile
+    container_name: hiking-stamp-service
+    env_file:
+      - ../.env
+    expose:
+      - "3010"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.stamp.rule=PathPrefix(`/api/stamps`)"
+      - "traefik.http.routers.stamp.entrypoints=web"
+      - "traefik.http.services.stamp.loadbalancer.server.port=3010"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3010
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/hiking?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+networks:
+  hiking-network:
+    driver: bridge
+
+volumes:
+  labs_mongodb_data:
+    external: true
+  labs_redis_data:  # 기존 볼륨 사용
+

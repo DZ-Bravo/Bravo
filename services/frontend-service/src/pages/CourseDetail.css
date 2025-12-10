@@ -1,0 +1,159 @@
+.course-detail-page {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.course-detail-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.course-detail-container {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #00BF93;
+}
+
+.course-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.course-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.course-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.course-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s;
+}
+
+.course-item:hover {
+  border-color: #00BF93;
+  box-shadow: 0 2px 8px rgba(0, 191, 147, 0.1);
+}
+
+.course-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.course-item-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.course-item-location {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: var(--card-bg);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+.course-item-info {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.difficulty-easy {
+  color: #00BF93;
+}
+
+.difficulty-medium {
+  color: #FFA500;
+}
+
+.difficulty-hard {
+  color: #FF4444;
+}
+
+.course-item-description {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .course-detail-container {
+    padding: 32px 24px;
+  }
+
+  .course-title {
+    font-size: 2rem;
+  }
+
+  .course-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .course-item-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+

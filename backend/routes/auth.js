@@ -1152,7 +1152,7 @@ router.get('/kakao/callback', async (req, res) => {
 router.get('/naver', (req, res) => {
   const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID || 'bPUAgB6QZBRBZrL3G1CN'
   // 백엔드로 콜백 받기
-  const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242:5000/api/auth/naver/callback'
+  const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242/api/auth/naver/callback'
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
   
   // 네이버 OAuth URL 생성
@@ -1189,7 +1189,7 @@ router.get('/naver/callback', async (req, res) => {
 
     const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID || 'bPUAgB6QZBRBZrL3G1CN'
     const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET || '9TzCuTvpBJ'
-    const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242:5000/api/auth/naver/callback'
+    const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242/api/auth/naver/callback'
 
     // 액세스 토큰 요청
     const tokenResponse = await fetch('https://nid.naver.com/oauth2.0/token', {
