@@ -839,25 +839,36 @@ router.post('/find-id', async (req, res) => {
   }
 })
 
-// 비밀번호 찾기용 인증번호 전송
-router.post('/send-verification-code-password', async (req, res) => {
+// 비밀번호 찾기용 이메일 인증번호 전송
+router.post('/send-email-verification-password', async (req, res) => {
   try {
-    const { id, phone } = req.body
+    const { id, email } = req.body
 
-    if (!id || !phone) {
-      return res.status(400).json({ error: 'ID와 휴대폰 번호를 입력해주세요.' })
+    if (!id || !email) {
+      return res.status(400).json({ error: 'ID와 이메일을 입력해주세요.' })
     }
 
-    // 휴대폰 번호 형식 검증
-    const phoneRegex = /^010-\d{4}-\d{4}$/
-    if (!phoneRegex.test(phone)) {
-      return res.status(400).json({ error: '올바른 휴대폰 번호 형식이 아닙니다. (010-1111-2222)' })
+    // 이메일 형식 검증
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: '올바른 이메일 형식이 아닙니다.' })
     }
 
-    // 해당 ID와 휴대폰 번호로 가입된 사용자 확인
-    const user = await User.findOne({ id, phone })
-    if (!user) {
-      return res.status(404).json({ error: '일치하는 회원정보를 찾을 수 없습니다.' })
+    // 아이디로 사용자 확인
+    const userById = await User.findOne({ id })
+    if (!userById) {
+      return res.status(404).json({ error: '해당 아이디가 없습니다.' })
+    }
+
+    // 이메일로 사용자 확인
+    const userByEmail = await User.findOne({ email })
+    if (!userByEmail) {
+      return res.status(404).json({ error: '해당 이메일이 없습니다.' })
+    }
+
+    // 아이디와 이메일이 같은 사용자에게 속하는지 확인
+    if (userById._id.toString() !== userByEmail._id.toString()) {
+      return res.status(400).json({ error: '아이디와 이메일이 일치하지 않습니다.' })
     }
 
     // 인증번호 생성 (6자리)
@@ -866,73 +877,91 @@ router.post('/send-verification-code-password', async (req, res) => {
     // Redis에 저장 (5분 TTL - 자동 만료)
     const client = await getRedisClient()
     if (client) {
-      const redisKey = `verification:password:${id}:${phone}`
+      const redisKey = `verification:email:password:${id}:${email}`
       await client.setEx(redisKey, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
-      console.log(`비밀번호 찾기 인증번호 Redis 저장: ${id} / ${phone} -> ${code} (5분 TTL)`)
+      console.log(`비밀번호 찾기 이메일 인증번호 Redis 저장: ${id} / ${email} -> ${code} (5분 TTL)`)
     } else {
       console.warn('Redis 연결 실패, 인증번호 저장 불가')
       return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
     }
 
-    // AWS SNS로 SMS 전송
+    // Resend로 이메일 전송
     try {
-      // 하이픈 제거하고 국가 코드 추가 (한국: +82)
-      const phoneNumber = `+82${phone.replace(/-/g, '').substring(1)}`
-      const message = `[오늘의 등산] 비밀번호 찾기 인증번호는 ${code}입니다. 5분 내에 입력해주세요.`
-      
-      console.log(`비밀번호 찾기 SMS 전송 시도: ${phoneNumber}`)
-      
-      const result = await sns.publish({
-        PhoneNumber: phoneNumber,
-        Message: message
-      }).promise()
-      
-      console.log(`비밀번호 찾기 SMS 전송 성공: ${result.MessageId}`)
-      
-      res.json({
-        message: '인증번호가 전송되었습니다.',
-        // 개발 환경에서만 인증번호 반환 (실제 운영에서는 제거)
-        code: process.env.NODE_ENV === 'development' ? code : undefined
+      const { data, error } = await resend.emails.send({
+        from: 'HIKER <onboarding@resend.dev>',
+        to: email,
+        subject: '[HIKER] 비밀번호 찾기 인증번호',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #333;">비밀번호 찾기 인증번호</h2>
+            <p>안녕하세요, HIKER입니다.</p>
+            <p>비밀번호 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
+            <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+              <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
+            </div>
+            <p>이 인증번호는 5분간 유효합니다.</p>
+            <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
+          </div>
+        `
       })
-    } catch (snsError) {
-      console.error('비밀번호 찾기 SNS 전송 오류:', snsError)
-      console.error('SNS 오류 상세:', {
-        code: snsError.code,
-        message: snsError.message,
-        statusCode: snsError.statusCode,
-        requestId: snsError.requestId,
-        stack: snsError.stack
-      })
-      
-      // Sandbox 모드 오류 확인
-      if (snsError.code === 'OptedOut' || snsError.message?.includes('sandbox') || snsError.message?.includes('Sandbox')) {
-        return res.status(400).json({ 
-          error: 'SMS 전송 실패: AWS SNS Sandbox 모드입니다. AWS 콘솔에서 Production 모드로 전환하거나 Sandbox에서 번호를 인증해주세요.',
-          details: snsError.message,
-          code: process.env.NODE_ENV === 'development' ? code : undefined
+
+      // Resend API의 validation_error는 테스트 모드에서 정상적인 동작이므로 무시
+      if (error) {
+        console.warn('Resend 이메일 전송 경고:', error)
+        // validation_error인 경우 (테스트 모드에서 다른 이메일로 보낼 때) 무시하고 계속 진행
+        if (error.name === 'validation_error' && error.message && error.message.includes('testing emails')) {
+          console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
+          return res.json({
+            message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
+            code: code,
+            warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+          })
+        }
+        // 다른 오류인 경우에만 에러 반환
+        console.error('Resend 이메일 전송 오류:', error)
+        return res.status(500).json({ 
+          error: '이메일 전송에 실패했습니다.',
+          details: error.message,
+          code: code
         })
       }
+
+      console.log(`이메일 전송 성공: ${email}, Message ID: ${data?.id}`)
       
-      // SNS 전송 실패해도 인증번호는 생성되었으므로 개발 환경에서는 반환
       res.json({
         message: '인증번호가 전송되었습니다.',
-        code: process.env.NODE_ENV === 'development' ? code : undefined,
-        warning: `SMS 전송 중 오류가 발생했습니다: ${snsError.message}. 개발 모드에서는 인증번호를 확인할 수 있습니다.`
+        code: process.env.NODE_ENV === 'development' ? code : undefined
+      })
+    } catch (emailError) {
+      console.error('이메일 전송 오류:', emailError)
+      // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
+      if (emailError.name === 'validation_error' || (emailError.message && emailError.message.includes('testing emails'))) {
+        console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
+        return res.json({
+          message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
+          code: code,
+          warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+        })
+      }
+      res.json({
+        message: '인증번호가 생성되었습니다.',
+        code: code,
+        warning: `이메일 전송 중 오류가 발생했습니다: ${emailError.message}. 인증번호는 Redis에 저장되었습니다.`
       })
     }
   } catch (error) {
-    console.error('인증번호 전송 오류:', error)
+    console.error('이메일 인증번호 전송 오류:', error)
     res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
   }
 })
 
-// 비밀번호 찾기 (임시 비밀번호 발급)
-router.post('/find-password', async (req, res) => {
+// 비밀번호 찾기용 이메일 인증번호 검증
+router.post('/verify-email-code-password', async (req, res) => {
   try {
-    const { id, phone, verificationCode } = req.body
+    const { id, email, verificationCode } = req.body
 
-    if (!id || !phone || !verificationCode) {
-      return res.status(400).json({ error: 'ID, 휴대폰 번호, 인증번호를 모두 입력해주세요.' })
+    if (!id || !email || !verificationCode) {
+      return res.status(400).json({ error: 'ID, 이메일, 인증번호를 모두 입력해주세요.' })
     }
 
     // Redis에서 인증번호 확인
@@ -941,7 +970,7 @@ router.post('/find-password', async (req, res) => {
       return res.status(500).json({ error: '인증번호 확인에 실패했습니다.' })
     }
 
-    const redisKey = `verification:password:${id}:${phone}`
+    const redisKey = `verification:email:password:${id}:${email}`
     const storedCode = await client.get(redisKey)
     
     if (!storedCode) {
@@ -952,33 +981,100 @@ router.post('/find-password', async (req, res) => {
       return res.status(400).json({ error: '인증번호가 일치하지 않습니다.' })
     }
 
-    // 인증번호 확인 후 삭제
-    await client.del(redisKey)
-
-    // 사용자 찾기
-    const user = await User.findOne({ id, phone })
-
-    if (!user) {
-      return res.status(404).json({ error: '일치하는 회원정보를 찾을 수 없습니다.' })
+    // 아이디와 이메일로 사용자 확인
+    const userById = await User.findOne({ id })
+    if (!userById) {
+      return res.status(404).json({ error: '해당 아이디가 없습니다.' })
     }
 
-    // 임시 비밀번호 생성 (8자리 랜덤)
-    const tempPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8).toUpperCase()
-    const tempPasswordShort = tempPassword.slice(0, 8)
+    const userByEmail = await User.findOne({ email })
+    if (!userByEmail) {
+      return res.status(404).json({ error: '해당 이메일이 없습니다.' })
+    }
 
-    // 비밀번호 업데이트
-    user.password = tempPasswordShort
-    await user.save()
+    // 아이디와 이메일이 같은 사용자에게 속하는지 확인
+    if (userById._id.toString() !== userByEmail._id.toString()) {
+      return res.status(400).json({ error: '아이디와 이메일이 일치하지 않습니다.' })
+    }
 
+    // 인증번호 확인 후 인증 완료 표시를 위한 키 설정
+    const verifiedKey = `email-verification:password:${id}:${email}`
+    await client.setEx(verifiedKey, 600, 'verified') // 10분간 유지
+    
+    console.log(`비밀번호 찾기 이메일 인증 완료: ${id} / ${email}, 인증 완료 키 설정: ${verifiedKey}`)
+    
     res.json({
-      message: '임시 비밀번호가 발급되었습니다.',
-      tempPassword: tempPasswordShort,
-      // 실제 운영 환경에서는 이메일이나 SMS로 전송해야 함
-      warning: '임시 비밀번호를 안전하게 보관하시고, 로그인 후 비밀번호를 변경해주세요.'
+      message: '인증번호가 확인되었습니다.',
+      verified: true
     })
   } catch (error) {
-    console.error('비밀번호 찾기 오류:', error)
-    res.status(500).json({ error: '비밀번호 찾기 중 오류가 발생했습니다.' })
+    console.error('이메일 인증번호 검증 오류:', error)
+    res.status(500).json({ error: '인증번호 검증 중 오류가 발생했습니다.' })
+  }
+})
+
+// 비밀번호 재설정
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { id, email, newPassword } = req.body
+
+    if (!id || !email || !newPassword) {
+      return res.status(400).json({ error: 'ID, 이메일, 새 비밀번호를 모두 입력해주세요.' })
+    }
+
+    // 비밀번호 길이 검증
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: '비밀번호는 최소 6자 이상이어야 합니다.' })
+    }
+
+    // 이메일 인증 여부 확인 (Redis에서 인증 완료 키 확인)
+    const client = await getRedisClient()
+    if (!client) {
+      return res.status(500).json({ error: '인증 확인에 실패했습니다. (Redis 연결 오류)' })
+    }
+
+    const verifiedKey = `email-verification:password:${id}:${email}`
+    const isEmailVerified = await client.get(verifiedKey)
+    
+    if (!isEmailVerified) {
+      return res.status(400).json({ error: '이메일 인증을 완료해주세요.' })
+    }
+
+    // 아이디로 사용자 확인
+    const userById = await User.findOne({ id })
+    if (!userById) {
+      return res.status(404).json({ error: '해당 아이디가 없습니다.' })
+    }
+
+    // 이메일로 사용자 확인
+    const userByEmail = await User.findOne({ email })
+    if (!userByEmail) {
+      return res.status(404).json({ error: '해당 이메일이 없습니다.' })
+    }
+
+    // 아이디와 이메일이 같은 사용자에게 속하는지 확인
+    if (userById._id.toString() !== userByEmail._id.toString()) {
+      return res.status(400).json({ error: '아이디와 이메일이 일치하지 않습니다.' })
+    }
+
+    // 비밀번호 업데이트
+    userById.password = newPassword
+    await userById.save()
+
+    // 인증 완료 키 삭제
+    await client.del(verifiedKey)
+    const redisKey = `verification:email:password:${id}:${email}`
+    await client.del(redisKey)
+
+    console.log(`비밀번호 재설정 완료: ${id} / ${email}`)
+
+    res.json({
+      message: '비밀번호가 성공적으로 변경되었습니다.',
+      success: true
+    })
+  } catch (error) {
+    console.error('비밀번호 재설정 오류:', error)
+    res.status(500).json({ error: '비밀번호 재설정 중 오류가 발생했습니다.' })
   }
 })
 
