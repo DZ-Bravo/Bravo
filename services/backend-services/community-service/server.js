@@ -14,7 +14,7 @@ const __dirname = dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 3002
 
-// 미들웨어1
+// 미들웨어2
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
