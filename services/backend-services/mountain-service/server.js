@@ -23,7 +23,7 @@ const __dirname = dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 3008
 
-// 미들웨어
+// 미들웨어5
 app.use(cors())
 app.use(express.json())
 
