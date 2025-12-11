@@ -12,6 +12,7 @@ import Course from './models/Course.js'
 import Lodging from './models/Lodging.js'
 import Schedule from './models/Schedule.js'
 import Notification from './models/Notification.js'
+import Post from './models/Post.js'
 import authRoutes from './routes/auth.js'
 import postsRoutes from './routes/posts.js'
 import noticesRoutes from './routes/notices.js'
@@ -63,6 +64,147 @@ app.use('/api/store', storeRoutes)
 
 // 챗봇 라우트
 app.use('/api/chatbot', chatbotRoutes)
+
+// 스탬프 라우트 - 사용자의 등산 완료 산 목록 가져오기
+app.get('/api/stamps/completed', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    console.log(`[스탬프] API 호출됨 - 사용자 ID: ${userId}, 타입: ${typeof userId}`)
+    
+    // 사용자가 작성한 등산일지(diary)에서 mountainCode 추출
+    const userDiaries = await Post.find({
+      author: userId,
+      category: 'diary',
+      mountainCode: { $exists: true, $ne: null, $ne: '' }
+    }).select('mountainCode title createdAt').lean()
+    
+    console.log(`[스탬프] 사용자 ${userId}의 등산일지 개수: ${userDiaries.length}`)
+    
+    // 등산일지 상세 정보 로그
+    if (userDiaries.length > 0) {
+      console.log(`[스탬프] 등산일지 상세:`, userDiaries.map(d => ({
+        title: d.title,
+        mountainCode: d.mountainCode,
+        mountainCodeType: typeof d.mountainCode,
+        createdAt: d.createdAt
+      })))
+    } else {
+      console.warn(`[스탬프] 사용자 ${userId}의 등산일지가 없습니다.`)
+    }
+    
+    // MongoDB 연결 및 Mountain_list 컬렉션 접근
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    
+    let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+    if (!mountainListCollectionName) {
+      mountainListCollectionName = collectionNames.find(name => 
+        name.toLowerCase() === 'mountain_list'
+      ) || 'Mountain_list'
+    }
+    const actualCollection = db.collection(mountainListCollectionName)
+    
+    // 등산일지의 mountainCode를 mountain_list의 mntilistno와 매칭
+    const completedMountainCodes = []
+    const processedCodes = new Set() // 중복 제거용
+    
+    for (const diary of userDiaries) {
+      const code = diary.mountainCode
+      if (!code) {
+        console.log(`[스탬프] mountainCode 없음 - 제목: ${diary.title}`)
+        continue
+      }
+      
+      // String으로 변환하고 빈 문자열 체크
+      let codeStr = String(code).trim()
+      if (codeStr === '' || codeStr === 'null' || codeStr === 'undefined') {
+        console.log(`[스탬프] 유효하지 않은 mountainCode - 제목: ${diary.title}, 코드: ${codeStr}`)
+        continue
+      }
+      
+      // 여러 형식으로 mountain_list에서 찾기
+      const codeNum = parseInt(codeStr)
+      const searchQueries = []
+      
+      if (!isNaN(codeNum)) {
+        // 숫자 형식으로 검색
+        searchQueries.push(
+          { mntilistno: codeNum },
+          { mntilistno: Number(codeStr) },
+          { 'trail_match.mountain_info.mntilistno': codeNum },
+          { 'trail_match.mountain_info.mntilistno': Number(codeStr) }
+        )
+      }
+      
+      // 문자열 형식으로도 검색
+      searchQueries.push(
+        { mntilistno: codeStr },
+        { mntilistno: String(codeNum) },
+        { 'trail_match.mountain_info.mntilistno': codeStr },
+        { 'trail_match.mountain_info.mntilistno': String(codeNum) }
+      )
+      
+      let foundMountain = null
+      let actualMntilistno = null
+      
+      // 여러 쿼리로 시도
+      for (const query of searchQueries) {
+        try {
+          foundMountain = await actualCollection.findOne(query)
+          if (foundMountain) {
+            // 실제 mntilistno 추출
+            actualMntilistno = foundMountain.mntilistno || 
+                              foundMountain.trail_match?.mountain_info?.mntilistno
+            
+            if (actualMntilistno !== undefined && actualMntilistno !== null) {
+              // 숫자로 정규화
+              const mntilistnoNum = parseInt(actualMntilistno)
+              if (!isNaN(mntilistnoNum)) {
+                actualMntilistno = String(mntilistnoNum)
+              } else {
+                actualMntilistno = String(actualMntilistno)
+              }
+              break
+            }
+          }
+        } catch (e) {
+          console.log(`[스탬프] 쿼리 실패: ${JSON.stringify(query)} - ${e.message}`)
+        }
+      }
+      
+      if (actualMntilistno && !processedCodes.has(actualMntilistno)) {
+        completedMountainCodes.push(actualMntilistno)
+        processedCodes.add(actualMntilistno)
+        console.log(`[스탬프] 매칭 성공 - 제목: ${diary.title}, 원본 코드: ${codeStr}, 실제 mntilistno: ${actualMntilistno}`)
+      } else if (!actualMntilistno) {
+        // 매칭 실패 시 원본 코드를 숫자로 정규화하여 사용
+        if (!isNaN(codeNum)) {
+          const normalizedCode = String(codeNum)
+          if (!processedCodes.has(normalizedCode)) {
+            completedMountainCodes.push(normalizedCode)
+            processedCodes.add(normalizedCode)
+            console.log(`[스탬프] 매칭 실패, 원본 코드 정규화 사용 - 제목: ${diary.title}, 코드: ${normalizedCode}`)
+          }
+        } else {
+          console.warn(`[스탬프] 매칭 실패 - 제목: ${diary.title}, 코드: ${codeStr}`)
+        }
+      }
+    }
+
+    console.log(`[스탬프] 최종 완료 산 개수: ${completedMountainCodes.length}`)
+    console.log(`[스탬프] 완료 산 코드 목록:`, completedMountainCodes)
+
+    res.json({
+      completedMountainCodes,
+      count: completedMountainCodes.length
+    })
+  } catch (error) {
+    console.error('등산 완료 산 목록 조회 오류:', error)
+    res.status(500).json({ error: '등산 완료 산 목록을 가져오는데 실패했습니다.' })
+  }
+})
 
 // CCTV 프록시 엔드포인트 (X-Frame-Options 우회)
 app.get('/api/cctv/proxy', async (req, res) => {

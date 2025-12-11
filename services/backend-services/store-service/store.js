@@ -380,7 +380,8 @@ router.post('/:productId/favorite', authenticateToken, async (req, res) => {
     if (favoriteIndex > -1) {
       // 이미 즐겨찾기에 있으면 제거
       user.favoriteStores.splice(favoriteIndex, 1)
-      await user.save()
+      // user.save() 대신 findByIdAndUpdate 사용 (email 검증 오류 방지)
+      await User.findByIdAndUpdate(userId, { favoriteStores: user.favoriteStores }, { runValidators: false })
       console.log('즐겨찾기 제거 완료 - 새로운 목록:', user.favoriteStores)
       res.json({ 
         isFavorited: false, 
@@ -389,7 +390,8 @@ router.post('/:productId/favorite', authenticateToken, async (req, res) => {
     } else {
       // 즐겨찾기에 추가
       user.favoriteStores.push(productObjectId)
-      await user.save()
+      // user.save() 대신 findByIdAndUpdate 사용 (email 검증 오류 방지)
+      await User.findByIdAndUpdate(userId, { favoriteStores: user.favoriteStores }, { runValidators: false })
       console.log('즐겨찾기 추가 완료 - 새로운 목록:', user.favoriteStores)
       res.json({ 
         isFavorited: true, 
