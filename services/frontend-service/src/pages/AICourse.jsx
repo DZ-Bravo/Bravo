@@ -1,33 +1,200 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
+import { API_URL } from '../utils/api'
 import './AICourse.css'
 
 function AICourse() {
+  const navigate = useNavigate()
   const [selectedCategory, setSelectedCategory] = useState('course')
   const [userInput, setUserInput] = useState('')
   const [recommendations, setRecommendations] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [mountainCodeMap, setMountainCodeMap] = useState({})
 
   const categories = [
     { id: 'course', name: '코스 추천' },
     { id: 'equipment', name: '장비 추천' }
   ]
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // TODO: AI 추천 API 호출
-    console.log(`${categories.find(c => c.id === selectedCategory)?.name} 요청:`, userInput)
-    // 임시 데이터
-    if (selectedCategory === 'course') {
-      setRecommendations([
-        {
-          id: 1,
-          mountain: '북한산',
-          difficulty: '중급',
-          duration: '3-4시간',
-          description: '초보자도 도전 가능한 코스입니다.'
+  // Bedrock 응답 파싱 함수
+  const parseRecommendationResponse = (responseText) => {
+    const courses = []
+    
+    // 정규식으로 코스 분리 (번호 [1], [2], [3] 또는 줄바꿈 기준)
+    const coursePattern = /(.+?)\s*\[(\d+)\]/g
+    const lines = responseText.split('\n').filter(line => line.trim())
+    
+    let match
+    let currentCourse = null
+    
+    // 번호 패턴으로 분리 시도
+    while ((match = coursePattern.exec(responseText)) !== null) {
+      const courseText = match[1].trim()
+      const courseNumber = match[2]
+      
+      // 코스 정보 파싱
+      const courseInfo = parseCourseInfo(courseText)
+      if (courseInfo) {
+        courses.push({
+          ...courseInfo,
+          id: courseNumber
+        })
+      }
+    }
+    
+    // 번호 패턴이 없으면 줄바꿈 기준으로 분리
+    if (courses.length === 0) {
+      lines.forEach((line, index) => {
+        const courseInfo = parseCourseInfo(line)
+        if (courseInfo) {
+          courses.push({
+            ...courseInfo,
+            id: index + 1
+          })
         }
-      ])
+      })
+    }
+    
+    return courses
+  }
+
+  // 개별 코스 정보 파싱
+  const parseCourseInfo = (text) => {
+    // 형식: "장산 - 좌동구간 거리 1.58km, 48분, 난이도 쉬움. 약간의 구름이 낀 하늘 11°C, 구름 20%  가벼운 산책 코스로..."
+    
+    // 산 이름과 코스 이름 추출
+    const mountainMatch = text.match(/^(.+?)\s*-\s*(.+?)\s*거리/)
+    if (!mountainMatch) return null
+    
+    const mountainFull = mountainMatch[1].trim()
+    const courseName = mountainMatch[2].trim()
+    
+    // 산 이름에서 괄호 제거하여 순수 산 이름 추출
+    const mountainMatch2 = mountainFull.match(/^(.+?)\s*\(/)
+    const mountain = mountainMatch2 ? mountainMatch2[1].trim() : mountainFull
+    
+    // 거리, 시간, 난이도 추출
+    const distanceMatch = text.match(/거리\s*([\d.]+)km/)
+    const durationMatch = text.match(/(\d+)분/)
+    const difficultyMatch = text.match(/난이도\s*([가-힣]+)/)
+    
+    // 날씨 정보 추출 (더 유연한 패턴)
+    // "약간의 구름이 낀 하늘 11°C, 구름 20%" 또는 "맑음 12°C, 구름 0%"
+    const weatherMatch = text.match(/([가-힣\s]+?)\s+([\d.]+)°C[,\s]*구름\s*(\d+)%/)
+    
+    // 설명 추출 (날씨 정보 이후)
+    let description = ''
+    if (weatherMatch) {
+      // 날씨 정보 이후의 모든 텍스트를 설명으로
+      const weatherEndIndex = weatherMatch.index + weatherMatch[0].length
+      description = text.substring(weatherEndIndex).trim()
+      // 앞뒤 공백 제거
+      description = description.replace(/^\s+|\s+$/g, '')
     } else {
+      // 날씨 정보가 없으면 난이도 이후부터 설명으로 간주
+      const difficultyEndIndex = text.indexOf('난이도')
+      if (difficultyEndIndex !== -1) {
+        const afterDifficulty = text.substring(difficultyEndIndex)
+        const dotIndex = afterDifficulty.indexOf('.')
+        if (dotIndex !== -1) {
+          description = afterDifficulty.substring(dotIndex + 1).trim()
+        }
+      }
+    }
+    
+    return {
+      mountain,
+      mountainFull,
+      course: courseName,
+      distance: distanceMatch ? `${distanceMatch[1]}km` : '',
+      duration: durationMatch ? `${durationMatch[1]}분` : '',
+      difficulty: difficultyMatch ? difficultyMatch[1] : '',
+      weather: weatherMatch ? `${weatherMatch[1].trim()} ${weatherMatch[2]}°C, 구름 ${weatherMatch[3]}%` : '',
+      description: description || ''
+    }
+  }
+
+  // 산 이름으로 mountain_code 조회 (정확히 일치하는 이름만)
+  const getMountainCode = async (mountainFullName) => {
+    if (!mountainFullName) return null
+
+    const targetFull = mountainFullName.trim()
+    const targetWithoutParentheses = targetFull.split('(')[0].trim()
+
+    // 캐시 확인
+    if (mountainCodeMap[targetFull]) {
+      return mountainCodeMap[targetFull]
+    }
+
+    // 1차: ai-service의 KB 기반 매핑 API 호출
+    try {
+      const resp = await fetch(`${API_URL}/api/ai/mountain-code?name=${encodeURIComponent(targetFull)}`)
+      if (resp.ok) {
+        const data = await resp.json()
+        if (data.code) {
+          setMountainCodeMap(prev => ({ ...prev, [targetFull]: data.code }))
+          return data.code
+        }
+      }
+    } catch (e) {
+      console.warn('mountain-code lookup (ai-service) 실패:', e)
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/mountains`)
+      if (!response.ok) return null
+      
+      const data = await response.json()
+      const mountains = data.mountains || []
+      
+      // 산 이름으로 검색 (정확히 일치하는 것만)
+      const found = mountains.find(m => {
+        const name = m.name || ''
+        const nameFull = name.trim()
+        const nameWithoutParentheses = name.split('(')[0].trim()
+        return (
+          nameFull === targetFull ||
+          nameWithoutParentheses === targetWithoutParentheses
+        )
+      })
+      
+      if (found) {
+        const mountainCode =
+          (found.mntilistno !== undefined && found.mntilistno !== null && found.mntilistno !== '') ? String(found.mntilistno) :
+          (found.code !== undefined && found.code !== null && found.code !== '') ? String(found.code) :
+          (found.MNTN_CD !== undefined && found.MNTN_CD !== null && found.MNTN_CD !== '') ? String(found.MNTN_CD) :
+          (found._id !== undefined && found._id !== null && found._id !== '') ? String(found._id) :
+          null
+
+        if (!mountainCode) {
+          console.warn(`산 이름 매칭: "${targetFull}" -> "${found.name}" but 코드 필드 없음`)
+          return null
+        }
+
+        console.log(`산 이름 매칭: "${targetFull}" -> "${found.name}" (code: ${mountainCode})`)
+        // 캐시에 저장
+        setMountainCodeMap(prev => ({
+          ...prev,
+          [targetFull]: mountainCode
+        }))
+        return mountainCode
+      }
+      
+      console.warn(`산 이름을 찾을 수 없음: "${targetFull}"`)
+    } catch (error) {
+      console.error('산 코드 조회 오류:', error)
+    }
+    
+    return null
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (selectedCategory !== 'course') {
+      // 장비 추천은 기존 로직 유지 (추후 구현)
       setRecommendations([
         {
           id: 1,
@@ -36,6 +203,73 @@ function AICourse() {
           description: '초보자에게 추천하는 등산화입니다.'
         }
       ])
+      return
+    }
+    
+    if (!userInput.trim()) {
+      setError('조건을 입력해주세요.')
+      return
+    }
+    
+    console.log('=== handleSubmit 실행됨 ===')
+    console.log('selectedCategory:', selectedCategory)
+    console.log('userInput:', userInput)
+    
+    setLoading(true)
+    setError(null)
+    setRecommendations([])
+    
+    try {
+      console.log('=== API 호출 시작 ===')
+      console.log('API_URL:', API_URL)
+      console.log('API 엔드포인트:', `${API_URL}/api/ai/recommend-course`)
+      console.log('요청 데이터:', { userInput })
+      
+      // API 호출
+      const response = await fetch(`${API_URL}/api/ai/recommend-course`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userInput })
+      })
+      
+      console.log('API 응답 상태:', response.status, response.ok)
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('API 에러 응답:', errorText)
+        throw new Error(`추천 요청에 실패했습니다. (${response.status})`)
+      }
+      
+      const data = await response.json()
+      console.log('API 응답 데이터:', data)
+      const recommendationText = data.recommendation || ''
+      console.log('추천 텍스트:', recommendationText)
+      
+      // 응답 파싱
+      const parsedCourses = parseRecommendationResponse(recommendationText)
+      console.log('파싱된 코스:', parsedCourses)
+      
+      // 각 코스의 mountain_code 조회
+      const coursesWithCode = await Promise.all(
+        parsedCourses.map(async (course) => {
+          const code = await getMountainCode(course.mountainFull || course.mountain)
+          return {
+            ...course,
+            mountainCode: code
+          }
+        })
+      )
+      
+      console.log('최종 코스 데이터:', coursesWithCode)
+      setRecommendations(coursesWithCode)
+    } catch (error) {
+      console.error('추천 요청 오류:', error)
+      console.error('에러 상세:', error.stack)
+      setError(error.message || '추천을 받는 중 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -91,17 +325,51 @@ function AICourse() {
               />
             </div>
 
-            <button type="submit" className="ai-submit-btn">
-              {selectedCategory === 'equipment' ? '장비 추천받기' : '코스 추천받기'}
+            <button type="submit" className="ai-submit-btn" disabled={loading}>
+              {loading ? '추천받는 중...' : selectedCategory === 'equipment' ? '장비 추천받기' : '코스 추천받기'}
             </button>
           </form>
+
+          {error && (
+            <div className="error-message" style={{ color: 'red', marginTop: '1rem', padding: '1rem', backgroundColor: '#ffe6e6', borderRadius: '4px' }}>
+              {error}
+            </div>
+          )}
+
+          {loading && (
+            <div className="loading-message" style={{ marginTop: '2rem', textAlign: 'center', padding: '2rem' }}>
+              <p>AI가 최적의 코스를 추천하고 있습니다...</p>
+            </div>
+          )}
 
           {recommendations.length > 0 && (
             <div className="recommendations-section">
               <h2>{selectedCategory === 'equipment' ? '추천 장비' : '추천 코스'}</h2>
               <div className="recommendations-list">
                 {recommendations.map((item) => (
-                  <div key={item.id} className="course-card">
+                  <div 
+                    key={item.id} 
+                    className="course-card"
+                    onClick={() => {
+                      if (selectedCategory === 'course' && item.mountainCode) {
+                        navigate(`/mountain/${item.mountainCode}`)
+                      }
+                    }}
+                    style={{
+                      cursor: selectedCategory === 'course' && item.mountainCode ? 'pointer' : 'default',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (selectedCategory === 'course' && item.mountainCode) {
+                        e.currentTarget.style.transform = 'translateY(-2px)'
+                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)'
+                      e.currentTarget.style.boxShadow = ''
+                    }}
+                  >
                     {selectedCategory === 'equipment' ? (
                       <>
                         <h3>{item.name}</h3>
@@ -112,24 +380,29 @@ function AICourse() {
                       </>
                     ) : (
                       <>
-                        <h3>{item.mountain}</h3>
+                        <h3>{item.mountainFull || item.mountain} - {item.course}</h3>
                         <div className="course-info">
-                          <span className="course-difficulty">난이도: {item.difficulty}</span>
+                          <span className="course-distance">거리: {item.distance}</span>
                           <span className="course-duration">소요시간: {item.duration}</span>
+                          <span className="course-difficulty">난이도: {item.difficulty}</span>
                         </div>
-                        <p className="course-description">{item.description}</p>
+                        {item.weather && (
+                          <div className="course-weather" style={{ marginTop: '0.5rem', color: '#666', fontSize: '0.9rem' }}>
+                            날씨: {item.weather}
+                          </div>
+                        )}
+                        {item.description && (
+                          <p className="course-description" style={{ marginTop: '0.75rem' }}>{item.description}</p>
+                        )}
+                        {!item.mountainCode && (
+                          <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#999' }}>
+                            산 정보를 불러오는 중...
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
                 ))}
-              </div>
-              
-              {/* AI 응답 영역 */}
-              <div className="ai-response-section">
-                <h3>AI 설명</h3>
-                <div className="ai-response-box">
-                  {/* AI 응답이 여기에 표시됩니다 */}
-                </div>
               </div>
             </div>
           )}

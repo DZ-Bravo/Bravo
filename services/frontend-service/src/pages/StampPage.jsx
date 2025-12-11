@@ -37,6 +37,9 @@ function StampPage() {
   }
 
   // 산 목록 가져오기
+  // stamp-service는 포트 3010에서 직접 실행되므로 기본값을 3010 포트로 설정
+  const STAMP_API_URL = import.meta.env.VITE_STAMP_API_URL || (typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:3010` : API_URL)
+
   useEffect(() => {
     const fetchMountains = async () => {
       try {
@@ -63,7 +66,7 @@ function StampPage() {
           const token = localStorage.getItem('token')
           if (token) {
             try {
-              const stampResponse = await fetch(`${API_URL}/api/stamps/completed`, {
+          const stampResponse = await fetch(`${STAMP_API_URL}/api/stamps/completed`, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 }
@@ -102,7 +105,7 @@ function StampPage() {
 
       console.log('[스탬프] 완료 산 목록 조회 시작...')
       try {
-        const response = await fetch(`${API_URL}/api/stamps/completed`, {
+        const response = await fetch(`${STAMP_API_URL}/api/stamps/completed`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -163,7 +166,7 @@ function StampPage() {
         if (token) {
           try {
             console.log('[스탬프] 완료 산 목록 갱신 시작...')
-            const response = await fetch(`${API_URL}/api/stamps/completed`, {
+            const response = await fetch(`${STAMP_API_URL}/api/stamps/completed`, {
               headers: {
                 'Authorization': `Bearer ${token}`
               }

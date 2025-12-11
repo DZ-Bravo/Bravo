@@ -1431,11 +1431,13 @@ router.post('/mountains/:code/favorite', authenticateToken, async (req, res) => 
     const idx = user.favoriteMountains.indexOf(mountainCode)
     if (idx > -1) {
       user.favoriteMountains.splice(idx, 1)
-      await user.save()
+      // user.save() 대신 findByIdAndUpdate 사용 (email 검증 오류 방지)
+      await User.findByIdAndUpdate(userId, { favoriteMountains: user.favoriteMountains }, { runValidators: false })
       return res.json({ isFavorited: false, message: '즐겨찾기에서 제거되었습니다.' })
     } else {
       user.favoriteMountains.push(mountainCode)
-      await user.save()
+      // user.save() 대신 findByIdAndUpdate 사용 (email 검증 오류 방지)
+      await User.findByIdAndUpdate(userId, { favoriteMountains: user.favoriteMountains }, { runValidators: false })
       return res.json({ isFavorited: true, message: '즐겨찾기에 추가되었습니다.' })
     }
   } catch (error) {

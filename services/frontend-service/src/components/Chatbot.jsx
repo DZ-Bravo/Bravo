@@ -327,8 +327,11 @@ function Chatbot() {
 
   return (
     <>
-      <div className="chatbot-icon" onClick={toggleChat}>
-        <img src="/images/chatbot_icon.png" alt="챗봇" />
+      <div className="chatbot-icon-wrapper">
+        <div className="chatbot-tooltip">무엇을 도와드릴까요?</div>
+        <div className="chatbot-icon" onClick={toggleChat}>
+          <img src="/images/logo_icon.png" alt="챗봇" />
+        </div>
       </div>
       
       {isOpen && (
@@ -346,7 +349,7 @@ function Chatbot() {
             <div className="chatbot-header" onMouseDown={handleDragStart}>
               <div className="chatbot-header-info">
                 <div className="chatbot-avatar">
-                  <img src="/images/chatbot_icon.png" alt="챗봇" />
+                  <img src="/images/logo_icon2.png" alt="챗봇" />
                 </div>
                 <div>
                   <div className="chatbot-name">HIKER 챗봇</div>
