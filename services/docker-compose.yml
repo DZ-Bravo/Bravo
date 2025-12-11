@@ -136,7 +136,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3001
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
       - REDIS_HOST=192.168.0.242
       - REDIS_PORT=6379
       - JWT_SECRET=${JWT_SECRET}
@@ -180,7 +180,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3002
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
     volumes:
       # 기존 이미지 경로를 쓰기 가능하게 마운트 (기존 이미지 + 새 이미지 모두 접근 가능)
       - /home/bravo/LABs/backend/uploads:/app/uploads
@@ -210,7 +210,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3003
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
     depends_on:
       mongodb:
         condition: service_healthy
@@ -237,7 +237,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3004
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
     depends_on:
       mongodb:
         condition: service_healthy
@@ -264,7 +264,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3005
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
     depends_on:
       mongodb:
         condition: service_healthy
@@ -291,7 +291,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3006
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
       - REDIS_HOST=192.168.0.242
       - REDIS_PORT=6379
     depends_on:
@@ -320,7 +320,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3007
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION}
@@ -358,7 +358,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3008
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
       - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY:-5845f67e1cb9eac922b39d43844a8fc1}
     volumes:
       - /home/bravo/LABs/mountain:/app/mountain:ro
@@ -388,12 +388,12 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3009
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION}
-      - BEDROCK_AGENT_ID=${BEDROCK_AGENT_ID}
-      - BEDROCK_AGENT_ALIAS_ID=${BEDROCK_AGENT_ALIAS_ID}
+      - BEDROCK_COURSE_AGENT_ID=${BEDROCK_COURSE_AGENT_ID}
+      - BEDROCK_COURSE_AGENT_ALIAS_ID=${BEDROCK_COURSE_AGENT_ALIAS_ID}
     depends_on:
       mongodb:
         condition: service_healthy
@@ -411,6 +411,8 @@ services:
       - ../.env
     expose:
       - "3010"
+    ports:
+      - "3010:3010"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.stamp.rule=PathPrefix(`/api/stamps`)"
@@ -420,7 +422,7 @@ services:
       - TZ=Asia/Seoul
       - NODE_ENV=production
       - PORT=3010
-      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017/hiking?authSource=admin&replicaSet=rs0
+      - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=primary
     depends_on:
       mongodb:
         condition: service_healthy

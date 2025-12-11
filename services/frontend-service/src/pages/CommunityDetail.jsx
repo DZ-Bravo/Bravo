@@ -280,6 +280,8 @@ function CommunityDetail() {
 
   // 북마크 토글
   const handleFavorite = async () => {
+    console.log('[커뮤니티 상세] 즐겨찾기 요청 시작 - postId:', id)
+    
     const token = localStorage.getItem('token')
     if (!token) {
       alert('로그인이 필요합니다.')
@@ -298,19 +300,33 @@ function CommunityDetail() {
 
       if (response.ok) {
         const data = await response.json()
+        console.log('[커뮤니티 상세] 즐겨찾기 응답 성공:', data)
         const isBookmarked = data.isBookmarked !== undefined ? data.isBookmarked : data.isFavorited
         setIsFavorited(isBookmarked)
+        
+        if (isBookmarked) {
+          console.log('[커뮤니티 상세] 게시글이 찜목록에 추가되었습니다:', id)
+        } else {
+          console.log('[커뮤니티 상세] 게시글이 찜목록에서 제거되었습니다:', id)
+        }
+        
         alert(data.message)
         // 찜목록 카운터 갱신을 위한 이벤트 발생
-        window.dispatchEvent(new CustomEvent('favoritesUpdated'))
+        window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+          detail: { type: 'post', postId: id, isFavorited: isBookmarked }
+        }))
+        // localStorage에 플래그 설정
+        localStorage.setItem('favoritesUpdated', Date.now().toString())
+        console.log('[커뮤니티 상세] localStorage 플래그 설정 완료')
         // 북마크 추가/제거 시 커뮤니티 페이지 목록 갱신을 위한 이벤트
         window.dispatchEvent(new CustomEvent('bookmarkUpdated', { detail: { postId: id, isBookmarked } }))
       } else {
         const errorData = await response.json()
+        console.error('[커뮤니티 상세] 즐겨찾기 응답 실패:', errorData)
         alert(errorData.error || '북마크 처리 중 오류가 발생했습니다.')
       }
     } catch (error) {
-      console.error('북마크 처리 오류:', error)
+      console.error('[커뮤니티 상세] 북마크 처리 오류:', error)
       alert('북마크 처리 중 오류가 발생했습니다.')
     }
   }
@@ -436,11 +452,7 @@ function CommunityDetail() {
                   className={`favorite-btn-header ${isFavorited ? 'favorited' : ''}`}
                   title={isFavorited ? '즐겨찾기 해제' : '즐겨찾기 추가'}
                 >
-                  <img 
-                    src="/images/cm_bookmark_btn_icon.png" 
-                    alt="북마크" 
-                    className="bookmark-icon"
-                  />
+                  <span className="star-icon">{isFavorited ? '★' : '☆'}</span>
                 </button>
               )}
             </div>

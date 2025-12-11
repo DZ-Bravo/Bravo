@@ -234,6 +234,8 @@ function Community() {
     e.preventDefault()
     e.stopPropagation()
     
+    console.log('[커뮤니티] 즐겨찾기 요청 시작 - postId:', postId)
+    
     const token = localStorage.getItem('token')
     if (!token) {
       alert('로그인이 필요합니다.')
@@ -252,8 +254,15 @@ function Community() {
 
       if (response.ok) {
         const data = await response.json()
+        console.log('[커뮤니티] 즐겨찾기 응답 성공:', data)
         // 게시글 목록 업데이트
         const isBookmarked = data.isBookmarked !== undefined ? data.isBookmarked : data.isFavorited
+        
+        if (isBookmarked) {
+          console.log('[커뮤니티] 게시글이 찜목록에 추가되었습니다:', postId)
+        } else {
+          console.log('[커뮤니티] 게시글이 찜목록에서 제거되었습니다:', postId)
+        }
         
         if (showBookmarks) {
           // 북마크 목록 보기 모드일 경우 목록 다시 불러오기
@@ -285,13 +294,19 @@ function Community() {
           )
         }
         // 찜목록 카운터 갱신을 위한 이벤트 발생
-        window.dispatchEvent(new CustomEvent('favoritesUpdated'))
+        window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+          detail: { type: 'post', postId: postId, isFavorited: isBookmarked }
+        }))
+        // localStorage에 플래그 설정
+        localStorage.setItem('favoritesUpdated', Date.now().toString())
+        console.log('[커뮤니티] localStorage 플래그 설정 완료')
       } else {
         const errorData = await response.json()
+        console.error('[커뮤니티] 즐겨찾기 응답 실패:', errorData)
         alert(errorData.error || '북마크 처리 중 오류가 발생했습니다.')
       }
     } catch (error) {
-      console.error('북마크 처리 오류:', error)
+      console.error('[커뮤니티] 북마크 처리 오류:', error)
       alert('북마크 처리 중 오류가 발생했습니다.')
     }
   }
@@ -347,14 +362,6 @@ function Community() {
           <h1 className="community-page-title">커뮤니티</h1>
           <div className="community-subtitle-wrapper">
             <p className="community-subtitle">같은 취향, 같은 산을 사랑하는 사람들과 연결되세요!</p>
-            <button
-              type="button"
-              className="bookmark-view-btn"
-              onClick={handleShowBookmarks}
-            >
-              <img src="/images/cm_bookmark_btn_icon.png" alt="북마크" />
-              북마크
-            </button>
           </div>
           
           <div className="category-tabs-wrapper">
@@ -556,10 +563,11 @@ function Community() {
                             </div>
                             <button
                               type="button"
-                              className={`bookmark-btn ${post.isBookmarked ? 'bookmarked' : ''}`}
+                              className={`favorite-btn ${post.isBookmarked || post.isFavorited ? 'favorited' : ''}`}
                               onClick={(e) => handleBookmark(post.id, e)}
+                              title={post.isBookmarked || post.isFavorited ? '즐겨찾기 해제' : '즐겨찾기 추가'}
                             >
-                              <img src="/images/cm_bookmark_icon.png" alt="북마크" />
+                              <span className="star-icon">{post.isBookmarked || post.isFavorited ? '★' : '☆'}</span>
                             </button>
                           </div>
                         </div>
@@ -575,20 +583,31 @@ function Community() {
                     <div className="error-message">{error}</div>
                   ) : posts.length > 0 && (
                     posts.map((post) => (
-                      <Link
-                        key={post.id}
-                        to={`/community/${post.id}`}
-                        className="post-list-item"
-                      >
-                        <span className={`post-category-badge ${post.category}-badge`}>
-                          {getCategoryName(post.category)}
-                        </span>
-                        <div className="post-list-title">{post.title}</div>
-                        <div className="post-list-meta">
-                          <span className="post-list-author">{post.author}</span>
-                          <span className="post-list-date">{post.date}</span>
-                        </div>
-                      </Link>
+                      <div key={post.id} className="post-list-item-wrapper">
+                        <Link
+                          to={`/community/${post.id}`}
+                          className="post-list-item"
+                        >
+                          <span className={`post-category-badge ${post.category}-badge`}>
+                            {getCategoryName(post.category)}
+                          </span>
+                          <div className="post-list-title">{post.title}</div>
+                          <div className="post-list-meta">
+                            <span className="post-list-author">{post.author}</span>
+                            <span className="post-list-date">{post.date}</span>
+                          </div>
+                        </Link>
+                        {localStorage.getItem('token') && (
+                          <button
+                            type="button"
+                            className={`favorite-btn-list ${post.isBookmarked || post.isFavorited ? 'favorited' : ''}`}
+                            onClick={(e) => handleBookmark(post.id, e)}
+                            title={post.isBookmarked || post.isFavorited ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+                          >
+                            <span className="star-icon">{post.isBookmarked || post.isFavorited ? '★' : '☆'}</span>
+                          </button>
+                        )}
+                      </div>
                     ))
                   )}
                 </div>

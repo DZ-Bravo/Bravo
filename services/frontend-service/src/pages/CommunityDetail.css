@@ -49,10 +49,15 @@
   opacity: 1;
 }
 
-.bookmark-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
+.favorite-btn-header .star-icon {
+  font-size: 28px;
+  color: #999;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.favorite-btn-header.favorited .star-icon {
+  color: #FFD700;
 }
 
 .back-link {
