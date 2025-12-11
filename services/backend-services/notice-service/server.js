@@ -10,7 +10,7 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3003
 
-// 미들웨어4
+// 미들웨어5
 app.use(cors())
 app.use(express.json())
 
