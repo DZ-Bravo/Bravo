@@ -332,7 +332,7 @@ function Home() {
               />
             ))}
             <div className="search-overlay">
-              <h1>산산산산산</h1>
+              <h1>하나 조</h1>
               <h2>어느 산을 찾으시나요?</h2>
               <form onSubmit={handleSearch} className="search-form">
                 <input
