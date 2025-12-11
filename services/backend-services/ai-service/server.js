@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3009
 app.use(cors())
 app.use(express.json())
 
-// DB 연결4
+// DB 연결5
 connectDB()
 
 // AWS Bedrock Agent Runtime 클라이언트
