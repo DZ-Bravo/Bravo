@@ -5,6 +5,7 @@ import Comment from './shared/models/Comment.js'
 import Course from './shared/models/Course.js'
 import Notification from './shared/models/Notification.js'
 import { authenticateToken } from './shared/utils/auth.js'
+import axios from 'axios'
 import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -153,29 +154,44 @@ router.get('/favorites/my', authenticateToken, async (req, res) => {
     const limit = parseInt(req.query.limit) || 20
     const skip = (page - 1) * limit
 
-    const user = await User.findById(userId).populate('favorites')
+    // 스토어/산 정보와 동일한 방식으로 조회 (populate 제거, lean 사용)
+    const user = await User.findById(userId).select('favorites').lean()
     if (!user) {
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
     }
 
-    const favoritePostIds = user.favorites || []
+    const favoritePostIds = (user.favorites || []).map(id => id.toString())
     const total = favoritePostIds.length
+    
+    console.log('[커뮤니티 즐겨찾기] 사용자 ID:', userId, '즐겨찾기 개수:', total, 'ID 목록:', favoritePostIds)
+
+    if (favoritePostIds.length === 0) {
+      return res.json({
+        posts: [],
+        total: 0,
+        page,
+        totalPages: 0
+      })
+    }
 
     // 모든 게시글 조회 (정렬 없이)
     const allPosts = await Post.find({ _id: { $in: favoritePostIds } })
       .populate('author', 'id name profileImage')
       .select('title content category author authorName views likes createdAt images')
       .lean()
+    
+    console.log('[커뮤니티 즐겨찾기] 조회된 게시글 개수:', allPosts.length)
 
     // user.favorites 배열의 순서를 유지하면서 게시글 정렬 (최신 즐겨찾기 순)
     const postMap = new Map(allPosts.map(post => [post._id.toString(), post]))
     const orderedPosts = favoritePostIds
-      .map(id => {
-        const postId = id.toString()
-        return postMap.get(postId)
+      .map(postIdStr => {
+        return postMap.get(postIdStr)
       })
       .filter(Boolean) // 존재하지 않는 게시글 제거
       .reverse() // 최신 즐겨찾기 순 (배열의 마지막이 최신)
+    
+    console.log('[커뮤니티 즐겨찾기] 정렬된 게시글 개수:', orderedPosts.length)
 
     // 페이지네이션 적용
     const posts = orderedPosts.slice(skip, skip + limit)
@@ -209,6 +225,8 @@ router.get('/favorites/my', authenticateToken, async (req, res) => {
       }
     }))
 
+    console.log('[커뮤니티 즐겨찾기] 최종 반환할 게시글 개수:', formattedPosts.length)
+
     res.json({
       posts: formattedPosts,
       total,
@@ -216,7 +234,7 @@ router.get('/favorites/my', authenticateToken, async (req, res) => {
       totalPages: Math.ceil(total / limit)
     })
   } catch (error) {
-    console.error('즐겨찾기 목록 조회 오류:', error)
+    console.error('[커뮤니티 즐겨찾기] 즐겨찾기 목록 조회 오류:', error)
     res.status(500).json({ error: '즐겨찾기 목록을 불러오는 중 오류가 발생했습니다.' })
   }
 })
@@ -1030,9 +1048,120 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
 
     await post.save()
     console.log('게시글 작성 완료 - 원본 카테고리:', category, '정규화된 카테고리:', normalizedCategory, '저장된 카테고리:', post.category, '제목:', title, '해시태그:', post.hashtags)
+    console.log('[스탬프] 저장된 mountainCode:', mountainCode, '타입:', typeof mountainCode)
     
-    // 등산일지 작성 시 포인트 +100 지급 및 알림 생성
+    // 등산일지 작성 시 스탬프 자동 생성 (stamp-service API 호출)
     let updatedPoints = user.points || 0
+    if (normalizedCategory === 'diary' && mountainCode) {
+      // mountainCode를 Number로 변환하여 스탬프 생성
+      try {
+        // mountainCode가 이미 mntilistno로 변환된 숫자 문자열인지 확인
+        let codeNum = null
+        
+        // 1. 이미 숫자 문자열인 경우
+        const codeStr = String(mountainCode).trim()
+        codeNum = parseInt(codeStr)
+        
+        // 2. parseInt가 실패하면 (ObjectId 등), mountain_list에서 실제 mntilistno 찾기
+        if (isNaN(codeNum) || codeNum === 0) {
+          console.log(`[스탬프] mountainCode가 숫자가 아님, mountain_list에서 mntilistno 찾기 시도: ${codeStr}`)
+          
+          try {
+            const mongoose = await import('mongoose')
+            const db = mongoose.default.connection.db
+            const collections = await db.listCollections().toArray()
+            const collectionNames = collections.map(c => c.name)
+            
+            let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list')
+            if (!mountainListCollectionName) {
+              mountainListCollectionName = collectionNames.find(name => 
+                name.toLowerCase() === 'mountain_list'
+              ) || 'Mountain_list'
+            }
+            const actualCollection = db.collection(mountainListCollectionName)
+            
+            // ObjectId로 검색 시도
+            const isObjectId = /^[0-9a-fA-F]{24}$/.test(codeStr)
+            let mountain = null
+            
+            if (isObjectId) {
+              try {
+                const objectId = new mongoose.default.Types.ObjectId(codeStr)
+                mountain = await actualCollection.findOne({ _id: objectId })
+              } catch (e) {
+                console.error('[스탬프] ObjectId 변환 실패:', e)
+              }
+            }
+            
+            // mntilistno로 검색 시도
+            if (!mountain) {
+              const searchQueries = [
+                { mntilistno: parseInt(codeStr) },
+                { mntilistno: Number(codeStr) },
+                { mntilistno: codeStr },
+                { 'trail_match.mountain_info.mntilistno': parseInt(codeStr) },
+                { 'trail_match.mountain_info.mntilistno': Number(codeStr) },
+                { 'trail_match.mountain_info.mntilistno': codeStr }
+              ]
+              
+              for (const query of searchQueries) {
+                mountain = await actualCollection.findOne(query)
+                if (mountain) break
+              }
+            }
+            
+            if (mountain) {
+              const mntilistno = mountain.mntilistno || mountain.trail_match?.mountain_info?.mntilistno
+              if (mntilistno !== undefined && mntilistno !== null) {
+                codeNum = parseInt(String(mntilistno))
+                console.log(`[스탬프] mountain_list에서 mntilistno 찾음: ${codeNum} (원본: ${codeStr})`)
+              }
+            }
+          } catch (dbError) {
+            console.error('[스탬프] mountain_list 조회 오류:', dbError)
+          }
+        }
+        
+        // 유효한 숫자 코드가 있으면 스탬프 생성 API 호출
+        if (codeNum && !isNaN(codeNum) && codeNum > 0) {
+          console.log(`[스탬프] 스탬프 생성 API 호출 시도 - userId: ${userId}, mountainCode: ${codeNum}`)
+          
+          // stamp-service API 호출 (비동기, 실패해도 게시글 작성은 계속)
+          // Docker 네트워크 내에서 컨테이너 이름으로 접근
+          const STAMP_SERVICE_URL = process.env.STAMP_SERVICE_URL || 'http://hiking-stamp-service:3010'
+          axios.post(`${STAMP_SERVICE_URL}/api/stamps`, {
+            mountainCode: codeNum
+          }, {
+            headers: {
+              'Authorization': req.headers['authorization'] // JWT 토큰 전달
+            },
+            timeout: 5000 // 5초 타임아웃
+          }).then((response) => {
+            console.log(`[스탬프] 등산일지 작성 시 자동 생성 성공 - userId: ${userId}, mountainCode: ${codeNum}`, response.status)
+          }).catch((error) => {
+            // 스탬프 생성 실패해도 게시글 작성은 계속 진행
+            if (error.response?.status === 200 || error.response?.status === 201) {
+              // 이미 존재하는 스탬프인 경우
+              console.log(`[스탬프] 이미 존재하는 스탬프 - userId: ${userId}, mountainCode: ${codeNum}`)
+            } else {
+              console.error('[스탬프] 등산일지 작성 시 스탬프 생성 오류:', error.message)
+              if (error.response) {
+                console.error('[스탬프] 오류 응답:', error.response.status, error.response.data)
+              }
+              if (error.code === 'ECONNREFUSED') {
+                console.error('[스탬프] stamp-service 연결 실패 - 서비스가 실행 중인지 확인하세요')
+              }
+            }
+          })
+        } else {
+          console.warn(`[스탬프] 유효한 mountainCode를 찾을 수 없음 - userId: ${userId}, 원본 mountainCode: ${mountainCode}, 변환 시도 결과: ${codeNum}`)
+        }
+      } catch (stampError) {
+        // 스탬프 생성 실패해도 게시글 작성은 계속 진행
+        console.error('[스탬프] 등산일지 작성 시 스탬프 생성 오류:', stampError)
+      }
+    }
+    
     if (normalizedCategory === 'diary') {
       const currentPoints = user.points || 0
       updatedPoints = currentPoints + 100
@@ -1440,16 +1569,27 @@ router.post('/:id/bookmark', authenticateToken, async (req, res) => {
 
     // ObjectId 비교를 위해 문자열로 변환
     const postIdStr = postId.toString()
-    const favoriteIndex = user.favorites.findIndex(favId => {
-      const favIdStr = favId.toString ? favId.toString() : String(favId)
-      return favIdStr === postIdStr
-    })
+    const mongooseModule = await import('mongoose')
+    const mongoose = mongooseModule.default
+    
+    // favorites 배열을 복사 (Mongoose 문서의 배열을 직접 수정하지 않기 위해)
+    const currentFavorites = (user.favorites || []).map(id => id.toString())
+    const favoriteIndex = currentFavorites.findIndex(favIdStr => favIdStr === postIdStr)
+    
+    let updatedFavorites
     
     if (favoriteIndex > -1) {
       // 이미 북마크에 있으면 제거
-      user.favorites.splice(favoriteIndex, 1)
-      await user.save()
-      console.log('북마크 제거:', postId, '현재 북마크 개수:', user.favorites.length)
+      updatedFavorites = currentFavorites.filter(favIdStr => favIdStr !== postIdStr)
+      console.log('북마크 제거:', postId, '현재 북마크 개수:', updatedFavorites.length)
+      
+      // $set 연산자 사용하여 배열 업데이트
+      await User.findByIdAndUpdate(
+        userId, 
+        { $set: { favorites: updatedFavorites.map(id => new mongoose.Types.ObjectId(id)) } }, 
+        { runValidators: false }
+      )
+      
       res.json({
         isFavorited: false,
         isBookmarked: false,
@@ -1457,9 +1597,16 @@ router.post('/:id/bookmark', authenticateToken, async (req, res) => {
       })
     } else {
       // 북마크 추가
-      user.favorites.push(postId)
-      await user.save()
-      console.log('북마크 추가:', postId, '현재 북마크 개수:', user.favorites.length)
+      updatedFavorites = [...currentFavorites, postIdStr]
+      console.log('북마크 추가:', postId, '현재 북마크 개수:', updatedFavorites.length)
+      
+      // $set 연산자 사용하여 배열 업데이트
+      await User.findByIdAndUpdate(
+        userId, 
+        { $set: { favorites: updatedFavorites.map(id => new mongoose.Types.ObjectId(id)) } }, 
+        { runValidators: false }
+      )
+      
       res.json({
         isFavorited: true,
         isBookmarked: true,
@@ -1469,6 +1616,81 @@ router.post('/:id/bookmark', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('북마크 처리 오류:', error)
     res.status(500).json({ error: '북마크 처리 중 오류가 발생했습니다.' })
+  }
+})
+
+// 사용자의 등산 완료 산 목록 가져오기 (스탬프용)
+router.get('/stamps/completed', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId
+    console.log(`[스탬프] API 호출됨 - 사용자 ID: ${userId}, 타입: ${typeof userId}`)
+    
+    // 사용자가 작성한 등산일지(diary)에서 mountainCode 추출
+    const userDiaries = await Post.find({
+      author: userId,
+      category: 'diary',
+      mountainCode: { $exists: true, $ne: null, $ne: '' }
+    }).select('mountainCode title createdAt').lean()
+    
+    console.log(`[스탬프] 사용자 ${userId}의 등산일지 개수: ${userDiaries.length}`)
+    
+    // 등산일지 상세 정보 로그
+    if (userDiaries.length > 0) {
+      console.log(`[스탬프] 등산일지 상세:`, userDiaries.map(d => ({
+        title: d.title,
+        mountainCode: d.mountainCode,
+        mountainCodeType: typeof d.mountainCode,
+        createdAt: d.createdAt
+      })))
+    } else {
+      console.warn(`[스탬프] 사용자 ${userId}의 등산일지가 없습니다.`)
+    }
+    
+    // mountainCode 추출 및 유효성 검사
+    const mountainCodes = userDiaries
+      .map(diary => {
+        const code = diary.mountainCode
+        if (!code) {
+          console.log(`[스탬프] mountainCode 없음 - 제목: ${diary.title}`)
+          return null
+        }
+        
+        // String으로 변환하고 빈 문자열 체크
+        let codeStr = String(code).trim()
+        if (codeStr === '' || codeStr === 'null' || codeStr === 'undefined') {
+          console.log(`[스탬프] 유효하지 않은 mountainCode - 제목: ${diary.title}, 코드: ${codeStr}`)
+          return null
+        }
+        
+        // 숫자로 변환 가능한 경우 숫자로 정규화 (앞뒤 공백 제거 후)
+        const codeNum = parseInt(codeStr)
+        if (!isNaN(codeNum)) {
+          codeStr = String(codeNum) // 숫자로 정규화
+        }
+        
+        console.log(`[스탬프] 유효한 mountainCode - 제목: ${diary.title}, 코드: ${codeStr} (원본: ${code}, 타입: ${typeof code})`)
+        return codeStr
+      })
+      .filter(code => code !== null)
+
+    console.log(`[스탬프] 추출된 mountainCode 개수: ${mountainCodes.length}`)
+    if (mountainCodes.length > 0) {
+      console.log(`[스탬프] mountainCode 전체 목록:`, mountainCodes)
+      console.log(`[스탬프] mountainCode 타입 확인:`, mountainCodes.map(c => ({ code: c, type: typeof c })))
+    }
+
+    // 중복 제거하여 완료한 산 코드 목록 생성
+    const completedMountainCodes = [...new Set(mountainCodes)]
+
+    console.log(`[스탬프] 최종 완료 산 개수: ${completedMountainCodes.length}`)
+
+    res.json({
+      completedMountainCodes,
+      count: completedMountainCodes.length
+    })
+  } catch (error) {
+    console.error('등산 완료 산 목록 조회 오류:', error)
+    res.status(500).json({ error: '등산 완료 산 목록을 가져오는데 실패했습니다.' })
   }
 })
 

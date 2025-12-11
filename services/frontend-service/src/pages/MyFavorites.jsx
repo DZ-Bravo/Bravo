@@ -19,22 +19,33 @@ function MyFavorites() {
     { id: null, name: '전체' },
     { id: 'mountain', name: '산' },
     { id: 'product', name: '제품' },
-    { id: 'community', name: '커뮤니티' },
-    { id: 'diary', name: '등산일지' },
-    { id: 'qa', name: 'Q&A' },
-    { id: 'free', name: '자유게시판' }
+    { id: 'community', name: '커뮤니티' }
   ]
 
   // 선택된 카테고리에 따라 게시글 필터링 및 정렬
   const filteredPosts = selectedCategory === null 
     ? allPosts 
     : selectedCategory === 'community'
-    ? allPosts.filter(post => ['diary', 'qa', 'free'].includes(post.category))
+    ? allPosts.filter(post => {
+        const isCommunityPost = ['diary', 'qa', 'free'].includes(post.category)
+        if (!isCommunityPost && post.category) {
+          console.log('[MyFavorites] 필터링 제외된 게시글:', post.category, post.title)
+        }
+        return isCommunityPost
+      })
     : selectedCategory === 'mountain'
     ? [] // 산은 별도로 표시
     : selectedCategory === 'product'
     ? [] // 제품은 별도로 표시
     : allPosts.filter(post => post.category === selectedCategory)
+  
+  // 디버깅 로그
+  console.log('[MyFavorites] 선택된 카테고리:', selectedCategory)
+  console.log('[MyFavorites] 전체 게시글 개수:', allPosts.length)
+  console.log('[MyFavorites] 필터링된 게시글 개수:', filteredPosts.length)
+  if (selectedCategory === 'community') {
+    console.log('[MyFavorites] 커뮤니티 게시글 카테고리:', filteredPosts.map(p => p.category))
+  }
 
   // 정렬 적용
   const posts = [...filteredPosts].sort((a, b) => {
@@ -69,8 +80,8 @@ function MyFavorites() {
       setIsLoading(true)
       setError('')
       try {
-        // 게시글 즐겨찾기 목록
-        const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
+        // 게시글 즐겨찾기 목록 (모든 데이터를 가져오기 위해 limit을 크게 설정)
+        const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my?limit=1000`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -84,7 +95,14 @@ function MyFavorites() {
 
         if (postsResponse.ok) {
           const postsData = await postsResponse.json()
+          console.log('[MyFavorites] 즐겨찾기 게시글 데이터:', postsData)
+          console.log('[MyFavorites] 게시글 개수:', postsData.posts?.length || 0)
+          console.log('[MyFavorites] 게시글 카테고리:', postsData.posts?.map(p => p.category) || [])
           setAllPosts(postsData.posts || [])
+        } else {
+          console.error('[MyFavorites] 게시글 즐겨찾기 목록 조회 실패:', postsResponse.status, postsResponse.statusText)
+          const errorText = await postsResponse.text()
+          console.error('[MyFavorites] 에러 응답:', errorText)
         }
 
         // 산 즐겨찾기 목록
@@ -138,8 +156,8 @@ function MyFavorites() {
     if (!token) return
 
     try {
-      // 게시글 즐겨찾기 목록
-      const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
+      // 게시글 즐겨찾기 목록 (모든 데이터를 가져오기 위해 limit을 크게 설정)
+      const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my?limit=1000`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -147,7 +165,12 @@ function MyFavorites() {
 
       if (postsResponse.ok) {
         const postsData = await postsResponse.json()
+        console.log('[MyFavorites] 즐겨찾기 게시글 데이터 (새로고침):', postsData)
+        console.log('[MyFavorites] 게시글 개수 (새로고침):', postsData.posts?.length || 0)
+        console.log('[MyFavorites] 게시글 카테고리 (새로고침):', postsData.posts?.map(p => p.category) || [])
         setAllPosts(postsData.posts || [])
+      } else {
+        console.error('[MyFavorites] 게시글 즐겨찾기 목록 조회 실패 (새로고침):', postsResponse.status, postsResponse.statusText)
       }
 
       // 산 즐겨찾기 목록
@@ -176,7 +199,10 @@ function MyFavorites() {
 
       if (storesResponse.ok) {
         const storesData = await storesResponse.json()
+        console.log('[마이페이지 찜목록] 스토어 제품 목록:', storesData.products?.length || 0, '개')
         setFavoriteStores(storesData.products || [])
+      } else {
+        console.error('[마이페이지 찜목록] 스토어 제품 목록 조회 실패:', storesResponse.status)
       }
     } catch (err) {
       console.error('즐겨찾기 목록 새로고침 오류:', err)
@@ -245,7 +271,7 @@ function MyFavorites() {
           </div>
 
           {/* 정렬 옵션 (게시글이 있을 때만 표시) */}
-          {(selectedCategory === null || selectedCategory === 'community' || selectedCategory === 'diary' || selectedCategory === 'qa' || selectedCategory === 'free') && posts.length > 0 && (
+          {(selectedCategory === null || selectedCategory === 'community') && posts.length > 0 && (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px', gap: '10px', alignItems: 'center' }}>
               <span style={{ fontSize: '14px', color: '#666' }}>정렬:</span>
               <select 

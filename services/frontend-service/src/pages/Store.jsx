@@ -338,13 +338,17 @@ function Store() {
       if (response.ok) {
         const data = await response.json()
         
+        console.log('[스토어] 제품 좋아요 처리 성공:', { productId, isFavorited: data.isFavorited })
+        
         // 즐겨찾기 상태 업데이트
         setFavoriteProducts(prev => {
           const newSet = new Set(prev)
           if (data.isFavorited) {
             newSet.add(productId)
+            console.log('[스토어] 제품이 찜목록에 추가되었습니다:', productId)
           } else {
             newSet.delete(productId)
+            console.log('[스토어] 제품이 찜목록에서 제거되었습니다:', productId)
           }
           return newSet
         })
@@ -353,8 +357,11 @@ function Store() {
         window.dispatchEvent(new CustomEvent('favoritesUpdated', { 
           detail: { type: 'store', productId: productId, isFavorited: data.isFavorited }
         }))
+        console.log('[스토어] favoritesUpdated 이벤트 발생:', { type: 'store', productId, isFavorited: data.isFavorited })
+        
         // localStorage에 플래그 설정
         localStorage.setItem('favoritesUpdated', Date.now().toString())
+        console.log('[스토어] localStorage 플래그 설정 완료')
       } else {
         const errorData = await response.json()
         alert(errorData.error || '즐겨찾기 처리 중 오류가 발생했습니다.')

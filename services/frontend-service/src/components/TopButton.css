@@ -1,7 +1,7 @@
 /* TOP 버튼 */
 .top-btn {
   position: fixed;
-  bottom: 112px;
+  bottom: 150px;
   right: 30px;
   background: transparent;
   border: none;
@@ -20,20 +20,20 @@
 }
 
 .top-btn img {
-  width: 70px;
+  width: 60px;
   height: auto;
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .top-btn {
-    bottom: 100px;
+    bottom: 130px;
     right: 20px;
     z-index: 10002;
   }
 
   .top-btn img {
-    width: 60px;
+    width: 50px;
   }
 }
 
