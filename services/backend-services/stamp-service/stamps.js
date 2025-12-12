@@ -82,34 +82,6 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 })
 
-// 특정 사용자의 스탬프 목록 가져오기 (mountainCode 리스트만)
-router.get('/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: '유효하지 않은 userId입니다.' })
-    }
-
-    const stamps = await Stamp.find({ userId: userId })
-      .select('mountainCode stampedAt')
-      .sort({ stampedAt: -1 })
-      .lean()
-
-    const mountainCodes = stamps.map(stamp => stamp.mountainCode)
-
-    res.json({
-      userId: userId,
-      mountainCodes: mountainCodes,
-      count: mountainCodes.length,
-      stamps: stamps
-    })
-  } catch (error) {
-    console.error('스탬프 목록 조회 오류:', error)
-    res.status(500).json({ error: '스탬프 목록을 가져오는데 실패했습니다.' })
-  }
-})
-
 // 완등 탭용 API - 사용자의 완등한 산 정보 반환
 router.get('/completed/:userId', async (req, res) => {
   try {
@@ -242,6 +214,35 @@ router.get('/completed', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('등산 완료 산 목록 조회 오류:', error)
     res.status(500).json({ error: '등산 완료 산 목록을 가져오는데 실패했습니다.' })
+  }
+})
+
+// 특정 사용자의 스탬프 목록 가져오기 (mountainCode 리스트만)
+// 주의: 동적 파라미터 라우트는 마지막에 배치하여 /completed 등과 충돌하지 않도록 함
+router.get('/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: '유효하지 않은 userId입니다.' })
+    }
+
+    const stamps = await Stamp.find({ userId: userId })
+      .select('mountainCode stampedAt')
+      .sort({ stampedAt: -1 })
+      .lean()
+
+    const mountainCodes = stamps.map(stamp => stamp.mountainCode)
+
+    res.json({
+      userId: userId,
+      mountainCodes: mountainCodes,
+      count: mountainCodes.length,
+      stamps: stamps
+    })
+  } catch (error) {
+    console.error('스탬프 목록 조회 오류:', error)
+    res.status(500).json({ error: '스탬프 목록을 가져오는데 실패했습니다.' })
   }
 })
 
