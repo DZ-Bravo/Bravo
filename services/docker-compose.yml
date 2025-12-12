@@ -74,8 +74,10 @@ services:
   redis:
     image: redis:7-alpine
     container_name: hiking-redis
-    ports:
-      - "6379:6379"
+    # 호스트 6379는 redis-master-242가 점유 중이므로 포트 바인딩 제거
+    # 내부 통신만 필요하면 expose 불필요; 서비스명으로 접근 가능
+    # ports:
+    #   - "6379:6379"
     volumes:
       - labs_redis_data:/data
     command: redis-server --appendonly yes
@@ -394,6 +396,10 @@ services:
       - AWS_REGION=${AWS_REGION}
       - BEDROCK_COURSE_AGENT_ID=${BEDROCK_COURSE_AGENT_ID}
       - BEDROCK_COURSE_AGENT_ALIAS_ID=${BEDROCK_COURSE_AGENT_ALIAS_ID}
+      - VITE_EQUIPMENT_AGENT_ID=${VITE_EQUIPMENT_AGENT_ID}
+      - VITE_EQUIPMENT_ALIAS_ID=${VITE_EQUIPMENT_ALIAS_ID}
+    volumes:
+      - /home/bravo/LABs/tmp_products.jsonl:/app/tmp_products.jsonl:ro
     depends_on:
       mongodb:
         condition: service_healthy
