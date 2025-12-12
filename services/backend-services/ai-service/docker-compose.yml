@@ -18,6 +18,10 @@ services:
       - AWS_REGION=${AWS_REGION}
       - BEDROCK_COURSE_AGENT_ID=${BEDROCK_COURSE_AGENT_ID}
       - BEDROCK_COURSE_AGENT_ALIAS_ID=${BEDROCK_COURSE_AGENT_ALIAS_ID}
+      - VITE_EQUIPMENT_AGENT_ID=${VITE_EQUIPMENT_AGENT_ID}
+      - VITE_EQUIPMENT_ALIAS_ID=${VITE_EQUIPMENT_ALIAS_ID}
+    env_file:
+      - ../.env
     networks:
       - hiking-network
     restart: unless-stopped

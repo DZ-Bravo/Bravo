@@ -15,7 +15,7 @@ env:
 
 jobs:
   # ==============================
-  # 1) SonarQube 코드 분석
+  # 1) SonarQube 코드 분석1
   # ==============================
   sonarqube:
     name: SonarQube Analysis

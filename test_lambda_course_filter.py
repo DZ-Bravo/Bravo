@@ -34,3 +34,4 @@ if __name__ == "__main__":
     result2 = lambda_handler(test_event_2, None)
     print(json.dumps(json.loads(result2['body']), indent=2, ensure_ascii=False))
 
+
