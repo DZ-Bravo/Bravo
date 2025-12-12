@@ -13,6 +13,14 @@ function AICourse() {
   const [error, setError] = useState(null)
   const [mountainCodeMap, setMountainCodeMap] = useState({})
 
+
+  const formatPrice = (value) => {
+    if (value === null || value === undefined) return ''
+    const num = Number(value)
+    if (Number.isNaN(num)) return String(value)
+    return num.toLocaleString('ko-KR') + '원'
+  }
+
   const categories = [
     { id: 'course', name: '코스 추천' },
     { id: 'equipment', name: '장비 추천' }
@@ -193,77 +201,104 @@ function AICourse() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    if (selectedCategory !== 'course') {
-      // 장비 추천은 기존 로직 유지 (추후 구현)
-      setRecommendations([
-        {
-          id: 1,
-          name: '등산화',
-          category: '신발',
-          description: '초보자에게 추천하는 등산화입니다.'
-        }
-      ])
-      return
-    }
-    
     if (!userInput.trim()) {
       setError('조건을 입력해주세요.')
       return
     }
-    
+
     console.log('=== handleSubmit 실행됨 ===')
     console.log('selectedCategory:', selectedCategory)
     console.log('userInput:', userInput)
-    
+
     setLoading(true)
     setError(null)
     setRecommendations([])
-    
+
     try {
-      console.log('=== API 호출 시작 ===')
-      console.log('API_URL:', API_URL)
-      console.log('API 엔드포인트:', `${API_URL}/api/ai/recommend-course`)
-      console.log('요청 데이터:', { userInput })
-      
-      // API 호출
-      const response = await fetch(`${API_URL}/api/ai/recommend-course`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userInput })
-      })
-      
-      console.log('API 응답 상태:', response.status, response.ok)
-      
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('API 에러 응답:', errorText)
-        throw new Error(`추천 요청에 실패했습니다. (${response.status})`)
-      }
-      
-      const data = await response.json()
-      console.log('API 응답 데이터:', data)
-      const recommendationText = data.recommendation || ''
-      console.log('추천 텍스트:', recommendationText)
-      
-      // 응답 파싱
-      const parsedCourses = parseRecommendationResponse(recommendationText)
-      console.log('파싱된 코스:', parsedCourses)
-      
-      // 각 코스의 mountain_code 조회
-      const coursesWithCode = await Promise.all(
-        parsedCourses.map(async (course) => {
-          const code = await getMountainCode(course.mountainFull || course.mountain)
-          return {
-            ...course,
-            mountainCode: code
-          }
+      if (selectedCategory === 'course') {
+        console.log('=== API 호출 시작 ===')
+        console.log('API_URL:', API_URL)
+        console.log('API 엔드포인트:', `${API_URL}/api/ai/recommend-course`)
+        console.log('요청 데이터:', { userInput })
+        
+        // API 호출 (코스)
+        const response = await fetch(`${API_URL}/api/ai/recommend-course`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userInput })
         })
-      )
-      
-      console.log('최종 코스 데이터:', coursesWithCode)
-      setRecommendations(coursesWithCode)
+        
+        console.log('API 응답 상태:', response.status, response.ok)
+        
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error('API 에러 응답:', errorText)
+          throw new Error(`추천 요청에 실패했습니다. (${response.status})`)
+        }
+        
+        const data = await response.json()
+        console.log('API 응답 데이터:', data)
+        const recommendationText = data.recommendation || ''
+        console.log('추천 텍스트:', recommendationText)
+        
+        // 응답 파싱
+        const parsedCourses = parseRecommendationResponse(recommendationText)
+        console.log('파싱된 코스:', parsedCourses)
+        
+        // 각 코스의 mountain_code 조회
+        const coursesWithCode = await Promise.all(
+          parsedCourses.map(async (course) => {
+            const code = await getMountainCode(course.mountainFull || course.mountain)
+            return {
+              ...course,
+              mountainCode: code
+            }
+          })
+        )
+        
+        console.log('최종 코스 데이터:', coursesWithCode)
+        setRecommendations(coursesWithCode)
+      } else {
+        // 장비 추천: Bedrock 호출 결과를 그대로 카드로 표시
+        console.log('=== 장비 추천 API 호출 시작 ===')
+        console.log('API_URL:', API_URL)
+        console.log('API 엔드포인트:', `${API_URL}/api/ai/recommend-equipment`)
+        console.log('요청 데이터:', { userInput })
+
+        const response = await fetch(`${API_URL}/api/ai/recommend-equipment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userInput })
+        })
+
+        console.log('장비 추천 응답 상태:', response.status, response.ok)
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error('장비 추천 API 에러 응답:', errorText)
+          throw new Error(`장비 추천 요청에 실패했습니다. (${response.status})`)
+        }
+
+        const data = await response.json()
+        console.log('장비 추천 응답 데이터:', data)
+
+        const items = Array.isArray(data.recommendations) ? data.recommendations : []
+        const normalized = items.map((item, idx) => ({
+          id: item.id || idx + 1,
+          title: item.title || item.name || '',
+          brand: item.brand || '',
+          category: item.category || '',
+          price: item.price ?? '',
+          url: item.url || '',
+          reason: item.reason || item.description || ''
+        }))
+
+        setRecommendations(normalized)
+      }
     } catch (error) {
       console.error('추천 요청 오류:', error)
       console.error('에러 상세:', error.stack)
@@ -338,7 +373,7 @@ function AICourse() {
 
           {loading && (
             <div className="loading-message" style={{ marginTop: '2rem', textAlign: 'center', padding: '2rem' }}>
-              <p>AI가 최적의 코스를 추천하고 있습니다...</p>
+              <p>{selectedCategory === 'equipment' ? 'AI가 최적의 장비를 추천하고 있습니다...' : 'AI가 최적의 코스를 추천하고 있습니다...'}</p>
             </div>
           )}
 
@@ -354,13 +389,23 @@ function AICourse() {
                       if (selectedCategory === 'course' && item.mountainCode) {
                         navigate(`/mountain/${item.mountainCode}`)
                       }
+                      if (selectedCategory === 'equipment' && item.url) {
+                        console.log('장비 카드 클릭 - 연결 URL:', item.url)
+                        window.open(item.url, '_blank', 'noopener,noreferrer')
+                      }
                     }}
                     style={{
-                      cursor: selectedCategory === 'course' && item.mountainCode ? 'pointer' : 'default',
+                      cursor:
+                        selectedCategory === 'course'
+                          ? (item.mountainCode ? 'pointer' : 'default')
+                          : (item.url ? 'pointer' : 'default'),
                       transition: 'all 0.3s ease'
                     }}
                     onMouseEnter={(e) => {
-                      if (selectedCategory === 'course' && item.mountainCode) {
+                      const isClickable =
+                        (selectedCategory === 'course' && item.mountainCode) ||
+                        (selectedCategory === 'equipment' && item.url)
+                      if (isClickable) {
                         e.currentTarget.style.transform = 'translateY(-2px)'
                         e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
                       }
@@ -372,11 +417,20 @@ function AICourse() {
                   >
                     {selectedCategory === 'equipment' ? (
                       <>
-                        <h3>{item.name}</h3>
+                        <h3>{item.title || '상품명 없음'}</h3>
                         <div className="course-info">
-                          <span className="course-difficulty">카테고리: {item.category}</span>
+                          <span className="course-difficulty">브랜드: {item.brand || '-'}</span>
+                          <span className="course-duration">카테고리: {item.category || '-'}</span>
+                          <span className="course-distance">가격: {formatPrice(item.price) || '-'}</span>
                         </div>
-                        <p className="course-description">{item.description}</p>
+                        {item.reason && (
+                          <p className="course-description">{item.reason}</p>
+                        )}
+                        {!item.url && (
+                          <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#999' }}>
+                            이동할 URL이 없습니다.
+                          </div>
+                        )}
                       </>
                     ) : (
                       <>

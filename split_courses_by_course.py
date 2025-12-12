@@ -72,3 +72,4 @@ def split_courses_by_course():
 if __name__ == "__main__":
     split_courses_by_course()
 
+

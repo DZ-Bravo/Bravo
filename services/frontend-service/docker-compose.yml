@@ -18,7 +18,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     env_file:
-      - ../../.env
+      - ../.env
     restart: unless-stopped
     stdin_open: true
     tty: true
