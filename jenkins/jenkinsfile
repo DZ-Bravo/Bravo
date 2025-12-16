@@ -1,0 +1,121 @@
+pipeline {
+  agent any
+
+  environment {
+    REGISTRY_HOST   = "192.168.0.240"
+    HARBOR_PROJECT  = "service"
+
+    SONAR_HOST_URL  = credentials('sonar-host-url')
+    SONAR_TOKEN     = credentials('sonar-token')
+
+    HARBOR_USERNAME = credentials('harbor-username')
+    HARBOR_PASSWORD = credentials('harbor-password')
+  }
+
+  options {
+    skipDefaultCheckout()
+    timestamps()
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        sh """
+        sonar-scanner \
+          -Dsonar.projectKey=DZ-CI-CD-Project \
+          -Dsonar.projectName=DZ-CI-CD-Project \
+          -Dsonar.sources=services \
+          -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/shared/**
+        """
+      }
+    }
+
+    stage('Determine Version from Harbor') {
+      steps {
+        script {
+          sh """
+          echo "${HARBOR_PASSWORD}" | docker login ${REGISTRY_HOST} -u "${HARBOR_USERNAME}" --password-stdin
+          """
+
+          def latest = sh(
+            script: """
+              curl -s -k -u ${HARBOR_USERNAME}:${HARBOR_PASSWORD} \
+              https://${REGISTRY_HOST}/api/v2.0/projects/${HARBOR_PROJECT}/repositories/frontend/artifacts \
+              | jq -r '.[].tags[]?.name' | grep '^1\\.' | sort -V | tail -1 || echo "1.0"
+            """,
+            returnStdout: true
+          ).trim()
+
+          def minor = latest.tokenize('.')[1].toInteger() + 1
+          env.VERSION = "1.${minor}"
+
+          echo "🔖 Next version: ${env.VERSION}"
+        }
+      }
+    }
+
+    stage('Detect Changed Services') {
+      steps {
+        script {
+          def changes = sh(
+            script: "git diff --name-only HEAD~1",
+            returnStdout: true
+          ).trim().split("\n")
+
+          def services = changes.findAll { it.startsWith("services/") }
+                                .collect { it.split("/")[1] }
+                                .unique()
+
+          if (services.isEmpty()) {
+            echo "⏭ No service changes detected"
+            currentBuild.result = 'SUCCESS'
+            return
+          }
+
+          env.CHANGED_SERVICES = services.join(" ")
+          echo "🔍 Changed services: ${env.CHANGED_SERVICES}"
+        }
+      }
+    }
+
+    stage('Build & Push Services') {
+      when {
+        expression { env.CHANGED_SERVICES != null }
+      }
+      steps {
+        script {
+          env.CHANGED_SERVICES.split(" ").each { svc ->
+
+            def imageName = svc.replace("-service", "")
+            def dockerfile = "services/${svc}/Dockerfile"
+
+            sh """
+            docker build -t ${REGISTRY_HOST}/${HARBOR_PROJECT}/${imageName}:${VERSION} services
+            docker tag ${REGISTRY_HOST}/${HARBOR_PROJECT}/${imageName}:${VERSION} \
+                       ${REGISTRY_HOST}/${HARBOR_PROJECT}/${imageName}:latest
+
+            docker push ${REGISTRY_HOST}/${HARBOR_PROJECT}/${imageName}:${VERSION}
+            docker push ${REGISTRY_HOST}/${HARBOR_PROJECT}/${imageName}:latest
+            """
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "✅ CI completed successfully"
+    }
+    failure {
+      echo "❌ CI failed"
+    }
+  }
+}
