@@ -1,0 +1,137 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: hiking-gateway
+  namespace: bravo-core-ns
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: hiking-routes
+  namespace: bravo-core-ns
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - hiking-gateway
+  http:
+  # Auth Service
+  - match:
+    - uri:
+        prefix: /api/auth
+    route:
+    - destination:
+        host: auth-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3001
+  # Community Service
+  - match:
+    - uri:
+        prefix: /api/posts
+    - uri:
+        prefix: /uploads
+    route:
+    - destination:
+        host: community-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3002
+  # Notice Service
+  - match:
+    - uri:
+        prefix: /api/notices
+    route:
+    - destination:
+        host: notice-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3003
+  # Schedule Service
+  - match:
+    - uri:
+        prefix: /api/schedules
+    route:
+    - destination:
+        host: schedule-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3004
+  # Notification Service
+  - match:
+    - uri:
+        prefix: /api/notifications
+    route:
+    - destination:
+        host: notification-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3005
+  # Store Service
+  - match:
+    - uri:
+        prefix: /api/store
+    route:
+    - destination:
+        host: store-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3006
+  # Chatbot Service
+  - match:
+    - uri:
+        prefix: /api/chatbot
+    route:
+    - destination:
+        host: chatbot-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3007
+  # Mountain Service
+  - match:
+    - uri:
+        prefix: /api/mountains
+    - uri:
+        prefix: /api/cctv
+    - uri:
+        prefix: /api/courses
+    - uri:
+        prefix: /api/utils/imgbb-url
+    - uri:
+        prefix: /mountain
+    route:
+    - destination:
+        host: mountain-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3008
+  # AI Service
+  - match:
+    - uri:
+        prefix: /api/ai
+    route:
+    - destination:
+        host: ai-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3009
+  # Stamp Service
+  - match:
+    - uri:
+        prefix: /api/stamps
+    route:
+    - destination:
+        host: stamp-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3010
+  # Frontend (default)
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: frontend.bravo-front-ns.svc.cluster.local
+        port:
+          number: 80
+

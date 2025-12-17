@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: bravo-front-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: 192.168.0.244:30305/bravo/hiking-frontend:latest
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: TZ
+        - name: VITE_KAKAO_MAP_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: VITE_KAKAO_MAP_API_KEY
+        - name: VITE_CESIUM_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: VITE_CESIUM_ACCESS_TOKEN
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: bravo-front-ns
+  labels:
+    app: frontend
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http
+  selector:
+    app: frontend
+

@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-service
+  namespace: bravo-ai-integration-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-service
+  template:
+    metadata:
+      labels:
+        app: ai-service
+    spec:
+      containers:
+      - name: ai-service
+        image: 192.168.0.244:30305/bravo/hiking-ai-service:latest
+        ports:
+        - containerPort: 3009
+          name: http
+        env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: TZ
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: NODE_ENV
+        - name: PORT
+          value: "3009"
+        - name: MONGODB_URI
+          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: AWS_REGION
+        - name: BEDROCK_COURSE_AGENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: BEDROCK_COURSE_AGENT_ID
+        - name: BEDROCK_COURSE_AGENT_ALIAS_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: BEDROCK_COURSE_AGENT_ALIAS_ID
+        - name: VITE_EQUIPMENT_AGENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: VITE_EQUIPMENT_AGENT_ID
+        - name: VITE_EQUIPMENT_ALIAS_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: VITE_EQUIPMENT_ALIAS_ID
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3009
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3009
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+  namespace: bravo-ai-integration-ns
+  labels:
+    app: ai-service
+spec:
+  ports:
+  - port: 3009
+    targetPort: 3009
+    name: http
+  selector:
+    app: ai-service
+

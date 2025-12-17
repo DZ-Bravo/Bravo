@@ -1,0 +1,21 @@
+cluster.name: "hiking-search-cluster"
+node.name: "hiking-elasticsearch-node"
+
+network.host: 0.0.0.0
+http.port: 9200
+
+# 인덱스 설정 최적화
+action.auto_create_index: true
+
+# 성능 최적화
+thread_pool:
+  write:
+    size: 4
+    queue_size: 200
+  search:
+    size: 4
+    queue_size: 1000
+
+# 메모리 설정
+bootstrap.memory_lock: true
+

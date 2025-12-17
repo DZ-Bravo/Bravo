@@ -174,17 +174,24 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: filter 0.3s;
+  transition: filter 0.3s, opacity 0.3s;
 }
 
 .stamp-image.grayscale {
-  filter: grayscale(100%);
-  opacity: 0.6;
+  filter: grayscale(100%) !important;
+  opacity: 0.6 !important;
 }
 
 .stamp-image.completed {
-  filter: none;
-  opacity: 1;
+  filter: none !important;
+  opacity: 1 !important;
+  -webkit-filter: none !important;
+}
+
+.stamp-image-wrapper .completed {
+  filter: none !important;
+  opacity: 1 !important;
+  -webkit-filter: none !important;
 }
 
 .stamp-placeholder {
@@ -205,10 +212,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   z-index: 10;
   pointer-events: none;
+  object-fit: contain;
 }
 
 .stamp-name {

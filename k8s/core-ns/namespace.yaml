@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bravo-core-ns
+  labels:
+    name: bravo-core-ns
+
