@@ -129,11 +129,11 @@ function StampPage() {
             })
             console.log('[스탬프] 매칭된 산 개수:', matchedMountains.length)
             if (matchedMountains.length > 0) {
-              console.log('[스탬프] 매칭된 산 목록:', matchedMountains.map(m => ({ name: m.name, code: m.code })))
+              console.log('[스탬프] 매칭된 산 목록:', matchedMountains.map(m => ({ name: m.name, code: m.code, codeType: typeof m.code })))
             } else {
               console.warn('[스탬프] 매칭된 산이 없습니다. 코드 형식이 다를 수 있습니다.')
-              console.log('[스탬프] 완료 코드:', codes)
-              console.log('[스탬프] 산 코드 샘플:', mountains.slice(0, 10).map(m => m.code))
+              console.log('[스탬프] 완료 코드:', codes, '타입:', codes.map(c => typeof c))
+              console.log('[스탬프] 산 코드 샘플 (처음 10개):', mountains.slice(0, 10).map(m => ({ name: m.name, code: m.code, codeType: typeof m.code, codeStr: String(m.code) })))
             }
           } else if (mountains.length === 0) {
             console.log('[스탬프] 산 목록이 아직 로드되지 않았습니다.')
@@ -214,39 +214,46 @@ function StampPage() {
     if (!mountainCode) return false
     if (completedMountainCodes.length === 0) return false
     
-    // mountainCode를 정규화 (숫자로 변환 가능하면 숫자로, 아니면 문자열로)
-    let codeStr = String(mountainCode).trim()
+    // mountainCode를 정규화
+    const codeStr = String(mountainCode).trim()
     if (!codeStr || codeStr === 'null' || codeStr === 'undefined') return false
     
-    // 숫자로 변환 가능한 경우 숫자로 정규화
-    const codeNum = parseInt(codeStr)
-    const normalizedCode = !isNaN(codeNum) ? String(codeNum) : codeStr
+    // 숫자로 변환 시도
+    const codeNum = parseInt(codeStr, 10)
+    const isCodeValidNum = !isNaN(codeNum) && codeStr === String(codeNum)
     
     // completedMountainCodes의 각 항목과 비교
-    const matched = completedMountainCodes.some(completedCode => {
-      if (!completedCode) return false
+    for (const completedCode of completedMountainCodes) {
+      if (!completedCode) continue
       
       // completedCode 정규화
-      let completedStr = String(completedCode).trim()
-      if (!completedStr || completedStr === 'null' || completedStr === 'undefined') return false
+      const completedStr = String(completedCode).trim()
+      if (!completedStr || completedStr === 'null' || completedStr === 'undefined') continue
       
-      const completedNum = parseInt(completedStr)
-      const normalizedCompleted = !isNaN(completedNum) ? String(completedNum) : completedStr
+      const completedNum = parseInt(completedStr, 10)
+      const isCompletedValidNum = !isNaN(completedNum) && completedStr === String(completedNum)
       
-      // 정규화된 값으로 정확한 매칭
-      if (normalizedCode === normalizedCompleted) {
+      // 1. 원본 문자열 직접 비교
+      if (codeStr === completedStr) {
         return true
       }
       
-      // 숫자로 변환해서도 비교 (추가 안전장치)
-      if (!isNaN(codeNum) && !isNaN(completedNum) && codeNum === completedNum) {
-        return true
+      // 2. 숫자로 변환 가능한 경우 숫자로 비교 (가장 중요!)
+      if (isCodeValidNum && isCompletedValidNum) {
+        if (codeNum === completedNum) {
+          return true
+        }
       }
       
-      return false
-    })
+      // 3. 숫자로 변환 가능하지만 문자열 형식이 다른 경우 (예: "411170201" vs 411170201)
+      if (!isNaN(codeNum) && !isNaN(completedNum)) {
+        if (codeNum === completedNum) {
+          return true
+        }
+      }
+    }
     
-    return matched
+    return false
   }, [completedMountainCodes])
 
   // 페이지네이션 (useMemo로 최적화)
@@ -557,9 +564,6 @@ function StampPage() {
                   >
                     전체
                     <span className="tab-count">({tabCounts.all})</span>
-                    {completedCounts.all > 0 && (
-                      <span className="tab-completed"> 완료: {completedCounts.all}</span>
-                    )}
                   </button>
                   <button
                     className={`stamp-tab ${activeTab === 'completed' ? 'active' : ''}`}
@@ -567,6 +571,9 @@ function StampPage() {
                   >
                     완등
                     <span className="tab-count">({tabCounts.completed})</span>
+                    {completedCounts.completed > 0 && (
+                      <span className="tab-completed"> 완료: {completedCounts.completed}</span>
+                    )}
                   </button>
                   <button
                     className={`stamp-tab ${activeTab === 'tab1' ? 'active' : ''}`}
@@ -618,30 +625,37 @@ function StampPage() {
                 const completed = isCompleted(mountain.code)
                 const imageUrl = getImageUrl(mountain)
                 
-                // 디버깅: 매칭 확인 (인왕산, 광교산)
-                if (mountain.name && (mountain.name.includes('인왕산') || mountain.name.includes('광교산'))) {
-                  const codeStr = String(mountain.code).trim()
-                  const codeNum = parseInt(codeStr)
-                  const directMatch = completedMountainCodes.includes(codeStr)
-                  const numMatch = !isNaN(codeNum) && completedMountainCodes.includes(String(codeNum))
-                  const reverseMatch = completedMountainCodes.some(c => {
-                    const cStr = String(c).trim()
-                    return cStr === codeStr || (parseInt(cStr) === codeNum && !isNaN(parseInt(cStr)) && !isNaN(codeNum))
-                  })
-                  
-                  console.log(`[스탬프] ${mountain.name} 매칭 확인:`, {
+                // 디버깅: 북한산 백운대와 다른 산들의 코드 비교
+                if (completedMountainCodes.length > 0 && mountain.name && (mountain.name.includes('백운대') || mountain.name.includes('북한산'))) {
+                  console.log(`[스탬프] 북한산 백운대 코드 확인:`, {
                     name: mountain.name,
                     code: mountain.code,
                     codeType: typeof mountain.code,
-                    codeStr: codeStr,
-                    codeNum: codeNum,
-                    completedMountainCodes: completedMountainCodes,
-                    completedMountainCodesTypes: completedMountainCodes.map(c => typeof c),
+                    codeStr: String(mountain.code),
                     isCompleted: completed,
-                    directMatch: directMatch,
-                    numMatch: numMatch,
-                    reverseMatch: reverseMatch
+                    completedMountainCodes: completedMountainCodes
                   })
+                }
+                
+                // 디버깅: 완료된 코드와 매칭되지 않는 산 확인
+                if (completedMountainCodes.length > 0 && !completed) {
+                  const codeStr = String(mountain.code).trim()
+                  const codeNum = parseInt(codeStr, 10)
+                  const shouldMatch = completedMountainCodes.some(c => {
+                    const cStr = String(c).trim()
+                    const cNum = parseInt(cStr, 10)
+                    return cStr === codeStr || (!isNaN(cNum) && !isNaN(codeNum) && cNum === codeNum)
+                  })
+                  if (shouldMatch && !completed) {
+                    console.warn(`[스탬프] 매칭되어야 하는데 안됨:`, {
+                      name: mountain.name,
+                      code: mountain.code,
+                      codeStr: codeStr,
+                      codeNum: codeNum,
+                      completedMountainCodes: completedMountainCodes,
+                      isCompleted: completed
+                    })
+                  }
                 }
                 
                 return (
@@ -652,7 +666,7 @@ function StampPage() {
                           <img
                             src={imageUrl}
                             alt={mountain.name}
-                            className={`stamp-image ${completed ? 'completed' : 'grayscale'}`}
+                            className={completed ? 'stamp-image completed' : 'stamp-image grayscale'}
                             onError={(e) => {
                               console.error('이미지 로드 실패:', imageUrl, mountain)
                               e.target.style.display = 'none'
@@ -674,13 +688,14 @@ function StampPage() {
                           <span style={{ fontSize: '2rem' }}>⛰️</span>
                         </div>
                       )}
-                      {completed && imageUrl && (
+                      {completed && (
                         <img
                           src="/images/stamp_icon.png"
                           alt="스탬프"
                           className="stamp-icon"
                           onError={(e) => {
                             console.error('스탬프 아이콘 로드 실패:', e)
+                            e.target.style.display = 'none'
                           }}
                         />
                       )}

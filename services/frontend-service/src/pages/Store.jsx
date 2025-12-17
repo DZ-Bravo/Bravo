@@ -12,6 +12,8 @@ function Store() {
   const [totalPages, setTotalPages] = useState(1)
   const [favoriteProducts, setFavoriteProducts] = useState(new Set()) // 즐겨찾기한 상품 ID Set
   const [recentProducts, setRecentProducts] = useState([]) // 최근 본 상품
+  const [searchQuery, setSearchQuery] = useState('') // 검색어
+  const [isSearchMode, setIsSearchMode] = useState(false) // 검색 모드 여부
   const itemsPerPage = 15
 
   // 세션 ID 생성 또는 가져오기
@@ -168,7 +170,80 @@ function Store() {
     }
   }
 
+  // 검색 실행
+  const performSearch = async (query, category = null, page = 1) => {
+    if (!query.trim()) {
+      setIsSearchMode(false)
+      return
+    }
+
+    setIsLoading(true)
+    setIsSearchMode(true)
+    if (page === 1) {
+      setCurrentPage(1)
+    }
+
+    try {
+      const searchUrl = `${API_URL}/api/store/search?q=${encodeURIComponent(query)}&limit=${itemsPerPage}&page=${page}${category ? `&category=${category}` : ''}`
+      console.log('스토어 검색 URL:', searchUrl)
+      
+      const response = await fetch(searchUrl)
+      if (response.ok) {
+        const data = await response.json()
+        console.log('스토어 검색 결과:', data)
+        setProducts(data.products || [])
+        setTotalProducts(data.total || 0)
+        setTotalPages(data.totalPages || 1)
+        setCurrentPage(data.page || page)
+      } else {
+        const errorData = await response.json()
+        console.error('스토어 검색 오류:', errorData)
+        setProducts([])
+        setTotalProducts(0)
+        setTotalPages(1)
+      }
+    } catch (error) {
+      console.error('스토어 검색 오류:', error)
+      setProducts([])
+      setTotalProducts(0)
+      setTotalPages(1)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // 검색어 변경 핸들러
+  const handleSearchChange = (e) => {
+    const value = e.target.value
+    setSearchQuery(value)
+    
+    // 검색어가 비어있으면 검색 모드 해제
+    if (!value.trim()) {
+      setIsSearchMode(false)
+      setCurrentPage(1)
+    }
+  }
+
+  // 검색 실행 핸들러
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      const category = selectedCategory !== 'all' ? categoryMap[selectedCategory] : null
+      performSearch(searchQuery.trim(), category)
+    }
+  }
+
+  // 검색어 초기화
+  const handleSearchClear = () => {
+    setSearchQuery('')
+    setIsSearchMode(false)
+    setCurrentPage(1)
+  }
+
+  // 상품 목록 가져오기 (검색 모드가 아닐 때만)
   useEffect(() => {
+    if (isSearchMode) return // 검색 모드일 때는 fetchProducts 실행 안 함
+
     const fetchProducts = async () => {
       setIsLoading(true)
       try {
@@ -264,11 +339,25 @@ function Store() {
     }
 
     fetchProducts()
-  }, [selectedCategory, currentPage])
+  }, [selectedCategory, currentPage, isSearchMode])
+
+  // 검색 모드일 때 페이지 변경 시 검색 재실행
+  useEffect(() => {
+    if (isSearchMode && searchQuery.trim()) {
+      const category = selectedCategory !== 'all' ? categoryMap[selectedCategory] : null
+      performSearch(searchQuery.trim(), category, currentPage)
+    }
+  }, [currentPage])
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId)
     setCurrentPage(1) // 카테고리 변경 시 첫 페이지로
+    
+    // 검색 모드일 때는 검색 재실행
+    if (isSearchMode && searchQuery.trim()) {
+      const category = categoryId !== 'all' ? categoryMap[categoryId] : null
+      performSearch(searchQuery.trim(), category)
+    }
   }
 
   const handlePageChange = (page) => {
@@ -380,6 +469,48 @@ function Store() {
             <div className="store-header">
               <h1 className="store-title">스토어</h1>
               <p className="store-subtitle">인기 브랜드부터 전문 장비까지, 신뢰할 수 있는 스토어로 연결합니다.</p>
+            </div>
+
+            {/* 검색 바 */}
+            <div className="store-search-section">
+              <form onSubmit={handleSearchSubmit} className="store-search-form">
+                <div className="store-search-input-wrapper">
+                  <svg className="store-search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M19 19L14.65 14.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="상품명, 브랜드명으로 검색해보세요"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className="store-search-input"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={handleSearchClear}
+                      className="store-search-clear"
+                      aria-label="검색어 지우기"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                <button type="submit" className="store-search-btn">
+                  검색
+                </button>
+              </form>
+              {isSearchMode && (
+                <div className="store-search-info">
+                  <span className="store-search-result-text">"{searchQuery}" 검색 결과 <strong>{totalProducts}</strong>개</span>
+                  <button onClick={handleSearchClear} className="store-search-cancel">
+                    검색 취소
+                  </button>
+                </div>
+              )}
             </div>
             
             <div className="store-categories">

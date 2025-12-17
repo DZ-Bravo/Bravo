@@ -14,7 +14,8 @@
     "mongoose": "^8.0.3",
     "redis": "^4.7.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "@elastic/elasticsearch": "^8.11.0"
   }
 }
 

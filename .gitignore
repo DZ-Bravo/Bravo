@@ -16,3 +16,6 @@ uploads/
 .env.backup
 
 
+.env
+.env.*
+*.swp
