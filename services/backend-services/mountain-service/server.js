@@ -14,6 +14,8 @@ import { MountainList } from './shared/models/Mountain.js'
 import Course from './shared/models/Course.js'
 import Lodging from './shared/models/Lodging.js'
 import Post from './shared/models/Post.js'
+import { getElasticsearchClient } from './shared/config/elasticsearch.js'
+import { createIndex, bulkIndex } from './shared/utils/search.js'
 
 dotenv.config()
 
@@ -1832,6 +1834,17 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
         // 매칭 실패 시 대체 산
         { mountainName: '검단산', courseName: '', priority: 1 },
         { mountainName: '검둔산', courseName: '', priority: 6 }
+      ],
+      clouds: [
+        // 운해 사냥 추천 코스 BEST 8
+        { mountainName: '천마산', courseName: '호평동', priority: 1 },
+        { mountainName: '북한산', courseName: '백운대', priority: 2 },
+        { mountainName: '검단산', courseName: '현충탑', priority: 3 },
+        { mountainName: '월출산', courseName: '경포대', priority: 4 },
+        { mountainName: '황매산', courseName: '황매평원길', priority: 5 },
+        { mountainName: '설악산', courseName: '오색', priority: 6 },
+        { mountainName: '가지산', courseName: '석남터널', priority: 7 },
+        { mountainName: '지리산', courseName: '노고단', priority: 8 }
       ]
     }
     
@@ -2005,7 +2018,8 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                               course: course,
                               segments: [course],
                               totalTime: (props.upTime || 0) + (props.downTime || 0),
-                              totalDistance: props.distance || 0
+                              totalDistance: props.distance || 0,
+                              courseName: courseName // 정렬을 위해 저장
                             }
                           } else {
                             courseGroups[courseName].segments.push(course)
@@ -2021,7 +2035,23 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                           }
                         })
                         
-                        courses = Object.values(courseGroups).map(group => {
+                        // 코스 그룹을 정렬하여 일관된 순서 보장
+                        const sortedGroups = Object.values(courseGroups).sort((a, b) => {
+                          // 1순위: 코스 이름 알파벳 순 (일관성 보장)
+                          const aName = (a.courseName || a.course?.properties?.name || '').toLowerCase()
+                          const bName = (b.courseName || b.course?.properties?.name || '').toLowerCase()
+                          if (aName !== bName) return aName.localeCompare(bName)
+                          
+                          // 2순위: 소요시간 긴 순
+                          if (b.totalTime !== a.totalTime) return b.totalTime - a.totalTime
+                          
+                          // 3순위: 거리 긴 순
+                          if (b.totalDistance !== a.totalDistance) return b.totalDistance - a.totalDistance
+                          
+                          return 0
+                        })
+                        
+                        courses = sortedGroups.map(group => {
                           const representativeCourse = group.course
                           const props = representativeCourse.properties || {}
                           
@@ -2063,31 +2093,89 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
           // 코스 이름으로 필터링 (우선 코스명이 있으면)
           let matchedCourse = null
           if (priorityCourse.courseName && courses.length > 0) {
-            matchedCourse = courses.find(course => {
-              const courseName = (course.courseName || '').toLowerCase()
+            const searchName = priorityCourse.courseName.toLowerCase().trim()
+            
+            // 정확히 일치하는 코스만 찾기 (포함 관계 제외)
+            let exactMatches = courses.filter(course => {
               const props = course.properties || {}
-              const propsName = (props.name || props.PMNTN_NM || '').toLowerCase()
-              const searchName = priorityCourse.courseName.toLowerCase()
+              let propsName = (props.name || props.PMNTN_NM || '').toLowerCase().trim()
               
-              return courseName.includes(searchName) ||
-                     propsName.includes(searchName) ||
-                     courseName.includes(searchName.replace('봉', '')) ||
-                     propsName.includes(searchName.replace('봉', ''))
+              // "구간" 제거하고 비교
+              propsName = propsName.replace(/구간$/, '').trim()
+              
+              // 정확히 일치하는 경우만 (대소문자 무시)
+              return propsName === searchName
             })
+            
+            // 매칭된 코스가 여러 개면 정렬하여 일관된 선택
+            if (exactMatches.length > 0) {
+              // 정렬: 1) 소요시간 긴 순, 2) 거리 긴 순
+              exactMatches.sort((a, b) => {
+                const aProps = a.properties || {}
+                const bProps = b.properties || {}
+                
+                // 소요시간 긴 순
+                const aTime = (aProps.upTime || 0) + (aProps.downTime || 0)
+                const bTime = (bProps.upTime || 0) + (bProps.downTime || 0)
+                if (bTime !== aTime) return bTime - aTime
+                
+                // 거리 긴 순
+                const aDist = aProps.distance || aProps.PMNTN_LT || 0
+                const bDist = bProps.distance || bProps.PMNTN_LT || 0
+                if (bDist !== aDist) return bDist - aDist
+                
+                return 0
+              })
+              
+              matchedCourse = exactMatches[0]
+              const matchedName = matchedCourse?.properties?.name || matchedCourse?.properties?.PMNTN_NM || '이름 없음'
+              const matchedDifficulty = matchedCourse?.properties?.difficulty || '없음'
+              const matchedTime = (matchedCourse?.properties?.upTime || 0) + (matchedCourse?.properties?.downTime || 0)
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 매칭 성공: "${matchedName}" (검색어: "${searchName}"), 소요시간: ${matchedTime}분, 난이도: ${matchedDifficulty}`)
+            } else {
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 매칭 실패: "${searchName}" (사용 가능한 코스: ${courses.map(c => {
+                const name = c.properties?.name || c.properties?.PMNTN_NM || '이름 없음'
+                const normalized = name.toLowerCase().replace(/구간$/, '').trim()
+                return `${name} (정규화: "${normalized}")`
+              }).join(', ')})`)
+            }
           }
           
           // 매칭된 코스가 없으면 첫 번째 코스 사용 (초보 코스는 어려움 제외)
           if (!matchedCourse && courses.length > 0) {
+            // 코스를 정렬하여 일관된 순서 보장 (이름 알파벳 순으로 고정)
+            const sortedCourses = [...courses].sort((a, b) => {
+              const aProps = a.properties || {}
+              const bProps = b.properties || {}
+              
+              // 1순위: 코스 이름 알파벳 순 (일관성 보장)
+              const aName = (aProps.name || aProps.PMNTN_NM || '').toLowerCase()
+              const bName = (bProps.name || bProps.PMNTN_NM || '').toLowerCase()
+              if (aName !== bName) return aName.localeCompare(bName)
+              
+              // 2순위: 소요시간 긴 순
+              const aTime = (aProps.upTime || 0) + (aProps.downTime || 0)
+              const bTime = (bProps.upTime || 0) + (bProps.downTime || 0)
+              if (bTime !== aTime) return bTime - aTime
+              
+              // 3순위: 거리 긴 순
+              const aDist = aProps.distance || aProps.PMNTN_LT || 0
+              const bDist = bProps.distance || bProps.PMNTN_LT || 0
+              if (bDist !== aDist) return bDist - aDist
+              
+              return 0
+            })
+            
             if (theme === 'beginner') {
               // 초보 코스는 쉬움/보통만 선택
-              matchedCourse = courses.find(c => {
+              matchedCourse = sortedCourses.find(c => {
                 const diff = (c.properties?.difficulty || c.difficulty || '').toLowerCase()
                 return !diff.includes('어려움') && !diff.includes('고급') && !diff.includes('hard')
-              }) || courses[0]
+              }) || sortedCourses[0]
             } else {
-              matchedCourse = courses[0]
+              matchedCourse = sortedCourses[0]
             }
-            console.log(`[테마별 코스] ${priorityCourse.mountainName} 첫 번째 코스 사용: ${matchedCourse?.courseName || matchedCourse?.properties?.name || '이름 없음'}`)
+            console.log(`[테마별 코스] ${priorityCourse.mountainName} 첫 번째 코스 사용: "${matchedCourse?.courseName || matchedCourse?.properties?.name || '이름 없음'}", 난이도: ${matchedCourse?.properties?.difficulty || '없음'}`)
           }
           
           // 초보 코스는 어려움 난이도 제외
@@ -2127,19 +2215,25 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             }
             
             // 코스 이름을 "~산의 ~ 구간" 형식으로 만들기
-            const courseNameOnly = matchedCourse.courseName || props.name || props.PMNTN_NM || '구간'
+            // 실제 매칭된 코스의 이름 사용 (matchedCourse.courseName이 아닌 props.name 사용)
+            const actualCourseName = props.name || props.PMNTN_NM || priorityCourse.courseName || '구간'
+            const courseNameOnly = actualCourseName.replace(/구간$/, '').trim() // "구간" 제거
+            
             // 산 이름에서 주소 제거 (괄호 안의 내용 제거)
             let mountainNameOnly = mountain.mntiname || mountain.name || priorityCourse.mountainName
             // 괄호와 그 안의 내용 제거 (예: "검봉산(강원특별자치도...)" -> "검봉산")
             mountainNameOnly = mountainNameOnly.replace(/\([^)]*\)/g, '').trim()
-            // "구간"이 이미 포함되어 있으면 그대로 사용, 없으면 "구간" 추가
-            const finalCourseName = courseNameOnly.includes('구간') 
-              ? `${mountainNameOnly}의 ${courseNameOnly}`
-              : `${mountainNameOnly}의 ${courseNameOnly}구간`
+            
+            // 최종 코스 이름: "~산의 ~구간" 형식
+            const finalCourseName = `${mountainNameOnly}의 ${courseNameOnly}구간`
+            
+            // URL 매칭을 위한 정확한 코스 이름 (구간 제외) - 실제 코스 이름 사용
+            const courseNameForUrl = courseNameOnly
             
             foundPriorityCourses.push({
               id: matchedCourse._id,
               name: finalCourseName,
+              courseName: courseNameForUrl, // URL 매칭을 위한 정확한 코스 이름
               location: location,
               mountainName: mountainNameOnly,
               mountainCode: mountainCode,
@@ -2257,6 +2351,17 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
           })
           filtered.sort((a, b) => (b.distance || 0) - (a.distance || 0))
           break
+        case 'clouds':
+          filtered = remainingCourses.filter(course => {
+            const mountainName = (course.mountainName || '').toLowerCase()
+            const courseName = (course.courseName || '').toLowerCase()
+            return ['천마', '북한', '검단', '월출', '황매', '설악', '가지', '지리'].some(name => 
+              mountainName.includes(name.toLowerCase()) || 
+              courseName.includes(name.toLowerCase())
+            )
+          })
+          filtered.sort((a, b) => (b.distance || 0) - (a.distance || 0))
+          break
         default:
           filtered = remainingCourses
       }
@@ -2279,9 +2384,13 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
               : `${mountainNameOnly}의 ${courseNameOnly}구간`)
           : courseNameOnly
         
+        // URL 매칭을 위한 정확한 코스 이름 (구간 제외)
+        const courseNameForUrl = course.courseName || courseNameOnly.replace(/구간$/, '').trim()
+        
         return {
           id: course._id || `additional_${index}`,
           name: finalCourseName,
+          courseName: courseNameForUrl, // URL 매칭을 위한 정확한 코스 이름
           location: course.mountainLocation || '',
           mountainName: mountainNameOnly,
           mountainCode: course.mountainCode || '',
@@ -2310,6 +2419,141 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
   }
 })
 
+
+// 산 데이터 Elasticsearch 인덱싱 (관리자용)
+app.post('/api/mountains/index/init', async (req, res) => {
+  try {
+    const esClient = await getElasticsearchClient()
+    if (!esClient) {
+      return res.status(503).json({ error: 'Elasticsearch 연결 실패' })
+    }
+
+    // 인덱스 매핑 정의
+    const mapping = {
+      properties: {
+        name: {
+          type: 'text',
+          analyzer: 'korean_analyzer',
+          fields: {
+            keyword: { type: 'keyword' }
+          }
+        },
+        location: {
+          type: 'text',
+          analyzer: 'korean_analyzer'
+        },
+        code: { type: 'keyword' },
+        height: { type: 'text' },
+        description: { type: 'text', analyzer: 'korean_analyzer' },
+        image: { type: 'keyword' }
+      }
+    }
+
+    // 인덱스 생성
+    await createIndex('mountains', mapping)
+
+    // MongoDB에서 모든 산 가져오기
+    const mongoose = await import('mongoose')
+    const db = mongoose.default.connection.db
+    
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    
+    let mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list') ||
+      collectionNames.find(name => name.toLowerCase() === 'mountain_list') ||
+      collectionNames.find(name => name.toLowerCase() === 'mountain_lists') ||
+      'Mountain_list'
+    
+    const actualCollection = db.collection(mountainListCollectionName)
+    const mountains = await actualCollection.find({}).toArray()
+
+    console.log(`총 ${mountains.length}개의 산을 인덱싱합니다.`)
+
+    // 일괄 인덱싱을 위한 문서 배열 생성
+    const documents = mountains.map(mountain => {
+      const mountainInfo = mountain.trail_match?.mountain_info || {}
+      const code = String(mountain.mntilistno || mountain.code || mountain._id)
+      const name = mountain.mntiname || mountain.name || mountainInfo.mntiname || ''
+      const location = mountain.location || mountain.mntiadd || ''
+      const height = mountain.mntihigh || mountain.height || ''
+      const description = mountain.description || ''
+      
+      // 이미지 추출
+      const imageFields = [
+        mountain.photo_url,
+        mountain.image_url,
+        mountain.photoUrl,
+        mountain.imageUrl,
+        mountain.image,
+        mountain.photo,
+        mountain.thumbnail,
+        mountain.mntiimage,
+        mountain.MNTN_IMG,
+        mountainInfo?.photo_url,
+        mountainInfo?.image_url,
+        mountainInfo?.photoUrl,
+        mountainInfo?.imageUrl,
+        mountainInfo?.image,
+        mountainInfo?.photo,
+        mountainInfo?.thumbnail
+      ]
+      
+      let image = null
+      for (const img of imageFields) {
+        if (img && typeof img === 'string' && (img.startsWith('http') || img.startsWith('/'))) {
+          image = img
+          break
+        }
+      }
+
+      return {
+        id: code,
+        data: {
+          code: code,
+          name: name,
+          location: location,
+          height: height,
+          description: description,
+          image: image || null
+        }
+      }
+    }).filter(doc => doc.data.name && doc.data.code) // 이름과 코드가 있는 것만
+
+    // 배치 단위로 인덱싱
+    const batchSize = 100
+    let totalIndexed = 0
+    let errors = 0
+
+    for (let i = 0; i < documents.length; i += batchSize) {
+      const batch = documents.slice(i, i + batchSize)
+      try {
+        const result = await bulkIndex('mountains', batch)
+        totalIndexed += result.indexed
+        if (result.errors) {
+          errors += result.errors
+        }
+        console.log(`인덱싱 진행: ${Math.min(i + batchSize, documents.length)}/${documents.length}`)
+      } catch (error) {
+        console.error(`배치 인덱싱 오류 (${i}-${i + batchSize}):`, error.message)
+        errors += batch.length
+      }
+    }
+
+    res.json({
+      success: true,
+      message: '산 인덱싱 완료',
+      total: documents.length,
+      indexed: totalIndexed,
+      errors: errors
+    })
+  } catch (error) {
+    console.error('산 인덱싱 오류:', error)
+    res.status(500).json({ 
+      error: '인덱싱 중 오류가 발생했습니다.',
+      details: error.message 
+    })
+  }
+})
 
 // 헬스체크
 app.get('/health', (req, res) => {

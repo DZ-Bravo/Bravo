@@ -28,6 +28,8 @@ app.get('/health', (req, res) => {
 
 // 서버 시작
 app.listen(PORT, () => {
+  const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
   console.log(`Stamp Service running on port ${PORT}`)
+  console.log(`JWT_SECRET 사용 중: ${JWT_SECRET ? (JWT_SECRET.substring(0, 10) + '...') : '없음'}`)
 })
 
