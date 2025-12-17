@@ -11,11 +11,84 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import fs from 'fs'
+import { getElasticsearchClient } from './shared/config/elasticsearch.js'
+import { buildFuzzySearchQuery, search } from './shared/utils/search.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const router = express.Router()
+
+// Elasticsearch 인덱싱 헬퍼 함수
+const indexPostToElasticsearch = async (post) => {
+  try {
+    const esClient = await getElasticsearchClient()
+    if (!esClient) {
+      return // Elasticsearch 없이도 동작
+    }
+
+    const { indexDocument } = await import('./shared/utils/search.js')
+    const { createIndex } = await import('./shared/utils/search.js')
+
+    // 인덱스 매핑 정의
+    const mapping = {
+      properties: {
+        title: {
+          type: 'text',
+          analyzer: 'korean_analyzer',
+          fields: {
+            keyword: { type: 'keyword' }
+          }
+        },
+        content: {
+          type: 'text',
+          analyzer: 'korean_analyzer'
+        },
+        category: { type: 'keyword' },
+        authorId: { type: 'keyword' },
+        authorName: { type: 'text' },
+        createdAt: { type: 'date' }
+      }
+    }
+
+    // 인덱스가 없으면 생성
+    try {
+      await createIndex('posts', mapping)
+    } catch (error) {
+      // 이미 존재하면 무시
+      if (!error.message.includes('resource_already_exists_exception')) {
+        console.warn('인덱스 생성 실패:', error.message)
+      }
+    }
+
+    // 문서 인덱싱
+    await indexDocument('posts', post._id.toString(), {
+      _id: post._id.toString(),
+      title: post.title || '',
+      content: post.content ? post.content.replace(/<[^>]*>/g, '') : '', // HTML 태그 제거
+      category: post.category || '',
+      authorId: post.author ? post.author.toString() : '',
+      authorName: post.authorName || '',
+      createdAt: post.createdAt || new Date()
+    })
+  } catch (error) {
+    console.warn('Elasticsearch 인덱싱 실패 (무시됨):', error.message)
+  }
+}
+
+const deletePostFromElasticsearch = async (postId) => {
+  try {
+    const esClient = await getElasticsearchClient()
+    if (!esClient) {
+      return
+    }
+
+    const { deleteDocument } = await import('./shared/utils/search.js')
+    await deleteDocument('posts', postId.toString())
+  } catch (error) {
+    console.warn('Elasticsearch 삭제 실패 (무시됨):', error.message)
+  }
+}
 
 // 게시글 이미지 업로드 설정
 const storage = multer.diskStorage({
@@ -314,7 +387,7 @@ router.get('/my', authenticateToken, async (req, res) => {
   }
 })
 
-// 게시글 검색 (인증 불필요)
+// 게시글 검색 (Elasticsearch 우선, 실패 시 MongoDB 폴백)
 router.get('/search', async (req, res) => {
   try {
     const query = req.query.q || ''
@@ -323,51 +396,96 @@ router.get('/search', async (req, res) => {
     const skip = (page - 1) * limit
 
     if (!query.trim()) {
-      return res.json({ posts: [], total: 0 })
+      return res.json({ posts: [], total: 0, page, totalPages: 0 })
     }
 
-    // 제목 또는 내용에서 검색 (한글 검색 지원)
-    // 특수문자 이스케이프 (한글은 이스케이프 불필요)
-    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    
-    console.log('검색어:', query, '이스케이프된 검색어:', escapedQuery)
-    
-    // MongoDB $regex를 사용하여 대소문자 구분 없이 검색
-    const searchCondition = {
-      $or: [
-        { title: { $regex: escapedQuery, $options: 'i' } },
-        { content: { $regex: escapedQuery, $options: 'i' } }
-      ]
+    const esClient = await getElasticsearchClient()
+    let posts = []
+    let total = 0
+
+    // Elasticsearch 사용 시도
+    if (esClient) {
+      try {
+        const searchFields = ['title^3', 'content']
+        const searchQuery = buildFuzzySearchQuery(query, searchFields, {
+          fuzziness: 'AUTO',
+          prefixLength: 1
+        })
+
+        const searchResult = await search('posts', searchQuery, {
+          from: skip,
+          size: limit,
+          sort: [{ _score: { order: 'desc' } }, { createdAt: { order: 'desc' } }]
+        })
+
+        total = searchResult.total
+
+        if (searchResult.hits.length > 0) {
+          const postIds = searchResult.hits.map(hit => hit._id)
+          const dbPosts = await Post.find({
+            _id: { $in: postIds }
+          })
+            .populate('author', 'id name profileImage')
+            .select('title content category author authorName views likes createdAt images')
+            .lean()
+
+          // 검색어가 제목에 포함되어 있는지 필터링
+          const queryLower = query.toLowerCase().trim()
+          const filteredPosts = dbPosts.filter(post => {
+            if (!post.title) return false
+            const titleLower = String(post.title).toLowerCase()
+            // 검색어가 제목에 포함되어 있으면 포함
+            return titleLower.includes(queryLower)
+          })
+
+          // 점수 순으로 정렬 (제목 시작 부분 일치가 우선)
+          const postsWithScore = filteredPosts.map(post => {
+            const hit = searchResult.hits.find(h => h._id === post._id.toString())
+            const titleLower = String(post.title || '').toLowerCase()
+            const startsWithQuery = titleLower.startsWith(queryLower) ? 1 : 0
+            return {
+              ...post,
+              _score: (hit?._score || 0) + startsWithQuery * 1000 // 제목 시작 부분 일치 시 점수 추가
+            }
+          })
+          postsWithScore.sort((a, b) => (b._score || 0) - (a._score || 0))
+          posts = postsWithScore
+        }
+      } catch (esError) {
+        console.warn('Elasticsearch 검색 실패, MongoDB로 폴백:', esError.message)
+        // MongoDB 폴백으로 계속 진행
+      }
     }
-    
-    console.log('검색 조건:', { query: escapedQuery, options: 'i' })
-    
-    const posts = await Post.find(searchCondition)
-      .populate('author', 'id name profileImage')
-      .select('title content category author authorName views likes createdAt images')
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean()
 
-    const total = await Post.countDocuments(searchCondition)
+    // MongoDB 폴백 (Elasticsearch 실패 또는 미사용 시)
+    if (posts.length === 0) {
+      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      
+      const searchCondition = {
+        $or: [
+          { title: { $regex: escapedQuery, $options: 'i' } },
+          { content: { $regex: escapedQuery, $options: 'i' } }
+        ]
+      }
+      
+      posts = await Post.find(searchCondition)
+        .populate('author', 'id name profileImage')
+        .select('title content category author authorName views likes createdAt images')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean()
 
-    console.log('검색 쿼리:', query, '검색 결과 수:', total)
-    if (posts.length > 0) {
-      console.log('검색된 게시글 제목들:', posts.map(p => p.title))
+      total = await Post.countDocuments(searchCondition)
     }
 
     // 날짜 포맷팅 및 본문 미리보기 생성
     const formattedPosts = posts.map((post) => {
-      // 본문 미리보기 (100자 제한, HTML 태그 제거)
       const contentPreview = post.content
         ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
         : ''
       
-      // 첫 번째 이미지를 썸네일로 사용
       const thumbnailImage = post.images && post.images.length > 0 ? post.images[0] : null
-      
-      // 날짜 포맷팅 (YYYY-MM-DD)
       const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
 
       return {
@@ -389,6 +507,273 @@ router.get('/search', async (req, res) => {
   } catch (error) {
     console.error('게시글 검색 오류:', error)
     res.status(500).json({ error: '게시글 검색 중 오류가 발생했습니다.' })
+  }
+})
+
+// 통합 검색 API (산, 게시글, 상품) - /:id 라우트보다 먼저 정의해야 함
+router.get('/unified-search', async (req, res) => {
+  try {
+    const query = req.query.q || ''
+    const limit = parseInt(req.query.limit) || 1000  // 기본값을 1000으로 증가 (산 데이터 552개 모두 표시)
+
+    if (!query.trim()) {
+      return res.json({
+        mountains: [],
+        posts: [],
+        products: [],
+        total: 0
+      })
+    }
+
+    const results = {
+      mountains: [],
+      posts: [],
+      products: [],
+      total: 0
+    }
+
+    // Elasticsearch 클라이언트 확인
+    const esClient = await getElasticsearchClient()
+
+    // 1. 게시글 검색 (Elasticsearch 우선, 실패 시 MongoDB)
+    try {
+      if (esClient) {
+        const searchFields = ['title^3', 'content']
+        const searchQuery = buildFuzzySearchQuery(query, searchFields)
+        const searchResult = await search('posts', searchQuery, {
+          from: 0,
+          size: limit
+        })
+
+        // MongoDB에서 상세 정보 가져오기
+        const postIds = searchResult.hits.map(hit => hit._id)
+        if (postIds.length > 0) {
+          const posts = await Post.find({
+            _id: { $in: postIds }
+          })
+            .populate('author', 'id name profileImage')
+            .select('title content category author authorName views likes createdAt images')
+            .lean()
+
+          // 검색어가 제목에 포함되어 있는지 필터링
+          const queryLower = query.toLowerCase().trim()
+          const filteredPosts = posts.filter(post => {
+            if (!post.title) return false
+            const titleLower = String(post.title).toLowerCase()
+            // 검색어가 제목에 포함되어 있으면 포함
+            return titleLower.includes(queryLower)
+          })
+
+          // 점수 순으로 정렬 (제목 시작 부분 일치가 우선)
+          const postsWithScore = filteredPosts.map(post => {
+            const hit = searchResult.hits.find(h => h._id === post._id.toString())
+            const titleLower = String(post.title || '').toLowerCase()
+            const startsWithQuery = titleLower.startsWith(queryLower) ? 1 : 0
+            return {
+              ...post,
+              id: post._id.toString(),
+              _score: (hit?._score || 0) + startsWithQuery * 1000 // 제목 시작 부분 일치 시 점수 추가
+            }
+          })
+          postsWithScore.sort((a, b) => (b._score || 0) - (a._score || 0))
+
+          results.posts = postsWithScore.slice(0, limit).map(post => {
+            const contentPreview = post.content
+              ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+              : ''
+            const thumbnailImage = post.images && post.images.length > 0 ? post.images[0] : null
+            const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+
+            return {
+              ...post,
+              previewContent: contentPreview,
+              thumbnailImage,
+              date: dateStr
+            }
+          })
+        }
+      } else {
+        // MongoDB 폴백
+        const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const posts = await Post.find({
+          $or: [
+            { title: { $regex: escapedQuery, $options: 'i' } },
+            { content: { $regex: escapedQuery, $options: 'i' } }
+          ]
+        })
+          .populate('author', 'id name profileImage')
+          .select('title content category author authorName views likes createdAt images')
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .lean()
+
+        results.posts = posts.map(post => {
+          const contentPreview = post.content
+            ? post.content.replace(/<[^>]*>/g, '').substring(0, 100) + (post.content.length > 100 ? '...' : '')
+            : ''
+          const thumbnailImage = post.images && post.images.length > 0 ? post.images[0] : null
+          const dateStr = new Date(post.createdAt).toISOString().split('T')[0]
+
+          return {
+            ...post,
+            id: post._id.toString(),
+            previewContent: contentPreview,
+            thumbnailImage,
+            date: dateStr
+          }
+        })
+      }
+    } catch (error) {
+      console.error('게시글 검색 오류:', error.message)
+    }
+
+    // 2. 산 검색 (Elasticsearch 사용, 실패 시 API 폴백)
+    try {
+      let useElasticsearch = false
+      if (esClient) {
+        try {
+          // 인덱스 존재 여부 확인
+          const indexExists = await esClient.indices.exists({ index: 'mountains' })
+          if (indexExists) {
+            const searchFields = ['name^3', 'location^2', 'description']
+            const searchQuery = buildFuzzySearchQuery(query, searchFields)  // 유연한 검색 사용
+            const searchResult = await search('mountains', searchQuery, {
+              from: 0,
+              size: Math.min(limit, 1000)  // 최대 1000개까지 반환 (552개 모두 표시)
+            })
+
+            if (searchResult.hits && searchResult.hits.length > 0) {
+              // 검색어로 필터링하여 정확도 향상
+              const queryLower = query.toLowerCase().trim()
+              const filteredHits = searchResult.hits.filter(hit => {
+                if (!hit.name) return false
+                const nameLower = String(hit.name).toLowerCase()
+                
+                // 검색어가 이름에 포함되어 있으면 포함
+                // 단, 검색어가 2글자 이상일 때는 시작 부분 일치를 우선하되, 포함되어 있으면 모두 포함
+                if (queryLower.length >= 2) {
+                  // 검색어가 이름에 포함되어 있으면 포함 (예: "북한" → "북한산" 포함)
+                  return nameLower.includes(queryLower)
+                } else {
+                  // 1글자 검색어는 이름에 포함되어 있으면 포함
+                  return nameLower.includes(queryLower)
+                }
+              })
+              
+              // 정확도 순으로 정렬 (시작 부분 일치가 우선)
+              filteredHits.sort((a, b) => {
+                const aName = String(a.name || '').toLowerCase()
+                const bName = String(b.name || '').toLowerCase()
+                const aStarts = aName.startsWith(queryLower) ? 1 : 0
+                const bStarts = bName.startsWith(queryLower) ? 1 : 0
+                return bStarts - aStarts
+              })
+              
+              results.mountains = filteredHits.map(hit => ({
+                id: hit.code || hit._id,
+                name: hit.name,
+                code: hit.code,
+                location: hit.location || '',
+                height: hit.height || '',
+                image: hit.image || null
+              }))
+              useElasticsearch = true
+            }
+          }
+        } catch (esError) {
+          console.warn('Elasticsearch 산 검색 실패:', esError.message)
+        }
+      }
+
+      // Elasticsearch 실패 또는 인덱스 없음 시 API 호출로 폴백
+      if (!useElasticsearch) {
+        const MOUNTAIN_API_URL = process.env.MOUNTAIN_API_URL || 'http://mountain-service:3003'
+        const mountainsResponse = await axios.get(`${MOUNTAIN_API_URL}/api/mountains`, {
+          timeout: 5000
+        })
+
+        if (mountainsResponse.data && mountainsResponse.data.mountains) {
+          const allMountains = mountainsResponse.data.mountains || []
+          const searchTerm = query.toLowerCase().trim()
+
+          const matchedMountains = allMountains
+            .filter(mountain => {
+              if (!mountain || !mountain.name) return false
+
+              const name = String(mountain.name || '').toLowerCase()
+              
+              // 검색어가 이름에 포함되어 있으면 포함
+              return name.includes(searchTerm)
+            })
+            .sort((a, b) => {
+              // 정확도 순으로 정렬 (시작 부분 일치가 우선)
+              const aName = String(a.name || '').toLowerCase()
+              const bName = String(b.name || '').toLowerCase()
+              const aStarts = aName.startsWith(searchTerm) ? 1 : 0
+              const bStarts = bName.startsWith(searchTerm) ? 1 : 0
+              return bStarts - aStarts
+            })
+            .slice(0, limit)
+            .map(mountain => ({
+              id: mountain.code || mountain._id,
+              name: mountain.name,
+              code: mountain.code,
+              location: mountain.location || '',
+              height: mountain.height || '',
+              image: mountain.image || mountain.thumbnail || null
+            }))
+
+          results.mountains = matchedMountains
+        }
+      }
+    } catch (error) {
+      console.error('산 검색 오류:', error.message)
+    }
+
+    // 3. 상품 검색 (Store Service API 직접 호출 - Elasticsearch는 스토어 서비스에서 처리)
+    try {
+      // 내부 네트워크를 통해 직접 호출 (Traefik을 거치지 않음)
+      const STORE_API_URL = process.env.STORE_API_URL || 'http://store-service:3006'
+      console.log(`스토어 검색 시도: ${STORE_API_URL}/api/store/search?q=${query}&limit=${limit}`)
+      
+      try {
+        // category 파라미터를 명시적으로 제외 (null로 설정)
+        const productsResponse = await axios.get(`${STORE_API_URL}/api/store/search`, {
+          params: { 
+            q: query, 
+            limit: limit,
+            category: null  // category를 명시적으로 null로 설정
+          },
+          timeout: 10000,
+          validateStatus: (status) => status < 500 // 400 에러도 처리
+        })
+
+        if (productsResponse.status === 200 && productsResponse.data && productsResponse.data.products) {
+          results.products = productsResponse.data.products.slice(0, limit)
+          console.log(`스토어 검색 성공: ${results.products.length}개 상품`)
+        } else {
+          console.warn(`스토어 API 응답 오류: ${productsResponse.status}`, productsResponse.data)
+        }
+      } catch (apiError) {
+        console.error('스토어 검색 실패:', apiError.message)
+        if (apiError.response) {
+          console.error('응답 상태:', apiError.response.status, '데이터:', apiError.response.data)
+        }
+        // API 실패 시 빈 배열 유지
+      }
+    } catch (error) {
+      console.error('상품 검색 오류:', error.message)
+    }
+
+    results.total = results.mountains.length + results.posts.length + results.products.length
+
+    res.json(results)
+  } catch (error) {
+    console.error('통합 검색 오류:', error)
+    res.status(500).json({ 
+      error: '검색 중 오류가 발생했습니다.',
+      details: error.message 
+    })
   }
 })
 
@@ -596,9 +981,9 @@ router.get('/', async (req, res) => {
 // 게시글 상세 조회
 router.get('/:id', async (req, res) => {
   try {
-    // "search", "my" 등의 특수 경로는 ObjectId가 아니므로 404 반환
+    // "search", "my", "unified-search" 등의 특수 경로는 ObjectId가 아니므로 404 반환
     const id = req.params.id
-    if (id === 'search' || id === 'my' || id === 'favorites' || id === 'bookmarks') {
+    if (id === 'search' || id === 'my' || id === 'favorites' || id === 'bookmarks' || id === 'unified-search') {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' })
     }
     
@@ -1050,6 +1435,11 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
     console.log('게시글 작성 완료 - 원본 카테고리:', category, '정규화된 카테고리:', normalizedCategory, '저장된 카테고리:', post.category, '제목:', title, '해시태그:', post.hashtags)
     console.log('[스탬프] 저장된 mountainCode:', mountainCode, '타입:', typeof mountainCode)
     
+    // Elasticsearch 인덱싱 (비동기, 실패해도 게시글 작성은 성공)
+    indexPostToElasticsearch(post).catch(err => 
+      console.warn('Elasticsearch 인덱싱 실패 (무시됨):', err.message)
+    )
+    
     // 등산일지 작성 시 스탬프 자동 생성 (stamp-service API 호출)
     let updatedPoints = user.points || 0
     if (normalizedCategory === 'diary' && mountainCode) {
@@ -1261,6 +1651,11 @@ router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res
 
     await post.save()
 
+    // Elasticsearch 인덱싱 업데이트
+    indexPostToElasticsearch(post).catch(err => 
+      console.warn('Elasticsearch 인덱싱 실패 (무시됨):', err.message)
+    )
+
     res.json({
       message: '게시글이 수정되었습니다.',
       post: {
@@ -1306,6 +1701,11 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
     // 댓글도 함께 삭제
     await Comment.deleteMany({ post: postId })
+
+    // Elasticsearch에서 삭제
+    deletePostFromElasticsearch(postId).catch(err => 
+      console.warn('Elasticsearch 삭제 실패 (무시됨):', err.message)
+    )
 
     await Post.findByIdAndDelete(postId)
 
@@ -1691,6 +2091,101 @@ router.get('/stamps/completed', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('등산 완료 산 목록 조회 오류:', error)
     res.status(500).json({ error: '등산 완료 산 목록을 가져오는데 실패했습니다.' })
+  }
+})
+
+// 게시글 일괄 인덱싱 (관리자용) - 기존 MongoDB 데이터를 Elasticsearch로 옮기기
+router.post('/index/init', authenticateToken, async (req, res) => {
+  try {
+    // 관리자 권한 확인
+    const user = await User.findById(req.user.userId)
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ error: '관리자 권한이 필요합니다.' })
+    }
+
+    const esClient = await getElasticsearchClient()
+    if (!esClient) {
+      return res.status(503).json({ error: 'Elasticsearch 연결 실패' })
+    }
+
+    const { createIndex, bulkIndex } = await import('./shared/utils/search.js')
+
+    // 인덱스 매핑 정의
+    const mapping = {
+      properties: {
+        title: {
+          type: 'text',
+          analyzer: 'korean_analyzer',
+          fields: {
+            keyword: { type: 'keyword' }
+          }
+        },
+        content: {
+          type: 'text',
+          analyzer: 'korean_analyzer'
+        },
+        category: { type: 'keyword' },
+        authorId: { type: 'keyword' },
+        authorName: { type: 'text' },
+        createdAt: { type: 'date' }
+      }
+    }
+
+    // 인덱스 생성
+    await createIndex('posts', mapping)
+
+    // 모든 게시글 가져오기
+    const allPosts = await Post.find({})
+      .select('_id title content category author authorName createdAt')
+      .lean()
+
+    console.log(`총 ${allPosts.length}개의 게시글을 인덱싱합니다.`)
+
+    // 일괄 인덱싱을 위한 문서 배열 생성
+    const documents = allPosts.map(post => ({
+      id: post._id.toString(),
+      data: {
+        _id: post._id.toString(),
+        title: post.title || '',
+        content: post.content ? post.content.replace(/<[^>]*>/g, '') : '', // HTML 태그 제거
+        category: post.category || '',
+        authorId: post.author ? post.author.toString() : '',
+        authorName: post.authorName || '',
+        createdAt: post.createdAt || new Date()
+      }
+    }))
+
+    // 배치 단위로 인덱싱 (한 번에 너무 많이 하면 메모리 문제 발생 가능)
+    const batchSize = 100
+    let totalIndexed = 0
+    let totalErrors = 0
+
+    for (let i = 0; i < documents.length; i += batchSize) {
+      const batch = documents.slice(i, i + batchSize)
+      try {
+        const result = await bulkIndex('posts', batch)
+        totalIndexed += result.indexed
+        totalErrors += result.errors
+        console.log(`배치 ${Math.floor(i / batchSize) + 1}: ${result.indexed}개 인덱싱 완료`)
+      } catch (error) {
+        console.error(`배치 ${Math.floor(i / batchSize) + 1} 인덱싱 실패:`, error.message)
+        totalErrors += batch.length
+      }
+    }
+
+    res.json({
+      success: true,
+      message: '게시글 인덱싱 완료',
+      total: allPosts.length,
+      indexed: totalIndexed,
+      errors: totalErrors
+    })
+  } catch (error) {
+    console.error('게시글 인덱싱 초기화 오류:', error)
+    res.status(500).json({ 
+      error: '인덱싱 초기화 중 오류가 발생했습니다.',
+      details: error.message 
+    })
   }
 })
 

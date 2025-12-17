@@ -88,238 +88,82 @@ function SearchResults() {
     setIsLoading(true)
 
     try {
-      // 산 검색 - API에서 모든 산 목록 가져오기
+      // 통합 검색 API 사용 (Elasticsearch 기반)
       try {
-        const mountainsResponse = await fetch(`${API_URL}/api/mountains`)
-        console.log('산 검색 API 응답 상태:', mountainsResponse.status)
-        if (mountainsResponse.ok) {
-          const mountainsData = await mountainsResponse.json()
-          console.log('산 검색 API 응답 데이터:', {
-            total: mountainsData.total,
-            returned: mountainsData.returned,
-            mountainsCount: mountainsData.mountains?.length
-          })
-          const allMountains = mountainsData.mountains || []
-          console.log('전체 산 개수:', allMountains.length)
-          
-          // 산 이름별로 그룹화하여 중복 확인
-          const nameCount = {}
-          allMountains.forEach(m => {
-            const name = m.name || '이름 없음'
-            nameCount[name] = (nameCount[name] || 0) + 1
-          })
-          
-          // 중복된 괄호 제거 함수
-          const cleanDuplicateParentheses = (name) => {
-            if (!name || typeof name !== 'string') return name
-            
-            // 모든 괄호 쌍 찾기
-            const allMatches = name.match(/\(([^)]+)\)/g)
-            if (allMatches && allMatches.length >= 2) {
-              const lastTwo = allMatches.slice(-2)
-              const firstLoc = lastTwo[0].replace(/[()]/g, '').trim()
-              const secondLoc = lastTwo[1].replace(/[()]/g, '').trim()
+        const unifiedSearchUrl = `${API_URL}/api/posts/unified-search?q=${encodeURIComponent(searchTerm)}&limit=1000`
+        console.log('통합 검색 API URL:', unifiedSearchUrl)
+        
+        const unifiedResponse = await fetch(unifiedSearchUrl)
+        if (unifiedResponse.ok) {
+          const unifiedData = await unifiedResponse.json()
+          console.log('통합 검색 결과:', unifiedData)
+
+          // 산 결과 처리
+          if (unifiedData.mountains && unifiedData.mountains.length > 0) {
+            const processedMountains = unifiedData.mountains.map(m => {
+              const name = m.name || '이름 없음'
+              const location = m.location || ''
+              const region = extractRegion(location)
+              const code = String(m.code || '')
               
-              const firstParts = firstLoc.split(',').map(p => p.trim())
-              const lastPartOfFirst = firstParts[firstParts.length - 1]
-              
-              // 두 번째가 첫 번째의 마지막 부분과 일치하면 제거
-              if (secondLoc === lastPartOfFirst || firstLoc.includes(secondLoc)) {
-                const lastParenIndex = name.lastIndexOf('(')
-                if (lastParenIndex !== -1) {
-                  return name.substring(0, lastParenIndex).trim()
+              // 북한산 특별 처리
+              if (code === '287201304' || name === '북한산' || name.includes('북한산')) {
+                const displayName = name.includes('백운대') ? name : '북한산 백운대'
+                return {
+                  ...m,
+                  displayName: displayName,
+                  originalName: name.replace(/\s*\([^)]*\)\s*/g, '').trim()
                 }
               }
-            }
-            
-            return name
-          }
-          
-          // 중복된 이름이 있는 경우 지역명 포함하여 표시
-          const processedMountains = allMountains.map(m => {
-            let name = m.name || '이름 없음'
-            // 먼저 중복된 괄호 제거
-            name = cleanDuplicateParentheses(name)
-            
-            const location = m.location || ''
-            const region = extractRegion(location)
-            const code = String(m.code || '')
-            
-            // 북한산 특별 처리: "북한산 백운대"로 표시
-            if (code === '287201304' || name === '북한산' || name.includes('북한산')) {
-              // 이미 "백운대"가 포함되어 있지 않으면 추가
-              const displayName = name.includes('백운대') ? name : '북한산 백운대'
+              
+              const baseName = name.replace(/\s*\([^)]*\)\s*/g, '').trim()
               return {
                 ...m,
-                displayName: displayName,
-                originalName: name.replace(/\s*\([^)]*\)\s*/g, '').trim()
-              }
-            }
-            
-            // 같은 이름이 여러 개 있으면 지역명을 괄호로 표시
-            const baseName = name.replace(/\s*\([^)]*\)\s*/g, '').trim()
-            if (nameCount[baseName] > 1 && region) {
-              return {
-                ...m,
-                displayName: `${baseName} (${region})`,
+                displayName: name,
                 originalName: baseName
               }
-            }
-            return {
-              ...m,
-              displayName: name,
-              originalName: baseName
-            }
-          })
-          
-          // 검색어로 필터링 ("산"이라는 단어만 검색하면 모든 산 표시)
-          let filtered = []
-          if (searchTerm.trim() === '산' || searchTerm.trim() === '') {
-            // "산"만 검색하면 모든 산 표시
-            filtered = processedMountains
-          } else {
-            filtered = processedMountains.filter(mountain => {
-              const searchLower = searchTerm.toLowerCase()
-              const nameMatch = mountain.originalName && mountain.originalName.toLowerCase().includes(searchLower)
-              const displayNameMatch = mountain.displayName && mountain.displayName.toLowerCase().includes(searchLower)
-              const locationMatch = mountain.location && mountain.location.toLowerCase().includes(searchLower)
-              const codeMatch = mountain.code && String(mountain.code).includes(searchTerm)
-              return nameMatch || displayNameMatch || locationMatch || codeMatch
             })
-          }
-          
-          console.log('필터링된 산 개수:', filtered.length)
-          setMountainResults(filtered)
-          
-          // 각 산의 등산 코스 정보 가져오기
-          const coursesMap = {}
-          await Promise.all(
-            filtered.map(async (mountain) => {
-              try {
-                const coursesResponse = await fetch(`${API_URL}/api/mountains/${mountain.code}/courses`)
-                if (coursesResponse.ok) {
-                  const coursesData = await coursesResponse.json()
-                  const raw = coursesData.courses || []
-                  
-                  // 상세 페이지와 동일한 필터링 적용
-                  const extractNumber = (value) => {
-                    if (value === null || value === undefined || value === '') return NaN
-                    if (typeof value === 'number') return isNaN(value) ? NaN : value
-                    if (typeof value === 'string') {
-                      // 문자열에서 숫자 추출 (예: "2시간 30분" -> 150)
-                      const timeMatch = value.match(/(\d+)시간\s*(\d+)?분?/)
-                      if (timeMatch) {
-                        const hours = parseInt(timeMatch[1]) || 0
-                        const minutes = parseInt(timeMatch[2]) || 0
-                        return hours * 60 + minutes
-                      }
-                      // 숫자만 있는 경우
-                      const num = parseFloat(value.replace(/[^\d.-]/g, ''))
-                      return isNaN(num) ? NaN : num
-                    }
-                    return NaN
+            setMountainResults(processedMountains)
+            
+            // 각 산의 등산 코스 정보 가져오기
+            const coursesMap = {}
+            await Promise.all(
+              processedMountains.map(async (mountain) => {
+                try {
+                  const coursesResponse = await fetch(`${API_URL}/api/mountains/${mountain.code}/courses`)
+                  if (coursesResponse.ok) {
+                    const coursesData = await coursesResponse.json()
+                    coursesMap[mountain.code] = coursesData.courses || []
+                  } else {
+                    coursesMap[mountain.code] = []
                   }
-                  
-                  // 10분 미만이고 0.5km 미만인 코스는 제외, 단 모두 걸러지면 가장 긴 코스 1개 남김
-                  let filtered = raw.filter(c => {
-                    const props = c.properties || {}
-                    
-                    // 거리 추출 (여러 필드 확인)
-                    const distRaw = props.distance ?? props.PMNTN_LT ?? props.courseLength
-                    const dist = extractNumber(distRaw)
-                    
-                    // 시간 추출 (여러 필드 확인, upTime + downTime도 고려)
-                    const durRaw = props.duration ?? props.upTime ?? props.PMNTN_UPPL
-                    let dur = extractNumber(durRaw)
-                    
-                    // upTime과 downTime이 따로 있으면 합산
-                    if (!Number.isFinite(dur) && (props.upTime || props.downTime)) {
-                      const upTime = extractNumber(props.upTime)
-                      const downTime = extractNumber(props.downTime)
-                      if (Number.isFinite(upTime) || Number.isFinite(downTime)) {
-                        dur = (Number.isFinite(upTime) ? upTime : 0) + (Number.isFinite(downTime) ? downTime : 0)
-                      }
-                    }
-                    
-                    // 10분 미만 AND 0.5km 미만인 경우만 제외
-                    if (Number.isFinite(dist) && Number.isFinite(dur) && dist < 0.5 && dur < 10) {
-                      return false
-                    }
-                    
-                    // 둘 중 하나라도 유효하지 않으면 통과 (필터링 안 함)
-                    return true
-                  })
-                  
-                  // 모두 걸러지면 가장 긴 코스 1개 남김
-                  if (filtered.length === 0 && raw.length > 0) {
-                    filtered = [...raw].sort((a, b) => {
-                      const pa = a.properties || {}
-                      const pb = b.properties || {}
-                      const durA = extractNumber(pa.duration ?? pa.upTime ?? pa.PMNTN_UPPL ?? 0) || 0
-                      const durB = extractNumber(pb.duration ?? pb.upTime ?? pb.PMNTN_UPPL ?? 0) || 0
-                      if (durA !== durB) return durB - durA
-                      const distA = extractNumber(pa.distance ?? pa.PMNTN_LT ?? 0) || 0
-                      const distB = extractNumber(pb.distance ?? pb.PMNTN_LT ?? 0) || 0
-                      return distB - distA
-                    }).slice(0, 1)
-                  }
-                  
-                  coursesMap[mountain.code] = filtered
-                } else {
+                } catch (error) {
+                  console.error(`산 ${mountain.name}의 코스 정보 가져오기 실패:`, error)
                   coursesMap[mountain.code] = []
                 }
-              } catch (error) {
-                console.error(`산 ${mountain.name}의 코스 정보 가져오기 실패:`, error)
-                coursesMap[mountain.code] = []
-              }
-            })
-          )
-          setMountainCourses(coursesMap)
+              })
+            )
+            setMountainCourses(coursesMap)
+          } else {
+            setMountainResults([])
+            setMountainCourses({})
+          }
+
+          // 게시글 결과
+          setPostResults(unifiedData.posts || [])
+
+          // 상품 결과
+          setProductResults(unifiedData.products || [])
         } else {
-          console.error('산 검색 API 실패:', mountainsResponse.status, mountainsResponse.statusText)
-          const errorText = await mountainsResponse.text()
-          console.error('에러 응답:', errorText)
-          // API 실패 시 기존 하드코딩된 목록으로 폴백
-          const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
-            mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
-          )
-          setMountainResults(mountains)
+          console.warn('통합 검색 API 실패, 개별 API로 폴백')
+          // 폴백: 개별 API 호출
+          await performSearchFallback(searchTerm)
         }
       } catch (error) {
-        console.error('산 검색 API 오류:', error)
-        // API 실패 시 기존 하드코딩된 목록으로 폴백
-        const mountains = Object.values(MOUNTAIN_ROUTES).filter(mountain => 
-          mountain.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          searchTerm.toLowerCase().includes(mountain.name.toLowerCase())
-        )
-        setMountainResults(mountains)
+        console.error('통합 검색 API 오류:', error)
+        // 폴백: 개별 API 호출
+        await performSearchFallback(searchTerm)
       }
-
-      // 커뮤니티 게시글 검색
-      try {
-        const searchUrl = `${API_URL}/api/posts/search?q=${encodeURIComponent(searchTerm)}`
-        console.log('게시글 검색 URL:', searchUrl)
-        const postsResponse = await fetch(searchUrl)
-        if (postsResponse.ok) {
-          const postsData = await postsResponse.json()
-          console.log('게시글 검색 결과:', postsData)
-          setPostResults(postsData.posts || [])
-        } else {
-          const errorData = await postsResponse.json()
-          console.error('게시글 검색 응답 오류:', errorData)
-          setPostResults([])
-        }
-      } catch (error) {
-        console.error('게시글 검색 오류:', error)
-        setPostResults([])
-      }
-
-      // 스토어 상품 검색
-      const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      setProductResults(filteredProducts)
 
       // 최근 검색어에 추가
       if (searchTerm.trim() && !recentSearches.includes(searchTerm.trim())) {
@@ -332,6 +176,36 @@ function SearchResults() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // 폴백 검색 (통합 검색 API 실패 시)
+  const performSearchFallback = async (searchTerm) => {
+    // 게시글 검색
+    try {
+      const searchUrl = `${API_URL}/api/posts/search?q=${encodeURIComponent(searchTerm)}`
+      const postsResponse = await fetch(searchUrl)
+      if (postsResponse.ok) {
+        const postsData = await postsResponse.json()
+        setPostResults(postsData.posts || [])
+      }
+    } catch (error) {
+      console.error('게시글 검색 오류:', error)
+    }
+
+    // 상품 검색
+    try {
+      const productsUrl = `${API_URL}/api/store/search?q=${encodeURIComponent(searchTerm)}&limit=10`
+      const productsResponse = await fetch(productsUrl)
+      if (productsResponse.ok) {
+        const productsData = await productsResponse.json()
+        setProductResults(productsData.products || [])
+      }
+    } catch (error) {
+      console.error('상품 검색 오류:', error)
+    }
+
+    // 산 검색은 기존 로직 유지 (필요시)
+    setMountainResults([])
   }
 
   const handleSearch = (e) => {

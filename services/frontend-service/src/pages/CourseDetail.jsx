@@ -34,6 +34,10 @@ function CourseDetail() {
     autumn: {
       title: '가을 산행지',
       description: '단풍이 물든 가을 산을 감상하며 즐기는 산행 코스입니다.'
+    },
+    clouds: {
+      title: '운해 사냥 추천 코스',
+      description: '지금 못보면 올해 끝?! 운해 사냥 추천 코스 BEST 5'
     }
   }
 
@@ -236,6 +240,84 @@ function CourseDetail() {
           description: '완만한 경사로 초보자에게 적합한 코스입니다.'
         }
       ]
+    },
+    clouds: {
+      title: '운해 사냥 추천 코스',
+      description: '지금 못보면 올해 끝?! 운해 사냥 추천 코스 BEST 8',
+      courses: [
+        {
+          id: 1,
+          name: '천마산(경기) - 호평동 1코스',
+          location: '경기',
+          difficulty: '보통',
+          duration: '1시간 30분',
+          distance: '2.9km',
+          description: '계단주의 최단 코스. 일출/운해를 보러가는 산쟁이들의 인기코스. 온갖 계단을 타는 코스예요! 가파르게 올라가요.'
+        },
+        {
+          id: 2,
+          name: '북한산 - 백운대 코스',
+          location: '서울',
+          difficulty: '보통',
+          duration: '1시간 30분',
+          distance: '2.0km',
+          description: '북한산 정상 백운대 최단 코스. 코스가 쉽진 않지만 짧아서 누구나 오를 수 있어요!'
+        },
+        {
+          id: 3,
+          name: '검단산 - 현충탑 코스',
+          location: '경기',
+          difficulty: '보통',
+          duration: '1시간 30분',
+          distance: '3.7km',
+          description: '정상으로 가는 나름 순한맛 코스. 마지막 급경사 구간만 제외하면 크게 어렵지 않아요.'
+        },
+        {
+          id: 4,
+          name: '월출산 - 경포대 코스',
+          location: '전남',
+          difficulty: '보통',
+          duration: '1시간 30분',
+          distance: '2.9km',
+          description: '초보 추천! 경치는 잃는 최단 코스. 들머리 고도가 제일 높아 그나마 수월하지만 능선에 오르기 전까지는 경치가 없어요.'
+        },
+        {
+          id: 5,
+          name: '황매산 - 황매평원길 왕복 코스',
+          location: '경남',
+          difficulty: '보통',
+          duration: '4시간',
+          distance: '6.0km',
+          description: '철쭉, 억새를 즐기는 대표 코스. 군락지 직전까지 차로 올라갈 수 있어 누구나 수월하게 다녀올 수 있어요! 봄에는 철쭉, 가을에는 억새, 일출과 은하수도 유명해 늘 사람이 붐벼요.'
+        },
+        {
+          id: 6,
+          name: '설악산 - 오색 코스',
+          location: '강원',
+          difficulty: '매우어려움',
+          duration: '3시간',
+          distance: '5.0km',
+          description: '조망을 잃고 정상을 빨리 만나는 코스. 5km 내내 미친듯이 올라가는 코스로 대청봉을 가장 빠르게 만날 수 있지만 오르는 과정이 너무나 힘든 코스. 그래서 보통 일출이나 하산으로 많이 선택해요.'
+        },
+        {
+          id: 7,
+          name: '가지산 - 석남터널 코스',
+          location: '경남',
+          difficulty: '보통',
+          duration: '1시간 30분',
+          distance: '3.4km',
+          description: '정상으로 가는 최단코스. 가지산을 찾는 분들이 가장 많이 이용하는 코스에요.'
+        },
+        {
+          id: 8,
+          name: '지리산 - 노고단 코스',
+          location: '전남/경남',
+          difficulty: '쉬움',
+          duration: '1시간',
+          distance: '4.7km',
+          description: '제3봉인 노고단으로 가는 코스. 영산인 지리산 중에서도 영봉으로 꼽히는 노고단! 정상의 돌탑에서 노고할미께 소원을 빌어보세요.'
+        }
+      ]
     }
   }
 
@@ -246,8 +328,8 @@ function CourseDetail() {
       
       setLoading(true)
       try {
-        // winter, beginner, sunrise는 API에서 가져오기
-        if (['winter', 'beginner', 'sunrise'].includes(theme)) {
+        // winter, beginner, sunrise, clouds는 API에서 가져오기
+        if (['winter', 'beginner', 'sunrise', 'clouds'].includes(theme)) {
           const response = await fetch(`${API_URL}/api/courses/theme/${theme}?limit=20`)
           if (response.ok) {
             const data = await response.json()
@@ -338,13 +420,39 @@ function CourseDetail() {
                   difficultyClass = 'hard'
                 }
                 
-                // 코스 이름 추출 (실제 코스 이름만 사용)
-                const courseNameForUrl = item.courseName || item.name.replace(/^[^의]*의\s*/, '').replace(/구간$/, '') || item.name
+                // 코스 이름 추출 (실제 코스 이름만 사용, "구간" 제거)
+                // 예: "지리산의 내대리구간" -> "내대리"
+                let courseNameForUrl = item.courseName || item.name.replace(/^[^의]*의\s*/, '').replace(/구간$/, '') || item.name
+                // "구간"이 끝에 있으면 제거
+                courseNameForUrl = courseNameForUrl.replace(/구간$/, '').trim()
+                
+                // URL에 코스 ID와 난이도, 소요시간 정보 추가 (중복 코스 구분용)
+                const courseParams = new URLSearchParams({
+                  course: courseNameForUrl
+                })
+                if (item.id) {
+                  courseParams.set('courseId', item.id)
+                }
+                if (item.difficulty) {
+                  courseParams.set('difficulty', item.difficulty)
+                }
+                if (item.duration) {
+                  // 소요시간을 분 단위로 변환 (예: "4시간 42분" -> 282)
+                  const durationStr = String(item.duration)
+                  const hoursMatch = durationStr.match(/(\d+)시간/)
+                  const minutesMatch = durationStr.match(/(\d+)분/)
+                  const hours = hoursMatch ? parseInt(hoursMatch[1]) : 0
+                  const minutes = minutesMatch ? parseInt(minutesMatch[1]) : 0
+                  const totalMinutes = hours * 60 + minutes
+                  if (totalMinutes > 0) {
+                    courseParams.set('duration', totalMinutes.toString())
+                  }
+                }
                 
                 return (
                   <Link
                     key={item.id || index}
-                    to={`/mountain/${item.mountainCode}?course=${encodeURIComponent(courseNameForUrl)}`}
+                    to={`/mountain/${item.mountainCode}?${courseParams.toString()}`}
                     className="course-item"
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
@@ -368,6 +476,11 @@ function CourseDetail() {
                         <span className="info-value">{item.distance || '-'}</span>
                       </div>
                     </div>
+                    {item.description && (
+                      <p className="course-item-description" style={{ marginTop: '12px', fontSize: '0.9rem', color: '#666', lineHeight: '1.5' }}>
+                        {item.description}
+                      </p>
+                    )}
                   </Link>
                 )
               })
