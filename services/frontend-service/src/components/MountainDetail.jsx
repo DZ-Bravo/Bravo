@@ -1596,25 +1596,26 @@ function MountainDetail({ name, code, height, location, description, center, zoo
           // 코스 이름에서 "구간" 제거하고 비교
           const normalizedUrlName = decodedCourseName.replace(/구간$/, '').trim()
           
+          // 이름만으로 매칭 (정확히 일치하는 경우만)
           const foundIndex = coursesData.findIndex(c => {
             const props = c.properties || {}
             const courseName = props.name || props.PMNTN_NM || ''
             // 코스 이름에서 "구간" 제거하고 비교
-            const normalizedCourseName = courseName.replace(/구간$/, '').trim()
+            const normalizedCourseName = courseName.replace(/구간$/, '').trim().toLowerCase()
+            const normalizedUrlNameLower = normalizedUrlName.toLowerCase()
             
-            // 정확히 일치하거나 포함 관계 확인
-            return normalizedCourseName === normalizedUrlName || 
-                   normalizedCourseName.includes(normalizedUrlName) || 
-                   normalizedUrlName.includes(normalizedCourseName) ||
-                   courseName.includes(decodedCourseName) ||
-                   decodedCourseName.includes(courseName)
+            // 정확히 일치하는 경우만 매칭 (포함 관계 제외)
+            return normalizedCourseName === normalizedUrlNameLower
           })
           
           if (foundIndex !== -1) {
             initialCourseIndex = foundIndex
-            console.log('URL에서 코스 찾음:', decodedCourseName, '인덱스:', foundIndex)
+            console.log('URL에서 코스 이름으로 찾음 (정확히 일치):', decodedCourseName, '인덱스:', foundIndex, '코스명:', coursesData[foundIndex]?.properties?.name)
           } else {
-            console.log('URL에서 코스를 찾지 못함:', decodedCourseName, '사용 가능한 코스:', coursesData.map(c => c.properties?.name || c.properties?.PMNTN_NM))
+            console.log('URL에서 코스를 찾지 못함:', decodedCourseName, '사용 가능한 코스:', coursesData.map(c => {
+              const name = c.properties?.name || c.properties?.PMNTN_NM || '이름 없음'
+              return `${name} (ID: ${c._id || c.id || '없음'})`
+            }).join(', '))
           }
         }
         
