@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monstache
+  namespace: bravo-efk-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monstache
+  template:
+    metadata:
+      labels:
+        app: monstache
+    spec:
+      containers:
+      - name: monstache
+        image: rwynn/monstache:latest
+        env:
+        - name: TZ
+          value: "Asia/Seoul"
+        volumeMounts:
+        - name: monstache-config
+          mountPath: /config.toml
+          subPath: config.toml
+          readOnly: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: monstache-config
+        configMap:
+          name: monstache-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monstache-config
+  namespace: bravo-efk-ns
+data:
+  config.toml: |
+    mongo-url = "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin&replicaSet=rs0&readPreference=primaryPreferred"
+    mongo-direct = false
+    elasticsearch-urls = ["http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"]
+    
+    [[mapping]]
+    namespace = "hiking.Mountain_list"
+    index = "mountains"
+    
+    [[mapping]]
+    namespace = "hiking.posts"
+    index = "posts"
+    
+    [[mapping]]
+    namespace = "hiking.shoes"
+    index = "products"
+    
+    [[mapping]]
+    namespace = "hiking.top"
+    index = "products"
+    
+    [[mapping]]
+    namespace = "hiking.bottom"
+    index = "products"
+    
+    [[mapping]]
+    namespace = "hiking.goods"
+    index = "products"
+

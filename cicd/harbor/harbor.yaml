@@ -1,0 +1,43 @@
+expose:
+  type: nodePort
+  nodePort:
+    ports:
+      http:
+        nodePort: 30305
+      https:
+        nodePort: 31209
+  tls:
+    enabled: false
+
+externalURL: http://192.168.0.244:30305
+
+harborAdminPassword: "bravo6785#"
+
+registry:
+  replicaCount: 1
+
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      storageClass: longhorn
+      size: 30Gi
+    chartmuseum:
+      storageClass: longhorn
+      size: 5Gi
+    jobservice:
+      storageClass: longhorn
+      size: 5Gi
+    database:
+      storageClass: longhorn
+      size: 5Gi
+    redis:
+      storageClass: longhorn
+      size: 5Gi
+    trivy:
+      storageClass: longhorn
+      size: 5Gi
+
+metrics:
+  enabled: false
+

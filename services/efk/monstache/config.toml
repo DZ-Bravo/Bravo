@@ -1,0 +1,36 @@
+# Monstache Configuration
+# MongoDB Change Streams를 사용하여 Elasticsearch로 실시간 동기화
+
+# MongoDB 연결 설정
+# Replica Set 구성: 243 서버에 primary/secondary, 242 서버는 secondary
+mongo-url = "mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=primaryPreferred"
+mongo-direct = false
+
+# Elasticsearch 연결 설정
+elasticsearch-urls = ["http://elasticsearch:9200"]
+
+# 동기화할 컬렉션 설정
+[[mapping]]
+namespace = "hiking.Mountain_list"
+index = "mountains"
+
+[[mapping]]
+namespace = "hiking.posts"
+index = "posts"
+
+# 스토어 상품 컬렉션들
+[[mapping]]
+namespace = "hiking.shoes"
+index = "products"
+
+[[mapping]]
+namespace = "hiking.top"
+index = "products"
+
+[[mapping]]
+namespace = "hiking.bottom"
+index = "products"
+
+[[mapping]]
+namespace = "hiking.goods"
+index = "products"

@@ -5,6 +5,9 @@ import jwt from 'jsonwebtoken'
 
 const router = express.Router()
 
+// JWT_SECRET 로깅용 객체
+const stampService = {}
+
 // JWT 토큰 검증 미들웨어
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
@@ -15,12 +18,25 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
+    // backend와 동일한 JWT_SECRET 사용 (환경 변수가 없으면 기본값 사용)
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+    
+    // 디버깅: JWT_SECRET 확인 (처음 요청 시에만)
+    if (!stampService._jwtSecretLogged) {
+      console.log(`[스탬프] JWT_SECRET 사용 중: ${JWT_SECRET ? (JWT_SECRET.substring(0, 20) + '...') : '없음'}`)
+      stampService._jwtSecretLogged = true
+    }
+    
     const decoded = jwt.verify(token, JWT_SECRET)
-    req.userId = decoded.userId
+    // userId를 ObjectId로 변환
+    req.userId = mongoose.Types.ObjectId.isValid(decoded.userId) 
+      ? new mongoose.Types.ObjectId(decoded.userId)
+      : decoded.userId
     req.userIdStr = decoded.id
     next()
   } catch (error) {
+    console.error('[스탬프] 토큰 검증 실패:', error.message)
+    console.error('[스탬프] 사용 중인 JWT_SECRET:', process.env.JWT_SECRET ? (process.env.JWT_SECRET.substring(0, 20) + '...') : '기본값 사용')
     return res.status(403).json({ error: '유효하지 않은 토큰입니다.' })
   }
 }
@@ -35,9 +51,19 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'mountainCode가 필요합니다.' })
     }
 
-    // mountainCode를 Number로 변환
-    const codeNum = parseInt(mountainCode)
-    if (isNaN(codeNum)) {
+    // mountainCode를 Number로 변환 (더 유연한 처리)
+    let codeNum = null
+    if (typeof mountainCode === 'number') {
+      codeNum = mountainCode
+    } else if (typeof mountainCode === 'string') {
+      const parsed = parseInt(mountainCode.trim(), 10)
+      if (!isNaN(parsed) && parsed > 0) {
+        codeNum = parsed
+      }
+    }
+    
+    if (codeNum === null || isNaN(codeNum) || codeNum <= 0) {
+      console.error(`[스탬프] 유효하지 않은 mountainCode: ${mountainCode} (타입: ${typeof mountainCode})`)
       return res.status(400).json({ error: '유효한 mountainCode가 아닙니다.' })
     }
 

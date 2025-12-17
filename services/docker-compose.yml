@@ -49,6 +49,8 @@ services:
     restart: unless-stopped
 
   # MongoDB (공유) - 기존 볼륨 사용
+  # 실제 Replica Set은 243 서버에 primary/secondary, 242 서버는 secondary로 구성됨
+  # 이 컨테이너는 로컬 개발용이며, 실제 운영은 243 서버의 Replica Set 사용
   mongodb:
     image: mongo:7
     container_name: hiking-mongodb
@@ -90,6 +92,124 @@ services:
     restart: unless-stopped
     networks:
       - hiking-network
+
+  # cAdvisor - 컨테이너 메트릭 수집 (Prometheus용)
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1  # 최신 버전 사용 (Docker API 호환성 개선)
+    container_name: hiking-cadvisor
+    ports:
+      - "8081:8080"  # 호스트 8081 -> 컨테이너 8080 (Traefik이 8080 사용 중)
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Docker 소켓 명시적 마운트 (컨테이너 이름 수집용)
+    privileged: true
+    devices:
+      - /dev/kmsg
+    environment:
+      - TZ=Asia/Seoul
+    restart: unless-stopped
+    networks:
+      - hiking-network
+
+  # Elasticsearch - 검색 엔진 (메인페이지, 스토어 검색용)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: hiking-elasticsearch
+    environment:
+      - TZ=Asia/Seoul
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+      - ./efk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - hiking-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Kibana - Elasticsearch 관리 및 시각화
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: hiking-kibana
+    environment:
+      - TZ=Asia/Seoul
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./efk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - hiking-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Monstache - MongoDB to Elasticsearch 실시간 동기화
+  monstache:
+    image: rwynn/monstache:latest
+    container_name: hiking-monstache
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./efk/monstache/config.toml:/config.toml:ro
+    depends_on:
+      - mongodb
+      - elasticsearch
+    networks:
+      - hiking-network
+    restart: unless-stopped
+    command: ["-f", "/config.toml"]
+
+  # Fluent Bit - 로그 수집 및 전송
+  fluent-bit:
+    image: fluent/fluent-bit:2.2.0
+    container_name: hiking-fluent-bit
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./efk/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./efk/fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log/app:/var/log/app:ro
+      - fluent_bit_data:/var/log
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - hiking-network
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # Frontend Service
   frontend:
@@ -185,7 +305,7 @@ services:
       - MONGODB_URI=mongodb://admin:admin123@192.168.0.243:27017,192.168.0.243:27018,192.168.0.242:27019/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred
     volumes:
       # 기존 이미지 경로를 쓰기 가능하게 마운트 (기존 이미지 + 새 이미지 모두 접근 가능)
-      - /home/bravo/LABs/backend/uploads:/app/uploads
+      - /home/bravo/LABs/services/backend-services/community-service/uploads:/app/uploads
     depends_on:
       mongodb:
         condition: service_healthy
@@ -398,8 +518,9 @@ services:
       - BEDROCK_COURSE_AGENT_ALIAS_ID=${BEDROCK_COURSE_AGENT_ALIAS_ID}
       - VITE_EQUIPMENT_AGENT_ID=${VITE_EQUIPMENT_AGENT_ID}
       - VITE_EQUIPMENT_ALIAS_ID=${VITE_EQUIPMENT_ALIAS_ID}
-    volumes:
-      - /home/bravo/LABs/tmp_products.jsonl:/app/tmp_products.jsonl:ro
+    # volumes:
+    #   - /home/bravo/LABs/tmp_products.jsonl:/app/tmp_products.jsonl:ro
+    # tmp_products.jsonl 파일이 없으면 볼륨 마운트 제거
     depends_on:
       mongodb:
         condition: service_healthy
@@ -444,4 +565,8 @@ volumes:
   labs_mongodb_data:
     external: true
   labs_redis_data:  # 기존 볼륨 사용
+  elasticsearch_data:
+    driver: local
+  fluent_bit_data:
+    driver: local
 

@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import User from './shared/models/User.js'
 import { authenticateToken, optionalAuthenticateToken } from './shared/utils/auth.js'
 import { createClient } from 'redis'
+import { getElasticsearchClient } from './shared/config/elasticsearch.js'
+import { buildFuzzySearchQuery, search, createIndex } from './shared/utils/search.js'
 
 const router = express.Router()
 
@@ -404,6 +406,201 @@ router.post('/:productId/favorite', authenticateToken, async (req, res) => {
   }
 })
 
+// 상품 검색 API (Elasticsearch 사용) - /:category보다 먼저 정의해야 함!
+router.get('/search', async (req, res) => {
+  try {
+    const query = req.query.q || ''
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    // category가 'null' 문자열이거나 빈 문자열이면 null로 처리
+    let category = req.query.category
+    if (category === 'null' || category === '' || category === undefined) {
+      category = null
+    }
+
+    if (!query.trim()) {
+      return res.json({ products: [], total: 0, page, totalPages: 0 })
+    }
+
+    const client = await getElasticsearchClient()
+    let useElasticsearch = false
+    let searchResult = null
+    
+    if (client) {
+      try {
+        // 인덱스 존재 여부 확인
+        const indexExists = await client.indices.exists({ index: 'products' })
+        if (indexExists) {
+          // 검색 쿼리 생성
+          const searchFields = ['title^3', 'brand^2', 'description']
+          const searchQuery = buildFuzzySearchQuery(query, searchFields, {
+            fuzziness: 'AUTO',
+            prefixLength: 1
+          })
+
+          // 카테고리 필터 추가
+          let finalQuery = searchQuery
+          if (category) {
+            finalQuery = {
+              bool: {
+                must: [searchQuery],
+                filter: [
+                  { term: { category: category } }
+                ]
+              }
+            }
+          }
+
+          // 검색 실행
+          searchResult = await search('products', finalQuery, {
+            from: (page - 1) * limit,
+            size: limit,
+            sort: [{ _score: { order: 'desc' } }, { createdAt: { order: 'desc' } }]
+          })
+          useElasticsearch = true
+        }
+      } catch (esError) {
+        console.warn('Elasticsearch 검색 실패:', esError.message)
+      }
+    }
+
+    // Elasticsearch 실패 또는 인덱스 없음 시 MongoDB로 폴백
+    if (!useElasticsearch) {
+      console.log('MongoDB 폴백: 상품 검색')
+      const categories = category ? [category] : ['shoes', 'top', 'bottom', 'goods']
+      const allProducts = []
+      
+      for (const cat of categories) {
+        try {
+          const collection = await getCollection(cat)
+          const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          const categoryProducts = await collection.find({
+            $or: [
+              { title: { $regex: escapedQuery, $options: 'i' } },
+              { brand: { $regex: escapedQuery, $options: 'i' } },
+              { name: { $regex: escapedQuery, $options: 'i' } }
+            ]
+          }).limit(limit * 2).toArray()
+
+          // 썸네일 정보 추가
+          const thumbnailsCollection = await getCollection(`${cat}_thumbnails`)
+          const thumbnails = await thumbnailsCollection.find({}).toArray()
+          const thumbnailsMap = {}
+          thumbnails.forEach(thumb => {
+            const title = thumb.title || thumb.name
+            if (title) {
+              thumbnailsMap[title] = thumb.thumbnails || thumb.thumbnail || thumb.image || thumb.url || null
+            }
+          })
+
+          categoryProducts.forEach(product => {
+            const productTitle = product.title || product.name || ''
+            const thumbnailUrl = thumbnailsMap[productTitle] || product.thumbnails || product.thumbnail || product.image || null
+
+            allProducts.push({
+              _id: product._id,
+              id: product._id?.toString() || product.id,
+              title: productTitle,
+              brand: product.brand || product.brandName || product.manufacturer || null,
+              price: product.price || 0,
+              original_price: product.original_price || product.originalPrice || null,
+              discount_rate: product.discount_rate || product.discountRate || null,
+              thumbnails: thumbnailUrl,
+              url: product.url || product.link || product.productUrl || product.product_link || null,
+              category: cat
+            })
+          })
+        } catch (error) {
+          console.warn(`${cat} 컬렉션 조회 실패:`, error.message)
+        }
+      }
+
+      return res.json({
+        products: allProducts.slice(0, limit),
+        total: allProducts.length,
+        page,
+        totalPages: Math.ceil(allProducts.length / limit)
+      })
+    }
+
+    // Elasticsearch 검색 결과 처리
+    // MongoDB에서 상세 정보 가져오기 (썸네일 등)
+    if (!searchResult || !searchResult.hits) {
+      return res.json({
+        products: [],
+        total: 0,
+        page,
+        totalPages: 0
+      })
+    }
+
+    const productIds = searchResult.hits.map(hit => hit._id)
+    const products = []
+
+    if (productIds.length > 0) {
+      // 각 카테고리에서 상품 조회
+      const categories = category ? [category] : ['shoes', 'top', 'bottom', 'goods']
+      
+      for (const cat of categories) {
+        try {
+          const collection = await getCollection(cat)
+          const categoryProducts = await collection.find({
+            _id: { $in: productIds.map(id => new mongoose.Types.ObjectId(id)) }
+          }).toArray()
+
+          // 썸네일 정보 추가
+          const thumbnailsCollection = await getCollection(`${cat}_thumbnails`)
+          const thumbnails = await thumbnailsCollection.find({}).toArray()
+          const thumbnailsMap = {}
+          thumbnails.forEach(thumb => {
+            const title = thumb.title || thumb.name
+            if (title) {
+              thumbnailsMap[title] = thumb.thumbnails || thumb.thumbnail || thumb.image || thumb.url || null
+            }
+          })
+
+          categoryProducts.forEach(product => {
+            const productTitle = product.title || product.name || ''
+            const thumbnailUrl = thumbnailsMap[productTitle] || product.thumbnails || product.thumbnail || product.image || null
+
+            products.push({
+              _id: product._id,
+              id: product._id?.toString() || product.id,
+              title: productTitle,
+              brand: product.brand || product.brandName || product.manufacturer || null,
+              price: product.price || 0,
+              original_price: product.original_price || product.originalPrice || null,
+              discount_rate: product.discount_rate || product.discountRate || null,
+              thumbnails: thumbnailUrl,
+              url: product.url || product.link || product.productUrl || product.product_link || null,
+              category: cat,
+              _score: (useElasticsearch && searchResult?.hits) ? searchResult.hits.find(h => h._id === product._id?.toString())?._score || 0 : 0
+            })
+          })
+        } catch (error) {
+          console.warn(`${cat} 컬렉션 조회 실패:`, error.message)
+        }
+      }
+
+      // 점수 순으로 정렬
+      products.sort((a, b) => (b._score || 0) - (a._score || 0))
+    }
+
+    res.json({
+      products: products.slice(0, limit),
+      total: (useElasticsearch && searchResult) ? searchResult.total : products.length,
+      page,
+      totalPages: (useElasticsearch && searchResult) ? Math.ceil(searchResult.total / limit) : Math.ceil(products.length / limit)
+    })
+  } catch (error) {
+    console.error('상품 검색 오류:', error)
+    res.status(500).json({ 
+      error: '검색 중 오류가 발생했습니다.',
+      details: error.message 
+    })
+  }
+})
+
 // 상품 목록 조회 (카테고리별) - 마지막에 정의
 router.get('/:category', async (req, res) => {
   try {
@@ -516,6 +713,97 @@ router.get('/:category', async (req, res) => {
     
     res.status(500).json({ 
       error: '상품 목록을 불러오는 중 오류가 발생했습니다.',
+      details: error.message 
+    })
+  }
+})
+
+// 상품 인덱싱 초기화 (관리자용)
+router.post('/index/init', authenticateToken, async (req, res) => {
+  try {
+    // 관리자 권한 확인 (간단한 예시)
+    const user = await User.findById(req.user.userId)
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ error: '관리자 권한이 필요합니다.' })
+    }
+
+    const client = await getElasticsearchClient()
+    if (!client) {
+      return res.status(503).json({ error: 'Elasticsearch 연결 실패' })
+    }
+
+    // 인덱스 매핑 정의
+    const mapping = {
+      properties: {
+        title: {
+          type: 'text',
+          analyzer: 'korean_analyzer',
+          fields: {
+            keyword: { type: 'keyword' }
+          }
+        },
+        brand: {
+          type: 'text',
+          analyzer: 'korean_analyzer',
+          fields: {
+            keyword: { type: 'keyword' }
+          }
+        },
+        description: {
+          type: 'text',
+          analyzer: 'korean_analyzer'
+        },
+        category: { type: 'keyword' },
+        price: { type: 'integer' },
+        createdAt: { type: 'date' }
+      }
+    }
+
+    // 인덱스 생성
+    await createIndex('products', mapping)
+
+    // 모든 카테고리의 상품을 인덱싱
+    const categories = ['shoes', 'top', 'bottom', 'goods']
+    let totalIndexed = 0
+
+    for (const category of categories) {
+      try {
+        const collection = await getCollection(category)
+        const products = await collection.find({}).toArray()
+
+        const documents = products.map(product => ({
+          id: product._id?.toString(),
+          data: {
+            _id: product._id?.toString(),
+            title: product.title || product.name || '',
+            brand: product.brand || product.brandName || product.manufacturer || '',
+            description: product.description || '',
+            category: category,
+            price: product.price || 0,
+            createdAt: product.createdAt || new Date()
+          }
+        }))
+
+        if (documents.length > 0) {
+          const { bulkIndex } = await import('./shared/utils/search.js')
+          const result = await bulkIndex('products', documents)
+          totalIndexed += result.indexed
+          console.log(`${category}: ${result.indexed}개 상품 인덱싱 완료`)
+        }
+      } catch (error) {
+        console.error(`${category} 인덱싱 실패:`, error.message)
+      }
+    }
+
+    res.json({
+      success: true,
+      message: '상품 인덱싱 완료',
+      totalIndexed
+    })
+  } catch (error) {
+    console.error('인덱싱 초기화 오류:', error)
+    res.status(500).json({ 
+      error: '인덱싱 초기화 중 오류가 발생했습니다.',
       details: error.message 
     })
   }

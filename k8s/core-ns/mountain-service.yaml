@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mountain-service
+  namespace: bravo-core-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mountain-service
+  template:
+    metadata:
+      labels:
+        app: mountain-service
+    spec:
+      containers:
+      - name: mountain-service
+        image: 192.168.0.244:30305/bravo/hiking-mountain-service:latest
+        ports:
+        - containerPort: 3008
+          name: http
+        env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: TZ
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: NODE_ENV
+        - name: PORT
+          value: "3008"
+        - name: MONGODB_URI
+          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred"
+        - name: OPENWEATHER_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: OPENWEATHER_API_KEY
+        volumeMounts:
+        - name: mountain-data
+          mountPath: /app/mountain
+          readOnly: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3008
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3008
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: mountain-data
+        persistentVolumeClaim:
+          claimName: mountain-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mountain-service
+  namespace: bravo-core-ns
+  labels:
+    app: mountain-service
+spec:
+  ports:
+  - port: 3008
+    targetPort: 3008
+    name: http
+  selector:
+    app: mountain-service
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mountain-data-pvc
+  namespace: bravo-core-ns
+spec:
+  storageClassName: longhorn
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 5Gi
+
