@@ -16,17 +16,17 @@ harborAdminPassword: "bravo6785#"
 registry:
   replicaCount: 1
 
+jobservice:
+  replicaCount: 1
+
 persistence:
   enabled: true
   persistentVolumeClaim:
     registry:
-      storageClass: longhorn
+      storageClass: local-path
       size: 30Gi
-    chartmuseum:
-      storageClass: longhorn
-      size: 5Gi
     jobservice:
-      storageClass: longhorn
+      storageClass: local-path
       size: 5Gi
     database:
       storageClass: longhorn
@@ -40,4 +40,3 @@ persistence:
 
 metrics:
   enabled: false
-
