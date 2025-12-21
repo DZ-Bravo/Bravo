@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch.bravo-efk-ns.svc.cluster.local
+  namespace: bravo-efk-ns
+  labels:
+    app: elasticsearch.bravo-efk-ns.svc.cluster.local
+spec:
+  ports:
+  - port: 9200
+    name: http
+  - port: 9300
+    name: transport
+  selector:
+    app: elasticsearch.bravo-efk-ns.svc.cluster.local
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch.bravo-efk-ns.svc.cluster.local
+  namespace: bravo-efk-ns
+spec:
+  serviceName: elasticsearch.bravo-efk-ns.svc.cluster.local
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch.bravo-efk-ns.svc.cluster.local
+  template:
+    metadata:
+      labels:
+        app: elasticsearch.bravo-efk-ns.svc.cluster.local
+    spec:
+      containers:
+      - name: elasticsearch.bravo-efk-ns.svc.cluster.local
+        image: docker.elastic.co/elasticsearch.bravo-efk-ns.svc.cluster.local/elasticsearch.bravo-efk-ns.svc.cluster.local:8.11.0
+        ports:
+        - containerPort: 9200
+          name: http
+        - containerPort: 9300
+          name: transport
+        env:
+        - name: TZ
+          value: "Asia/Seoul"
+        - name: discovery.type
+          value: "single-node"
+        - name: xpack.security.enabled
+          value: "false"
+        - name: ES_JAVA_OPTS
+          value: "-Xms1g -Xmx1g"
+        - name: bootstrap.memory_lock
+          value: "true"
+        volumeMounts:
+        - name: elasticsearch.bravo-efk-ns.svc.cluster.local-data
+          mountPath: /usr/share/elasticsearch.bravo-efk-ns.svc.cluster.local/data
+        - name: elasticsearch.bravo-efk-ns.svc.cluster.local-config
+          mountPath: /usr/share/elasticsearch.bravo-efk-ns.svc.cluster.local/config/elasticsearch.bravo-efk-ns.svc.cluster.local.yml
+          subPath: elasticsearch.bravo-efk-ns.svc.cluster.local.yml
+          readOnly: true
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        securityContext:
+          capabilities:
+            add:
+            - IPC_LOCK
+        readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+          initialDelaySeconds: 40
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+          initialDelaySeconds: 60
+          periodSeconds: 30
+      volumes:
+      - name: elasticsearch.bravo-efk-ns.svc.cluster.local-config
+        configMap:
+          name: elasticsearch.bravo-efk-ns.svc.cluster.local-config
+  volumeClaimTemplates:
+  - metadata:
+      name: elasticsearch.bravo-efk-ns.svc.cluster.local-data
+    spec:
+      storageClassName: longhorn
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch.bravo-efk-ns.svc.cluster.local-config
+  namespace: bravo-efk-ns
+data:
+  elasticsearch.bravo-efk-ns.svc.cluster.local.yml: |
+    cluster.name: "hiking-search-cluster"
+    node.name: "hiking-elasticsearch.bravo-efk-ns.svc.cluster.local-node"
+    network.host: 0.0.0.0
+    http.port: 9200
+    action.auto_create_index: true
+    thread_pool:
+      write:
+        size: 4
+        queue_size: 200
+      search:
+        size: 4
+        queue_size: 1000
+    bootstrap.memory_lock: true
+

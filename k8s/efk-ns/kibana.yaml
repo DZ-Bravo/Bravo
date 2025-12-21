@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: bravo-efk-ns
+  labels:
+    app: kibana
+spec:
+  ports:
+  - port: 5601
+    name: http
+  selector:
+    app: kibana
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: bravo-efk-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:8.11.0
+        ports:
+        - containerPort: 5601
+          name: http
+        env:
+        - name: TZ
+          value: "Asia/Seoul"
+        - name: ELASTICSEARCH_HOSTS
+          value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
+        - name: xpack.security.enabled
+          value: "false"
+        volumeMounts:
+        - name: kibana-config
+          mountPath: /usr/share/kibana/config/kibana.yml
+          subPath: kibana.yml
+          readOnly: true
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /api/status
+            port: 5601
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/status
+            port: 5601
+          initialDelaySeconds: 120
+          periodSeconds: 30
+      volumes:
+      - name: kibana-config
+        configMap:
+          name: kibana-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kibana-config
+  namespace: bravo-efk-ns
+data:
+  kibana.yml: |
+    server.name: hiking-kibana
+    server.host: "0.0.0.0"
+    server.port: 5601
+    elasticsearch.bravo-efk-ns.svc.cluster.local.hosts: ["http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"]
+    i18n.locale: "ko"
+    xpack.security.enabled: false
+    xpack.monitoring.ui.container.elasticsearch.bravo-efk-ns.svc.cluster.local.enabled: true
+    server.maxPayloadBytes: 1048576
+

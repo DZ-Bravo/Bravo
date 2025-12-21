@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-service
+  namespace: bravo-ai-integration-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chatbot-service
+  template:
+    metadata:
+      labels:
+        app: chatbot-service
+    spec:
+      containers:
+      - name: chatbot-service
+        image: 192.168.0.244:30305/bravo/hiking-chatbot-service:latest
+        ports:
+        - containerPort: 3007
+          name: http
+        env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: TZ
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: NODE_ENV
+        - name: PORT
+          value: "3007"
+        - name: MONGODB_URI
+          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: AWS_REGION
+        - name: BEDROCK_AGENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: BEDROCK_AGENT_ID
+        - name: BEDROCK_AGENT_ALIAS_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: BEDROCK_AGENT_ALIAS_ID
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3007
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3007
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatbot-service
+  namespace: bravo-ai-integration-ns
+  labels:
+    app: chatbot-service
+spec:
+  ports:
+  - port: 3007
+    targetPort: 3007
+    name: http
+  selector:
+    app: chatbot-service
+
