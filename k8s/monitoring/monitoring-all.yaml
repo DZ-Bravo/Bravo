@@ -1,0 +1,302 @@
+# =================================================
+# Namespace
+# =================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bravo-monitoring-ns
+
+# =================================================
+# Prometheus Config
+# =================================================
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: bravo-monitoring-ns
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets: ['localhost:9090']
+
+# =================================================
+# Prometheus Deployment
+# =================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: bravo-monitoring-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-config
+              mountPath: /etc/prometheus
+      volumes:
+        - name: prometheus-config
+          configMap:
+            name: prometheus-config
+
+# =================================================
+# Prometheus Service (NodePort)
+# =================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: bravo-monitoring-ns
+spec:
+  type: NodePort
+  selector:
+    app: prometheus
+  ports:
+    - name: http
+      port: 9090
+      targetPort: 9090
+      nodePort: 30900
+
+# =================================================
+# Grafana Deployment
+# =================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: bravo-monitoring-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin
+
+# =================================================
+# Grafana Service (NodePort)
+# =================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: bravo-monitoring-ns
+spec:
+  type: NodePort
+  selector:
+    app: grafana
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      nodePort: 32000
+
+# =================================================
+# Loki Config
+# =================================================
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-config
+  namespace: bravo-monitoring-ns
+data:
+  local-config.yaml: |
+    auth_enabled: false
+    server:
+      http_listen_port: 3100
+    common:
+      path_prefix: /tmp/loki
+      replication_factor: 1
+      ring:
+        kvstore:
+          store: inmemory
+      storage:
+        filesystem:
+          chunks_directory: /tmp/loki/chunks
+          rules_directory: /tmp/loki/rules
+    schema_config:
+      configs:
+        - from: 2022-01-01
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+            prefix: index_
+            period: 24h
+
+# =================================================
+# Loki Deployment
+# =================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki
+  namespace: bravo-monitoring-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      containers:
+        - name: loki
+          image: grafana/loki:2.9.4
+          args:
+            - "-config.file=/etc/loki/local-config.yaml"
+          ports:
+            - containerPort: 3100
+          volumeMounts:
+            - name: loki-config
+              mountPath: /etc/loki
+      volumes:
+        - name: loki-config
+          configMap:
+            name: loki-config
+
+# =================================================
+# Loki Service (NodePort)
+# =================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki
+  namespace: bravo-monitoring-ns
+spec:
+  type: NodePort
+  selector:
+    app: loki
+  ports:
+    - name: http
+      port: 3100
+      targetPort: 3100
+      nodePort: 31000
+
+# =================================================
+# Tempo Config
+# =================================================
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tempo-config
+  namespace: bravo-monitoring-ns
+data:
+  tempo.yaml: |
+    server:
+      http_listen_port: 3200
+    distributor:
+      receivers:
+        otlp:
+          protocols:
+            http:
+              endpoint: 0.0.0.0:4318
+    storage:
+      trace:
+        backend: local
+        local:
+          path: /var/tempo/traces
+
+# =================================================
+# Tempo Deployment
+# =================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tempo
+  namespace: bravo-monitoring-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tempo
+  template:
+    metadata:
+      labels:
+        app: tempo
+    spec:
+      containers:
+        - name: tempo
+          image: grafana/tempo:2.4.1
+          args:
+            - "-config.file=/etc/tempo/tempo.yaml"
+          ports:
+            - containerPort: 4318
+            - containerPort: 3200
+          volumeMounts:
+            - name: tempo-config
+              mountPath: /etc/tempo
+            - name: tempo-storage
+              mountPath: /var/tempo
+      volumes:
+        - name: tempo-config
+          configMap:
+            name: tempo-config
+        - name: tempo-storage
+          emptyDir: {}
+
+# =================================================
+# Tempo Service (NodePort)
+# =================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo
+  namespace: bravo-monitoring-ns
+spec:
+  type: NodePort
+  selector:
+    app: tempo
+  ports:
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      nodePort: 32118
+    - name: tempo-http
+      port: 3200
+      targetPort: 3200
+      nodePort: 32200
+

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bravo-config
+  namespace: bravo-core-ns
+data:
+  TZ: "Asia/Seoul"
+  NODE_ENV: "production"
+  AWS_REGION: "ap-northeast-2"
+  FRONTEND_URL: "http://192.168.0.244"
+  KAKAO_REDIRECT_URI: "http://192.168.0.244/api/auth/kakao/callback"
+  NAVER_REDIRECT_URI: "http://192.168.0.244/api/auth/naver/callback"
+  MONGO_INITDB_ROOT_USERNAME: "admin"
+  MONGO_INITDB_ROOT_PASSWORD: "admin123"
+  OPENWEATHER_API_KEY: "5845f67e1cb9eac922b39d43844a8fc1"
+  VITE_KAKAO_MAP_API_KEY: "650caaa8d67f90186c6a48c0df81607b"
+  VITE_NAVER_MAP_CLIENT_ID: "amwq6xvj0j"
+
