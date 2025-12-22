@@ -7,6 +7,8 @@ import notificationsRoutes from './notifications.js'
 
 // CI TEST: notification-service pipeline trigger
 // CI TEST: force new build
+// CI TEST: trigger auto-detect pipeline (no runtime impact)
+
 
 dotenv.config()
 
