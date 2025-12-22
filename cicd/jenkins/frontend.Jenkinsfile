@@ -63,8 +63,9 @@ spec:
       steps {
         container('kaniko') {
           sh """
-            echo '=== Frontend CI build context ==='
-            cd /home/jenkins/agent/workspace/bravo\\ ci
+            echo '=== Jenkins Workspace ==='
+            echo "WORKSPACE=\$WORKSPACE"
+            cd "\$WORKSPACE"
 
             echo '--- repo root ---'
             pwd
@@ -75,7 +76,7 @@ spec:
 
             /kaniko/executor \
               --dockerfile=services/frontend-service/Dockerfile \
-              --context=/home/jenkins/agent/workspace/bravo\\ ci \
+              --context=\$WORKSPACE \
               --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
               --cache=true \
               --cache-repo=${REGISTRY}/bravo/kaniko-cache \
