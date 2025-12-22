@@ -75,8 +75,8 @@ spec:
             ls -al services/frontend-service
 
             /kaniko/executor \
-              --dockerfile=services/frontend-service/Dockerfile \
-              --context="$WORKSPACE" \
+              --dockerfile=Dockerfile \
+              --context="$WORKSPACE/services/frontend-service" \
               --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
               --cache=true \
               --cache-repo=${REGISTRY}/bravo/kaniko-cache \
