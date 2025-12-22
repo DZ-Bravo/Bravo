@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 80
 const distPath = join(__dirname, 'dist')
 const indexHtmlPath = join(distPath, 'index.html')
 
-// dist 폴더 확인
+// dist 폴더 확인1
 if (!existsSync(distPath)) {
   console.error(`❌ dist 폴더가 없습니다: ${distPath}`)
   console.error('프론트엔드를 빌드해주세요: npm run build')

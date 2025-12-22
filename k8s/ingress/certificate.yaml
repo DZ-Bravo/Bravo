@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hiking-tls-cert
+  namespace: istio-system
+spec:
+  secretName: hiking-tls-secret
+  issuerRef:
+    name: letsencrypt-prod-route53
+    kind: ClusterIssuer
+  dnsNames:
+  - hiker-cloud.site
+  - www.hiker-cloud.site
+  # Route 53 호스팅 영역 ID를 명시적으로 지정 (선택사항)
+  # solvers:
+  # - dns01:
+  #     route53:
+  #       hostedZoneID: Z1234567890ABC  # Route 53 호스팅 영역 ID
+

@@ -1,0 +1,26 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-route53
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: msj6785@kakao.com  # 도메인 소유자 이메일
+    privateKeySecretRef:
+      name: letsencrypt-prod-route53
+    solvers:
+    - dns01:
+        route53:
+          region: ap-northeast-2  # 서울 리전
+          hostedZoneID: Z063980923HQIM9BWG5KU  # Route 53 호스팅 영역 ID
+          accessKeyIDSecretRef:
+            name: route53-credentials
+            key: access-key-id
+          secretAccessKeySecretRef:
+            name: route53-credentials
+            key: secret-access-key
+        # DNS 전파 확인 시간 설정 (초)
+        # 기본값: 60초, 최대: 3600초
+        # 클러스터 내부 DNS가 Route 53을 조회하지 못하는 경우를 대비해 시간 증가
+        # cert-manager는 Route 53 API로 직접 레코드를 생성하므로 전파는 빠름
+

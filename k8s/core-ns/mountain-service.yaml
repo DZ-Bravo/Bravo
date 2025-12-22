@@ -33,16 +33,18 @@ spec:
         - name: PORT
           value: "3008"
         - name: MONGODB_URI
-          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred"
+          value: "mongodb://mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
         - name: OPENWEATHER_API_KEY
           valueFrom:
             configMapKeyRef:
               name: bravo-config
               key: OPENWEATHER_API_KEY
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
         volumeMounts:
         - name: mountain-data
           mountPath: /app/mountain
-          readOnly: true
+          readOnly: false
         resources:
           requests:
             memory: "256Mi"
@@ -90,8 +92,8 @@ metadata:
 spec:
   storageClassName: longhorn
   accessModes:
-  - ReadOnlyMany
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 2Gi
 
