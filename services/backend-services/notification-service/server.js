@@ -6,7 +6,7 @@ import connectDB from './shared/config/database.js'
 import notificationsRoutes from './notifications.js'
 
 // CI TEST: notification-service pipeline trigger
-
+// CI TEST: force new build
 
 dotenv.config()
 
