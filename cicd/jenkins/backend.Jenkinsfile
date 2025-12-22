@@ -42,17 +42,13 @@ spec:
     }
   }
 
-  parameters {
-    string(
-      name: 'SERVICE_NAME', 
-      defaultValue: 'hiking-auth-service',
-      description: '예: hiking-auth-service')
+  environment {
+    REGISTRY  = "192.168.0.244:30305"
+    IMAGE_TAG = "${BUILD_NUMBER}"
   }
 
-  environment {
-    REGISTRY   = "192.168.0.244:30305"
-    IMAGE_NAME = "bravo/${params.SERVICE_NAME}"
-    IMAGE_TAG  = "${BUILD_NUMBER}"
+  triggers {
+    githubPush()
   }
 
   stages {
@@ -65,43 +61,76 @@ spec:
       }
     }
 
-    stage('Build & Push (Kaniko)') {
+    stage('Detect Changed Backend Services') {
       steps {
-        container('kaniko') {
-          sh """
-            echo '=== Backend CI ==='
-            echo "SERVICE_NAME=${params.SERVICE_NAME}"
-            echo "WORKSPACE=\$WORKSPACE"
+        script {
+          def services = sh(
+            script: '''
+              git diff --name-only HEAD~1 HEAD \
+              | grep '^services/backend-services/' \
+              | cut -d'/' -f3 \
+              | sort -u
+            ''',
+            returnStdout: true
+          ).trim()
 
-            cd "\$WORKSPACE"
-
-            echo '--- service dir ---'
-            ls -al services/backend-services/${params.SERVICE_NAME}
-            --context="$WORKSPACE/services/backend-services/${params.SERVICE_NAME}"
-
-            /kaniko/executor \
-              --dockerfile=Dockerfile \
-              --context="\$WORKSPACE/services/${params.SERVICE_NAME}" \
-              --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
-              --cache=true \
-              --cache-repo=${REGISTRY}/bravo/kaniko-cache \
-              --skip-tls-verify
-          """
+          if (!services) {
+            echo 'No backend service changes detected. CI 종료.'
+            currentBuild.result = 'SUCCESS'
+            env.CHANGED_SERVICES = ''
+          } else {
+            env.CHANGED_SERVICES = services
+            echo "Changed backend services:\\n${services}"
+          }
         }
       }
     }
 
-    stage('Trivy Image Scan (CRITICAL only)') {
+    stage('Build & Push Changed Services') {
+      when {
+        expression { env.CHANGED_SERVICES }
+      }
+      steps {
+        container('kaniko') {
+          script {
+            env.CHANGED_SERVICES.split('\n').each { svc ->
+              echo "=== Building backend service: ${svc} ==="
+
+              sh """
+                /kaniko/executor \
+                  --dockerfile=Dockerfile \
+                  --context=\$WORKSPACE/services/backend-services/${svc} \
+                  --destination=${REGISTRY}/bravo/${svc}:${IMAGE_TAG} \
+                  --cache=true \
+                  --cache-repo=${REGISTRY}/bravo/kaniko-cache \
+                  --skip-tls-verify
+              """
+            }
+          }
+        }
+      }
+    }
+
+    stage('Trivy Scan (CRITICAL only)') {
+      when {
+        expression { env.CHANGED_SERVICES }
+      }
       steps {
         container('trivy') {
-          sh """
-            trivy image \
-              --scanners vuln \
-              --severity CRITICAL \
-              --exit-code 1 \
-              --no-progress \
-              ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
-          """
+          script {
+            env.CHANGED_SERVICES.split('\n').each { svc ->
+              echo "=== Trivy scan: ${svc} ==="
+
+              sh """
+                trivy image \
+                  --scanners vuln \
+                  --severity CRITICAL \
+                  --exit-code 1 \
+                  --no-progress \
+                  ${REGISTRY}/bravo/${svc}:${IMAGE_TAG}
+              """
+            }
+          }
         }
       }
     }
