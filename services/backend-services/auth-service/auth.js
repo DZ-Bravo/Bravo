@@ -26,10 +26,20 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-producti
 // 프로필 이미지 업로드 설정
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '../uploads/profiles')
+    // __dirname은 /app이므로 uploads/profiles는 /app/uploads/profiles
+    const uploadDir = path.join(__dirname, 'uploads', 'profiles')
+    
+    console.log('=== Multer Destination 설정 ===')
+    console.log('__dirname:', __dirname)
+    console.log('uploadDir (절대 경로):', uploadDir)
+    console.log('uploadDir exists:', fs.existsSync(uploadDir))
+    
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true })
+      console.log('디렉토리 생성됨:', uploadDir)
     }
+    
+    // 절대 경로를 명시적으로 전달
     cb(null, uploadDir)
   },
   filename: (req, file, cb) => {
@@ -353,6 +363,31 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     let profileImagePath = null
     if (req.file) {
       profileImagePath = `/uploads/profiles/${req.file.filename}`
+      const actualFilePath = path.join(req.file.destination, req.file.filename)
+      console.log('=== 프로필 이미지 업로드 (회원가입) ===')
+      console.log('파일명:', req.file.filename)
+      console.log('destination:', req.file.destination)
+      console.log('req.file.path:', req.file.path)
+      console.log('실제 파일 경로:', actualFilePath)
+      console.log('DB 저장 경로:', profileImagePath)
+      console.log('파일 존재 확인 (req.file.path):', fs.existsSync(req.file.path))
+      console.log('파일 존재 확인 (actualFilePath):', fs.existsSync(actualFilePath))
+      console.log('파일 크기:', req.file.size, 'bytes')
+      
+      // 파일이 실제로 존재하는지 확인
+      if (!fs.existsSync(actualFilePath)) {
+        console.error('❌ 파일이 저장되지 않았습니다!')
+        console.error('예상 경로:', actualFilePath)
+        // 디렉토리 내용 확인
+        try {
+          const files = fs.readdirSync(req.file.destination)
+          console.error('디렉토리 내용:', files)
+        } catch (err) {
+          console.error('디렉토리 읽기 실패:', err.message)
+        }
+      } else {
+        console.log('✅ 파일이 정상적으로 저장되었습니다.')
+      }
     }
     
     // 이름/닉네임 중복 체크
@@ -399,9 +434,9 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     await client.del(emailRedisKey)
     console.log(`회원가입 완료 - 이메일 인증번호 삭제: ${email}`)
     
-    // JWT 토큰 생성
+    // JWT 토큰 생성 (role 포함)
     const token = jwt.sign(
-      { userId: user._id, id: user.id },
+      { userId: user._id, id: user.id, role: user.role || 'user' },
       JWT_SECRET,
       { expiresIn: '7d' }
     )
@@ -448,9 +483,9 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'ID 또는 비밀번호가 올바르지 않습니다.' })
     }
     
-    // JWT 토큰 생성
+    // JWT 토큰 생성 (role 포함)
     const token = jwt.sign(
-      { userId: user._id, id: user.id },
+      { userId: user._id, id: user.id, role: user.role || 'user' },
       JWT_SECRET,
       { expiresIn: '7d' }
     )
@@ -1159,35 +1194,38 @@ router.put('/update', authenticateToken, upload.single('profileImage'), async (r
       gender: user.gender,
       fitnessLevel: user.fitnessLevel,
       birthYear: user.birthYear,
-      phone: user.phone
+      phone: user.phone,
+      email: user.email
     })
     
-    // 업데이트할 필드 설정 (값이 제공된 경우에만 업데이트)
+    // 업데이트할 필드 객체 생성 (email은 제외하고 업데이트)
+    const updateFields = {}
+    
     if (name !== undefined && name !== null) {
       const trimmedName = name.trim()
       if (trimmedName !== '') {
-        user.name = trimmedName
-        console.log('이름 업데이트:', user.name)
+        updateFields.name = trimmedName
+        console.log('이름 업데이트:', trimmedName)
       }
     }
     if (gender !== undefined && gender !== null && gender !== '') {
-      user.gender = gender
-      console.log('성별 업데이트:', user.gender)
+      updateFields.gender = gender
+      console.log('성별 업데이트:', gender)
     }
     if (fitnessLevel !== undefined && fitnessLevel !== null && fitnessLevel !== '') {
-      user.fitnessLevel = fitnessLevel
-      console.log('등력 업데이트:', user.fitnessLevel)
+      updateFields.fitnessLevel = fitnessLevel
+      console.log('등력 업데이트:', fitnessLevel)
     }
     if (birthYear !== undefined && birthYear !== null && birthYear !== '') {
       const birthYearNum = parseInt(birthYear)
       if (!isNaN(birthYearNum) && birthYearNum > 1900 && birthYearNum <= new Date().getFullYear()) {
-        user.birthYear = birthYearNum
-        console.log('출생년도 업데이트:', user.birthYear)
+        updateFields.birthYear = birthYearNum
+        console.log('출생년도 업데이트:', birthYearNum)
       }
     }
     if (phone !== undefined) {
-      user.phone = phone || ''
-      console.log('전화번호 업데이트:', user.phone)
+      updateFields.phone = phone || ''
+      console.log('전화번호 업데이트:', phone || '')
     }
     
     // 비밀번호 변경 (입력된 경우에만)
@@ -1195,7 +1233,7 @@ router.put('/update', authenticateToken, upload.single('profileImage'), async (r
       if (password.length < 6) {
         return res.status(400).json({ error: '비밀번호는 최소 6자 이상이어야 합니다.' })
       }
-      user.password = password
+      updateFields.password = password
       console.log('비밀번호 업데이트됨')
     }
     
@@ -1209,33 +1247,66 @@ router.put('/update', authenticateToken, upload.single('profileImage'), async (r
           console.log('기존 프로필 이미지 삭제:', oldImagePath)
         }
       }
-      user.profileImage = `/uploads/profiles/${req.file.filename}`
-      console.log('프로필 이미지 업데이트:', user.profileImage)
+      updateFields.profileImage = `/uploads/profiles/${req.file.filename}`
+      const actualFilePath = path.join(req.file.destination, req.file.filename)
+      console.log('=== 프로필 이미지 업데이트 ===')
+      console.log('파일명:', req.file.filename)
+      console.log('destination:', req.file.destination)
+      console.log('req.file.path:', req.file.path)
+      console.log('실제 파일 경로:', actualFilePath)
+      console.log('DB 저장 경로:', updateFields.profileImage)
+      console.log('파일 존재 확인 (req.file.path):', fs.existsSync(req.file.path))
+      console.log('파일 존재 확인 (actualFilePath):', fs.existsSync(actualFilePath))
+      console.log('파일 크기:', req.file.size, 'bytes')
+      
+      // 파일이 실제로 존재하는지 확인
+      if (!fs.existsSync(actualFilePath)) {
+        console.error('❌ 파일이 저장되지 않았습니다!')
+        console.error('예상 경로:', actualFilePath)
+        // 디렉토리 내용 확인
+        try {
+          const files = fs.readdirSync(req.file.destination)
+          console.error('디렉토리 내용:', files)
+        } catch (err) {
+          console.error('디렉토리 읽기 실패:', err.message)
+        }
+      } else {
+        console.log('✅ 파일이 정상적으로 저장되었습니다.')
+      }
     }
     
-    // DB에 저장
-    await user.save()
+    // findByIdAndUpdate 사용 (email 필드는 자동으로 유지됨)
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },
+      { new: true, runValidators: false } // runValidators: false로 설정하여 email validation 우회
+    )
+    
+    if (!updatedUser) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
     console.log('DB 저장 완료')
     console.log('수정 후 사용자 정보:', {
-      name: user.name,
-      gender: user.gender,
-      fitnessLevel: user.fitnessLevel,
-      birthYear: user.birthYear,
-      phone: user.phone,
-      profileImage: user.profileImage
+      name: updatedUser.name,
+      gender: updatedUser.gender,
+      fitnessLevel: updatedUser.fitnessLevel,
+      birthYear: updatedUser.birthYear,
+      phone: updatedUser.phone,
+      profileImage: updatedUser.profileImage,
+      email: updatedUser.email
     })
     
     res.json({
       message: '회원정보가 수정되었습니다.',
       user: {
-        id: user.id,
-        name: user.name,
-        gender: user.gender,
-        fitnessLevel: user.fitnessLevel,
-        birthYear: user.birthYear,
-        phone: user.phone,
-        profileImage: user.profileImage,
-        role: user.role || 'user'
+        id: updatedUser.id,
+        name: updatedUser.name,
+        gender: updatedUser.gender,
+        fitnessLevel: updatedUser.fitnessLevel,
+        birthYear: updatedUser.birthYear,
+        phone: updatedUser.phone,
+        profileImage: updatedUser.profileImage,
+        role: updatedUser.role || 'user'
       }
     })
   } catch (error) {
@@ -1649,9 +1720,9 @@ router.get('/kakao/callback', async (req, res) => {
       console.log('카카오 신규 사용자 DB 저장 완료:', user.id, user.name)
     }
 
-    // JWT 토큰 생성
+    // JWT 토큰 생성 (role 포함)
     const token = jwt.sign(
-      { userId: user._id, id: user.id },
+      { userId: user._id, id: user.id, role: user.role || 'user' },
       JWT_SECRET,
       { expiresIn: '7d' }
     )
@@ -1792,9 +1863,9 @@ router.get('/naver/callback', async (req, res) => {
       console.log('네이버 신규 사용자 DB 저장 완료:', user.id, user.name)
     }
 
-    // JWT 토큰 생성
+    // JWT 토큰 생성 (role 포함)
     const token = jwt.sign(
-      { userId: user._id, id: user.id },
+      { userId: user._id, id: user.id, role: user.role || 'user' },
       JWT_SECRET,
       { expiresIn: '7d' }
     )

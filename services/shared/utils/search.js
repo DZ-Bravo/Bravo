@@ -176,16 +176,35 @@ export const buildFuzzySearchQuery = (query, fields, options = {}) => {
     }
   }
 
-  // 한 글자 검색어의 경우 wildcard 검색 우선 사용
+  // 한 글자 검색어의 경우 wildcard 검색 우선 사용 (keyword 필드 사용)
   if (query.length === 1) {
     const shouldQueries = []
     fields.forEach(field => {
       const fieldName = field.includes('^') ? field.split('^')[0] : field
+      // analyzed 필드와 keyword 필드 모두 시도
+      shouldQueries.push({
+        wildcard: {
+          [`${fieldName}.keyword`]: {
+            value: `*${query}*`,
+            boost: boost * 1.0
+          }
+        }
+      })
       shouldQueries.push({
         wildcard: {
           [fieldName]: {
             value: `*${query}*`,
-            boost: boost * 1.0
+            boost: boost * 0.8
+          }
+        }
+      })
+      // match 쿼리도 추가 (한글 토큰화 지원)
+      shouldQueries.push({
+        match: {
+          [fieldName]: {
+            query: query,
+            operator: 'or',
+            boost: boost * 0.5
           }
         }
       })
@@ -264,12 +283,18 @@ export const search = async (indexName, query, options = {}) => {
       query: query,
       from,
       size,
-      ...(sort.length > 0 && { sort })
+      ...(sort.length > 0 && { sort }),
+      // 성능 최적화: timeout 설정 및 불필요한 필드 제외
+      timeout: '5s',
+      _source: {
+        excludes: [] // 필요한 필드만 반환하도록 최적화 가능
+      }
     }
 
     const response = await client.search({
       index: indexName,
-      body: searchBody
+      body: searchBody,
+      requestTimeout: 5000 // 5초 timeout
     })
 
     // Elasticsearch 클라이언트 버전에 따라 응답 형식이 다를 수 있음

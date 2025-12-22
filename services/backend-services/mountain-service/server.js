@@ -1200,7 +1200,75 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
             console.log(`파일에서 읽은 코스 개수: ${courses.length}`)
           }
         } else {
-          console.log(`파일 경로가 존재하지 않음: ${geojsonDir}`)
+          console.log(`파일 경로가 존재하지 않음: ${geojsonDir}, Mountain_list 정보 확인 중...`)
+          
+          // 파일이 없으면 Mountain_list에서 정보 가져오기
+          try {
+            const collections = await db.listCollections().toArray()
+            const collectionNames = collections.map(c => c.name)
+            const mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list') ||
+              collectionNames.find(name => name.toLowerCase() === 'mountain_list') ||
+              'Mountain_list'
+            const mountainCollection = db.collection(mountainListCollectionName)
+            
+            // Mountain_list에서 산 정보 찾기
+            const mountain = await mountainCollection.findOne({
+              $or: [
+                { mntilistno: actualCodeNum },
+                { mntilistno: actualMountainCode },
+                { 'trail_match.mountain_info.mntilistno': String(actualCodeNum) },
+                { 'trail_match.mountain_info.mntilistno': actualMountainCode }
+              ]
+            })
+            
+            if (mountain && mountain.trail_match?.trail_files?.length > 0) {
+              const trailFiles = mountain.trail_match.trail_files
+              const mountainInfo = mountain.trail_match.mountain_info || {}
+              const mntiname = mountain.mntiname || mountain.name || mountainInfo.mntiname || '산'
+              
+              console.log(`Mountain_list에서 ${trailFiles.length}개 trail_files 발견: ${mntiname}`)
+              
+              // trail_files 정보로 기본 코스 생성
+              trailFiles.forEach((trailFile, index) => {
+                const filename = trailFile.filename || ''
+                // 파일명에서 코스 이름 추출 (PMNTN_대봉_488804601.json -> 대봉)
+                let courseName = filename.replace(/^PMNTN_/, '').replace(/_\d+\.json$/, '').replace(/\.json$/, '')
+                if (!courseName || courseName === '') {
+                  courseName = `${mntiname} 코스`
+                }
+                
+                // 기본 코스 정보 생성
+                const defaultCourse = {
+                  type: 'Feature',
+                  properties: {
+                    name: courseName,
+                    PMNTN_NM: courseName,
+                    difficulty: '보통',
+                    distance: 5.0,
+                    PMNTN_LT: 5.0,
+                    duration: '2시간',
+                    upTime: 60,
+                    PMNTN_UPPL: 60,
+                    downTime: 60,
+                    PMNTN_GODN: 60,
+                    PMNTN_MTRQ: ''
+                  },
+                  geometry: {
+                    type: 'LineString',
+                    coordinates: []
+                  }
+                }
+                
+                courses.push(defaultCourse)
+              })
+              
+              console.log(`Mountain_list 정보로 ${courses.length}개 코스 생성: ${mntiname}`)
+            } else {
+              console.log(`Mountain_list에서 trail_files 정보를 찾을 수 없음: ${actualMountainCode}`)
+            }
+          } catch (dbError) {
+            console.error('Mountain_list 조회 오류:', dbError)
+          }
         }
     } catch (fileError) {
       console.error('파일에서 코스 읽기 오류:', fileError)
@@ -1861,7 +1929,10 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             { name: { $regex: priorityCourse.mountainName, $options: 'i' } },
             { MNTN_NM: { $regex: priorityCourse.mountainName, $options: 'i' } },
             { mntiname: priorityCourse.mountainName },
-            { name: priorityCourse.mountainName }
+            { name: priorityCourse.mountainName },
+            // trail_match 내부에서도 검색
+            { 'trail_match.mountain_info.mntiname': { $regex: priorityCourse.mountainName, $options: 'i' } },
+            { 'trail_match.mountain_info.name': { $regex: priorityCourse.mountainName, $options: 'i' } }
           ]
         })
         
@@ -1872,7 +1943,9 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             $or: [
               { mntiname: { $regex: shortName, $options: 'i' } },
               { name: { $regex: shortName, $options: 'i' } },
-              { MNTN_NM: { $regex: shortName, $options: 'i' } }
+              { MNTN_NM: { $regex: shortName, $options: 'i' } },
+              { 'trail_match.mountain_info.mntiname': { $regex: shortName, $options: 'i' } },
+              { 'trail_match.mountain_info.name': { $regex: shortName, $options: 'i' } }
             ]
           })
         }
@@ -1904,11 +1977,80 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
               const { existsSync } = await import('fs')
               
               const codeNum = parseInt(mountainCode)
+              console.log(`[테마별 코스] mountainCode: ${mountainCode}, codeNum: ${codeNum}, isNaN: ${isNaN(codeNum)}`)
               if (!isNaN(codeNum)) {
                 // {code}_geojson 디렉토리에서 파일 찾기
                 const geojsonDir = join('/app', 'mountain', `${codeNum}_geojson`)
+                const dirExists = existsSync(geojsonDir)
+                console.log(`[테마별 코스] GeoJSON 디렉토리 확인: ${geojsonDir}, 존재: ${dirExists}`)
                 
-                if (existsSync(geojsonDir)) {
+                // 파일이 없으면 Mountain_list 정보로 기본 코스 생성
+                if (!dirExists) {
+                  console.log(`[테마별 코스] GeoJSON 디렉토리 없음: ${geojsonDir}, 기본 코스 생성 중...`)
+                  
+                  const mountainInfo = mountain.trail_match?.mountain_info || {}
+                  const mountainName = mountain.mntiname || mountain.name || mountainInfo.mntiname || priorityCourse.mountainName
+                  
+                  // trail_files가 있으면 사용, 없으면 priorityCourse.courseName 사용
+                  let courseName = priorityCourse.courseName || ''
+                  
+                  if (mountain.trail_match?.trail_files?.length > 0) {
+                    // trail_files 정보로 기본 코스 생성
+                    const trailFiles = mountain.trail_match.trail_files
+                    console.log(`[테마별 코스] trail_files 발견: ${trailFiles.length}개, 산: ${mountainName}`)
+                    
+                    trailFiles.forEach((trailFile, index) => {
+                      const filename = trailFile.filename || ''
+                      // 파일명에서 코스 이름 추출 (PMNTN_대봉_488804601.json -> 대봉)
+                      let extractedCourseName = filename.replace(/^PMNTN_/, '').replace(/_\d+\.json$/, '').replace(/\.json$/, '')
+                      if (!extractedCourseName || extractedCourseName === '') {
+                        extractedCourseName = courseName || `${mountainName} 코스`
+                      }
+                      
+                      // 기본 코스 정보 생성
+                      const defaultCourse = {
+                        id: `course-${mountainCode}-${index}`,
+                        name: `${mountainName}의 ${extractedCourseName}구간`,
+                        courseName: extractedCourseName,
+                        location: mountain.mntiadd || mountainInfo.mntiadd || '',
+                        mountainName: mountainName,
+                        mountainCode: mountainCode,
+                        difficulty: '보통',
+                        duration: '2시간',
+                        distance: '5.0km',
+                        description: `${mountainName}의 ${extractedCourseName} 등산 코스입니다.`,
+                        priority: priorityCourse.priority
+                      }
+                      
+                      courses.push(defaultCourse)
+                    })
+                  } else {
+                    // trail_files가 없으면 priorityCourse.courseName으로 기본 코스 생성
+                    if (!courseName || courseName === '') {
+                      courseName = `${mountainName} 코스`
+                    }
+                    
+                    const defaultCourse = {
+                      id: `course-${mountainCode}-0`,
+                      name: `${mountainName}의 ${courseName}구간`,
+                      courseName: courseName,
+                      location: mountain.mntiadd || mountainInfo.mntiadd || '',
+                      mountainName: mountainName,
+                      mountainCode: mountainCode,
+                      difficulty: theme === 'beginner' ? '쉬움' : '보통',
+                      duration: '2시간',
+                      distance: '5.0km',
+                      description: `${mountainName}의 ${courseName} 등산 코스입니다.`,
+                      priority: priorityCourse.priority
+                    }
+                    
+                    courses.push(defaultCourse)
+                    console.log(`[테마별 코스] 기본 코스 생성: ${mountainName} - ${courseName}`)
+                  }
+                  
+                  console.log(`[테마별 코스] Mountain_list 정보로 ${courses.length}개 코스 생성: ${mountainName}`)
+                } else {
+                  // 파일이 있는 경우 기존 로직 실행
                   try {
                     const files = await readdir(geojsonDir)
                     // PMNTN_로 시작하는 .json 파일 찾기 (SPOT 제외)
@@ -2080,6 +2222,39 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                     }
                   } catch (dirError) {
                     console.error(`[테마별 코스] 디렉토리 읽기 오류 - ${priorityCourse.mountainName}:`, dirError.message)
+                    // 디렉토리가 없거나 읽기 실패 시 Mountain_list의 trail_files로 기본 코스 생성
+                    if (courses.length === 0 && mountain.trail_match?.trail_files?.length > 0) {
+                      console.log(`[테마별 코스] 디렉토리 오류 후 trail_files로 기본 코스 생성: ${priorityCourse.mountainName}`)
+                      const mountainInfo = mountain.trail_match?.mountain_info || {}
+                      const mountainName = mountain.mntiname || mountain.name || mountainInfo.mntiname || priorityCourse.mountainName
+                      const trailFiles = mountain.trail_match.trail_files
+                      
+                      trailFiles.forEach((trailFile, index) => {
+                        const filename = trailFile.filename || ''
+                        let extractedCourseName = filename.replace(/^PMNTN_/, '').replace(/_\d+\.json$/, '').replace(/\.json$/, '')
+                        if (!extractedCourseName || extractedCourseName === '') {
+                          extractedCourseName = priorityCourse.courseName || `${mountainName} 코스`
+                        }
+                        
+                        const defaultCourse = {
+                          id: `course-${mountainCode}-${index}`,
+                          name: `${mountainName}의 ${extractedCourseName}구간`,
+                          courseName: extractedCourseName,
+                          location: mountain.mntiadd || mountainInfo.mntiadd || '',
+                          mountainName: mountainName,
+                          mountainCode: mountainCode,
+                          difficulty: '보통',
+                          duration: '2시간',
+                          distance: '5.0km',
+                          description: `${mountainName}의 ${extractedCourseName} 등산 코스입니다.`,
+                          priority: priorityCourse.priority
+                        }
+                        
+                        courses.push(defaultCourse)
+                      })
+                      
+                      console.log(`[테마별 코스] trail_files로 ${courses.length}개 코스 생성: ${mountainName}`)
+                    }
                   }
                 }
               }
@@ -2261,8 +2436,15 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
     // 우선 코스가 부족하면 추가 코스 찾기
     let additionalCourses = []
     if (foundPriorityCourses.length < parseInt(limit)) {
-      // 모든 코스 가져오기
-      let allCourses = await Course.find({}).lean()
+      // 모든 코스 가져오기 (Course 컬렉션이 없거나 비어있을 수 있음)
+      let allCourses = []
+      try {
+        allCourses = await Course.find({}).lean()
+        console.log(`[테마별 코스] Course 컬렉션에서 ${allCourses.length}개 코스 조회`)
+      } catch (courseError) {
+        console.warn(`[테마별 코스] Course 컬렉션 조회 실패 (무시):`, courseError.message)
+        allCourses = []
+      }
       
       // 코스에 산 정보 추가
       const coursesWithMountain = await Promise.all(

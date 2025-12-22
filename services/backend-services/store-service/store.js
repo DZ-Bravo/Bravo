@@ -451,10 +451,10 @@ router.get('/search', async (req, res) => {
             }
           }
 
-          // 검색 실행
+          // 검색 실행 (성능 최적화: size 제한)
           searchResult = await search('products', finalQuery, {
             from: (page - 1) * limit,
-            size: limit,
+            size: Math.min(limit, 50),  // 최대 50개로 제한하여 성능 개선
             sort: [{ _score: { order: 'desc' } }, { createdAt: { order: 'desc' } }]
           })
           useElasticsearch = true

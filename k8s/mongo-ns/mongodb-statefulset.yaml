@@ -58,21 +58,20 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             configMapKeyRef:
-              name: hiking-config
+              name: bravo-config
               key: MONGO_INITDB_ROOT_USERNAME
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             configMapKeyRef:
-              name: hiking-config
+              name: bravo-config
               key: MONGO_INITDB_ROOT_PASSWORD
-        command:
-        - mongod
-        - --replSet
-        - rs0
-        - --bind_ip_all
-        - --keyFile
-        - /data/keyfile
-        - --auth
+            command:
+            - mongod
+            - --replSet
+            - rs0
+            - --bind_ip_all
+            - --keyFile
+            - /data/keyfile
         volumeMounts:
         - name: mongodb-data
           mountPath: /data/db
@@ -134,7 +133,7 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: 5Gi
   - metadata:
       name: mongodb-config
     spec:
