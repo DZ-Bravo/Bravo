@@ -5,6 +5,9 @@ import dotenv from 'dotenv'
 import connectDB from './shared/config/database.js'
 import notificationsRoutes from './notifications.js'
 
+// CI TEST: notification-service pipeline trigger
+
+
 dotenv.config()
 
 const app = express()
