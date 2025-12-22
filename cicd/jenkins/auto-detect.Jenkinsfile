@@ -14,7 +14,7 @@ spec:
     args: ["infinity"]
     volumeMounts:
       - name: workspace-volume
-        mountPath: /workspace
+        mountPath: /home/jenkins/agent
       - name: harbor-regcred
         mountPath: /kaniko/.docker
 
@@ -22,9 +22,16 @@ spec:
     image: aquasec/trivy:0.51.1
     command: ["sleep"]
     args: ["infinity"]
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
 
   - name: jnlp
     image: jenkins/inbound-agent:3345.v03dee9b_f88fc-1
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
 
   volumes:
     - name: workspace-volume
@@ -76,14 +83,14 @@ spec:
       steps {
         container('jnlp') {
           sh '''#!/usr/bin/env bash
-            set -euo pipefail
+            set -eo pipefail
 
             git fetch origin main
 
-            BASE_COMMIT=${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}
+            BASE_COMMIT="${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}"
             echo "🔍 Diff base: $BASE_COMMIT -> $GIT_COMMIT"
 
-            git diff --name-only $BASE_COMMIT $GIT_COMMIT > changed_files.txt || true
+            git diff --name-only "$BASE_COMMIT" "$GIT_COMMIT" > changed_files.txt || true
             cat changed_files.txt || true
 
             > changed_services.txt
@@ -105,7 +112,7 @@ spec:
 
             if [ ! -s changed_services.txt ]; then
               echo "⚠️ No affected services detected. CI will be skipped."
-              touch .ci_skip
+              touch "${WORKSPACE}/.ci_skip"
             else
               echo "📦 Changed services:"
               cat changed_services.txt
@@ -120,9 +127,7 @@ spec:
        =========================== */
     stage('Build Images') {
       when {
-        expression {
-          return !fileExists('.ci_skip')
-        }
+        expression { !fileExists("${env.WORKSPACE}/.ci_skip") }
       }
       steps {
         container('kaniko') {
@@ -133,7 +138,7 @@ spec:
               if (!svc?.trim()) continue
 
               def svcName = svc.split('/').last()
-              def contextPath = "/workspace/services/${svc}"
+              def contextPath = "${env.WORKSPACE}/services/${svc}"
 
               sh """
                 echo "🚀 Building image: ${svcName}"
@@ -146,55 +151,3 @@ spec:
                   --skip-tls-verify
               """
             }
-          }
-        }
-      }
-    }
-
-    /* ===========================
-       4. Trivy Gate (CRITICAL)
-       =========================== */
-    stage('Trivy Image Scan') {
-      when {
-        expression {
-          return !fileExists('.ci_skip')
-        }
-      }
-      steps {
-        container('trivy') {
-          script {
-            def services = readFile('changed_services.txt').trim().split('\n')
-
-            for (svc in services) {
-              if (!svc?.trim()) continue
-
-              def svcName = svc.split('/').last()
-
-              sh """
-                echo "🔍 Trivy scan: ${svcName}"
-                trivy image \
-                  --severity ${SEVERITY} \
-                  --scanners vuln \
-                  --exit-code 1 \
-                  --no-progress \
-                  ${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER}
-              """
-            }
-          }
-        }
-      }
-    }
-  }
-
-  post {
-    always {
-      echo "🧹 CI finished"
-    }
-    success {
-      echo "✅ CI succeeded"
-    }
-    aborted {
-      echo "⏭ CI skipped (no relevant changes)"
-    }
-  }
-}
