@@ -76,7 +76,7 @@ spec:
 
             /kaniko/executor \
               --dockerfile=services/frontend-service/Dockerfile \
-              --context=\$WORKSPACE \
+              --context="$WORKSPACE" \
               --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
               --cache=true \
               --cache-repo=${REGISTRY}/bravo/kaniko-cache \
