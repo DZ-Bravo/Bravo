@@ -76,23 +76,31 @@ spec:
       steps {
         container('jnlp') {
           sh '''
-            git fetch origin main --depth=2
+            git fetch origin main
 
-            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
-            SERVICES=()
+            BASE_COMMIT=${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}
+            echo "🔍 Diff base: $BASE_COMMIT -> $GIT_COMMIT"
 
-            for file in $CHANGED_FILES; do
-              if [[ "$file" == services/backend-services/* ]]; then
-                svc=$(echo $file | cut -d/ -f3)
-                SERVICES+=("backend-services/$svc")
+            git diff --name-only $BASE_COMMIT $GIT_COMMIT > changed_files.txt || true
+            cat changed_files.txt || true
+
+            > changed_services.txt
+
+            while read file; do
+              # Backend services
+              if [[ "$file" =~ ^services/backend-services/([^/]+)/ ]]; then
+                svc="${BASH_REMATCH[1]}"
+                echo "backend-services/$svc" >> changed_services.txt
               fi
 
-              if [[ "$file" == services/hiking-frontend/* ]]; then
-                SERVICES+=("hiking-frontend")
+              # Frontend
+              if [[ "$file" =~ ^services/hiking-frontend/ ]]; then
+                echo "hiking-frontend" >> changed_services.txt
               fi
-            done
+            done < changed_files.txt
 
-            printf "%s\n" "${SERVICES[@]}" | sort -u > changed_services.txt
+            sort -u changed_services.txt -o changed_services.txt
+            echo "📦 Changed services:"
             cat changed_services.txt || true
           '''
         }
@@ -104,7 +112,7 @@ spec:
        =========================== */
     stage('Build Images') {
       when {
-        expression { fileExists('changed_services.txt') }
+        expression { fileExists('changed_services.txt') && readFile('changed_services.txt').trim() }
       }
       steps {
         container('kaniko') {
@@ -112,13 +120,14 @@ spec:
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
-              if (!svc?.trim()) continue
               def svcName = svc.split('/').last()
+              def contextPath = "/workspace/services/${svc}"
 
               sh """
+                echo "🚀 Building ${svcName}"
                 /kaniko/executor \
-                  --dockerfile=Dockerfile \
-                  --context=/workspace/services/${svc} \
+                  --dockerfile=${contextPath}/Dockerfile \
+                  --context=${contextPath} \
                   --destination=${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER} \
                   --cache=true \
                   --cache-repo=${CACHE_REPO} \
@@ -135,7 +144,7 @@ spec:
        =========================== */
     stage('Trivy Image Scan') {
       when {
-        expression { fileExists('changed_services.txt') }
+        expression { fileExists('changed_services.txt') && readFile('changed_services.txt').trim() }
       }
       steps {
         container('trivy') {
@@ -143,12 +152,9 @@ spec:
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
-              if (!svc?.trim()) continue
               def svcName = svc.split('/').last()
-
-              echo "🔍 Trivy scan: ${svcName}"
-
               sh """
+                echo "🔍 Trivy scan: ${svcName}"
                 trivy image \
                   --severity ${SEVERITY} \
                   --scanners vuln \
