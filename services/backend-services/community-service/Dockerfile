@@ -7,7 +7,7 @@ RUN apk add --no-cache tzdata && \
     ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
     echo "Asia/Seoul" > /etc/timezone
 
-# 공유 리소스 복사
+# 공유 리소스 복사 (빌드 컨텍스트가 services/일 때)
 COPY shared ./shared
 
 # package.json 복사 및 의존성 설치 (프로덕션만)
