@@ -43,7 +43,10 @@ spec:
   }
 
   parameters {
-    string(name: 'SERVICE_NAME', description: '예: hiking-auth-service')
+    string(
+      name: 'SERVICE_NAME', 
+      defaultValue: 'hiking-auth-service',
+      description: '예: hiking-auth-service')
   }
 
   environment {
@@ -73,7 +76,8 @@ spec:
             cd "\$WORKSPACE"
 
             echo '--- service dir ---'
-            ls -al services/${params.SERVICE_NAME}
+            ls -al services/backend-services/${params.SERVICE_NAME}
+            --context="$WORKSPACE/services/backend-services/${params.SERVICE_NAME}"
 
             /kaniko/executor \
               --dockerfile=Dockerfile \
