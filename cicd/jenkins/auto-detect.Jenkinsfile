@@ -82,42 +82,41 @@ spec:
     stage('Detect Changed Services') {
       steps {
         container('jnlp') {
-          sh '''#!/usr/bin/env bash
-            set -eo pipefail
+          sh '''
+set -e
 
-            git fetch origin main
+git fetch origin main
 
-            BASE_COMMIT="${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}"
-            echo "🔍 Diff base: $BASE_COMMIT -> $GIT_COMMIT"
+BASE_COMMIT=${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}
+echo "Diff base: $BASE_COMMIT -> $GIT_COMMIT"
 
-            git diff --name-only "$BASE_COMMIT" "$GIT_COMMIT" > changed_files.txt || true
-            cat changed_files.txt || true
+git diff --name-only "$BASE_COMMIT" "$GIT_COMMIT" > changed_files.txt || true
+cat changed_files.txt || true
 
-            > changed_services.txt
+> changed_services.txt
 
-            while read -r file; do
-              # Backend services
-              if [[ "$file" =~ ^services/backend-services/([^/]+)/ ]]; then
-                svc="${BASH_REMATCH[1]}"
-                echo "backend-services/$svc" >> changed_services.txt
-              fi
+while read file; do
+  case "$file" in
+    services/backend-services/*/*)
+      svc=$(echo "$file" | cut -d/ -f3)
+      echo "backend-services/$svc" >> changed_services.txt
+      ;;
+    services/hiking-frontend/*)
+      echo "hiking-frontend" >> changed_services.txt
+      ;;
+  esac
+done < changed_files.txt
 
-              # Frontend
-              if [[ "$file" =~ ^services/hiking-frontend/ ]]; then
-                echo "hiking-frontend" >> changed_services.txt
-              fi
-            done < changed_files.txt
+sort -u changed_services.txt -o changed_services.txt
 
-            sort -u changed_services.txt -o changed_services.txt
-
-            if [ ! -s changed_services.txt ]; then
-              echo "⚠️ No affected services detected. CI will be skipped."
-              touch "${WORKSPACE}/.ci_skip"
-            else
-              echo "📦 Changed services:"
-              cat changed_services.txt
-            fi
-          '''
+if [ ! -s changed_services.txt ]; then
+  echo "No affected services detected. CI will be skipped."
+  touch .ci_skip
+else
+  echo "Changed services:"
+  cat changed_services.txt
+fi
+'''
         }
       }
     }
@@ -127,7 +126,7 @@ spec:
        =========================== */
     stage('Build Images') {
       when {
-        expression { !fileExists("${env.WORKSPACE}/.ci_skip") }
+        expression { !fileExists('.ci_skip') }
       }
       steps {
         container('kaniko') {
@@ -141,13 +140,63 @@ spec:
               def contextPath = "${env.WORKSPACE}/services/${svc}"
 
               sh """
-                echo "🚀 Building image: ${svcName}"
-                /kaniko/executor \
-                  --dockerfile=${contextPath}/Dockerfile \
-                  --context=${contextPath} \
-                  --destination=${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER} \
-                  --cache=true \
-                  --cache-repo=${CACHE_REPO} \
-                  --skip-tls-verify
-              """
+echo "Building image: ${svcName}"
+/kaniko/executor \
+  --dockerfile=${contextPath}/Dockerfile \
+  --context=${contextPath} \
+  --destination=${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER} \
+  --cache=true \
+  --cache-repo=${CACHE_REPO} \
+  --skip-tls-verify
+"""
             }
+          }
+        }
+      }
+    }
+
+    /* ===========================
+       4. Trivy Gate (CRITICAL)
+       =========================== */
+    stage('Trivy Image Scan') {
+      when {
+        expression { !fileExists('.ci_skip') }
+      }
+      steps {
+        container('trivy') {
+          script {
+            def services = readFile('changed_services.txt').trim().split('\n')
+
+            for (svc in services) {
+              if (!svc?.trim()) continue
+
+              def svcName = svc.split('/').last()
+
+              sh """
+echo "Trivy scan: ${svcName}"
+trivy image \
+  --severity ${SEVERITY} \
+  --scanners vuln \
+  --exit-code 1 \
+  --no-progress \
+  ${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER}
+"""
+            }
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      echo "CI finished"
+    }
+    success {
+      echo "CI succeeded"
+    }
+    aborted {
+      echo "CI skipped (no relevant changes)"
+    }
+  }
+}
