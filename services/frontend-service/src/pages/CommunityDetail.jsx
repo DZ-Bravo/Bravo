@@ -481,11 +481,23 @@ function CommunityDetail() {
             {/* 작성자 정보 */}
             <div className="author-info">
               {post.authorProfileImage ? (
-                <img
-                  src={`${API_URL}${post.authorProfileImage}`}
-                  alt={post.author}
-                  className="author-avatar"
-                />
+                <>
+                  <img
+                    src={post.authorProfileImage.startsWith('http') ? post.authorProfileImage : `${API_URL}${post.authorProfileImage}`}
+                    alt={post.author}
+                    className="author-avatar"
+                    onError={(e) => {
+                      e.target.style.display = 'none'
+                      const placeholder = e.target.nextElementSibling
+                      if (placeholder) {
+                        placeholder.style.display = 'flex'
+                      }
+                    }}
+                  />
+                  <div className="author-avatar-placeholder" style={{ display: 'none' }}>
+                    <span>👤</span>
+                  </div>
+                </>
               ) : (
                 <div className="author-avatar-placeholder">
                   <span>👤</span>
@@ -664,13 +676,18 @@ function CommunityDetail() {
                       <>
                         <div className="comment-header">
                           <div className="comment-author-info">
-                            {comment.authorProfileImage && (
-                              <img
-                                src={`${API_URL}${comment.authorProfileImage}`}
-                                alt={comment.author}
-                                className="comment-author-avatar"
-                              />
-                            )}
+                            {comment.authorProfileImage ? (
+                              <>
+                                <img
+                                  src={comment.authorProfileImage.startsWith('http') ? comment.authorProfileImage : `${API_URL}${comment.authorProfileImage}`}
+                                  alt={comment.author}
+                                  className="comment-author-avatar"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none'
+                                  }}
+                                />
+                              </>
+                            ) : null}
                             <span className="comment-author">{comment.author}</span>
                             <span className="comment-date">{comment.date}</span>
                           </div>

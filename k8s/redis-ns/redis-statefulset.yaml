@@ -32,6 +32,7 @@ data:
   sentinel.conf: |
     port 26379
     sentinel monitor mymaster redis-0.redis 6379 2
+    sentinel resolve-hostnames yes
     sentinel down-after-milliseconds mymaster 5000
     sentinel parallel-syncs mymaster 1
     sentinel failover-timeout mymaster 10000
@@ -52,6 +53,27 @@ spec:
       labels:
         app: redis
     spec:
+      initContainers:
+      - name: redis-init
+        image: redis:7-alpine
+        command:
+        - sh
+        - -c
+        - |
+          # redis-0는 master로 유지, redis-1은 slave로 설정
+          if [ "$HOSTNAME" = "redis-1" ]; then
+            echo "Waiting for redis-0 to be ready..."
+            until redis-cli -h redis-0.redis.bravo-redis-ns.svc.cluster.local ping; do
+              sleep 1
+            done
+            echo "Configuring redis-1 as replica of redis-0..."
+            redis-cli -h redis-0.redis.bravo-redis-ns.svc.cluster.local ping
+          fi
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
       containers:
       - name: redis
         image: redis:7-alpine
@@ -59,8 +81,33 @@ spec:
         - containerPort: 6379
           name: redis
         command:
-        - redis-server
-        - /etc/redis/redis.conf
+        - sh
+        - -c
+        - |
+          # redis-0는 master로 시작
+          if [ "$HOSTNAME" = "redis-0" ]; then
+            exec redis-server /etc/redis/redis.conf
+          else
+            # redis-1은 먼저 standalone으로 시작
+            redis-server /etc/redis/redis.conf &
+            REDIS_PID=$!
+            # redis-0가 준비될 때까지 대기
+            echo "Waiting for redis-0 to be ready..."
+            until redis-cli -h redis-0.redis.bravo-redis-ns.svc.cluster.local ping > /dev/null 2>&1; do
+              sleep 2
+            done
+            # 잠시 대기 후 replica로 설정
+            sleep 3
+            echo "Configuring redis-1 as replica of redis-0..."
+            redis-cli REPLICAOF redis-0.redis.bravo-redis-ns.svc.cluster.local 6379
+            # Redis 프로세스가 종료될 때까지 대기
+            wait $REDIS_PID
+          fi
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         volumeMounts:
         - name: redis-data
           mountPath: /data
@@ -100,7 +147,7 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 5Gi
+          storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -118,6 +165,20 @@ spec:
       labels:
         app: redis-sentinel
     spec:
+      initContainers:
+      - name: copy-sentinel-config
+        image: busybox
+        command:
+        - sh
+        - -c
+        - |
+          cp /etc/redis/sentinel.conf /data/sentinel.conf
+        volumeMounts:
+        - name: sentinel-config
+          mountPath: /etc/redis
+          readOnly: true
+        - name: sentinel-data
+          mountPath: /data
       containers:
       - name: sentinel
         image: redis:7-alpine
@@ -126,11 +187,13 @@ spec:
           name: sentinel
         command:
         - redis-sentinel
-        - /etc/redis/sentinel.conf
+        - /data/sentinel.conf
         volumeMounts:
         - name: sentinel-config
           mountPath: /etc/redis
           readOnly: true
+        - name: sentinel-data
+          mountPath: /data
         resources:
           requests:
             memory: "128Mi"
@@ -160,6 +223,8 @@ spec:
       - name: sentinel-config
         configMap:
           name: redis-config
+      - name: sentinel-data
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

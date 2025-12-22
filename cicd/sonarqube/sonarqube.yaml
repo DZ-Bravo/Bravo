@@ -1,0 +1,162 @@
+# =========================
+# Namespace
+# =========================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bravo-platform-ns
+---
+# =========================
+# PostgreSQL Service
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: bravo-platform-ns
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: postgres
+---
+# =========================
+# PostgreSQL StatefulSet
+# =========================
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: bravo-platform-ns
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          env:
+            - name: POSTGRES_DB
+              value: sonar
+            - name: POSTGRES_USER
+              value: sonar
+            - name: POSTGRES_PASSWORD
+              value: sonar
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 10Gi
+---
+# =========================
+# SonarQube Service (NodePort)
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarqube
+  namespace: bravo-platform-ns
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      targetPort: 9000
+      nodePort: 30560
+  selector:
+    app: sonarqube
+---
+# =========================
+# SonarQube StatefulSet (node1 고정)
+# =========================
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sonarqube
+  namespace: bravo-platform-ns
+spec:
+  serviceName: sonarqube
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarqube
+  template:
+    metadata:
+      labels:
+        app: sonarqube
+    spec:
+      # ⭐⭐⭐ node1 고정 설정 (유일한 변경 포인트)
+      nodeSelector:
+        kubernetes.io/hostname: node1
+
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: sonarqube
+          image: sonarqube:lts-community
+          ports:
+            - containerPort: 9000
+          env:
+            - name: SONAR_JDBC_URL
+              value: jdbc:postgresql://postgres.bravo-platform-ns.svc.cluster.local:5432/sonar
+            - name: SONAR_JDBC_USERNAME
+              value: sonar
+            - name: SONAR_JDBC_PASSWORD
+              value: sonar
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          volumeMounts:
+            - name: sonarqube-data
+              mountPath: /opt/sonarqube/data
+            - name: sonarqube-extensions
+              mountPath: /opt/sonarqube/extensions
+            - name: sonarqube-logs
+              mountPath: /opt/sonarqube/logs
+  volumeClaimTemplates:
+    - metadata:
+        name: sonarqube-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: sonarqube-extensions
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: sonarqube-logs
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 1Gi
+

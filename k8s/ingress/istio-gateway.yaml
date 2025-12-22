@@ -1,27 +1,42 @@
-apiVersion: networking.istio.io/v1beta1
+apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
   name: hiking-gateway
-  namespace: bravo-core-ns
+  namespace: istio-system
 spec:
   selector:
     istio: ingressgateway
   servers:
   - port:
-      number: 80
+      number: 8080
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "hiker-cloud.site"
+    - "www.hiker-cloud.site"
+    # HTTP to HTTPS redirect
+    tls:
+      httpsRedirect: true
+  - port:
+      number: 8443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: hiking-tls-secret
+    hosts:
+    - "hiker-cloud.site"
+    - "www.hiker-cloud.site"
 ---
-apiVersion: networking.istio.io/v1beta1
+apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: hiking-routes
-  namespace: bravo-core-ns
+  namespace: istio-system
 spec:
   hosts:
-  - "*"
+  - "hiker-cloud.site"
+  - "www.hiker-cloud.site"
   gateways:
   - hiking-gateway
   http:
@@ -34,12 +49,21 @@ spec:
         host: auth-service.bravo-core-ns.svc.cluster.local
         port:
           number: 3001
+  # Auth Service (profiles 이미지)
+  - match:
+    - uri:
+        prefix: /uploads/profiles
+    route:
+    - destination:
+        host: auth-service.bravo-core-ns.svc.cluster.local
+        port:
+          number: 3001
   # Community Service
   - match:
     - uri:
         prefix: /api/posts
     - uri:
-        prefix: /uploads
+        prefix: /uploads/posts
     route:
     - destination:
         host: community-service.bravo-core-ns.svc.cluster.local
@@ -87,10 +111,10 @@ spec:
         prefix: /api/chatbot
     route:
     - destination:
-        host: chatbot-service.bravo-core-ns.svc.cluster.local
+        host: chatbot-service.bravo-ai-integration-ns.svc.cluster.local
         port:
           number: 3007
-  # Mountain Service
+  # Mountain Service (정적 파일만 - /mountain/{code}_geojson/ 또는 /mountain/{code}_gpx/)
   - match:
     - uri:
         prefix: /api/mountains
@@ -101,7 +125,7 @@ spec:
     - uri:
         prefix: /api/utils/imgbb-url
     - uri:
-        prefix: /mountain
+        regex: "^/mountain/[0-9]+_(geojson|gpx)/"
     route:
     - destination:
         host: mountain-service.bravo-core-ns.svc.cluster.local
@@ -113,7 +137,7 @@ spec:
         prefix: /api/ai
     route:
     - destination:
-        host: ai-service.bravo-core-ns.svc.cluster.local
+        host: ai-service.bravo-ai-integration-ns.svc.cluster.local
         port:
           number: 3009
   # Stamp Service
@@ -125,6 +149,17 @@ spec:
         host: stamp-service.bravo-core-ns.svc.cluster.local
         port:
           number: 3010
+  # Frontend static files
+  - match:
+    - uri:
+        prefix: /images
+    - uri:
+        prefix: /favicon
+    route:
+    - destination:
+        host: frontend.bravo-front-ns.svc.cluster.local
+        port:
+          number: 80
   # Frontend (default)
   - match:
     - uri:
@@ -134,4 +169,8 @@ spec:
         host: frontend.bravo-front-ns.svc.cluster.local
         port:
           number: 80
+    timeout: 30s
+    retries:
+      attempts: 3
+      perTryTimeout: 10s
 
