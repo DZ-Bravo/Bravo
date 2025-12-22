@@ -76,6 +76,8 @@ spec:
       steps {
         container('jnlp') {
           sh '''
+            set -e
+
             git fetch origin main
 
             BASE_COMMIT=${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}
@@ -100,8 +102,14 @@ spec:
             done < changed_files.txt
 
             sort -u changed_services.txt -o changed_services.txt
-            echo "📦 Changed services:"
-            cat changed_services.txt || true
+
+            if [ ! -s changed_services.txt ]; then
+              echo "⚠️ No affected services detected. CI will be skipped."
+              touch .ci_skip
+            else
+              echo "📦 Changed services:"
+              cat changed_services.txt
+            fi
           '''
         }
       }
@@ -112,7 +120,9 @@ spec:
        =========================== */
     stage('Build Images') {
       when {
-        expression { fileExists('changed_services.txt') && readFile('changed_services.txt').trim() }
+        expression {
+          return !fileExists('.ci_skip')
+        }
       }
       steps {
         container('kaniko') {
@@ -120,11 +130,13 @@ spec:
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
+              if (!svc?.trim()) continue
+
               def svcName = svc.split('/').last()
               def contextPath = "/workspace/services/${svc}"
 
               sh """
-                echo "🚀 Building ${svcName}"
+                echo "🚀 Building image: ${svcName}"
                 /kaniko/executor \
                   --dockerfile=${contextPath}/Dockerfile \
                   --context=${contextPath} \
@@ -144,7 +156,9 @@ spec:
        =========================== */
     stage('Trivy Image Scan') {
       when {
-        expression { fileExists('changed_services.txt') && readFile('changed_services.txt').trim() }
+        expression {
+          return !fileExists('.ci_skip')
+        }
       }
       steps {
         container('trivy') {
@@ -152,7 +166,10 @@ spec:
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
+              if (!svc?.trim()) continue
+
               def svcName = svc.split('/').last()
+
               sh """
                 echo "🔍 Trivy scan: ${svcName}"
                 trivy image \
@@ -166,6 +183,18 @@ spec:
           }
         }
       }
+    }
+  }
+
+  post {
+    always {
+      echo "🧹 CI finished"
+    }
+    success {
+      echo "✅ CI succeeded"
+    }
+    aborted {
+      echo "⏭ CI skipped (no relevant changes)"
     }
   }
 }
