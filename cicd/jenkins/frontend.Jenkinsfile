@@ -43,7 +43,7 @@ spec:
   }
 
   environment {
-    SERVICE_NAME = "frontend-service"
+    SERVICE_NAME = "hiking-frontend"
     IMAGE_NAME   = "bravo/frontend-service"
     REGISTRY     = "192.168.0.244:30305"
     IMAGE_TAG    = "${BUILD_NUMBER}"
