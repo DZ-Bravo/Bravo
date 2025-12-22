@@ -71,12 +71,12 @@ spec:
             pwd
             ls -al
 
-            echo '--- hiking-frontend ---'
+            echo '--- frontend-service ---'
             ls -al services/frontend-service
 
             /kaniko/executor \
               --dockerfile=Dockerfile \
-              --context="$WORKSPACE/services/hiking-frontend" \
+              --context="$WORKSPACE/services/frontend-service" \
               --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
               --cache=true \
               --cache-repo=${REGISTRY}/bravo/kaniko-cache \
