@@ -99,13 +99,29 @@ cat changed_files.txt || true
 
 while read file; do
   case "$file" in
+
+    # Backend CI trigger
+    services/backend-services/*/.ci-trigger)
+      svc=$(echo "$file" | cut -d/ -f3)
+      echo "backend-services/$svc" >> changed_services.txt
+      ;;
+
+    # Backend code change
     services/backend-services/*/*)
       svc=$(echo "$file" | cut -d/ -f3)
       echo "backend-services/$svc" >> changed_services.txt
       ;;
+
+    # Frontend CI trigger
+    services/hiking-frontend/*/.ci-trigger)
+      echo "hiking-frontend" >> changed_services.txt
+      ;;
+
+    # Frontend code change
     services/hiking-frontend/*)
       echo "hiking-frontend" >> changed_services.txt
       ;;
+
   esac
 done < changed_files.txt
 
