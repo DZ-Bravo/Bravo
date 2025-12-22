@@ -75,8 +75,8 @@ spec:
     stage('Detect Changed Services') {
       steps {
         container('jnlp') {
-          sh '''
-            set -e
+          sh '''#!/usr/bin/env bash
+            set -euo pipefail
 
             git fetch origin main
 
@@ -88,7 +88,7 @@ spec:
 
             > changed_services.txt
 
-            while read file; do
+            while read -r file; do
               # Backend services
               if [[ "$file" =~ ^services/backend-services/([^/]+)/ ]]; then
                 svc="${BASH_REMATCH[1]}"
