@@ -47,8 +47,8 @@ spec:
   }
 
   environment {
-    IMAGE_NAME = "bravo/${params.SERVICE_NAME}"
     REGISTRY   = "192.168.0.244:30305"
+    IMAGE_NAME = "bravo/${params.SERVICE_NAME}"
     IMAGE_TAG  = "${BUILD_NUMBER}"
   }
 
@@ -72,9 +72,34 @@ spec:
 
             cd "\$WORKSPACE"
 
-            echo "--- service dir ---"
+            echo '--- service dir ---'
             ls -al services/${params.SERVICE_NAME}
 
             /kaniko/executor \
               --dockerfile=Dockerfile \
-              --context="
+              --context="\$WORKSPACE/services/${params.SERVICE_NAME}" \
+              --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
+              --cache=true \
+              --cache-repo=${REGISTRY}/bravo/kaniko-cache \
+              --skip-tls-verify
+          """
+        }
+      }
+    }
+
+    stage('Trivy Image Scan (CRITICAL only)') {
+      steps {
+        container('trivy') {
+          sh """
+            trivy image \
+              --scanners vuln \
+              --severity CRITICAL \
+              --exit-code 1 \
+              --no-progress \
+              ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+          """
+        }
+      }
+    }
+  }
+}
