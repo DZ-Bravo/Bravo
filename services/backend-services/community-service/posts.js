@@ -634,13 +634,17 @@ router.get('/unified-search', async (req, res) => {
         try {
           // 인덱스 존재 여부 확인
           const indexExists = await esClient.indices.exists({ index: 'mountains' })
+          console.log(`[통합 검색] mountains 인덱스 존재: ${indexExists}, 검색어: ${query}`)
           if (indexExists) {
             const searchFields = ['name^3', 'location^2', 'description']
             const searchQuery = buildFuzzySearchQuery(query, searchFields)  // 유연한 검색 사용
+            console.log(`[통합 검색] 산 검색 쿼리 실행 중...`)
             const searchResult = await search('mountains', searchQuery, {
               from: 0,
-              size: Math.min(limit, 1000)  // 최대 1000개까지 반환 (552개 모두 표시)
+              size: Math.min(limit, 100),  // 성능 개선: 1000 → 100으로 제한
+              sort: [{ _score: { order: 'desc' } }]  // 정렬 추가
             })
+            console.log(`[통합 검색] 산 검색 결과: ${searchResult.hits.length}개 히트`)
 
             if (searchResult.hits && searchResult.hits.length > 0) {
               // 검색어로 필터링하여 정확도 향상
@@ -659,6 +663,7 @@ router.get('/unified-search', async (req, res) => {
                   return nameLower.includes(queryLower)
                 }
               })
+              console.log(`[통합 검색] 필터링 후: ${filteredHits.length}개`)
               
               // 정확도 순으로 정렬 (시작 부분 일치가 우선)
               filteredHits.sort((a, b) => {
@@ -687,7 +692,7 @@ router.get('/unified-search', async (req, res) => {
 
       // Elasticsearch 실패 또는 인덱스 없음 시 API 호출로 폴백
       if (!useElasticsearch) {
-        const MOUNTAIN_API_URL = process.env.MOUNTAIN_API_URL || 'http://mountain-service:3003'
+        const MOUNTAIN_API_URL = process.env.MOUNTAIN_API_URL || 'http://mountain-service.bravo-core-ns.svc.cluster.local:3008'
         const mountainsResponse = await axios.get(`${MOUNTAIN_API_URL}/api/mountains`, {
           timeout: 5000
         })
@@ -953,6 +958,7 @@ router.get('/', async (req, res) => {
         category: post.category,
         author: post.authorName || (post.author && post.author.name) || '알 수 없음',
         authorId: post.author && post.author.id,
+        authorProfileImage: post.author && post.author.profileImage,
         date: formattedDate,
         views: post.views || 0,
         likes: post.likes || 0,
@@ -1608,8 +1614,15 @@ router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res
     }
 
     // 작성자 또는 관리자만 수정 가능
-    const user = await User.findById(userId)
-    if (post.author.toString() !== userId && (!user || user.role !== 'admin')) {
+    // JWT 토큰에서 role 확인 (DB 조회 최소화)
+    let userRole = req.user.role
+    if (!userRole) {
+      // JWT에 role이 없으면 DB에서 확인
+      const user = await User.findById(userId).select('role').lean()
+      userRole = user ? (user.role || 'user') : 'user'
+    }
+    
+    if (post.author.toString() !== userId && userRole !== 'admin') {
       return res.status(403).json({ error: '게시글을 수정할 권한이 없습니다.' })
     }
 
@@ -1684,8 +1697,15 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     // 작성자 또는 관리자만 삭제 가능
-    const user = await User.findById(userId)
-    if (post.author.toString() !== userId && (!user || user.role !== 'admin')) {
+    // JWT 토큰에서 role 확인 (DB 조회 최소화)
+    let userRole = req.user.role
+    if (!userRole) {
+      // JWT에 role이 없으면 DB에서 확인
+      const user = await User.findById(userId).select('role').lean()
+      userRole = user ? (user.role || 'user') : 'user'
+    }
+    
+    if (post.author.toString() !== userId && userRole !== 'admin') {
       return res.status(403).json({ error: '게시글을 삭제할 권한이 없습니다.' })
     }
 

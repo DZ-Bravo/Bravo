@@ -1,0 +1,100 @@
+# Mountain data (제외)
+mountain/
+
+# Environment variables (민감한 정보)
+.env
+.env.local
+.env.*.local
+
+# MongoDB keyfile (민감한 정보)
+mongodb-keyfile
+**/mongodb-keyfile
+
+# Backup files
+backup/
+*.bak
+*.backup
+*.archive
+*.archive.uncompressed
+*.tar
+*.tar.gz
+
+# Logs
+*.log
+logs/
+**/*.log
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+venv/
+env/
+ENV/
+
+# Coverage reports
+coverage/
+*.coverage
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Weather data
+weather_data/
+
+# Docker volumes and data
+**/data/
+**/volumes/
+
+# Kubernetes secrets (민감한 정보)
+**/secrets/
+**/*secret*.yaml
+!**/secret.yaml.example
+
+# Local configuration
+local/
+.local/
+
+# Compiled files
+*.class
+*.jar
+*.war
+
+# Frontend service tar (이미 삭제했지만 방지)
+services/frontend-service.tar
+
