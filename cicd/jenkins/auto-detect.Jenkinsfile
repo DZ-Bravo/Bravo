@@ -209,35 +209,36 @@ fi
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
-              if (!svc?.trim()) continue
+              if (!svc?.trim()) {
+                continue
+              }
 
-              def svcName = svc.split('/').last()
+              def imageName = ""
+
+              // backend services
+              if (svc.startsWith("backend-services/")) {
+                def svcName = svc.split('/').last()
+                imageName = "hiking-${svcName}"
+              }
+              // frontend service
+              else if (svc == "frontend-service" || svc == "hiking-frontend") {
+                imageName = "hiking-frontend"
+              }
+              else {
+                error("Unknown service type: ${svc}")
+              }
 
               sh """
-echo "Trivy scan: ${svcName}"
-trivy image \
-  --severity ${SEVERITY} \
-  --scanners vuln \
-  --exit-code 1 \
-  --no-progress \
-  ${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER}
-"""
+                echo "Trivy scan: ${imageName}"
+                trivy image \
+                  --severity ${SEVERITY} \
+                  --scanners vuln \
+                  --exit-code 1 \
+                  --no-progress \
+                  ${REGISTRY}/bravo/${imageName}:${BUILD_NUMBER}
+              """
             }
           }
         }
       }
     }
-  }
-
-  post {
-    always {
-      echo "CI finished"
-    }
-    success {
-      echo "CI succeeded"
-    }
-    aborted {
-      echo "CI skipped (no relevant changes)"
-    }
-  }
-}
