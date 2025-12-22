@@ -157,12 +157,14 @@ fi
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
-              if (!svc?.trim()) continue
+              if (!svc?.trim()) {
+                continue
+              }
 
               def svcName = svc.split('/').last()
               def contextPath = "${env.WORKSPACE}/services"
 
-              def dockerfilePath = ""
+              def dockerfilePath = 
               if (svc.startsWith("backend-services")) {
                  dockerfilePath = "${contextPath}/backend-services/${svcName}/Dockerfile"
               } else if (svc == "hiking-frontend" || svc == "frontend-service") {
