@@ -60,9 +60,6 @@ spec:
 
   stages {
 
-    /* ===========================
-       1. Checkout
-       =========================== */
     stage('Checkout') {
       steps {
         container('jnlp') {
@@ -78,9 +75,6 @@ spec:
       }
     }
 
-    /* ===========================
-       2. Detect Changed Services
-       =========================== */
     stage('Detect Changed Services') {
       steps {
         container('jnlp') {
@@ -104,29 +98,20 @@ cat changed_files.txt || true
 
 while read file; do
   case "$file" in
-
-    # Backend CI trigger
     services/backend-services/*/.ci-trigger)
       svc=$(echo "$file" | cut -d/ -f3)
       echo "backend-services/$svc" >> changed_services.txt
       ;;
-
-    # Backend code change
     services/backend-services/*/*)
       svc=$(echo "$file" | cut -d/ -f3)
       echo "backend-services/$svc" >> changed_services.txt
       ;;
-
-    # Frontend CI trigger
     services/hiking-frontend/*/.ci-trigger)
       echo "hiking-frontend" >> changed_services.txt
       ;;
-
-    # Frontend code change
     services/hiking-frontend/*)
       echo "hiking-frontend" >> changed_services.txt
       ;;
-
   esac
 done < changed_files.txt
 
@@ -144,9 +129,6 @@ fi
       }
     }
 
-    /* ===========================
-       3. Build Images (Kaniko)
-       =========================== */
     stage('Build Images') {
       when {
         expression { !fileExists('.ci_skip') }
@@ -165,13 +147,11 @@ fi
               def dockerfilePath = ""
               def contextPath = "${env.WORKSPACE}/services"
 
-              // backend services
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
                 dockerfilePath = "${contextPath}/backend-services/${svcName}/Dockerfile"
               }
-              // frontend service
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
                 dockerfilePath = "${contextPath}/frontend-service/Dockerfile"
@@ -196,9 +176,6 @@ fi
       }
     }
 
-    /* ===========================
-       4. Trivy Gate (CRITICAL)
-       =========================== */
     stage('Trivy Image Scan') {
       when {
         expression { !fileExists('.ci_skip') }
@@ -215,12 +192,10 @@ fi
 
               def imageName = ""
 
-              // backend services
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
               }
-              // frontend service
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
               }
@@ -242,3 +217,19 @@ fi
         }
       }
     }
+
+  } // <-- stages 닫힘
+
+  post {
+    always {
+      echo "CI finished"
+    }
+    success {
+      echo "CI succeeded"
+    }
+    aborted {
+      echo "CI skipped (no relevant changes)"
+    }
+  }
+
+} // <-- pipeline 닫힘
