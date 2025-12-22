@@ -89,10 +89,15 @@ set -e
 
 git fetch origin main
 
-BASE_COMMIT=${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-origin/main~1}
-echo "Diff base: $BASE_COMMIT -> $GIT_COMMIT"
+BASE_COMMIT=$(git rev-parse HEAD~1 2>/dev/null || echo "")
+echo "Diff base: $BASE_COMMIT -> HEAD"
 
-git diff --name-only "$BASE_COMMIT" "$GIT_COMMIT" > changed_files.txt || true
+if [ -n "$BASE_COMMIT" ]; then
+  git diff --name-only "$BASE_COMMIT" HEAD > changed_files.txt
+else
+  git diff --name-only HEAD > changed_files.txt
+fi
+
 cat changed_files.txt || true
 
 > changed_services.txt
