@@ -44,7 +44,7 @@ spec:
 
   environment {
     SERVICE_NAME = "hiking-frontend"
-    IMAGE_NAME   = "bravo/frontend-service"
+    IMAGE_NAME   = "bravo/hiking-frontend"
     REGISTRY     = "192.168.0.244:30305"
     IMAGE_TAG    = "${BUILD_NUMBER}"
   }
@@ -71,12 +71,12 @@ spec:
             pwd
             ls -al
 
-            echo '--- frontend-service ---'
+            echo '--- hiking-frontend ---'
             ls -al services/frontend-service
 
             /kaniko/executor \
               --dockerfile=Dockerfile \
-              --context="$WORKSPACE/services/frontend-service" \
+              --context="$WORKSPACE/services/hiking-frontend" \
               --destination=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
               --cache=true \
               --cache-repo=${REGISTRY}/bravo/kaniko-cache \
