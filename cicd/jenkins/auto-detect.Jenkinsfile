@@ -176,7 +176,7 @@ fi
               sh """
     echo "Building image: ${svcName}"
     /kaniko/executor \
-      --dockerfile=${contextPath} \
+      --dockerfile=${dockerfilePath} \
       --context=${contextPath} \
       --destination=${REGISTRY}/bravo/${svcName}:${BUILD_NUMBER} \
       --cache=true \
