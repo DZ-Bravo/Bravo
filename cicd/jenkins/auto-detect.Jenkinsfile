@@ -1,4 +1,7 @@
 pipeline {
+  triggers {
+    pollSCM('H/30 * * * *')
+  }
   agent {
     kubernetes {
       label 'bravo-auto-ci'
