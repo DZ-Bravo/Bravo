@@ -173,7 +173,7 @@ fi
               def imageTag = "${majorVersion}.${env.BUILD_NUMBER}"
 
               sh """
-                echo "Building image: ${imageName}:${imageTag}""
+                echo "Building image: ${imageName}:${imageTag}"
                 /kaniko/executor \
                   --dockerfile=${dockerfilePath} \
                   --context=${contextPath} \
@@ -209,12 +209,10 @@ fi
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
-                dockerfilePath = "${contextPath}/backend-services/${svcName}/Dockerfile"
                 versionFile = "${contextPath}/backend-services/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
-                dockerfilePath = "${contextPath}/frontend-service/Dockerfile"
                 versionFile = "${contextPath}/frontend-service/VERSION"
               }
               else {
