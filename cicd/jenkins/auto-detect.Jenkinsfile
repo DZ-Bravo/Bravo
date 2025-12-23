@@ -200,26 +200,33 @@ fi
               }
 
               def imageName = ""
+              def versionFile = ""
+              def contextPath = "${env.WORKSPACE}/services"
 
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
+                versionFile = "${contextPath}/backend-services/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
+                versionFile = "${contextPath}/frontend-service/VERSION"
               }
               else {
                 error("Unknown service type: ${svc}")
               }
 
+              def majorVersion = readFile(versionFile).trim()
+              def imageTag = "${majorVersion}.${env.BUILD_NUMBER}"
+
               sh """
-                echo "Trivy scan: ${imageName}"
+                echo "Trivy scan: ${imageName}:${imageTag}"
                 trivy image \
                   --severity ${SEVERITY} \
                   --scanners vuln \
                   --exit-code 1 \
                   --no-progress \
-                  ${REGISTRY}/bravo/${imageName}:${BUILD_NUMBER}
+                  ${REGISTRY}/bravo/${imageName}:${imageTag}
               """
             }
           }
