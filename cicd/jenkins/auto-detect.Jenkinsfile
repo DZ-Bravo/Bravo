@@ -163,6 +163,12 @@ fi
                 error("Unknown service type: ${svc}")
               }
 
+              // 🔹 VERSION 읽기 (MAJOR)
+              def majorVersion = readFile(versionFile).trim()
+
+              // 🔹 최종 이미지 태그
+              def imageTag = "${majorVersion}.${env.BUILD_NUMBER}"
+
               sh """
                 echo "Building image: ${imageName}"
                 /kaniko/executor \
