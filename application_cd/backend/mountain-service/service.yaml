@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"mountain-service"},"name":"mountain-service","namespace":"bravo-core-ns"},"spec":{"ports":[{"name":"http","port":3008,"targetPort":3008}],"selector":{"app":"mountain-service"}}}
+  labels:
+    app: mountain-service
+  name: mountain-service
+  namespace: bravo-core-ns
+spec:
+  clusterIP: 10.233.9.196
+  clusterIPs:
+    - 10.233.9.196
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: http
+      port: 3008
+      protocol: TCP
+      targetPort: 3008
+  selector:
+    app: mountain-service
+  sessionAffinity: None
+  type: ClusterIP
