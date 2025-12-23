@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIKER 인프라 모니터링</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/monitoring/css/style.css">
+</head>
+<body>
+  <!-- 좌측 고정 네비게이션 -->
+  <nav class="side-navigation" id="sideNav">
+    <div class="nav-title">목차</div>
+    <ul class="nav-list">
+      <li><a href="#node-filter" class="nav-link">노드 선택</a></li>
+      <li><a href="#cluster-overview" class="nav-link">클러스터 개요</a></li>
+      <li><a href="#resource-usage" class="nav-link">리소스 사용률</a></li>
+      <li><a href="#container-cpu" class="nav-link">Container CPU</a></li>
+      <li><a href="#container-memory" class="nav-link">Container Memory</a></li>
+      <li><a href="#pod-cpu" class="nav-link">Pod CPU</a></li>
+      <li><a href="#pod-memory" class="nav-link">Pod Memory</a></li>
+      <li><a href="#error-analysis" class="nav-link">에러 분석</a></li>
+      <li><a href="#error-logs" class="nav-link">Error Logs</a></li>
+      <li><a href="#healthcheck" class="nav-link">헬스체크</a></li>
+      <li><a href="#ai-analysis" class="nav-link">AI 분석</a></li>
+      <li><a href="#external-links" class="nav-link">외부 링크</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>HIKER 인프라 모니터링 대시보드</h1>
+      <div class="header-actions">
+        <button id="refreshBtn" class="btn btn-primary">새로고침</button>
+        <button id="exportCSVBtn" class="btn btn-secondary">CSV 다운로드</button>
+      </div>
+    </header>
+
+    <!-- 1. 노드 선택 필터 -->
+    <div class="filter-section" id="node-filter">
+      <label for="nodeSelect">노드 선택:</label>
+      <select id="nodeSelect">
+        <option value="">전체</option>
+      </select>
+    </div>
+
+    <!-- 2. 클러스터 개요 -->
+    <section class="overview-section" id="cluster-overview">
+      <h2>클러스터 개요</h2>
+      <div class="overview-cards">
+        <div class="card">
+          <h3>노드</h3>
+          <p class="stat-value" id="nodeTotal">-</p>
+          <p class="stat-label">Ready: <span id="nodeReady">-</span></p>
+        </div>
+        <div class="card">
+          <h3>Pod</h3>
+          <p class="stat-value" id="podTotal">-</p>
+          <p class="stat-label">Running: <span id="podRunning">-</span></p>
+        </div>
+        <div class="card">
+          <h3>5XX 에러</h3>
+          <p class="stat-value" id="errorCount">-</p>
+          <p class="stat-label">5XX 에러 (금일)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 리소스 사용률 -->
+    <section class="metrics-section" id="resource-usage">
+      <h2>리소스 사용률</h2>
+      <div class="charts-container">
+        <div class="chart-wrapper">
+          <h3>CPU 사용률 (%)</h3>
+          <canvas id="cpuChart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+          <h3>메모리 사용률 (%)</h3>
+          <canvas id="memoryChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Container CPU 사용량 -->
+    <section class="container-cpu-section" id="container-cpu">
+      <h2>Container CPU 사용량</h2>
+      <div class="chart-list-container">
+        <div class="chart-wrapper">
+          <canvas id="containerCpuChart"></canvas>
+        </div>
+        <div class="list-wrapper scrollable">
+          <h3>Container 목록</h3>
+          <div id="containerCpuList" class="metric-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Container Memory 사용량 -->
+    <section class="container-memory-section" id="container-memory">
+      <h2>Container Memory 사용량</h2>
+      <div class="chart-list-container">
+        <div class="chart-wrapper">
+          <canvas id="containerMemoryChart"></canvas>
+        </div>
+        <div class="list-wrapper scrollable">
+          <h3>Container 목록</h3>
+          <div id="containerMemoryList" class="metric-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Pod CPU 사용량 -->
+    <section class="pod-cpu-section" id="pod-cpu">
+      <h2>Pod CPU 사용량</h2>
+      <div class="chart-list-container">
+        <div class="chart-wrapper">
+          <canvas id="podCpuChart"></canvas>
+          <div class="top5-list-container" id="podCpuTop5">
+            <h3 class="top5-toggle" data-target="podCpuTop5">
+              <span class="toggle-icon">▼</span>
+              Pod CPU 사용량 Top 5
+            </h3>
+            <div class="top-list-items" style="display: none;"></div>
+          </div>
+        </div>
+        <div class="list-wrapper scrollable">
+          <h3>Pod 목록</h3>
+          <div id="podCpuList" class="metric-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Pod Memory 사용량 -->
+    <section class="pod-memory-section" id="pod-memory">
+      <h2>Pod Memory 사용량</h2>
+      <div class="chart-list-container">
+        <div class="chart-wrapper">
+          <canvas id="podMemoryChart"></canvas>
+          <div class="top5-list-container" id="podMemoryTop5">
+            <h3 class="top5-toggle" data-target="podMemoryTop5">
+              <span class="toggle-icon">▼</span>
+              Pod Memory 사용량 Top 5
+            </h3>
+            <div class="top-list-items" style="display: none;"></div>
+          </div>
+        </div>
+        <div class="list-wrapper scrollable">
+          <h3>Pod 목록</h3>
+          <div id="podMemoryList" class="metric-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 에러 분석 -->
+    <section class="errors-section" id="error-analysis">
+      <h2>에러 분석</h2>
+      <div class="errors-container">
+        <div class="chart-wrapper">
+          <h3>5XX 에러 단계별 분류</h3>
+          <canvas id="errorChart"></canvas>
+        </div>
+        <div class="error-list">
+          <h3>최근 에러</h3>
+          <div id="errorList" class="scrollable"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Loki/Promtail Error Log -->
+    <section class="log-errors-section" id="error-logs">
+      <h2>Loki/Promtail Error Log</h2>
+      <div class="log-errors-container">
+        <div class="chart-wrapper">
+          <h3>시간별 에러 로그 수</h3>
+          <canvas id="errorLogCountChart"></canvas>
+        </div>
+        <div class="log-lists">
+          <div class="log-list-wrapper scrollable">
+            <h3>Namespace/서비스별 최근 에러 로그</h3>
+            <div id="serviceErrorList" class="log-list"></div>
+          </div>
+          <div class="log-list-wrapper scrollable">
+            <h3>Top N 에러 메시지</h3>
+            <div id="topErrorMessagesList" class="log-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. 서비스 헬스체크 -->
+    <section id="healthcheck" class="healthcheck-section">
+      <h2>서비스 헬스체크</h2>
+      <div class="healthcheck-container">
+        <div id="healthcheckStatus" class="healthcheck-status">
+          <p>헬스체크 상태를 확인 중입니다...</p>
+        </div>
+        <div id="healthcheckErrors" class="healthcheck-errors" style="display: none;"></div>
+      </div>
+    </section>
+
+    <!-- 11. AI 분석 -->
+    <section class="ai-section" id="ai-analysis">
+      <h2>AI 분석</h2>
+      <button id="analyzeBtn" class="btn btn-primary">현재 상태 분석</button>
+      <div id="aiAnalysisResult" class="ai-result"></div>
+    </section>
+
+    <!-- 12. 외부 링크 -->
+    <section class="links-section" id="external-links">
+      <h2>외부 링크</h2>
+      <div class="links-container">
+        <a href="#" id="grafanaLink" target="_blank" class="link-btn">Grafana</a>
+        <a href="#" id="kialiLink" target="_blank" class="link-btn">Kiali</a>
+        <a href="#" id="haproxyStatsLink" target="_blank" class="link-btn">HAProxy Stats</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="/monitoring/js/main.js"></script>
+    <!-- 맨 위로 버튼 -->
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" title="맨 위로">
+      <img src="/monitoring/assets/scroll-to-top-btn.png" alt="맨 위로" />
+    </button>
+  </body>
+</html>
