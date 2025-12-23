@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-istio-to-istiod
+  namespace: istio-system
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: istio-system
+    ports:
+    - protocol: TCP
+      port: 15010   # istiod grpc-xds
+    - protocol: TCP
+      port: 15012   # istiod https-dns
+    - protocol: TCP
+      port: 443     # istiod https-webhook
+    - protocol: TCP
+      port: 15014   # istiod http-monitoring
+

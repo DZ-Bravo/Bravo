@@ -1134,13 +1134,21 @@ function updatePodCPUList(pods, colorMap) {
     return
   }
   
-  pods.forEach(pod => {
-    const lastValue = pod.data && pod.data.length > 0 
-      ? parseFloat(pod.data[pod.data.length - 1][1]) 
-      : 0
-    
+  // 사용량 기준으로 정렬 (상위 항목이 먼저 오도록)
+  const sortedPods = [...pods]
+    .filter(p => p.data && p.data.length > 0)
+    .map(p => {
+      const values = p.data.map(v => parseFloat(v[1]))
+      const latestValue = values[values.length - 1] || 0
+      return { ...p, latestValue }
+    })
+    .sort((a, b) => b.latestValue - a.latestValue)
+  
+  sortedPods.forEach(pod => {
+    const lastValue = pod.latestValue || 0
     const podKey = `${pod.namespace}/${pod.name}`
-    const color = colorMap ? colorMap.get(podKey) || '#3498db' : '#3498db'
+    // colorMap에 있으면 해당 색상, 없으면 기본 색상 (회색)
+    const color = colorMap && colorMap.has(podKey) ? colorMap.get(podKey) : '#95a5a6'
     
     const item = document.createElement('div')
     item.className = 'metric-item'
@@ -1223,15 +1231,24 @@ function updatePodMemoryList(pods, colorMap) {
     return
   }
   
-  pods.forEach(pod => {
-    // 원본 bytes 값 사용 (usageBytesData) 또는 data의 값 사용 (limit이 없는 경우)
-    const lastValueBytes = pod.usageBytesData && pod.usageBytesData.length > 0
-      ? parseFloat(pod.usageBytesData[pod.usageBytesData.length - 1][1])
-      : (pod.data && pod.data.length > 0 ? parseFloat(pod.data[pod.data.length - 1][1]) * (pod.limitBytes || 1) / 100 : 0)
-    const lastValue = lastValueBytes / 1024 / 1024 // bytes to MB
-    
+  // 사용량 기준으로 정렬 (상위 항목이 먼저 오도록)
+  const sortedPods = [...pods]
+    .filter(p => p.data && p.data.length > 0)
+    .map(p => {
+      // 원본 bytes 값 사용 (usageBytesData) 또는 data의 값 사용 (limit이 없는 경우)
+      const lastValueBytes = p.usageBytesData && p.usageBytesData.length > 0
+        ? parseFloat(p.usageBytesData[p.usageBytesData.length - 1][1])
+        : (p.data && p.data.length > 0 ? parseFloat(p.data[p.data.length - 1][1]) * (p.limitBytes || 1) / 100 : 0)
+      const lastValue = lastValueBytes / 1024 / 1024 // bytes to MB
+      return { ...p, lastValue }
+    })
+    .sort((a, b) => b.lastValue - a.lastValue)
+  
+  sortedPods.forEach(pod => {
+    const lastValue = pod.lastValue || 0
     const podKey = `${pod.namespace}/${pod.name}`
-    const color = colorMap ? colorMap.get(podKey) || '#3498db' : '#3498db'
+    // colorMap에 있으면 해당 색상, 없으면 기본 색상 (회색)
+    const color = colorMap && colorMap.has(podKey) ? colorMap.get(podKey) : '#95a5a6'
     
     const item = document.createElement('div')
     item.className = 'metric-item'
