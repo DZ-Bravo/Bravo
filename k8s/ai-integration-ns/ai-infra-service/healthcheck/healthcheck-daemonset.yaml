@@ -1,0 +1,160 @@
+# =================================================
+# Healthcheck Script ConfigMap
+# =================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: healthcheck-script
+  namespace: bravo-ai-integration-ns
+data:
+  healthcheck.sh: |
+    #!/bin/sh
+    
+    # 헬스체크 스크립트
+    # 2초마다 실행되며, 포트 체크, HAProxy 헬스체크, 마운트 체크를 수행합니다.
+    
+    ERROR_LOG="/tmp/healthcheck-errors.log"
+    SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-}"
+    
+    # 로그 함수
+    log_error() {
+      local error_msg="[$(date +'%Y-%m-%d %H:%M:%S')] ERROR: $1"
+      echo "$error_msg" >> "$ERROR_LOG"
+      echo "$error_msg" >&2  # stderr로 출력 (Pod 로그에서 읽을 수 있도록)
+    }
+    
+    # Slack 알람 전송
+    send_slack_alert() {
+      if [ -z "$SLACK_WEBHOOK_URL" ]; then
+        return
+      fi
+      
+      local message="$1"
+      local payload=$(cat <<EOF
+    {
+      "attachments": [{
+        "color": "danger",
+        "title": "헬스체크 실패",
+        "text": "$message",
+        "footer": "HIKER 인프라 모니터링",
+        "ts": $(date +%s)
+      }]
+    }
+    EOF
+    )
+      
+      curl -X POST -H 'Content-type: application/json' \
+        --data "$payload" \
+        "$SLACK_WEBHOOK_URL" > /dev/null 2>&1
+    }
+    
+    # 포트 체크 함수
+    check_port() {
+      local host=$1
+      local port=$2
+      local service=$3
+      
+      if ! nc -z -w 2 "$host" "$port" 2>/dev/null; then
+        local error_msg="포트 체크 실패: $service ($host:$port)"
+        log_error "$error_msg"
+        send_slack_alert "$error_msg"
+        return 1
+      fi
+      return 0
+    }
+    
+    # HAProxy 헬스체크 (master-1의 HAProxy stats 페이지 확인)
+    check_haproxy() {
+      if ! curl -f -s -m 5 http://192.168.0.244:8404/stats > /dev/null 2>&1; then
+        local error_msg="HAProxy 헬스체크 실패: stats 페이지 접근 불가 (192.168.0.244:8404)"
+        log_error "$error_msg"
+        send_slack_alert "$error_msg"
+        return 1
+      fi
+      return 0
+    }
+    
+    # 마운트 체크
+    check_mounts() {
+      df -h | grep -E "^/dev/" | while read -r line; do
+        usage=$(echo "$line" | awk '{print $5}' | sed 's/%//')
+        mount_point=$(echo "$line" | awk '{print $6}')
+        
+        if [ "$usage" -gt 85 ]; then
+          local error_msg="디스크 사용률 경고: $mount_point - ${usage}% (임계치: 85%)"
+          log_error "$error_msg"
+          send_slack_alert "$error_msg"
+        fi
+      done
+    }
+    
+    # Kubernetes 서비스 포트 체크
+    check_k8s_services() {
+      # 주요 서비스 포트 체크
+      check_port "auth-service.bravo-core-ns.svc.cluster.local" 3001 "auth-service"
+      check_port "community-service.bravo-core-ns.svc.cluster.local" 3002 "community-service"
+      check_port "ai-infra-service.bravo-ai-integration-ns.svc.cluster.local" 3011 "ai-infra-service"
+      # 추가 서비스 포트 체크...
+    }
+    
+    # 메인 실행
+    main() {
+      # Kubernetes 서비스 포트 체크
+      check_k8s_services
+      
+      # HAProxy 헬스체크
+      check_haproxy
+      
+      # 마운트 체크
+      check_mounts
+    }
+    
+    # 스크립트 실행
+    main
+
+---
+# =================================================
+# Healthcheck DaemonSet
+# =================================================
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: healthcheck
+  namespace: bravo-ai-integration-ns
+spec:
+  selector:
+    matchLabels:
+      app: healthcheck
+  template:
+    metadata:
+      labels:
+        app: healthcheck
+    spec:
+      hostNetwork: true  # 호스트 네트워크 사용 (HAProxy stats 접근용)
+      containers:
+      - name: healthcheck
+        image: alpine/curl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          apk add --no-cache netcat-openbsd
+          while true; do
+            /scripts/healthcheck.sh
+            sleep 2
+          done
+        env:
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: ai-infra-secrets
+              key: SLACK_WEBHOOK_URL
+        volumeMounts:
+        - name: healthcheck-script
+          mountPath: /scripts
+      volumes:
+      - name: healthcheck-script
+        configMap:
+          name: healthcheck-script
+          defaultMode: 0755
+

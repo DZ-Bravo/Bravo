@@ -408,13 +408,12 @@ router.get('/search', async (req, res) => {
       try {
         const searchFields = ['title^3', 'content']
         const searchQuery = buildFuzzySearchQuery(query, searchFields, {
-          fuzziness: 'AUTO',
-          prefixLength: 1
+          exactMatch: true  // 정확 매칭 사용
         })
 
         const searchResult = await search('posts', searchQuery, {
           from: skip,
-          size: limit,
+          size: Math.min(limit, 100),  // 성능 개선: 최대 100개로 제한
           sort: [{ _score: { order: 'desc' } }, { createdAt: { order: 'desc' } }]
         })
 
@@ -539,10 +538,12 @@ router.get('/unified-search', async (req, res) => {
     try {
       if (esClient) {
         const searchFields = ['title^3', 'content']
-        const searchQuery = buildFuzzySearchQuery(query, searchFields)
+        const searchQuery = buildFuzzySearchQuery(query, searchFields, {
+          exactMatch: true  // 정확 매칭 사용
+        })
         const searchResult = await search('posts', searchQuery, {
           from: 0,
-          size: limit
+          size: Math.min(limit, 100)  // 성능 개선: 최대 100개로 제한
         })
 
         // MongoDB에서 상세 정보 가져오기
@@ -637,7 +638,9 @@ router.get('/unified-search', async (req, res) => {
           console.log(`[통합 검색] mountains 인덱스 존재: ${indexExists}, 검색어: ${query}`)
           if (indexExists) {
             const searchFields = ['name^3', 'location^2', 'description']
-            const searchQuery = buildFuzzySearchQuery(query, searchFields)  // 유연한 검색 사용
+            const searchQuery = buildFuzzySearchQuery(query, searchFields, {
+              exactMatch: true  // 정확 매칭 사용
+            })
             console.log(`[통합 검색] 산 검색 쿼리 실행 중...`)
             const searchResult = await search('mountains', searchQuery, {
               from: 0,

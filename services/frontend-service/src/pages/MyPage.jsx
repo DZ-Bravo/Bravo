@@ -516,10 +516,10 @@ function MyPage() {
                 <div className="profile-avatar-section">
                   {user.profileImage ? (
                     <>
-                      <img 
-                        src={user.profileImage.startsWith('http') ? user.profileImage : `${API_URL}${user.profileImage}`}
-                        alt={user.name}
-                        className="profile-avatar-img"
+                    <img 
+                      src={user.profileImage.startsWith('http') ? user.profileImage : `${API_URL}${user.profileImage}`}
+                      alt={user.name}
+                      className="profile-avatar-img"
                         onError={(e) => {
                           e.target.style.display = 'none'
                           const placeholder = e.target.nextElementSibling

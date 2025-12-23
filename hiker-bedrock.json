@@ -1,0 +1,16 @@
+{
+    "kind": "Secret",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "hiker-bedrock-secret",
+        "namespace": "bravo-ai-integration-ns"
+    },
+    "data": {
+        "BEDROCK_AGENT_ALIAS_ID": "eHh4eA==",
+        "BEDROCK_AGENT_ID": "eHh4eA==",
+        "BEDROCK_COURSE_AGENT_ALIAS_ID": "eHh4eA==",
+        "BEDROCK_COURSE_AGENT_ID": "eHh4eA==",
+        "VITE_EQUIPMENT_AGENT_ID": "eHh4eA==",
+        "VITE_EQUIPMENT_ALIAS_ID": "eHh4eA=="
+    }
+}

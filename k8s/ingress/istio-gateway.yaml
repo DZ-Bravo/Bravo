@@ -149,6 +149,26 @@ spec:
         host: stamp-service.bravo-core-ns.svc.cluster.local
         port:
           number: 3010
+  # AI Infra Service (Monitoring API)
+  - match:
+    - uri:
+        prefix: /api/monitoring
+    route:
+    - destination:
+        host: ai-infra-service.bravo-ai-integration-ns.svc.cluster.local
+        port:
+          number: 3011
+  # AI Infra Service (Frontend)
+  - match:
+    - uri:
+        prefix: /monitoring
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: ai-infra-service.bravo-ai-integration-ns.svc.cluster.local
+        port:
+          number: 3011
   # Frontend static files
   - match:
     - uri:

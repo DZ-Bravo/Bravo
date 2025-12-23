@@ -1,0 +1,11 @@
+{
+    "kind": "Secret",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "hiker-weather-secret",
+        "namespace": "bravo-core-ns"
+    },
+    "data": {
+        "OPENWEATHER_API_KEY": "eHh4eA=="
+    }
+}

@@ -65,13 +65,11 @@ spec:
             configMapKeyRef:
               name: bravo-config
               key: MONGO_INITDB_ROOT_PASSWORD
-            command:
-            - mongod
-            - --replSet
-            - rs0
-            - --bind_ip_all
-            - --keyFile
-            - /data/keyfile
+        command:
+        - mongod
+        - --replSet
+        - rs0
+        - --bind_ip_all
         volumeMounts:
         - name: mongodb-data
           mountPath: /data/db
@@ -133,7 +131,7 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 5Gi
+          storage: 3Gi
   - metadata:
       name: mongodb-config
     spec:
@@ -141,5 +139,5 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 1Gi
+          storage: 512Mi
 

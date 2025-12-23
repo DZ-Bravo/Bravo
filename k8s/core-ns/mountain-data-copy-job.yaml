@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mountain-data-copy
+  namespace: bravo-core-ns
+spec:
+  template:
+    spec:
+      containers:
+      - name: copy-mountain-data
+        image: alpine:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          echo "=== Mountain 데이터 복사 시작 ==="
+          
+          # 필요한 패키지 설치
+          apk add --no-cache rsync findutils
+          
+          # PVC 마운트 확인
+          if [ ! -d "/mountain-dest" ]; then
+            echo "ERROR: /mountain-dest 마운트 포인트가 없습니다."
+            exit 1
+          fi
+          
+          echo "현재 PVC 상태:"
+          echo "- geojson 폴더 개수: $(ls -d /mountain-dest/*_geojson 2>/dev/null | wc -l || echo 0)"
+          echo "- 전체 폴더 개수: $(ls -d /mountain-dest/* 2>/dev/null | wc -l || echo 0)"
+          
+          # 로컬 mountain 폴더를 직접 마운트할 수 없으므로,
+          # 이 Job은 kubectl cp 명령어로 로컬에서 실행해야 함
+          # 
+          # 사용 방법:
+          # 1. 이 Job을 생성하여 Pod 실행
+          # 2. kubectl cp /home/bravo/LABs/mountain <pod-name>:/mountain-src -n bravo-core-ns
+          # 3. Pod 내부에서 rsync로 복사
+          
+          echo "=== Mountain 데이터 복사 Job 준비 완료 ==="
+          echo "다음 명령어를 실행하세요:"
+          echo "1. kubectl wait --for=condition=ready pod -l job-name=mountain-data-copy -n bravo-core-ns --timeout=60s"
+          echo "2. POD_NAME=\$(kubectl get pod -l job-name=mountain-data-copy -n bravo-core-ns -o jsonpath='{.items[0].metadata.name}')"
+          echo "3. kubectl cp /home/bravo/LABs/mountain \$POD_NAME:/mountain-src -n bravo-core-ns"
+          echo "4. kubectl exec \$POD_NAME -n bravo-core-ns -- rsync -av /mountain-src/ /mountain-dest/"
+          
+          # 무한 대기 (수동으로 복사 명령어 실행 대기)
+          sleep 3600
+        volumeMounts:
+        - name: mountain-data
+          mountPath: /mountain-dest
+        - name: temp-storage
+          mountPath: /mountain-src
+      volumes:
+      - name: mountain-data
+        persistentVolumeClaim:
+          claimName: mountain-data-pvc
+      - name: temp-storage
+        emptyDir: {}
+      restartPolicy: Never
+  backoffLimit: 1

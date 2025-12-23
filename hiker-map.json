@@ -1,0 +1,13 @@
+{
+    "kind": "Secret",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "hiker-map-secret",
+        "namespace": "bravo-front-ns"
+    },
+    "data": {
+        "VITE_CESIUM_ACCESS_TOKEN": "eHh4eA==",
+        "VITE_KAKAO_MAP_API_KEY": "eHh4eA==",
+        "VITE_NAVER_MAP_CLIENT_ID": "eHh4eA=="
+    }
+}
