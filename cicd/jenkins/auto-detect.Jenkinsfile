@@ -148,16 +148,19 @@ fi
 
               def imageName = ""
               def dockerfilePath = ""
+              def versionFile = ""
               def contextPath = "${env.WORKSPACE}/services"
 
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
                 dockerfilePath = "${contextPath}/backend-services/${svcName}/Dockerfile"
+                versionFile = "${contextPath}/backend-services/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
                 dockerfilePath = "${contextPath}/frontend-service/Dockerfile"
+                versionFile = "${contextPath}/frontend-service/VERSION"
               }
               else {
                 error("Unknown service type: ${svc}")
@@ -170,11 +173,11 @@ fi
               def imageTag = "${majorVersion}.${env.BUILD_NUMBER}"
 
               sh """
-                echo "Building image: ${imageName}"
+                echo "Building image: ${imageName}:${imageTag}""
                 /kaniko/executor \
                   --dockerfile=${dockerfilePath} \
                   --context=${contextPath} \
-                  --destination=${REGISTRY}/bravo/${imageName}:${BUILD_NUMBER} \
+                  --destination=${REGISTRY}/bravo/${imageName}:${imageTag} \
                   --cache=true \
                   --cache-repo=${CACHE_REPO} \
                   --skip-tls-verify
