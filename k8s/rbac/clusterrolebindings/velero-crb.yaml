@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: velero-crb
+subjects:
+- kind: ServiceAccount
+  name: backup-sa
+  namespace: bravo-backup-ns
+roleRef:
+  kind: ClusterRole
+  name: velero-cr
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-harbor-internal
+  namespace: bravo-platform-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: harbor
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Harbor 컴포넌트 간 통신 허용 (같은 네임스페이스 내)
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-platform-ns
+      podSelector:
+        matchLabels:
+          app: harbor
+    ports:
+    - protocol: TCP
+      port: 80      # harbor-core, harbor-jobservice, harbor-portal, harbor-nginx
+    - protocol: TCP
+      port: 443     # HTTPS
+    - protocol: TCP
+      port: 5000    # harbor-registry
+    - protocol: TCP
+      port: 5432    # harbor-database (PostgreSQL)
+    - protocol: TCP
+      port: 6379    # harbor-redis
+    - protocol: TCP
+      port: 8080    # harbor-registry, harbor-trivy
+  egress:
+  # Harbor 컴포넌트 간 통신 허용 (같은 네임스페이스 내)
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-platform-ns
+      podSelector:
+        matchLabels:
+          app: harbor
+    ports:
+    - protocol: TCP
+      port: 80      # harbor-core, harbor-jobservice, harbor-portal, harbor-nginx
+    - protocol: TCP
+      port: 443     # HTTPS
+    - protocol: TCP
+      port: 5000    # harbor-registry
+    - protocol: TCP
+      port: 5432    # harbor-database (PostgreSQL)
+    - protocol: TCP
+      port: 6379    # harbor-redis
+    - protocol: TCP
+      port: 8080    # harbor-registry, harbor-trivy
+  # DNS Egress (이미 별도 정책이 있지만 명시적으로 추가)
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+

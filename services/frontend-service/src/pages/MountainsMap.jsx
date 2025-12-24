@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
-import { API_URL } from '../utils/api'
+import { API_URL, getEnv } from '../utils/api'
 import { getMountainInfo } from '../utils/mountainRoutes'
 import './MountainsMap.css'
 
@@ -28,10 +28,19 @@ function MountainsMap() {
         return
       }
 
-      // 카카오 맵 API 키 가져오기
-      const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY || ''
+      // 카카오 맵 API 키 가져오기 (런타임 환경 변수 우선)
+      // window.__RUNTIME_ENV__를 직접 확인 (getEnv가 작동하지 않을 경우를 대비)
+      let apiKey = ''
+      if (typeof window !== 'undefined' && window.__RUNTIME_ENV__ && window.__RUNTIME_ENV__.VITE_KAKAO_MAP_API_KEY) {
+        apiKey = window.__RUNTIME_ENV__.VITE_KAKAO_MAP_API_KEY
+        console.log('[카카오 지도] 런타임 환경 변수에서 API 키 가져옴:', apiKey.substring(0, 10) + '...')
+      } else {
+        apiKey = getEnv('VITE_KAKAO_MAP_API_KEY')
+        console.log('[카카오 지도] getEnv로 API 키 가져옴:', apiKey ? `${apiKey.substring(0, 10)}...` : '없음')
+      }
       console.log('[카카오 지도] API 키 확인:', apiKey ? `${apiKey.substring(0, 10)}...` : '없음')
-      console.log('[카카오 지도] import.meta.env:', import.meta.env)
+      console.log('[카카오 지도] 런타임 환경 변수:', window.__RUNTIME_ENV__)
+      console.log('[카카오 지도] 빌드 시점 환경 변수:', import.meta.env)
       
       if (!apiKey) {
         console.error('[카카오 지도] ❌ API 키가 설정되지 않았습니다.')

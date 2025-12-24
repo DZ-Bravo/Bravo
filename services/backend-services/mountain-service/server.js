@@ -8,7 +8,37 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import { existsSync, readFileSync, statSync } from 'fs'
 import { promisify } from 'util'
-import connectDB from './shared/config/database.js'
+// MongoDB 연결 함수 (인라인 구현)
+import mongoose from 'mongoose'
+const connectDB = async () => {
+  try {
+    const mongoURI = process.env.MONGODB_URI || 'mongodb://mongodb:27017/hiking'
+    console.log('[Mountain Service] MongoDB 연결 시도...')
+    console.log('[Mountain Service] MONGODB_URI:', mongoURI.replace(/:[^:@]+@/, ':****@'))
+    
+    await mongoose.connect(mongoURI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+    })
+    
+    console.log('[Mountain Service] MongoDB 연결 성공')
+    
+    mongoose.connection.on('error', (err) => {
+      console.error('[Mountain Service] MongoDB 연결 오류:', err)
+    })
+    
+    mongoose.connection.on('disconnected', () => {
+      console.warn('[Mountain Service] MongoDB 연결이 끊어졌습니다.')
+    })
+    
+    mongoose.connection.on('reconnected', () => {
+      console.log('[Mountain Service] MongoDB 재연결 성공')
+    })
+  } catch (error) {
+    console.error('[Mountain Service] MongoDB 연결 실패:', error.message)
+    console.warn('[Mountain Service] MongoDB 없이 서버를 계속 실행합니다. (파일 기반 데이터 사용)')
+  }
+}
 import { MOUNTAIN_ROUTES, getMountainInfo, getAllMountains } from './shared/utils/mountainRoutes.js'
 import { MountainList } from './shared/models/Mountain.js'
 import Course from './shared/models/Course.js'
@@ -21,6 +51,21 @@ dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+
+// mountain 폴더 경로 결정 (Docker 또는 로컬 환경)
+const getMountainPath = () => {
+  const dockerPath = '/app/mountain'
+  const localPath = join(__dirname, '../../..', 'mountain')
+  
+  // Docker 경로가 존재하면 사용, 아니면 로컬 경로 사용
+  if (existsSync(dockerPath)) {
+    return dockerPath
+  }
+  return localPath
+}
+
+const MOUNTAIN_BASE_PATH = getMountainPath()
+console.log('[Mountain Service] Mountain 폴더 경로:', MOUNTAIN_BASE_PATH)
 
 const app = express()
 const PORT = process.env.PORT || 3008
@@ -56,7 +101,7 @@ app.use('/mountain', (req, res, next) => {
       filePath = filePath.substring(1)
     }
     
-    const fullPath = join('/app', 'mountain', filePath)
+    const fullPath = join(MOUNTAIN_BASE_PATH, filePath)
     console.log('[정적 파일] 최종 경로:', fullPath)
     console.log('[정적 파일] 파일 존재 여부:', existsSync(fullPath))
     
@@ -88,7 +133,7 @@ app.use('/mountain', (req, res, next) => {
 })
 
 // express.static을 fallback으로 사용 (다른 파일들용)
-app.use('/mountain', express.static(join('/app', 'mountain'), {
+app.use('/mountain', express.static(MOUNTAIN_BASE_PATH, {
   index: false,
   dotfiles: 'ignore'
 }))
@@ -116,7 +161,9 @@ app.get('/mountain/:code', (req, res, next) => {
 })
 
 // DB 연결
-connectDB()
+connectDB().catch(err => {
+  console.error('[Mountain Service] MongoDB 연결 초기화 실패:', err)
+})
 
 // 이미지 URL 변환 헬퍼 함수 (ibb.co 처리)
 const normalizeImageUrl = (imageUrl) => {
@@ -144,7 +191,20 @@ const normalizeImageUrl = (imageUrl) => {
 app.get('/api/mountains', async (req, res) => {
   try {
     const mongoose = await import('mongoose')
+    // MongoDB 연결 대기
+    if (mongoose.default.connection.readyState !== 1) {
+      await new Promise((resolve) => {
+        if (mongoose.default.connection.readyState === 1) {
+          resolve()
+        } else {
+          mongoose.default.connection.once('connected', resolve)
+        }
+      })
+    }
     const db = mongoose.default.connection.db
+    if (!db) {
+      return res.status(503).json({ error: 'Database not connected' })
+    }
     
     const collections = await db.listCollections().toArray()
     const collectionNames = collections.map(c => c.name)
@@ -214,11 +274,23 @@ app.get('/api/mountains', async (req, res) => {
       
       const mountainInfo = mountain.trail_match?.mountain_info || {}
       
+      // 산 이름 찾기 (여러 필드에서 시도)
+      const mountainName = mountain.mntiname || 
+                          mountain.name || 
+                          mountain.MNTN_NM ||
+                          mountainInfo.mntiname ||
+                          mountainInfo.name ||
+                          mountainInfo.MNTN_NM ||
+                          mountain.mountainName ||
+                          null
+      
+      const code = String(mountain.mntilistno || mountain.code || mountain._id)
+      
       return {
-        code: String(mountain.mntilistno || mountain.code || mountain._id),
-        name: mountain.mntiname || mountain.name || mountain.trail_match?.mountain_info?.mntiname,
-        location: mountain.location || mountain.mntiadd || '',
-        height: mountain.mntihigh || mountain.height || '',
+        code: code,
+        name: mountainName || `산 (코드: ${code})`,
+        location: mountain.location || mountain.mntiadd || mountainInfo.mntiadd || '',
+        height: mountain.mntihigh || mountain.height || mountainInfo.mntihigh || '',
         center: center ? [center.lat, center.lon] : null,
         description: mountain.description || '',
         image: getImageFromMountain(mountain, mountainInfo)
@@ -1046,11 +1118,10 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
     const codeNum = parseInt(code)
     const codeStr = String(code)
     
-    // 실제 mntilistno 값을 찾기
+    // 입력된 code를 그대로 사용 (mountain 폴더에서 직접 찾기)
     let actualMountainCode = code
-    let mountainName = null
     
-    // ObjectId인 경우 실제 mntilistno를 찾기
+    // ObjectId인 경우에만 DB에서 실제 mntilistno 찾기
     if (isObjectId) {
       const collections = await db.listCollections().toArray()
       const collectionNames = collections.map(c => c.name)
@@ -1067,16 +1138,17 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
           const mountainInfo = mountain.trail_match?.mountain_info || {}
           if (mountainInfo.mntilistno) {
             actualMountainCode = String(mountainInfo.mntilistno)
-            mountainName = mountainInfo.mntiname || mountain.mntiname || mountain.name
           } else if (mountain.mntilistno) {
             actualMountainCode = String(mountain.mntilistno)
-            mountainName = mountain.mntiname || mountain.name
           }
         }
       } catch (e) {
         console.error('ObjectId 변환 실패:', e)
       }
     }
+    
+    // 입력된 code를 그대로 사용하여 mountain 폴더에서 파일 찾기
+    console.log(`등산 코스 요청 - 입력 code: ${code}, 사용할 code: ${actualMountainCode}`)
     
     const actualCodeNum = parseInt(actualMountainCode)
     
@@ -1087,8 +1159,16 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
       const { existsSync } = await import('fs')
       const { join } = await import('path')
       
-      // 실제 mntilistno로 파일 경로 생성
-      const geojsonDir = join('/app', 'mountain', `${actualMountainCode}_geojson`)
+      // 실제 mntilistno로 파일 경로 생성 (두 가지 경로 시도)
+      let geojsonDir = join(MOUNTAIN_BASE_PATH, `${actualMountainCode}_geojson`)
+      
+      // PVC에 mountain/mountain 구조로 마운트된 경우를 대비해 두 경로 모두 확인
+      if (!existsSync(geojsonDir)) {
+        const altPath = join(MOUNTAIN_BASE_PATH, 'mountain', `${actualMountainCode}_geojson`)
+        if (existsSync(altPath)) {
+          geojsonDir = altPath
+        }
+      }
       
       console.log(`등산 코스 요청 - 파일 경로: ${geojsonDir}, code: ${code}, actualMountainCode: ${actualMountainCode}`)
       
@@ -1194,81 +1274,73 @@ app.get('/api/mountains/:code/courses', async (req, res) => {
               .filter(course => {
                 if (!course) return false
                 const name = course.properties?.name || course.properties?.PMNTN_NM || ''
-                return name && name.trim() !== ''
+                if (!name || name.trim() === '') return false
+                
+                // 0.5km 10분 필터링: 10분 이하 또는 0.5km 이하 제외
+                const props = course.properties || {}
+                let totalTime = 0
+                if (props.upTime !== undefined && props.downTime !== undefined) {
+                  totalTime = (props.upTime || 0) + (props.downTime || 0)
+                } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
+                  totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+                }
+                const distance = props.distance || props.PMNTN_LT || 0
+                
+                // 10분 이하 또는 0.5km 이하인 경우 제외
+                if (totalTime <= 10 || distance <= 0.5) {
+                  return false
+                }
+                
+                return true
               })
             
-            console.log(`파일에서 읽은 코스 개수: ${courses.length}`)
-          }
-        } else {
-          console.log(`파일 경로가 존재하지 않음: ${geojsonDir}, Mountain_list 정보 확인 중...`)
-          
-          // 파일이 없으면 Mountain_list에서 정보 가져오기
-          try {
-            const collections = await db.listCollections().toArray()
-            const collectionNames = collections.map(c => c.name)
-            const mountainListCollectionName = collectionNames.find(name => name === 'Mountain_list') ||
-              collectionNames.find(name => name.toLowerCase() === 'mountain_list') ||
-              'Mountain_list'
-            const mountainCollection = db.collection(mountainListCollectionName)
-            
-            // Mountain_list에서 산 정보 찾기
-            const mountain = await mountainCollection.findOne({
-              $or: [
-                { mntilistno: actualCodeNum },
-                { mntilistno: actualMountainCode },
-                { 'trail_match.mountain_info.mntilistno': String(actualCodeNum) },
-                { 'trail_match.mountain_info.mntilistno': actualMountainCode }
-              ]
+            // 프론트엔드에서 findIndex로 찾을 때 일관된 순서 보장을 위해 정렬
+            // 테마별 코스에서 사용하는 정렬과 동일하게 맞춤
+            courses.sort((a, b) => {
+              const aProps = a.properties || {}
+              const bProps = b.properties || {}
+              
+              // 1순위: 코스 이름 알파벳 순 (프론트엔드 findIndex와 동일)
+              const aName = (aProps.name || aProps.PMNTN_NM || '').toLowerCase()
+              const bName = (bProps.name || bProps.PMNTN_NM || '').toLowerCase()
+              if (aName !== bName) return aName.localeCompare(bName)
+              
+              // 2순위: 소요시간 긴 순
+              const aTime = (aProps.upTime || 0) + (aProps.downTime || 0)
+              const bTime = (bProps.upTime || 0) + (bProps.downTime || 0)
+              if (bTime !== aTime) return bTime - aTime
+              
+              // 3순위: 거리 긴 순
+              const aDist = aProps.distance || aProps.PMNTN_LT || 0
+              const bDist = bProps.distance || bProps.PMNTN_LT || 0
+              if (bDist !== aDist) return bDist - aDist
+              
+              return 0
             })
             
-            if (mountain && mountain.trail_match?.trail_files?.length > 0) {
-              const trailFiles = mountain.trail_match.trail_files
-              const mountainInfo = mountain.trail_match.mountain_info || {}
-              const mntiname = mountain.mntiname || mountain.name || mountainInfo.mntiname || '산'
-              
-              console.log(`Mountain_list에서 ${trailFiles.length}개 trail_files 발견: ${mntiname}`)
-              
-              // trail_files 정보로 기본 코스 생성
-              trailFiles.forEach((trailFile, index) => {
-                const filename = trailFile.filename || ''
-                // 파일명에서 코스 이름 추출 (PMNTN_대봉_488804601.json -> 대봉)
-                let courseName = filename.replace(/^PMNTN_/, '').replace(/_\d+\.json$/, '').replace(/\.json$/, '')
-                if (!courseName || courseName === '') {
-                  courseName = `${mntiname} 코스`
-                }
-                
-                // 기본 코스 정보 생성
-                const defaultCourse = {
-                  type: 'Feature',
-                  properties: {
-                    name: courseName,
-                    PMNTN_NM: courseName,
-                    difficulty: '보통',
-                    distance: 5.0,
-                    PMNTN_LT: 5.0,
-                    duration: '2시간',
-                    upTime: 60,
-                    PMNTN_UPPL: 60,
-                    downTime: 60,
-                    PMNTN_GODN: 60,
-                    PMNTN_MTRQ: ''
-                  },
-                  geometry: {
-                    type: 'LineString',
-                    coordinates: []
-                  }
-                }
-                
-                courses.push(defaultCourse)
-              })
-              
-              console.log(`Mountain_list 정보로 ${courses.length}개 코스 생성: ${mntiname}`)
-            } else {
-              console.log(`Mountain_list에서 trail_files 정보를 찾을 수 없음: ${actualMountainCode}`)
-            }
-          } catch (dbError) {
-            console.error('Mountain_list 조회 오류:', dbError)
+            console.log(`파일에서 읽은 코스 개수: ${courses.length}`)
+          } else {
+            console.log(`mountain 폴더에 코스 파일이 없음: ${geojsonDir}`)
           }
+        } else {
+          console.log(`mountain 폴더 경로가 존재하지 않음: ${geojsonDir}`)
+          console.log(`사용 가능한 mountain 폴더 목록 확인 중...`)
+          
+          // 사용 가능한 mountain 폴더 목록 확인 (디버깅용)
+          try {
+            const { readdir } = await import('fs/promises')
+            const availableDirs = await readdir(MOUNTAIN_BASE_PATH)
+            const geojsonDirs = availableDirs.filter(d => d.endsWith('_geojson'))
+            console.log(`사용 가능한 geojson 폴더 개수: ${geojsonDirs.length}`)
+            if (geojsonDirs.length > 0) {
+              console.log(`예시 geojson 폴더 (처음 5개): ${geojsonDirs.slice(0, 5).join(', ')}`)
+            }
+          } catch (listError) {
+            console.error('mountain 폴더 목록 확인 실패:', listError)
+          }
+          
+          // mountain 폴더에 파일이 없으면 빈 배열 반환
+          courses = []
         }
     } catch (fileError) {
       console.error('파일에서 코스 읽기 오류:', fileError)
@@ -1849,13 +1921,35 @@ app.get('/api/utils/imgbb-url', async (req, res) => {
 app.get('/api/courses/theme/:theme', async (req, res) => {
   try {
     const { theme } = req.params
-    const { limit = 10 } = req.query
+    // 테마별 기본 limit 설정 (표시된 개수대로)
+    const themeLimitMap = {
+      winter: 10,    // 눈꽃 산행지 BEST 10
+      sunrise: 8,   // 일몰&야경 코스 BEST 8
+      beginner: 5,  // 초보 산쟁이 코스 BEST 5
+      clouds: 5     // 운해 사냥 코스 BEST 5
+    }
+    const defaultLimit = themeLimitMap[theme] || 10
+    // 테마별 코스는 항상 표시된 개수대로만 반환 (query limit 무시)
+    const limit = defaultLimit
     
-    console.log('[테마별 코스] 요청 - theme:', theme, 'limit:', limit)
+    console.log('[테마별 코스] 요청 - theme:', theme, 'limit:', limit, '(query limit 무시)')
     
     // Mountain_list 컬렉션 찾기
     const mongoose = await import('mongoose')
+    // MongoDB 연결 대기
+    if (mongoose.default.connection.readyState !== 1) {
+      await new Promise((resolve) => {
+        if (mongoose.default.connection.readyState === 1) {
+          resolve()
+        } else {
+          mongoose.default.connection.once('connected', resolve)
+        }
+      })
+    }
     const db = mongoose.default.connection.db
+    if (!db) {
+      return res.status(503).json({ error: 'Database not connected', details: 'MongoDB connection not ready' })
+    }
     const collections = await db.listCollections().toArray()
     const collectionNames = collections.map(c => c.name)
     const mountainListCollectionName = collectionNames.find(name => 
@@ -1904,15 +1998,12 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
         { mountainName: '검둔산', courseName: '', priority: 6 }
       ],
       clouds: [
-        // 운해 사냥 추천 코스 BEST 8
+        // 운해 사냥 추천 코스 BEST 5
         { mountainName: '천마산', courseName: '호평동', priority: 1 },
         { mountainName: '북한산', courseName: '백운대', priority: 2 },
         { mountainName: '검단산', courseName: '현충탑', priority: 3 },
         { mountainName: '월출산', courseName: '경포대', priority: 4 },
-        { mountainName: '황매산', courseName: '황매평원길', priority: 5 },
-        { mountainName: '설악산', courseName: '오색', priority: 6 },
-        { mountainName: '가지산', courseName: '석남터널', priority: 7 },
-        { mountainName: '지리산', courseName: '노고단', priority: 8 }
+        { mountainName: '황매산', courseName: '황매평원길', priority: 5 }
       ]
     }
     
@@ -1979,76 +2070,25 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
               const codeNum = parseInt(mountainCode)
               console.log(`[테마별 코스] mountainCode: ${mountainCode}, codeNum: ${codeNum}, isNaN: ${isNaN(codeNum)}`)
               if (!isNaN(codeNum)) {
-                // {code}_geojson 디렉토리에서 파일 찾기
-                const geojsonDir = join('/app', 'mountain', `${codeNum}_geojson`)
-                const dirExists = existsSync(geojsonDir)
+                // {code}_geojson 디렉토리에서 파일 찾기 (두 가지 경로 시도)
+                let geojsonDir = join(MOUNTAIN_BASE_PATH, `${codeNum}_geojson`)
+                let dirExists = existsSync(geojsonDir)
+                
+                // PVC에 mountain/mountain 구조로 마운트된 경우를 대비해 두 경로 모두 확인
+                if (!dirExists) {
+                  const altPath = join(MOUNTAIN_BASE_PATH, 'mountain', `${codeNum}_geojson`)
+                  if (existsSync(altPath)) {
+                    geojsonDir = altPath
+                    dirExists = true
+                  }
+                }
+                
                 console.log(`[테마별 코스] GeoJSON 디렉토리 확인: ${geojsonDir}, 존재: ${dirExists}`)
                 
-                // 파일이 없으면 Mountain_list 정보로 기본 코스 생성
+                // 파일이 없으면 빈 배열 반환 (mountain 폴더에 실제 파일이 있는 것만 사용)
                 if (!dirExists) {
-                  console.log(`[테마별 코스] GeoJSON 디렉토리 없음: ${geojsonDir}, 기본 코스 생성 중...`)
-                  
-                  const mountainInfo = mountain.trail_match?.mountain_info || {}
-                  const mountainName = mountain.mntiname || mountain.name || mountainInfo.mntiname || priorityCourse.mountainName
-                  
-                  // trail_files가 있으면 사용, 없으면 priorityCourse.courseName 사용
-                  let courseName = priorityCourse.courseName || ''
-                  
-                  if (mountain.trail_match?.trail_files?.length > 0) {
-                    // trail_files 정보로 기본 코스 생성
-                    const trailFiles = mountain.trail_match.trail_files
-                    console.log(`[테마별 코스] trail_files 발견: ${trailFiles.length}개, 산: ${mountainName}`)
-                    
-                    trailFiles.forEach((trailFile, index) => {
-                      const filename = trailFile.filename || ''
-                      // 파일명에서 코스 이름 추출 (PMNTN_대봉_488804601.json -> 대봉)
-                      let extractedCourseName = filename.replace(/^PMNTN_/, '').replace(/_\d+\.json$/, '').replace(/\.json$/, '')
-                      if (!extractedCourseName || extractedCourseName === '') {
-                        extractedCourseName = courseName || `${mountainName} 코스`
-                      }
-                      
-                      // 기본 코스 정보 생성
-                      const defaultCourse = {
-                        id: `course-${mountainCode}-${index}`,
-                        name: `${mountainName}의 ${extractedCourseName}구간`,
-                        courseName: extractedCourseName,
-                        location: mountain.mntiadd || mountainInfo.mntiadd || '',
-                        mountainName: mountainName,
-                        mountainCode: mountainCode,
-                        difficulty: '보통',
-                        duration: '2시간',
-                        distance: '5.0km',
-                        description: `${mountainName}의 ${extractedCourseName} 등산 코스입니다.`,
-                        priority: priorityCourse.priority
-                      }
-                      
-                      courses.push(defaultCourse)
-                    })
-                  } else {
-                    // trail_files가 없으면 priorityCourse.courseName으로 기본 코스 생성
-                    if (!courseName || courseName === '') {
-                      courseName = `${mountainName} 코스`
-                    }
-                    
-                    const defaultCourse = {
-                      id: `course-${mountainCode}-0`,
-                      name: `${mountainName}의 ${courseName}구간`,
-                      courseName: courseName,
-                      location: mountain.mntiadd || mountainInfo.mntiadd || '',
-                      mountainName: mountainName,
-                      mountainCode: mountainCode,
-                      difficulty: theme === 'beginner' ? '쉬움' : '보통',
-                      duration: '2시간',
-                      distance: '5.0km',
-                      description: `${mountainName}의 ${courseName} 등산 코스입니다.`,
-                      priority: priorityCourse.priority
-                    }
-                    
-                    courses.push(defaultCourse)
-                    console.log(`[테마별 코스] 기본 코스 생성: ${mountainName} - ${courseName}`)
-                  }
-                  
-                  console.log(`[테마별 코스] Mountain_list 정보로 ${courses.length}개 코스 생성: ${mountainName}`)
+                  console.log(`[테마별 코스] GeoJSON 디렉토리 없음: ${geojsonDir}, mountain 폴더에 파일이 없어 코스를 반환하지 않음`)
+                  // mountain 폴더에 파일이 없으면 코스를 추가하지 않음
                 } else {
                   // 파일이 있는 경우 기존 로직 실행
                   try {
@@ -2077,33 +2117,15 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                               const distance = attrs.PMNTN_LT || 0
                               const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim()
                               
-                              // 난이도 추정
-                              const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
-                                const hardSurfaces = ['암석', '바위', '암벽', '절벽']
-                                const easySurfaces = ['포장', '콘크리트', '데크']
-                                
-                                let baseDifficulty = '보통'
-                                if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
-                                  baseDifficulty = '어려움'
-                                } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
-                                  baseDifficulty = '쉬움'
-                                }
-                                
-                                if (distance <= 1.5 && totalMinutes <= 60) return '쉬움'
-                                if (distance >= 10 || totalMinutes >= 240) return '어려움'
-                                
-                                if (baseDifficulty === '쉬움') {
-                                  return (distance <= 5 && totalMinutes <= 120) ? '쉬움' : '보통'
-                                } else if (baseDifficulty === '어려움') {
-                                  return '어려움'
-                                } else {
-                                  if (distance <= 3 && totalMinutes <= 90) return '쉬움'
-                                  if (distance >= 8 || totalMinutes >= 180) return '어려움'
-                                  return '보통'
-                                }
+                              // 난이도 추정 (코스 상세 페이지와 정확히 동일한 로직)
+                              let difficulty = '보통'
+                              if (distance <= 1.5 && totalMinutes <= 60) {
+                                difficulty = '쉬움'
+                              } else if (distance >= 10 || totalMinutes >= 240) {
+                                difficulty = '어려움'
+                              } else if (surfaceMaterial && (surfaceMaterial.includes('암석') || surfaceMaterial.includes('바위'))) {
+                                difficulty = '어려움'
                               }
-                              
-                              const difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
                               
                               let duration = ''
                               if (totalMinutes >= 60) {
@@ -2135,86 +2157,18 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                           })
                           .filter(course => course !== null)
                           
-                        // 10분 이하 또는 0.5km 이하 코스 제외
-                        const filteredCourses = processedFeatures.filter(course => {
-                          const props = course.properties || {}
-                          let totalTime = 0
-                          if (props.upTime !== undefined && props.downTime !== undefined) {
-                            totalTime = (props.upTime || 0) + (props.downTime || 0)
-                          } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
-                            totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+                        // 코스 상세 페이지와 동일하게 처리: 그룹화하지 않고 각 세그먼트를 개별 코스로 취급
+                        // ArcGIS 형식인 경우 이미 GeoJSON 형식으로 변환됨
+                        courses = processedFeatures.map(course => {
+                          // 이미 GeoJSON 형식인 경우 name 필드 확인
+                          if (course.properties && !course.properties.name && course.properties.PMNTN_NM) {
+                            course.properties.name = course.properties.PMNTN_NM
                           }
-                          const distance = props.distance || props.PMNTN_LT || 0
-                          return !(totalTime <= 10 || distance <= 0.5)
-                        })
-                        
-                        // 같은 코스명으로 그룹화
-                        const courseGroups = {}
-                        filteredCourses.forEach(course => {
-                          const props = course.properties || {}
-                          const courseName = props.name || ''
-                          if (!courseName) return
-                          
-                          if (!courseGroups[courseName]) {
-                            courseGroups[courseName] = {
-                              course: course,
-                              segments: [course],
-                              totalTime: (props.upTime || 0) + (props.downTime || 0),
-                              totalDistance: props.distance || 0,
-                              courseName: courseName // 정렬을 위해 저장
-                            }
-                          } else {
-                            courseGroups[courseName].segments.push(course)
-                            const currentTime = (props.upTime || 0) + (props.downTime || 0)
-                            const currentDistance = props.distance || 0
-                            if (currentTime > courseGroups[courseName].totalTime) {
-                              courseGroups[courseName].totalTime = currentTime
-                              courseGroups[courseName].course = course
-                            }
-                            if (currentDistance > courseGroups[courseName].totalDistance) {
-                              courseGroups[courseName].totalDistance = currentDistance
-                            }
-                          }
-                        })
-                        
-                        // 코스 그룹을 정렬하여 일관된 순서 보장
-                        const sortedGroups = Object.values(courseGroups).sort((a, b) => {
-                          // 1순위: 코스 이름 알파벳 순 (일관성 보장)
-                          const aName = (a.courseName || a.course?.properties?.name || '').toLowerCase()
-                          const bName = (b.courseName || b.course?.properties?.name || '').toLowerCase()
-                          if (aName !== bName) return aName.localeCompare(bName)
-                          
-                          // 2순위: 소요시간 긴 순
-                          if (b.totalTime !== a.totalTime) return b.totalTime - a.totalTime
-                          
-                          // 3순위: 거리 긴 순
-                          if (b.totalDistance !== a.totalDistance) return b.totalDistance - a.totalDistance
-                          
-                          return 0
-                        })
-                        
-                        courses = sortedGroups.map(group => {
-                          const representativeCourse = group.course
-                          const props = representativeCourse.properties || {}
-                          
-                          if (group.segments.length > 1) {
-                            let totalTime = 0
-                            let totalDistance = 0
-                            group.segments.forEach(seg => {
-                              const segProps = seg.properties || {}
-                              totalTime += (segProps.upTime || 0) + (segProps.downTime || 0)
-                              totalDistance += segProps.distance || 0
-                            })
-                            
-                            if (!props.upTime && !props.downTime) {
-                              const hours = Math.floor(totalTime / 60)
-                              const minutes = totalTime % 60
-                              props.duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
-                            }
-                            props.distance = totalDistance
-                          }
-                          
-                          return representativeCourse
+                          return course
+                        }).filter(course => {
+                          if (!course) return false
+                          const name = course.properties?.name || course.properties?.PMNTN_NM || ''
+                          return name && name.trim() !== ''
                         })
                         
                         console.log(`[테마별 코스] ${priorityCourse.mountainName} 파일에서 코스 ${courses.length}개 찾음: ${filePath}`)
@@ -2222,39 +2176,8 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                     }
                   } catch (dirError) {
                     console.error(`[테마별 코스] 디렉토리 읽기 오류 - ${priorityCourse.mountainName}:`, dirError.message)
-                    // 디렉토리가 없거나 읽기 실패 시 Mountain_list의 trail_files로 기본 코스 생성
-                    if (courses.length === 0 && mountain.trail_match?.trail_files?.length > 0) {
-                      console.log(`[테마별 코스] 디렉토리 오류 후 trail_files로 기본 코스 생성: ${priorityCourse.mountainName}`)
-                      const mountainInfo = mountain.trail_match?.mountain_info || {}
-                      const mountainName = mountain.mntiname || mountain.name || mountainInfo.mntiname || priorityCourse.mountainName
-                      const trailFiles = mountain.trail_match.trail_files
-                      
-                      trailFiles.forEach((trailFile, index) => {
-                        const filename = trailFile.filename || ''
-                        let extractedCourseName = filename.replace(/^PMNTN_/, '').replace(/_\d+\.json$/, '').replace(/\.json$/, '')
-                        if (!extractedCourseName || extractedCourseName === '') {
-                          extractedCourseName = priorityCourse.courseName || `${mountainName} 코스`
-                        }
-                        
-                        const defaultCourse = {
-                          id: `course-${mountainCode}-${index}`,
-                          name: `${mountainName}의 ${extractedCourseName}구간`,
-                          courseName: extractedCourseName,
-                          location: mountain.mntiadd || mountainInfo.mntiadd || '',
-                          mountainName: mountainName,
-                          mountainCode: mountainCode,
-                          difficulty: '보통',
-                          duration: '2시간',
-                          distance: '5.0km',
-                          description: `${mountainName}의 ${extractedCourseName} 등산 코스입니다.`,
-                          priority: priorityCourse.priority
-                        }
-                        
-                        courses.push(defaultCourse)
-                      })
-                      
-                      console.log(`[테마별 코스] trail_files로 ${courses.length}개 코스 생성: ${mountainName}`)
-                    }
+                    // 디렉토리 읽기 실패 시 mountain 폴더에 파일이 없으므로 코스를 추가하지 않음
+                    console.log(`[테마별 코스] 디렉토리 오류로 인해 코스를 반환하지 않음: ${priorityCourse.mountainName}`)
                   }
                 }
               }
@@ -2264,6 +2187,27 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
           }
           
           console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 개수: ${courses.length}, mountainCode: ${mountainCode}`)
+          
+          // 짧은 코스 필터링 함수 (10분 이하 또는 0.5km 이하 제외)
+          // strict: true면 엄격하게 필터링, false면 완화된 필터링 (5분 이하 또는 0.3km 이하만 제외)
+          const filterShortCourses = (courseList, strict = true) => {
+            return courseList.filter(course => {
+              const props = course.properties || {}
+              let totalTime = 0
+              if (props.upTime !== undefined && props.downTime !== undefined) {
+                totalTime = (props.upTime || 0) + (props.downTime || 0)
+              } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
+                totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+              }
+              const distance = props.distance || props.PMNTN_LT || 0
+              if (strict) {
+                return !(totalTime <= 10 || distance <= 0.5)
+              } else {
+                // 완화된 필터링: 매우 짧은 코스만 제외 (5분 이하 또는 0.3km 이하)
+                return !(totalTime <= 5 || distance <= 0.3)
+              }
+            })
+          }
           
           // 코스 이름으로 필터링 (우선 코스명이 있으면)
           let matchedCourse = null
@@ -2282,19 +2226,49 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
               return propsName === searchName
             })
             
+            // 우선 코스는 완화된 필터링 적용 (5분 이하 또는 0.3km 이하만 제외)
+            exactMatches = filterShortCourses(exactMatches, false)
+            
+            // 완화된 필터링으로도 없으면 매우 짧은 코스만 제외
+            if (exactMatches.length === 0) {
+              exactMatches = courses.filter(course => {
+                const props = course.properties || {}
+                let propsName = (props.name || props.PMNTN_NM || '').toLowerCase().trim()
+                propsName = propsName.replace(/구간$/, '').trim()
+                if (propsName !== searchName) return false
+                
+                let totalTime = 0
+                if (props.upTime !== undefined && props.downTime !== undefined) {
+                  totalTime = (props.upTime || 0) + (props.downTime || 0)
+                } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
+                  totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+                }
+                const dist = props.distance || props.PMNTN_LT || 0
+                return !(totalTime <= 2 && dist <= 0.1)
+              })
+            }
+            
             // 매칭된 코스가 여러 개면 정렬하여 일관된 선택
+            // 코스 상세 페이지와 동일한 순서로 정렬 (프론트엔드에서 첫 번째로 선택하는 것과 동일)
             if (exactMatches.length > 0) {
-              // 정렬: 1) 소요시간 긴 순, 2) 거리 긴 순
+              // 코스 상세 페이지에서 반환하는 순서와 동일하게 정렬
+              // 프론트엔드에서 URL 파라미터로 코스를 찾을 때 첫 번째로 매칭되는 코스를 사용
+              // 따라서 정렬 순서를 프론트엔드와 동일하게 맞춤
               exactMatches.sort((a, b) => {
                 const aProps = a.properties || {}
                 const bProps = b.properties || {}
                 
-                // 소요시간 긴 순
+                // 1순위: 코스 이름 알파벳 순 (프론트엔드에서 findIndex로 찾을 때 순서)
+                const aName = (aProps.name || aProps.PMNTN_NM || '').toLowerCase()
+                const bName = (bProps.name || bProps.PMNTN_NM || '').toLowerCase()
+                if (aName !== bName) return aName.localeCompare(bName)
+                
+                // 2순위: 소요시간 긴 순
                 const aTime = (aProps.upTime || 0) + (aProps.downTime || 0)
                 const bTime = (bProps.upTime || 0) + (bProps.downTime || 0)
                 if (bTime !== aTime) return bTime - aTime
                 
-                // 거리 긴 순
+                // 3순위: 거리 긴 순
                 const aDist = aProps.distance || aProps.PMNTN_LT || 0
                 const bDist = bProps.distance || bProps.PMNTN_LT || 0
                 if (bDist !== aDist) return bDist - aDist
@@ -2306,37 +2280,60 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
               const matchedName = matchedCourse?.properties?.name || matchedCourse?.properties?.PMNTN_NM || '이름 없음'
               const matchedDifficulty = matchedCourse?.properties?.difficulty || '없음'
               const matchedTime = (matchedCourse?.properties?.upTime || 0) + (matchedCourse?.properties?.downTime || 0)
-              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 매칭 성공: "${matchedName}" (검색어: "${searchName}"), 소요시간: ${matchedTime}분, 난이도: ${matchedDifficulty}`)
+              const matchedDist = matchedCourse?.properties?.distance || matchedCourse?.properties?.PMNTN_LT || 0
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 매칭 성공: "${matchedName}" (검색어: "${searchName}"), 난이도: ${matchedDifficulty}, 소요시간: ${matchedTime}분, 거리: ${matchedDist}km`)
             } else {
-              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 매칭 실패: "${searchName}" (사용 가능한 코스: ${courses.map(c => {
-                const name = c.properties?.name || c.properties?.PMNTN_NM || '이름 없음'
-                const normalized = name.toLowerCase().replace(/구간$/, '').trim()
-                return `${name} (정규화: "${normalized}")`
-              }).join(', ')})`)
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 매칭 실패 또는 필터링됨: "${searchName}" (짧은 코스 제외 후 사용 가능한 코스 없음)`)
             }
           }
           
           // 매칭된 코스가 없으면 첫 번째 코스 사용 (초보 코스는 어려움 제외)
           if (!matchedCourse && courses.length > 0) {
+            // 우선 코스는 완화된 필터링 적용 (5분 이하 또는 0.3km 이하만 제외)
+            // BEST X 개수를 채우기 위해 필터링을 완화
+            const validCourses = filterShortCourses(courses, false)
+            
+            // 완화된 필터링으로도 없으면 매우 짧은 코스만 제외 (2분 이하 또는 0.1km 이하)
+            if (validCourses.length === 0) {
+              const veryShortFiltered = courses.filter(course => {
+                const props = course.properties || {}
+                let totalTime = 0
+                if (props.upTime !== undefined && props.downTime !== undefined) {
+                  totalTime = (props.upTime || 0) + (props.downTime || 0)
+                } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
+                  totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+                }
+                const dist = props.distance || props.PMNTN_LT || 0
+                return !(totalTime <= 2 && dist <= 0.1)
+              })
+              
+              if (veryShortFiltered.length > 0) {
+                validCourses.push(...veryShortFiltered)
+              } else {
+                console.log(`[테마별 코스] ${priorityCourse.mountainName} 유효한 코스가 없어서 건너뜀`)
+                continue
+              }
+            }
+            
             // 코스를 정렬하여 일관된 순서 보장 (이름 알파벳 순으로 고정)
-            const sortedCourses = [...courses].sort((a, b) => {
+            const sortedCourses = [...validCourses].sort((a, b) => {
               const aProps = a.properties || {}
               const bProps = b.properties || {}
               
-              // 1순위: 코스 이름 알파벳 순 (일관성 보장)
-              const aName = (aProps.name || aProps.PMNTN_NM || '').toLowerCase()
-              const bName = (bProps.name || bProps.PMNTN_NM || '').toLowerCase()
-              if (aName !== bName) return aName.localeCompare(bName)
-              
-              // 2순위: 소요시간 긴 순
+              // 1순위: 소요시간 긴 순 (더 긴 코스 우선)
               const aTime = (aProps.upTime || 0) + (aProps.downTime || 0)
               const bTime = (bProps.upTime || 0) + (bProps.downTime || 0)
               if (bTime !== aTime) return bTime - aTime
               
-              // 3순위: 거리 긴 순
+              // 2순위: 거리 긴 순
               const aDist = aProps.distance || aProps.PMNTN_LT || 0
               const bDist = bProps.distance || bProps.PMNTN_LT || 0
               if (bDist !== aDist) return bDist - aDist
+              
+              // 3순위: 코스 이름 알파벳 순 (일관성 보장)
+              const aName = (aProps.name || aProps.PMNTN_NM || '').toLowerCase()
+              const bName = (bProps.name || bProps.PMNTN_NM || '').toLowerCase()
+              if (aName !== bName) return aName.localeCompare(bName)
               
               return 0
             })
@@ -2350,7 +2347,7 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             } else {
               matchedCourse = sortedCourses[0]
             }
-            console.log(`[테마별 코스] ${priorityCourse.mountainName} 첫 번째 코스 사용: "${matchedCourse?.courseName || matchedCourse?.properties?.name || '이름 없음'}", 난이도: ${matchedCourse?.properties?.difficulty || '없음'}`)
+            console.log(`[테마별 코스] ${priorityCourse.mountainName} 첫 번째 코스 사용: "${matchedCourse?.courseName || matchedCourse?.properties?.name || '이름 없음'}", 난이도: ${matchedCourse?.properties?.difficulty || '없음'}, 소요시간: ${(matchedCourse?.properties?.upTime || 0) + (matchedCourse?.properties?.downTime || 0)}분, 거리: ${matchedCourse?.properties?.distance || matchedCourse?.properties?.PMNTN_LT || 0}km`)
           }
           
           // 초보 코스는 어려움 난이도 제외
@@ -2364,9 +2361,69 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
           
           if (matchedCourse) {
             const props = matchedCourse.properties || {}
-            const distance = matchedCourse.distance || props.distance || props.PMNTN_LT || 0
-            const duration = matchedCourse.duration || props.duration || ''
-            const difficulty = matchedCourse.difficulty || props.difficulty || '보통'
+            
+            // 코스 상세 페이지와 정확히 동일한 방식으로 정보 추출
+            // processedFeatures에서 이미 계산된 값을 그대로 사용 (코스 상세 페이지와 동일한 로직으로 계산됨)
+            const upTime = props.upTime || props.PMNTN_UPPL || 0
+            const downTime = props.downTime || props.PMNTN_GODN || 0
+            const totalMinutes = upTime + downTime
+            let distance = props.distance || props.PMNTN_LT || 0
+            if (typeof distance === 'string') {
+              distance = parseFloat(distance) || 0
+            }
+            
+            // 우선 코스는 최소한의 필터링만 적용 (매우 짧은 코스만 제외: 2분 이하 또는 0.1km 이하)
+            // BEST X 개수를 채우기 위해 필터링을 최소화
+            if (totalMinutes <= 2 && distance <= 0.1) {
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 매우 짧은 코스 제외: "${props.name || props.PMNTN_NM || '이름 없음'}" (${totalMinutes}분, ${distance}km)`)
+              matchedCourse = null
+              continue
+            }
+            
+            // 난이도: processedFeatures에서 이미 계산된 difficulty를 그대로 사용
+            // (코스 상세 페이지와 동일한 로직으로 이미 계산되어 있음)
+            // properties에 difficulty가 있으면 그대로 사용, 없으면 코스 상세 페이지와 동일한 로직으로 계산
+            let difficulty = props.difficulty
+            if (!difficulty) {
+              const surfaceMaterial = (props.PMNTN_MTRQ || '').trim()
+              difficulty = '보통'
+              if (distance <= 1.5 && totalMinutes <= 60) {
+                difficulty = '쉬움'
+              } else if (distance >= 10 || totalMinutes >= 240) {
+                difficulty = '어려움'
+              } else if (surfaceMaterial && (surfaceMaterial.includes('암석') || surfaceMaterial.includes('바위'))) {
+                difficulty = '어려움'
+              }
+            }
+            
+            // 소요시간: processedFeatures에서 이미 계산된 duration을 그대로 사용
+            // (코스 상세 페이지와 동일한 로직으로 이미 계산되어 있음)
+            let duration = props.duration
+            if (!duration && totalMinutes > 0) {
+              // properties에 duration이 없으면 코스 상세 페이지와 동일한 로직으로 계산
+              if (totalMinutes >= 60) {
+                const hours = Math.floor(totalMinutes / 60)
+                const minutes = totalMinutes % 60
+                duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+              } else {
+                duration = `${totalMinutes}분`
+              }
+            }
+            
+            // 거리: processedFeatures에서 이미 계산된 distance를 그대로 사용
+            if (!distance || distance === 0) {
+              distance = props.PMNTN_LT || 0
+              if (typeof distance === 'string') {
+                distance = parseFloat(distance) || 0
+              }
+            }
+            
+            // 짧은 코스 필터링 확인 (우선 코스는 완화된 기준: 5분 이하 또는 0.3km 이하만 제외)
+            if (totalMinutes <= 5 || distance <= 0.3) {
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 매우 짧은 코스 제외: "${props.name || props.PMNTN_NM || '이름 없음'}" (${totalMinutes}분, ${distance}km)`)
+              matchedCourse = null
+              continue
+            }
             
             // location 추출 (여러 필드에서 시도)
             let location = mountain.location || ''
@@ -2391,11 +2448,24 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             
             // 코스 이름을 "~산의 ~ 구간" 형식으로 만들기
             // 실제 매칭된 코스의 이름 사용 (matchedCourse.courseName이 아닌 props.name 사용)
-            const actualCourseName = props.name || props.PMNTN_NM || priorityCourse.courseName || '구간'
+            // priorityCourse.courseName을 fallback으로 사용하지 않음 (실제 코스 이름만 사용)
+            const actualCourseName = props.name || props.PMNTN_NM || ''
+            if (!actualCourseName || actualCourseName.trim() === '') {
+              console.log(`[테마별 코스] ${priorityCourse.mountainName} 코스 이름이 없어서 건너뜀`)
+              continue
+            }
             const courseNameOnly = actualCourseName.replace(/구간$/, '').trim() // "구간" 제거
             
-            // 산 이름에서 주소 제거 (괄호 안의 내용 제거)
-            let mountainNameOnly = mountain.mntiname || mountain.name || priorityCourse.mountainName
+            // 산 이름 찾기 (여러 필드에서 시도)
+            let mountainNameOnly = mountain.mntiname || 
+                                  mountain.name || 
+                                  mountain.MNTN_NM ||
+                                  mountain.trail_match?.mountain_info?.mntiname ||
+                                  mountain.trail_match?.mountain_info?.name ||
+                                  mountain.trail_match?.mountain_info?.MNTN_NM ||
+                                  mountain.mountainName ||
+                                  priorityCourse.mountainName ||
+                                  ''
             // 괄호와 그 안의 내용 제거 (예: "검봉산(강원특별자치도...)" -> "검봉산")
             mountainNameOnly = mountainNameOnly.replace(/\([^)]*\)/g, '').trim()
             
@@ -2433,16 +2503,189 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
     // 우선순위로 정렬
     foundPriorityCourses.sort((a, b) => (a.priority || 999) - (b.priority || 999))
     
+    // 우선 코스가 limit을 초과하지 않도록 제한
+    const maxPriorityCourses = Math.min(foundPriorityCourses.length, parseInt(limit))
+    foundPriorityCourses.splice(maxPriorityCourses)
+    
     // 우선 코스가 부족하면 추가 코스 찾기
     let additionalCourses = []
     if (foundPriorityCourses.length < parseInt(limit)) {
-      // 모든 코스 가져오기 (Course 컬렉션이 없거나 비어있을 수 있음)
+      // mountain 폴더에서 직접 모든 코스 가져오기
       let allCourses = []
       try {
-        allCourses = await Course.find({}).lean()
-        console.log(`[테마별 코스] Course 컬렉션에서 ${allCourses.length}개 코스 조회`)
-      } catch (courseError) {
-        console.warn(`[테마별 코스] Course 컬렉션 조회 실패 (무시):`, courseError.message)
+        const { readdir, readFile } = await import('fs/promises')
+        const { join } = await import('path')
+        const { existsSync } = await import('fs')
+        
+        // mountain 폴더의 모든 _geojson 디렉토리 찾기
+        const mountainDirs = []
+        const baseDir = MOUNTAIN_BASE_PATH
+        const altBaseDir = join(MOUNTAIN_BASE_PATH, 'mountain')
+        
+        // 두 가지 경로 모두 확인
+        const dirsToCheck = [baseDir, altBaseDir]
+        for (const dir of dirsToCheck) {
+          if (existsSync(dir)) {
+            const entries = await readdir(dir, { withFileTypes: true })
+            for (const entry of entries) {
+              if (entry.isDirectory() && entry.name.endsWith('_geojson')) {
+                mountainDirs.push(join(dir, entry.name))
+              }
+            }
+          }
+        }
+        
+        console.log(`[테마별 코스] mountain 폴더에서 ${mountainDirs.length}개 디렉토리 발견`)
+        
+        // 성능 최적화: 필요한 개수만큼만 처리 (limit의 5배까지만)
+        const maxDirsToProcess = Math.min(mountainDirs.length, parseInt(limit) * 5)
+        const dirsToProcess = mountainDirs.slice(0, maxDirsToProcess)
+        console.log(`[테마별 코스] 성능 최적화: ${maxDirsToProcess}개 디렉토리만 처리`)
+        
+        // 각 디렉토리에서 코스 파일 읽기 (병렬 처리로 성능 개선)
+        const coursePromises = dirsToProcess.map(async (geojsonDir) => {
+          try {
+            const files = await readdir(geojsonDir)
+            const courseFiles = files.filter(f => 
+              f.startsWith('PMNTN_') && 
+              f.endsWith('.json') && 
+              !f.includes('SPOT') &&
+              !f.includes('SAFE_SPOT')
+            )
+            
+            if (courseFiles.length === 0) return []
+            
+            const courses = []
+            // 모든 파일 읽기 (필요한 개수를 채우기 위해)
+            for (const courseFile of courseFiles.slice(0, 3)) { // 최대 3개 파일만 읽기
+              try {
+                const filePath = join(geojsonDir, courseFile)
+                const fileData = JSON.parse(await readFile(filePath, 'utf-8'))
+                const features = fileData.features || (fileData.type === 'FeatureCollection' ? fileData.features : (fileData.type === 'Feature' ? [fileData] : []))
+                
+                // 디렉토리 이름에서 mountainCode 추출
+                const dirName = geojsonDir.split('/').pop() || ''
+                const mountainCode = dirName.replace('_geojson', '')
+                
+                // 산 정보 찾기 (한 번만)
+                const codeNum = parseInt(mountainCode)
+                let mountain = null
+                if (!isNaN(codeNum)) {
+                  mountain = await mountainCollection.findOne({
+                    $or: [
+                      { mntilistno: codeNum },
+                      { mntilistno: mountainCode }
+                    ]
+                  })
+                }
+                
+                // 산 이름 찾기 (여러 필드에서 시도)
+                const mountainName = mountain?.mntiname || 
+                                   mountain?.name || 
+                                   mountain?.MNTN_NM ||
+                                   mountain?.trail_match?.mountain_info?.mntiname ||
+                                   mountain?.trail_match?.mountain_info?.name ||
+                                   mountain?.trail_match?.mountain_info?.MNTN_NM ||
+                                   mountain?.mountainName ||
+                                   ''
+                
+                // 모든 feature 사용 (필요한 개수를 채우기 위해)
+                for (const feature of features.slice(0, 2)) { // 최대 2개 feature만 사용
+                  let props = feature.properties || feature.attributes || {}
+                  
+                  // attributes가 있으면 난이도 추정 로직 적용
+                  if (feature.attributes && (!props.difficulty || props.difficulty === '보통')) {
+                    const attrs = feature.attributes
+                    const upTime = attrs.PMNTN_UPPL || 0
+                    const downTime = attrs.PMNTN_GODN || 0
+                    const totalMinutes = upTime + downTime
+                    const distance = attrs.PMNTN_LT || props.distance || 0
+                    const surfaceMaterial = (attrs.PMNTN_MTRQ || '').trim()
+                    
+                    // 난이도 추정
+                    const estimateDifficulty = (distance, totalMinutes, surfaceMaterial) => {
+                      const hardSurfaces = ['암석', '바위', '암벽', '절벽']
+                      const easySurfaces = ['포장', '콘크리트', '데크']
+                      
+                      let baseDifficulty = '보통'
+                      if (hardSurfaces.some(s => surfaceMaterial.includes(s))) {
+                        baseDifficulty = '어려움'
+                      } else if (easySurfaces.some(s => surfaceMaterial.includes(s))) {
+                        baseDifficulty = '쉬움'
+                      }
+                      
+                      if (distance <= 1.5 && totalMinutes <= 60) return '쉬움'
+                      if (distance >= 10 || totalMinutes >= 240) return '어려움'
+                      
+                      if (baseDifficulty === '쉬움') {
+                        return (distance <= 5 && totalMinutes <= 120) ? '쉬움' : '보통'
+                      } else if (baseDifficulty === '어려움') {
+                        return '어려움'
+                      } else {
+                        if (distance <= 3 && totalMinutes <= 90) return '쉬움'
+                        if (distance >= 8 || totalMinutes >= 180) return '어려움'
+                        return '보통'
+                      }
+                    }
+                    
+                    if (!props.difficulty) {
+                      props.difficulty = estimateDifficulty(distance, totalMinutes, surfaceMaterial)
+                    }
+                    
+                    if (!props.duration && totalMinutes > 0) {
+                      if (totalMinutes >= 60) {
+                        const hours = Math.floor(totalMinutes / 60)
+                        const minutes = totalMinutes % 60
+                        props.duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+                      } else {
+                        props.duration = `${totalMinutes}분`
+                      }
+                    }
+                    
+                    if (!props.distance) {
+                      props.distance = distance
+                    }
+                  }
+                  
+                  const courseName = props.name || props.PMNTN_NM || props.PMNTN_MAIN || ''
+                  if (courseName && courseName.trim()) {
+                    const distance = props.distance || props.PMNTN_LT || 0
+                    const difficulty = props.difficulty || '보통'
+                    const duration = props.duration || ''
+                    
+                    courses.push({
+                      _id: `mountain_${mountainCode}_${courseName}_${courses.length}`,
+                      courseName: courseName.trim(),
+                      mountainName: mountainName,
+                      mountainCode: mountainCode,
+                      mountainLocation: mountain?.mntiadd || mountain?.location || '',
+                      distance: distance,
+                      difficulty: difficulty,
+                      duration: duration,
+                      courseData: { properties: props },
+                      properties: props
+                    })
+                  }
+                }
+              } catch (fileError) {
+                console.error(`[테마별 코스] 파일 읽기 오류 ${courseFile}:`, fileError.message)
+              }
+            }
+            
+            return courses
+          } catch (dirError) {
+            console.error(`[테마별 코스] 디렉토리 읽기 오류 ${geojsonDir}:`, dirError.message)
+            return []
+          }
+        })
+        
+        // 병렬 처리로 모든 코스 가져오기
+        const courseArrays = await Promise.all(coursePromises)
+        allCourses = courseArrays.flat()
+        
+        console.log(`[테마별 코스] mountain 폴더에서 ${allCourses.length}개 코스 조회`)
+      } catch (error) {
+        console.error(`[테마별 코스] mountain 폴더에서 코스 읽기 실패:`, error.message)
         allCourses = []
       }
       
@@ -2451,52 +2694,98 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
         allCourses.map(async (course) => {
           try {
             const mountainCode = String(course.mountainCode || '')
-            const mountain = await mountainCollection.findOne({ 
-              mntilistno: mountainCode 
-            })
+            const codeNum = parseInt(mountainCode)
+            const isObjectId = /^[0-9a-fA-F]{24}$/.test(mountainCode)
             
-            if (!mountain) {
-              const codeNum = parseInt(mountainCode)
-              if (!isNaN(codeNum)) {
-                const mountain2 = await mountainCollection.findOne({ 
-                  mntilistno: codeNum 
-                })
-                if (mountain2) {
-                  return {
-                    ...course,
-                    mountainName: mountain2.mntiname || mountain2.name || '',
-                    mountainLocation: mountain2.location || '',
-                    mountainCode: String(mountain2.mntilistno || mountainCode)
-                  }
-                }
+            let mountain = null
+            
+            // ObjectId 형식이면 _id로 검색
+            if (isObjectId) {
+              try {
+                const objectId = new mongoose.Types.ObjectId(mountainCode)
+                mountain = await mountainCollection.findOne({ _id: objectId })
+              } catch (e) {
+                console.error('ObjectId 변환 실패:', e)
               }
             }
             
+            // 숫자 코드로 검색
+            if (!mountain && !isNaN(codeNum)) {
+              mountain = await mountainCollection.findOne({
+                $or: [
+                  { mntilistno: codeNum },
+                  { mntilistno: mountainCode },
+                  { 'trail_match.mountain_info.mntilistno': codeNum },
+                  { 'trail_match.mountain_info.mntilistno': mountainCode }
+                ]
+              })
+            }
+            
+            if (mountain) {
+              const mountainInfo = mountain.trail_match?.mountain_info || {}
+              
+              // 산 이름 찾기 (여러 필드에서 시도)
+              const mountainName = mountain.mntiname || 
+                                  mountain.name || 
+                                  mountain.MNTN_NM ||
+                                  mountainInfo.mntiname ||
+                                  mountainInfo.name ||
+                                  mountainInfo.MNTN_NM ||
+                                  mountain.mountainName ||
+                                  ''
+              
+              const mountainLocation = mountain.location || 
+                                      mountain.mntiadd || 
+                                      mountainInfo.mntiadd ||
+                                      ''
+              
+              return {
+                ...course,
+                mountainName: mountainName,
+                mountainLocation: mountainLocation,
+                mountainCode: String(mountain.mntilistno || mountain.code || mountainCode)
+              }
+            }
+            
+            // 산을 찾지 못한 경우 기존 정보 유지
             return {
               ...course,
-              mountainName: mountain?.mntiname || mountain?.name || '',
-              mountainLocation: mountain?.location || '',
-              mountainCode: String(mountain?.mntilistno || mountainCode)
+              mountainName: course.mountainName || '',
+              mountainLocation: course.mountainLocation || '',
+              mountainCode: mountainCode
             }
           } catch (error) {
+            console.error(`[테마별 코스] 산 정보 추가 오류 - 코드: ${course.mountainCode}:`, error.message)
             return {
               ...course,
-              mountainName: '',
-              mountainLocation: '',
+              mountainName: course.mountainName || '',
+              mountainLocation: course.mountainLocation || '',
               mountainCode: String(course.mountainCode || '')
             }
           }
         })
       )
       
-      // 이미 포함된 코스 제외
+      // 이미 포함된 코스 제외 및 산 정보가 있는 코스만 포함
       const includedIds = new Set(foundPriorityCourses.map(c => String(c.id)))
-      const remainingCourses = coursesWithMountain.filter(c => 
-        !includedIds.has(String(c._id))
-      )
+      const remainingCourses = coursesWithMountain.filter(c => {
+        // 이미 포함된 코스 제외
+        if (includedIds.has(String(c._id))) {
+          return false
+        }
+        // 산 이름이 없는 코스 제외
+        const mountainName = (c.mountainName || '').trim()
+        if (!mountainName) {
+          console.log(`[테마별 코스] 산 정보 없음 제외 - 코스: ${c.courseName}, 코드: ${c.mountainCode}`)
+          return false
+        }
+        return true
+      })
       
-      // 테마별 필터링
+      // 테마별 필터링 (우선순위 적용)
       let filtered = []
+      let fallbackCourses = [] // 필터링 실패 시 사용할 전체 코스
+      
       switch(theme) {
         case 'winter':
           filtered = remainingCourses.filter(course => {
@@ -2506,6 +2795,8 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             )
           })
           filtered.sort((a, b) => (b.distance || 0) - (a.distance || 0))
+          // 필터링 실패 시 전체 코스 사용 (거리순 정렬)
+          fallbackCourses = [...remainingCourses].sort((a, b) => (b.distance || 0) - (a.distance || 0))
           break
         case 'beginner':
           filtered = remainingCourses.filter(course => {
@@ -2521,6 +2812,11 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
                    (distance > 0 && distance <= 5)
           })
           filtered.sort((a, b) => (a.distance || 999) - (b.distance || 999))
+          // 필터링 실패 시 전체 코스 사용 (거리순 정렬, 어려움 제외)
+          fallbackCourses = remainingCourses.filter(course => {
+            const difficulty = (course.difficulty || '').toLowerCase()
+            return !difficulty.includes('어려움') && !difficulty.includes('고급') && !difficulty.includes('hard')
+          }).sort((a, b) => (a.distance || 999) - (b.distance || 999))
           break
         case 'sunrise':
           filtered = remainingCourses.filter(course => {
@@ -2532,6 +2828,8 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             )
           })
           filtered.sort((a, b) => (b.distance || 0) - (a.distance || 0))
+          // 필터링 실패 시 전체 코스 사용 (거리순 정렬)
+          fallbackCourses = [...remainingCourses].sort((a, b) => (b.distance || 0) - (a.distance || 0))
           break
         case 'clouds':
           filtered = remainingCourses.filter(course => {
@@ -2543,23 +2841,98 @@ app.get('/api/courses/theme/:theme', async (req, res) => {
             )
           })
           filtered.sort((a, b) => (b.distance || 0) - (a.distance || 0))
+          // 필터링 실패 시 전체 코스 사용 (거리순 정렬)
+          fallbackCourses = [...remainingCourses].sort((a, b) => (b.distance || 0) - (a.distance || 0))
           break
         default:
           filtered = remainingCourses
+          fallbackCourses = remainingCourses
       }
       
-      // 추가 코스 포맷팅
-      additionalCourses = filtered.slice(0, parseInt(limit) - foundPriorityCourses.length).map((course, index) => {
+      // 필터링된 코스가 부족하면 전체 코스에서 채우기
+      const neededCount = Math.max(0, parseInt(limit) - foundPriorityCourses.length)
+      
+      // 1차: 필터링된 코스 사용
+      let coursesToUse = filtered
+      
+      // 2차: 필터링된 코스가 부족하면 fallbackCourses 사용
+      if (coursesToUse.length < neededCount) {
+        coursesToUse = [...coursesToUse, ...fallbackCourses.filter(c => 
+          !coursesToUse.some(existing => String(existing._id) === String(c._id))
+        )]
+      }
+      
+      // 3차: 여전히 부족하면 산 정보가 없는 코스도 포함 (최종 fallback)
+      if (coursesToUse.length < neededCount) {
+        const coursesWithoutMountain = coursesWithMountain.filter(c => {
+          if (includedIds.has(String(c._id))) return false
+          if (coursesToUse.some(existing => String(existing._id) === String(c._id))) return false
+          return true
+        })
+        coursesToUse = [...coursesToUse, ...coursesWithoutMountain]
+      }
+      
+      // 추가 코스 필터링 (짧은 코스 제외)
+      const filteredAdditionalCourses = coursesToUse.filter(course => {
         const props = course.courseData?.properties || course.properties || {}
-        const distance = course.distance || props.distance || props.PMNTN_LT || 0
-        const duration = course.duration || props.duration || ''
+        let totalTime = 0
+        if (props.upTime !== undefined && props.downTime !== undefined) {
+          totalTime = (props.upTime || 0) + (props.downTime || 0)
+        } else if (props.PMNTN_UPPL !== undefined || props.PMNTN_GODN !== undefined) {
+          totalTime = (props.PMNTN_UPPL || 0) + (props.PMNTN_GODN || 0)
+        }
+        let distance = course.distance || props.distance || props.PMNTN_LT || 0
+        if (typeof distance === 'string') {
+          distance = parseFloat(distance) || 0
+        }
+        return !(totalTime <= 10 || distance <= 0.5)
+      })
+      
+      // 추가 코스 포맷팅 (필요한 개수만큼만)
+      additionalCourses = filteredAdditionalCourses
+        .slice(0, neededCount)
+        .map((course, index) => {
+        const props = course.courseData?.properties || course.properties || {}
+        
+        // 거리 추출 (여러 필드에서 시도)
+        let distance = course.distance || props.distance || props.PMNTN_LT || 0
+        if (typeof distance === 'string') {
+          distance = parseFloat(distance) || 0
+        }
+        
+        // 소요시간 추출 (여러 필드에서 시도)
+        let duration = course.duration || props.duration || ''
+        
+        // duration이 없으면 upTime과 downTime으로 계산
+        if (!duration && (props.upTime || props.downTime || props.PMNTN_UPPL || props.PMNTN_GODN)) {
+          const upTime = props.upTime || props.PMNTN_UPPL || 0
+          const downTime = props.downTime || props.PMNTN_GODN || 0
+          const totalMinutes = upTime + downTime
+          
+          if (totalMinutes > 0) {
+            if (totalMinutes >= 60) {
+              const hours = Math.floor(totalMinutes / 60)
+              const minutes = totalMinutes % 60
+              duration = minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`
+            } else {
+              duration = `${totalMinutes}분`
+            }
+          }
+        }
+        
         const difficulty = course.difficulty || props.difficulty || '보통'
         
         // 코스 이름을 "~산의 ~ 구간" 형식으로 만들기
         const courseNameOnly = course.courseName || props.name || props.PMNTN_NM || '구간'
         // 산 이름에서 주소 제거 (괄호 안의 내용 제거)
-        let mountainNameOnly = course.mountainName || ''
+        let mountainNameOnly = (course.mountainName || '').trim()
         mountainNameOnly = mountainNameOnly.replace(/\([^)]*\)/g, '').trim()
+        
+        // 산 이름이 없으면 코드로 대체
+        if (!mountainNameOnly && course.mountainCode) {
+          mountainNameOnly = `산 (코드: ${course.mountainCode})`
+        }
+        
         const finalCourseName = mountainNameOnly 
           ? (courseNameOnly.includes('구간') 
               ? `${mountainNameOnly}의 ${courseNameOnly}`

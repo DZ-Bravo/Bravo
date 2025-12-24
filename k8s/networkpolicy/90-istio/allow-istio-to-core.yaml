@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-istio-to-core
+  namespace: istio-system
+spec:
+  podSelector:
+    matchLabels:
+      istio: ingressgateway
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-core-ns
+    ports:
+    - protocol: TCP
+      port: 3001   # auth-service
+    - protocol: TCP
+      port: 3002   # community-service
+    - protocol: TCP
+      port: 3003   # notice-service
+    - protocol: TCP
+      port: 3004   # schedule-service
+    - protocol: TCP
+      port: 3005   # notification-service
+    - protocol: TCP
+      port: 3006   # store-service
+    - protocol: TCP
+      port: 3008   # mountain-service
+    - protocol: TCP
+      port: 3010   # stamp-service
+

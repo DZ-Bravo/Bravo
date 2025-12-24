@@ -1,0 +1,58 @@
+# =================================================
+# HAProxy Exporter Deployment
+# =================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-exporter
+  namespace: bravo-ai-integration-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy-exporter
+  template:
+    metadata:
+      labels:
+        app: haproxy-exporter
+    spec:
+      hostNetwork: true  # 호스트 네트워크로 HAProxy stats 접근
+      nodeSelector:
+        kubernetes.io/hostname: master1  # master-1 노드에만 배포
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: haproxy-exporter
+        image: quay.io/prometheus/haproxy-exporter:latest
+        args:
+          - '--haproxy.scrape-uri=http://127.0.0.1:8404/stats;csv'
+        ports:
+        - containerPort: 9101
+          name: metrics
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+
+---
+# =================================================
+# HAProxy Exporter Service
+# =================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: haproxy-exporter
+  namespace: bravo-ai-integration-ns
+spec:
+  selector:
+    app: haproxy-exporter
+  ports:
+  - port: 9101
+    targetPort: 9101
+    name: metrics
+

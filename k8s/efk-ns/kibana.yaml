@@ -79,9 +79,9 @@ data:
     server.name: hiking-kibana
     server.host: "0.0.0.0"
     server.port: 5601
-    elasticsearch.bravo-efk-ns.svc.cluster.local.hosts: ["http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"]
+    elasticsearch.hosts: ["http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"]
     i18n.locale: "ko"
     xpack.security.enabled: false
-    xpack.monitoring.ui.container.elasticsearch.bravo-efk-ns.svc.cluster.local.enabled: true
+    xpack.monitoring.ui.container.elasticsearch.enabled: true
     server.maxPayloadBytes: 1048576
 

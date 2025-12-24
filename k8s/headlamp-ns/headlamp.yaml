@@ -1,0 +1,186 @@
+# =================================================
+# Namespace
+# =================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bravo-headlamp-ns
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/audit: restricted
+
+---
+# =================================================
+# ServiceAccount
+# =================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: headlamp
+  namespace: bravo-headlamp-ns
+
+---
+# =================================================
+# ClusterRole for Headlamp
+# =================================================
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: headlamp
+rules:
+- apiGroups: [""]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["extensions"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["autoscaling"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["policy"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["storage.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apiregistration.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["coordination.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["node.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["discovery.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["flowcontrol.apiserver.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["metrics.k8s.io"]
+  resources:
+  - "*"
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["*"]
+  verbs: ["get", "list", "watch"]
+
+---
+# =================================================
+# ClusterRoleBinding for Headlamp
+# =================================================
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: headlamp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: headlamp
+subjects:
+- kind: ServiceAccount
+  name: headlamp
+  namespace: bravo-headlamp-ns
+
+---
+# =================================================
+# Headlamp Pod
+# =================================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: headlamp
+  namespace: bravo-headlamp-ns
+  labels:
+    app: headlamp
+spec:
+  serviceAccountName: headlamp
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: headlamp
+    image: ghcr.io/headlamp-io/headlamp:v0.23.0
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 4466
+      name: http
+    env:
+    - name: IN_CLUSTER
+      value: "true"
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      runAsUser: 65534
+      seccompProfile:
+        type: RuntimeDefault
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+
+---
+# =================================================
+# Headlamp Service (NodePort)
+# =================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: headlamp
+  namespace: bravo-headlamp-ns
+  labels:
+    app: headlamp
+spec:
+  type: NodePort
+  selector:
+    app: headlamp
+  ports:
+  - name: http
+    port: 4466
+    targetPort: 4466
+    nodePort: 30466
+    protocol: TCP
+

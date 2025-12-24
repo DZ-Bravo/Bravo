@@ -459,7 +459,7 @@ function Home() {
               <div className="course-overlay">
                 <h3>겨울왕국으로 떠나자!</h3>
                 <p>
-                  눈꽃 산행지 BEST 10
+                  눈꽃 산행지
                 </p>
               </div>
             </Link>
@@ -468,7 +468,7 @@ function Home() {
               <div className="course-overlay">
                 <h3>특별하게 즐기고 싶어!</h3>
                 <p>
-                  일몰&야경 코스 BEST8
+                  일몰&야경 코스
                 </p>
               </div>
             </Link>
@@ -477,7 +477,7 @@ function Home() {
               <div className="course-overlay">
                 <h3>심박수 140BPM 이하</h3>
                 <p>
-                  초보 산쟁이 코스 BEST 5
+                  초보 산쟁이 코스
                 </p>
               </div>
             </Link>
@@ -486,7 +486,7 @@ function Home() {
               <div className="course-overlay">
                 <h3>지금 못보면 올해 끝?!</h3>
                 <p>
-                  운해 사냥 코스 BEST5
+                  운해 사냥 코스
                 </p>
               </div>
             </Link>

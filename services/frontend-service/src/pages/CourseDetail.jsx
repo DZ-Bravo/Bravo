@@ -13,15 +13,15 @@ function CourseDetail() {
   const themeConfig = {
     winter: {
       title: '설산의 절경',
-      description: '눈꽃 산행지 BEST 코스를 확인하세요!'
+      description: '눈꽃 산행지 코스를 확인하세요!'
     },
     beginner: {
       title: '초보 산쟁이 코스',
-      description: '심박수 140BPM 이하 초보 산쟁이 코스 BEST를 확인하세요!'
+      description: '심박수 140BPM 이하 초보 산쟁이 코스를 확인하세요!'
     },
     sunrise: {
       title: '일몰&야경 코스',
-      description: '특별하게 즐기고 싶어! 일몰&야경 코스 BEST를 확인하세요!'
+      description: '특별하게 즐기고 싶어! 일몰&야경 코스를 확인하세요!'
     },
     spring: {
       title: '봄 산행지',
@@ -37,7 +37,7 @@ function CourseDetail() {
     },
     clouds: {
       title: '운해 사냥 추천 코스',
-      description: '지금 못보면 올해 끝?! 운해 사냥 추천 코스 BEST 5'
+      description: '지금 못보면 올해 끝?! 운해 사냥 추천 코스'
     }
   }
 
@@ -243,7 +243,7 @@ function CourseDetail() {
     },
     clouds: {
       title: '운해 사냥 추천 코스',
-      description: '지금 못보면 올해 끝?! 운해 사냥 추천 코스 BEST 8',
+      description: '지금 못보면 올해 끝?! 운해 사냥 추천 코스',
       courses: [
         {
           id: 1,

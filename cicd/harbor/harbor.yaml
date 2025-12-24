@@ -4,8 +4,8 @@ expose:
     ports:
       http:
         nodePort: 30305
-      https:
-        nodePort: 31209
+           https:
+           nodePort: 31209
   tls:
     enabled: false
 

@@ -1,0 +1,25 @@
+# =================================================
+# Weekly Report CronJob
+# =================================================
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: weekly-report
+  namespace: bravo-ai-integration-ns
+spec:
+  schedule: "0 0 * * 0"  # 매주 일요일 자정
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: report-generator
+            image: 192.168.0.244:30305/bravo/ai-infra-service:latest
+            command: ["node", "/app/services/report-script.js", "weekly"]
+            envFrom:
+            - configMapRef:
+                name: ai-infra-config
+            - secretRef:
+                name: ai-infra-secrets
+          restartPolicy: OnFailure
+

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Header from './Header'
 import { convertArcGISToGeoJSON, transformArcGISToWGS84 } from '../utils/coordinateTransform'
-import { API_URL } from '../utils/api'
+import { API_URL, getEnv } from '../utils/api'
 import CesiumMap from './CesiumMap'
 import './MountainDetail.css'
 
@@ -192,7 +192,13 @@ function MountainDetail({ name, code, height, location, description, center, zoo
         return
       }
 
-      const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY || ''
+      // window.__RUNTIME_ENV__를 직접 확인 (getEnv가 작동하지 않을 경우를 대비)
+      let apiKey = ''
+      if (typeof window !== 'undefined' && window.__RUNTIME_ENV__ && window.__RUNTIME_ENV__.VITE_KAKAO_MAP_API_KEY) {
+        apiKey = window.__RUNTIME_ENV__.VITE_KAKAO_MAP_API_KEY
+      } else {
+        apiKey = getEnv('VITE_KAKAO_MAP_API_KEY')
+      }
       
       if (!apiKey) {
         console.error('카카오 맵 API 키가 설정되지 않았습니다. VITE_KAKAO_MAP_API_KEY 환경 변수를 설정해주세요.')
