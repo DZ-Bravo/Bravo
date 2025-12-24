@@ -1,6 +1,6 @@
 pipeline {
   triggers {
-    pollSCM('* * * * *')
+    pollSCM('10 * * * *')
   }
   agent {
     kubernetes {
