@@ -155,12 +155,12 @@ fi
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
                 dockerfilePath = "${contextPath}/backend-services/${svcName}/Dockerfile"
-                versionFile = "${contextPath}/backend-services/${svcName}/VERSION"
+                versionFile = "${env.WORKSPACE}/application_cd/backend/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
                 dockerfilePath = "${contextPath}/frontend-service/Dockerfile"
-                versionFile = "${contextPath}/frontend-service/VERSION"
+                versionFile = "${env.WORKSPACE}/application_cd/frontend/frontend/VERSION"
               }
               else {
                 error("Unknown service type: ${svc}")
@@ -209,11 +209,11 @@ fi
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
-                versionFile = "${contextPath}/backend-services/${svcName}/VERSION"
+                versionFile = "${env.WORKSPACE}/application_cd/backend/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
-                versionFile = "${contextPath}/frontend-service/VERSION"
+                versionFile = "${env.WORKSPACE}/application_cd/frontend/frontend/VERSION"
               }
               else {
                 error("Unknown service type: ${svc}")
