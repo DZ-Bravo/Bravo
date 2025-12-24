@@ -86,13 +86,19 @@ set -e
 
 git fetch origin main
 
-BASE_COMMIT=$(git rev-parse HEAD~1 2>/dev/null || echo "")
-echo "Diff base: $BASE_COMMIT -> HEAD"
+BASE_COMMIT="${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-}"
+
+if [ -z "$BASE_COMMIT" ]; then
+  BASE_COMMIT=$(git rev-parse HEAD~1 2>/dev/null || echo "")
+fi
+
+echo "Diff base: $BASE_COMMIT -> $GIT_COMMIT"
 
 if [ -n "$BASE_COMMIT" ]; then
-  git diff --name-only "$BASE_COMMIT" HEAD > changed_files.txt
+  git diff --name-only "$BASE_COMMIT" "$GIT_COMMIT" > changed_files.txt
 else
-  git diff --name-only HEAD > changed_files.txt
+  git diff --name-only "$GIT_COMMIT" > changed_files.txt
+
 fi
 
 cat changed_files.txt || true
@@ -154,7 +160,8 @@ fi
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
-                dockerfilePath = "${contextPath}/backend-services/${svcName}/Dockerfile"
+                dockerfilePath = "${env.WORKSPACE}/services/backend-services/${svcName}/Dockerfile"
+                contextPath    = "${env.WORKSPACE}/services/backend-services/${svcName}"
                 versionFile = "${env.WORKSPACE}/application_cd/backend/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
