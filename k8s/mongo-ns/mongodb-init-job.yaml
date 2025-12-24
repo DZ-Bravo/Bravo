@@ -24,17 +24,32 @@ spec:
           try {
             var status = rs.status();
             print("Replica set already initialized");
+            var primary = status.members.find(m => m.stateStr === 'PRIMARY');
+            if (primary) {
+              print("PRIMARY: " + primary.name);
+            } else {
+              print("No PRIMARY found, reconfiguring...");
+              var cfg = rs.conf();
+              cfg.members[0].priority = 10;
+              rs.reconfig(cfg, {force: true});
+              print("Reconfigured with priority 10");
+            }
           } catch (e) {
-            print("Initializing replica set...");
-            rs.initiate({
-              _id: "rs0",
-              members: [
-                { _id: 0, host: "mongodb-0.mongodb:27017", priority: 2 },
-                { _id: 1, host: "mongodb-1.mongodb:27017", priority: 1 },
-                { _id: 2, host: "mongodb-2.mongodb:27017", priority: 1 }
-              ]
-            });
-            print("Replica set initialized successfully");
+            if (e.message.includes("no replset config")) {
+              print("Initializing replica set...");
+              rs.initiate({
+                _id: "rs0",
+                members: [
+                  { _id: 0, host: "mongodb-0.mongodb:27017", priority: 10 },
+                  { _id: 1, host: "mongodb-1.mongodb:27017", priority: 1 },
+                  { _id: 2, host: "mongodb-2.mongodb:27017", priority: 1 }
+                ]
+              });
+              print("Replica set initialized successfully");
+            } else {
+              print("Error: " + e.message);
+              throw e;
+            }
           }
       restartPolicy: OnFailure
   backoffLimit: 3

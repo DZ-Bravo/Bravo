@@ -11,8 +11,8 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import fs from 'fs'
 import AWS from 'aws-sdk'
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
 import { createClient } from 'redis'
-import { Resend } from 'resend'
 import { getMountainInfo } from './shared/utils/mountainRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -127,8 +127,16 @@ router.post('/check-name', async (req, res) => {
   }
 })
 
-// Resend 초기화
-const resend = new Resend(process.env.RESEND_API_KEY || 're_8YDsSjB7_6jvZkSS5tY4GAh5zPytqbG11')
+// AWS SES 초기화
+const sesClient = new SESClient({
+  region: process.env.AWS_REGION || 'ap-northeast-2',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
+  }
+})
+
+const SES_FROM_EMAIL = process.env.SES_FROM_EMAIL || 'noreply@hiker-cloud.site'
 
 // 이메일 인증번호 전송 (회원가입용)
 router.post('/send-email-verification', async (req, res) => {
@@ -165,49 +173,42 @@ router.post('/send-email-verification', async (req, res) => {
       return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
     }
 
-    // Resend로 이메일 전송
+    // AWS SES로 이메일 전송
     try {
-      const { data, error } = await resend.emails.send({
-        from: 'HIKER <onboarding@resend.dev>',
-        to: email,
-        subject: '[HIKER] 이메일 인증번호',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">이메일 인증번호</h2>
-            <p>안녕하세요, HIKER입니다.</p>
-            <p>회원가입을 위한 이메일 인증번호는 다음과 같습니다:</p>
-            <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
-              <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
-            </div>
-            <p>이 인증번호는 5분간 유효합니다.</p>
-            <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
-          </div>
-        `
-      })
-
-      // Resend API의 validation_error는 테스트 모드에서 정상적인 동작이므로 무시
-      if (error) {
-        console.warn('Resend 이메일 전송 경고:', error)
-        // validation_error인 경우 (테스트 모드에서 다른 이메일로 보낼 때) 무시하고 계속 진행
-        if (error.name === 'validation_error' && error.message && error.message.includes('testing emails')) {
-          console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
-          // Redis에 저장되었으므로 인증번호를 반환
-          return res.json({
-            message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
-            code: code, // 개발/테스트 환경에서는 항상 인증번호 반환
-            warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
-          })
+      const emailParams = {
+        Source: `HIKER <${SES_FROM_EMAIL}>`,
+        Destination: {
+          ToAddresses: [email]
+        },
+        Message: {
+          Subject: {
+            Data: '[HIKER] 이메일 인증번호',
+            Charset: 'UTF-8'
+          },
+          Body: {
+            Html: {
+              Data: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #333;">이메일 인증번호</h2>
+                  <p>안녕하세요, HIKER입니다.</p>
+                  <p>회원가입을 위한 이메일 인증번호는 다음과 같습니다:</p>
+                  <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+                    <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
+                  </div>
+                  <p>이 인증번호는 5분간 유효합니다.</p>
+                  <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
+                </div>
+              `,
+              Charset: 'UTF-8'
+            }
+          }
         }
-        // 다른 오류인 경우에만 에러 반환
-        console.error('Resend 이메일 전송 오류:', error)
-        return res.status(500).json({ 
-          error: '이메일 전송에 실패했습니다.',
-          details: error.message,
-          code: code // 개발 환경에서는 인증번호 반환
-        })
       }
 
-      console.log(`이메일 전송 성공: ${email}, Message ID: ${data?.id}`)
+      const command = new SendEmailCommand(emailParams)
+      const result = await sesClient.send(command)
+
+      console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
       
       res.json({
         message: '인증번호가 전송되었습니다.',
@@ -217,13 +218,13 @@ router.post('/send-email-verification', async (req, res) => {
     } catch (emailError) {
       console.error('이메일 전송 오류:', emailError)
       // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
-      // validation_error인 경우 무시
-      if (emailError.name === 'validation_error' || (emailError.message && emailError.message.includes('testing emails'))) {
-        console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
+      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
+      if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
         return res.json({
-          message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
+          message: '인증번호가 생성되었습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
           code: code,
-          warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+          warning: 'SES Sandbox 모드에서는 인증된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
         })
       }
       // 다른 오류인 경우에도 인증번호는 반환 (Redis에 저장되었으므로)
@@ -717,48 +718,42 @@ router.post('/send-email-verification-find-id', async (req, res) => {
       return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
     }
 
-    // Resend로 이메일 전송
+    // AWS SES로 이메일 전송
     try {
-      const { data, error } = await resend.emails.send({
-        from: 'HIKER <onboarding@resend.dev>',
-        to: email,
-        subject: '[HIKER] 아이디 찾기 인증번호',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">아이디 찾기 인증번호</h2>
-            <p>안녕하세요, HIKER입니다.</p>
-            <p>아이디 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
-            <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
-              <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
-            </div>
-            <p>이 인증번호는 5분간 유효합니다.</p>
-            <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
-          </div>
-        `
-      })
-
-      // Resend API의 validation_error는 테스트 모드에서 정상적인 동작이므로 무시
-      if (error) {
-        console.warn('Resend 이메일 전송 경고:', error)
-        // validation_error인 경우 (테스트 모드에서 다른 이메일로 보낼 때) 무시하고 계속 진행
-        if (error.name === 'validation_error' && error.message && error.message.includes('testing emails')) {
-          console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
-          return res.json({
-            message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
-            code: code,
-            warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
-          })
+      const emailParams = {
+        Source: `HIKER <${SES_FROM_EMAIL}>`,
+        Destination: {
+          ToAddresses: [email]
+        },
+        Message: {
+          Subject: {
+            Data: '[HIKER] 아이디 찾기 인증번호',
+            Charset: 'UTF-8'
+          },
+          Body: {
+            Html: {
+              Data: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #333;">아이디 찾기 인증번호</h2>
+                  <p>안녕하세요, HIKER입니다.</p>
+                  <p>아이디 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
+                  <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+                    <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
+                  </div>
+                  <p>이 인증번호는 5분간 유효합니다.</p>
+                  <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
+                </div>
+              `,
+              Charset: 'UTF-8'
+            }
+          }
         }
-        // 다른 오류인 경우에만 에러 반환
-        console.error('Resend 이메일 전송 오류:', error)
-        return res.status(500).json({ 
-          error: '이메일 전송에 실패했습니다.',
-          details: error.message,
-          code: code
-        })
       }
 
-      console.log(`이메일 전송 성공: ${email}, Message ID: ${data?.id}`)
+      const command = new SendEmailCommand(emailParams)
+      const result = await sesClient.send(command)
+
+      console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
       
       res.json({
         message: '인증번호가 전송되었습니다.',
@@ -767,12 +762,13 @@ router.post('/send-email-verification-find-id', async (req, res) => {
     } catch (emailError) {
       console.error('이메일 전송 오류:', emailError)
       // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
-      if (emailError.name === 'validation_error' || (emailError.message && emailError.message.includes('testing emails'))) {
-        console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
+      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
+      if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
         return res.json({
-          message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
+          message: '인증번호가 생성되었습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
           code: code,
-          warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+          warning: 'SES Sandbox 모드에서는 인증된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
         })
       }
       res.json({
@@ -920,48 +916,42 @@ router.post('/send-email-verification-password', async (req, res) => {
       return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
     }
 
-    // Resend로 이메일 전송
+    // AWS SES로 이메일 전송
     try {
-      const { data, error } = await resend.emails.send({
-        from: 'HIKER <onboarding@resend.dev>',
-        to: email,
-        subject: '[HIKER] 비밀번호 찾기 인증번호',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">비밀번호 찾기 인증번호</h2>
-            <p>안녕하세요, HIKER입니다.</p>
-            <p>비밀번호 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
-            <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
-              <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
-            </div>
-            <p>이 인증번호는 5분간 유효합니다.</p>
-            <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
-          </div>
-        `
-      })
-
-      // Resend API의 validation_error는 테스트 모드에서 정상적인 동작이므로 무시
-      if (error) {
-        console.warn('Resend 이메일 전송 경고:', error)
-        // validation_error인 경우 (테스트 모드에서 다른 이메일로 보낼 때) 무시하고 계속 진행
-        if (error.name === 'validation_error' && error.message && error.message.includes('testing emails')) {
-          console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
-          return res.json({
-            message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
-            code: code,
-            warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
-          })
+      const emailParams = {
+        Source: `HIKER <${SES_FROM_EMAIL}>`,
+        Destination: {
+          ToAddresses: [email]
+        },
+        Message: {
+          Subject: {
+            Data: '[HIKER] 비밀번호 찾기 인증번호',
+            Charset: 'UTF-8'
+          },
+          Body: {
+            Html: {
+              Data: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #333;">비밀번호 찾기 인증번호</h2>
+                  <p>안녕하세요, HIKER입니다.</p>
+                  <p>비밀번호 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
+                  <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+                    <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
+                  </div>
+                  <p>이 인증번호는 5분간 유효합니다.</p>
+                  <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
+                </div>
+              `,
+              Charset: 'UTF-8'
+            }
+          }
         }
-        // 다른 오류인 경우에만 에러 반환
-        console.error('Resend 이메일 전송 오류:', error)
-        return res.status(500).json({ 
-          error: '이메일 전송에 실패했습니다.',
-          details: error.message,
-          code: code
-        })
       }
 
-      console.log(`이메일 전송 성공: ${email}, Message ID: ${data?.id}`)
+      const command = new SendEmailCommand(emailParams)
+      const result = await sesClient.send(command)
+
+      console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
       
       res.json({
         message: '인증번호가 전송되었습니다.',
@@ -970,12 +960,13 @@ router.post('/send-email-verification-password', async (req, res) => {
     } catch (emailError) {
       console.error('이메일 전송 오류:', emailError)
       // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
-      if (emailError.name === 'validation_error' || (emailError.message && emailError.message.includes('testing emails'))) {
-        console.log('테스트 모드 validation_error 무시, 인증번호는 Redis에 저장되었습니다.')
+      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
+      if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
         return res.json({
-          message: '인증번호가 생성되었습니다. (테스트 모드: 이메일 전송 제한)',
+          message: '인증번호가 생성되었습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
           code: code,
-          warning: '테스트 모드에서는 등록된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+          warning: 'SES Sandbox 모드에서는 인증된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
         })
       }
       res.json({
