@@ -1,0 +1,65 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-harbor-full
+  namespace: bravo-platform-ns
+spec:
+  podSelector:
+    matchLabels:
+      app: harbor
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # 모든 Harbor 컴포넌트 간 통신 허용 (같은 네임스페이스 내)
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-platform-ns
+      podSelector:
+        matchLabels:
+          app: harbor
+  # 같은 네임스페이스 내 모든 Pod에서 Harbor로 접근 허용
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-platform-ns
+  egress:
+  # Harbor 컴포넌트 간 통신 허용 (같은 네임스페이스 내)
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-platform-ns
+      podSelector:
+        matchLabels:
+          app: harbor
+  # 같은 네임스페이스 내 모든 Pod로 접근 허용
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-platform-ns
+  # DNS Egress
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  # Longhorn 백엔드 접근 (스토리지용)
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-backup-ns
+      podSelector:
+        matchLabels:
+          app: longhorn-backend
+    ports:
+    - protocol: TCP
+      port: 9500
+

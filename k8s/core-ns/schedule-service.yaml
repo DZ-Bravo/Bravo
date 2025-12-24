@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: schedule-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3004"
+        prometheus.io/path: "/metrics"
     spec:
       imagePullSecrets:
       - name: harbor-registry-secret

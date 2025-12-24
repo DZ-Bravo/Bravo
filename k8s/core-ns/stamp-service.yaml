@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: stamp-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3010"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: stamp-service

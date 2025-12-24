@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-kiali-ui
+  name: allow-grafana-ui
   namespace: bravo-monitoring-ns
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: kiali
+      app: grafana
   policyTypes:
   - Ingress
   ingress:
@@ -15,6 +15,5 @@ spec:
         cidr: 0.0.0.0/0
     ports:
     - protocol: TCP
-      port: 20001
-    - protocol: TCP
-      port: 9090
+      port: 3000
+

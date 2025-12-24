@@ -15,7 +15,11 @@ spec:
         cidr: 0.0.0.0/0
     ports:
     - protocol: TCP
-      port: 80
+      port: 8080   # HTTP (container port)
     - protocol: TCP
-      port: 443
+      port: 8443   # HTTPS (container port)
+    - protocol: TCP
+      port: 80     # Service port (for compatibility)
+    - protocol: TCP
+      port: 443    # Service port (for compatibility)
 

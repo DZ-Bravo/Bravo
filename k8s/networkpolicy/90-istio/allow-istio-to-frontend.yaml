@@ -16,5 +16,5 @@ spec:
           kubernetes.io/metadata.name: bravo-front-ns
     ports:
     - protocol: TCP
-      port: 80
+      port: 80   # Frontend service port
 

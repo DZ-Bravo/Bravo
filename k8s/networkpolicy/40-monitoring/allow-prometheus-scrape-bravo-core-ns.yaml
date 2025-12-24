@@ -19,4 +19,6 @@ spec:
       port: 8080
     - protocol: TCP
       port: 15090
+    - protocol: TCP
+      port: 15020   # Istio Envoy metrics port
 

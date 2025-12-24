@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: ai-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3009"
+        prometheus.io/path: "/metrics"
     spec:
       imagePullSecrets:
       - name: harbor-registry-secret

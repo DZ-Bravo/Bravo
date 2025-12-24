@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-istio-to-frontend
-  namespace: bravo-front-ns
+  name: allow-ai-to-prometheus-ingress
+  namespace: bravo-monitoring-ns
 spec:
   podSelector: {}
   policyTypes:
@@ -11,8 +11,8 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: istio-system
+          kubernetes.io/metadata.name: bravo-ai-integration-ns
     ports:
     - protocol: TCP
-      port: 80   # Frontend service port
+      port: 9090
 

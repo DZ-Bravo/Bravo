@@ -1,22 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-prometheus-scrape
-  namespace: bravo-platform-ns
+  name: allow-ai-to-prometheus
+  namespace: bravo-ai-integration-ns
 spec:
   podSelector: {}
   policyTypes:
-  - Ingress
-  ingress:
-  - from:
+  - Egress
+  egress:
+  - to:
     - namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: bravo-monitoring-ns
     ports:
     - protocol: TCP
-      port: 9100
-    - protocol: TCP
-      port: 8080
-    - protocol: TCP
-      port: 15020   # Istio Envoy metrics port
+      port: 9090   # Prometheus
 

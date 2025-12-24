@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: mountain-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3008"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: mountain-service

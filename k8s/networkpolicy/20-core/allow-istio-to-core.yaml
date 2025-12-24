@@ -14,19 +14,19 @@ spec:
           kubernetes.io/metadata.name: istio-system
     ports:
     - protocol: TCP
-      port: 3001
+      port: 3001   # auth-service
     - protocol: TCP
-      port: 3002
+      port: 3002   # community-service
     - protocol: TCP
-      port: 3003
+      port: 3003   # notice-service
     - protocol: TCP
-      port: 3004
+      port: 3004   # schedule-service
     - protocol: TCP
-      port: 3005
+      port: 3005   # notification-service
     - protocol: TCP
-      port: 3006
+      port: 3006   # store-service
     - protocol: TCP
-      port: 3008
+      port: 3008   # mountain-service
     - protocol: TCP
-      port: 3010
+      port: 3010   # stamp-service
 
