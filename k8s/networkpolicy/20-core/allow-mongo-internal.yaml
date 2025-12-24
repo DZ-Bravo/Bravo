@@ -11,7 +11,7 @@ spec:
   - Ingress
   - Egress
   ingress:
-  # MongoDB Pod 간 통신 허용 (Replica Set용) - 같은 네임스페이스 내 MongoDB Pod에서
+  # MongoDB Pod 간 통신 허용 (Replica Set용)
   - from:
     - podSelector:
         matchLabels:
@@ -20,7 +20,7 @@ spec:
     - protocol: TCP
       port: 27017
   egress:
-  # MongoDB Pod 간 통신 허용 (Replica Set용) - 같은 네임스페이스 내 MongoDB Pod로
+  # MongoDB Pod 간 통신 허용 (Replica Set용)
   - to:
     - podSelector:
         matchLabels:
@@ -41,4 +41,3 @@ spec:
       port: 53
     - protocol: TCP
       port: 53
-
