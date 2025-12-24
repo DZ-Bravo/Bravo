@@ -37,7 +37,7 @@ spec:
         - name: PORT
           value: "3002"
         - name: MONGODB_URI
-          value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
+          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
