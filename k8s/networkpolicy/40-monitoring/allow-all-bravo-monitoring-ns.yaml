@@ -1,11 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-longhorn
-  namespace: bravo-backup-ns
+  name: allow-all
+  namespace: bravo-monitoring-ns
 spec:
   podSelector: {}
   policyTypes:
   - Ingress
+  - Egress
   ingress:
   - {}
+  egress:
+  - {}
+

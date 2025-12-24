@@ -97,6 +97,11 @@ spec:
             configMapKeyRef:
               name: bravo-config
               key: AWS_REGION
+        - name: SES_FROM_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: SES_FROM_EMAIL
         volumeMounts:
         - name: uploads
           mountPath: /app/uploads

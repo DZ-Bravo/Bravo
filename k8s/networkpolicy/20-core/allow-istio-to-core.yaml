@@ -8,10 +8,33 @@ spec:
   policyTypes:
   - Ingress
   ingress:
+  # Istio Gateway에서의 접근 허용
   - from:
     - namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: istio-system
+    ports:
+    - protocol: TCP
+      port: 3001   # auth-service
+    - protocol: TCP
+      port: 3002   # community-service
+    - protocol: TCP
+      port: 3003   # notice-service
+    - protocol: TCP
+      port: 3004   # schedule-service
+    - protocol: TCP
+      port: 3005   # notification-service
+    - protocol: TCP
+      port: 3006   # store-service
+    - protocol: TCP
+      port: 3008   # mountain-service
+    - protocol: TCP
+      port: 3010   # stamp-service
+  # 같은 네임스페이스 내부 서비스 간 통신 허용
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-core-ns
     ports:
     - protocol: TCP
       port: 3001   # auth-service
