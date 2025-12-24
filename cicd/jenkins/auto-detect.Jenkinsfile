@@ -1,0 +1,66 @@
+controller:
+  image:
+    registry: docker.io
+    repository: jenkins/jenkins
+    tag: lts-jdk17
+    pullPolicy: IfNotPresent
+
+  # ✅ Jenkins Controller를 worker node1에 고정
+  nodeSelector:
+    kubernetes.io/hostname: node2
+
+  admin:
+    username: admin
+    password: "bravo6785#"
+
+  serviceType: NodePort
+  nodePort: 30526
+
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "1.5Gi"
+
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
+    - credentials
+    - credentials-binding
+    - docker-workflow
+    - sonar
+    - pipeline-stage-view
+    - blueocean
+
+  JCasC:
+    defaultConfig: true
+
+persistence:
+  enabled: true
+  storageClass: longhorn
+  size: 5Gi
+
+agent:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: jenkins/inbound-agent
+    tag: lts-jdk17   # ✅ controller와 JDK 버전 통일
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+
+serviceAccount:
+  create: true
+  name: jenkins
+
+rbac:
+  create: true
