@@ -12,7 +12,13 @@ spec:
     metadata:
       labels:
         app: chatbot-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3007"
+        prometheus.io/path: "/metrics"
     spec:
+      imagePullSecrets:
+      - name: harbor-registry-secret
       containers:
       - name: chatbot-service
         image: 192.168.0.244:30305/bravo/hiking-chatbot-service:latest
@@ -33,7 +39,7 @@ spec:
         - name: PORT
           value: "3007"
         - name: MONGODB_URI
-          value: "mongodb://mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
+          value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
@@ -59,6 +65,11 @@ spec:
             secretKeyRef:
               name: bravo-secrets
               key: BEDROCK_AGENT_ALIAS_ID
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: JWT_SECRET
         resources:
           requests:
             memory: "256Mi"

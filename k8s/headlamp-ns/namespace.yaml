@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bravo-headlamp-ns
+  labels:
+    name: bravo-headlamp-ns
+

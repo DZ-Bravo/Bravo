@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: elastic-rb
+  namespace: bravo-efk-ns
+subjects:
+- kind: ServiceAccount
+  name: efk-sa
+  namespace: bravo-efk-ns
+roleRef:
+  kind: Role
+  name: elastic-role
+  apiGroup: rbac.authorization.k8s.io
+

@@ -434,8 +434,7 @@ router.get('/search', async (req, res) => {
           // 검색 쿼리 생성
           const searchFields = ['title^3', 'brand^2', 'description']
           const searchQuery = buildFuzzySearchQuery(query, searchFields, {
-            fuzziness: 'AUTO',
-            prefixLength: 1
+            exactMatch: true  // 정확 매칭 사용
           })
 
           // 카테고리 필터 추가

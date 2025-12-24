@@ -1524,9 +1524,85 @@ router.get('/mountains/favorites/my', authenticateToken, async (req, res) => {
     const user = await User.findById(userId).select('favoriteMountains').lean()
     const favoriteCodes = user?.favoriteMountains || []
 
-    const mountains = favoriteCodes.map(code => {
+    // MongoDB에서 산 정보 가져오기
+    const db = mongoose.connection.db
+    if (!db) {
+      return res.status(503).json({ error: 'Database not connected' })
+    }
+
+    const collections = await db.listCollections().toArray()
+    const collectionNames = collections.map(c => c.name)
+    const mountainListCollectionName = collectionNames.find(name => 
+      name === 'Mountain_list' || name.toLowerCase() === 'mountain_list'
+    ) || 'Mountain_list'
+    
+    const actualCollection = db.collection(mountainListCollectionName)
+
+    // 각 코드에 대해 MongoDB에서 산 정보 찾기
+    const mountains = await Promise.all(favoriteCodes.map(async (code) => {
+      const codeNum = parseInt(code)
+      const codeStr = String(code)
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(code)
+      
+      let mountain = null
+      
+      // ObjectId 형식이면 _id로 검색
+      if (isObjectId) {
+        try {
+          const objectId = new mongoose.Types.ObjectId(code)
+          mountain = await actualCollection.findOne({ _id: objectId })
+        } catch (e) {
+          console.error('ObjectId 변환 실패:', e)
+        }
+      }
+      
+      // 숫자 코드로 검색
+      if (!mountain && !isNaN(codeNum)) {
+        mountain = await actualCollection.findOne({
+          $or: [
+            { mntilistno: codeNum },
+            { mntilistno: codeStr },
+            { 'trail_match.mountain_info.mntilistno': codeNum },
+            { 'trail_match.mountain_info.mntilistno': codeStr }
+          ]
+        })
+      }
+      
+      if (mountain) {
+        const mountainInfo = mountain.trail_match?.mountain_info || {}
+        
+        // 산 이름 찾기 (여러 필드에서 시도)
+        const mountainName = mountain.mntiname || 
+                            mountain.name || 
+                            mountain.MNTN_NM ||
+                            mountainInfo.mntiname ||
+                            mountainInfo.name ||
+                            mountainInfo.MNTN_NM ||
+                            mountain.mountainName ||
+                            null
+        
+        const center = mountain.center || 
+          (mountain.lat && mountain.lng ? { lat: mountain.lat, lon: mountain.lng } : null) ||
+          (mountain.lat && mountain.lon ? { lat: mountain.lat, lon: mountain.lon } : null) ||
+          (mountain.MNTN_CTR ? { 
+            lat: mountain.MNTN_CTR.lat || mountain.MNTN_CTR[0], 
+            lon: mountain.MNTN_CTR.lon || mountain.MNTN_CTR[1] 
+          } : null) ||
+          (mountainInfo.lat && mountainInfo.lon ? { lat: mountainInfo.lat, lon: mountainInfo.lon } : null)
+        
+        return {
+          code: String(mountain.mntilistno || mountain.code || code),
+          name: mountainName || `산 (코드: ${code})`,
+          height: mountain.mntihigh || mountain.height || mountainInfo.mntihigh || null,
+          location: mountain.location || mountain.mntiadd || mountainInfo.mntiadd || null,
+          center: center ? [center.lat, center.lon] : null
+        }
+      }
+      
+      // MongoDB에서 찾지 못하면 하드코딩된 정보 사용
       const info = getMountainInfo(code)
       if (info) return info
+      
       return {
         code,
         name: `산 (코드: ${code})`,
@@ -1534,7 +1610,7 @@ router.get('/mountains/favorites/my', authenticateToken, async (req, res) => {
         location: null,
         center: null
       }
-    })
+    }))
 
     res.json({ mountains })
   } catch (error) {
@@ -1659,6 +1735,12 @@ router.get('/kakao/callback', async (req, res) => {
       tokenParams.append('client_secret', KAKAO_CLIENT_SECRET)
     }
 
+    console.log('카카오 토큰 요청 시작')
+    console.log('- Redirect URI:', REDIRECT_URI)
+    console.log('- Code:', code ? code.substring(0, 10) + '...' : '없음')
+    console.log('- Client ID:', KAKAO_REST_API_KEY)
+    console.log('- Client Secret:', KAKAO_CLIENT_SECRET ? '있음' : '없음')
+
     const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
       method: 'POST',
       headers: {
@@ -1668,7 +1750,8 @@ router.get('/kakao/callback', async (req, res) => {
     })
 
     const tokenData = await tokenResponse.json()
-    console.log('카카오 토큰 응답:', tokenData.error ? tokenData : '성공')
+    console.log('카카오 토큰 응답 상태:', tokenResponse.status)
+    console.log('카카오 토큰 응답:', JSON.stringify(tokenData, null, 2))
     if (!tokenData.access_token) {
       console.error('카카오 토큰 요청 실패:', JSON.stringify(tokenData, null, 2))
       return res.redirect(`${FRONTEND_URL}/login?error=kakao_token_failed&message=${encodeURIComponent(tokenData.error_description || tokenData.error || '토큰 요청 실패')}`)

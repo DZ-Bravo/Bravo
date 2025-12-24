@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-external-ingress
+  namespace: istio-system
+spec:
+  podSelector:
+    matchLabels:
+      istio: ingressgateway
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 8080   # HTTP (container port)
+    - protocol: TCP
+      port: 8443   # HTTPS (container port)
+    - protocol: TCP
+      port: 80     # Service port (for compatibility)
+    - protocol: TCP
+      port: 443    # Service port (for compatibility)
+

@@ -44,7 +44,7 @@ metadata:
   namespace: bravo-efk-ns
 data:
   config.toml: |
-    mongo-url = "mongodb://mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=primaryPreferred"
+    mongo-url = "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=primaryPreferred"
     elasticsearch-urls = ["http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"]
     resume = true
     resume-name = "default"

@@ -482,10 +482,10 @@ function CommunityDetail() {
             <div className="author-info">
               {post.authorProfileImage ? (
                 <>
-                  <img
+                <img
                     src={post.authorProfileImage.startsWith('http') ? post.authorProfileImage : `${API_URL}${post.authorProfileImage}`}
-                    alt={post.author}
-                    className="author-avatar"
+                  alt={post.author}
+                  className="author-avatar"
                     onError={(e) => {
                       e.target.style.display = 'none'
                       const placeholder = e.target.nextElementSibling
@@ -678,14 +678,14 @@ function CommunityDetail() {
                           <div className="comment-author-info">
                             {comment.authorProfileImage ? (
                               <>
-                                <img
+                              <img
                                   src={comment.authorProfileImage.startsWith('http') ? comment.authorProfileImage : `${API_URL}${comment.authorProfileImage}`}
-                                  alt={comment.author}
-                                  className="comment-author-avatar"
+                                alt={comment.author}
+                                className="comment-author-avatar"
                                   onError={(e) => {
                                     e.target.style.display = 'none'
                                   }}
-                                />
+                              />
                               </>
                             ) : null}
                             <span className="comment-author">{comment.author}</span>

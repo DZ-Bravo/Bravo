@@ -4,7 +4,7 @@ metadata:
   name: auth-service
   namespace: bravo-core-ns
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: auth-service
@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: auth-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3001"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: auth-service
@@ -33,7 +37,7 @@ spec:
         - name: PORT
           value: "3001"
         - name: MONGODB_URI
-          value: "mongodb://mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
+          value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
         - name: REDIS_HOST
           value: "redis-0.redis.bravo-redis-ns.svc.cluster.local"
         - name: REDIS_PORT
@@ -146,5 +150,5 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 1Gi
 

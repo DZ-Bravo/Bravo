@@ -12,7 +12,13 @@ spec:
     metadata:
       labels:
         app: schedule-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3004"
+        prometheus.io/path: "/metrics"
     spec:
+      imagePullSecrets:
+      - name: harbor-registry-secret
       containers:
       - name: schedule-service
         image: 192.168.0.244:30305/bravo/hiking-schedule-service:latest
@@ -33,7 +39,7 @@ spec:
         - name: PORT
           value: "3004"
         - name: MONGODB_URI
-          value: "mongodb://mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-1.mongodb.bravo-mongo-ns.svc.cluster.local:27017,mongodb-2.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
+          value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:

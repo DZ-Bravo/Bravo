@@ -1,0 +1,280 @@
+# =================================================
+# LimitRange for all namespaces (except default)
+# =================================================
+
+---
+# bravo-core-ns - Core Application Services
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-core-ns
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    max:
+      memory: "4Gi"
+      cpu: "4"
+    min:
+      memory: "64Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# bravo-front-ns - Frontend Services
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-front-ns
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    max:
+      memory: "2Gi"
+      cpu: "2"
+    min:
+      memory: "64Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# bravo-ai-integration-ns - AI Services
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-ai-integration-ns
+spec:
+  limits:
+  - default:
+      memory: "1Gi"
+      cpu: "1000m"
+    defaultRequest:
+      memory: "512Mi"
+      cpu: "500m"
+    max:
+      memory: "8Gi"
+      cpu: "8"
+    min:
+      memory: "128Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# bravo-mongo-ns - MongoDB
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-mongo-ns
+spec:
+  limits:
+  - default:
+      memory: "2Gi"
+      cpu: "2000m"
+    defaultRequest:
+      memory: "1Gi"
+      cpu: "1000m"
+    max:
+      memory: "8Gi"
+      cpu: "4"
+    min:
+      memory: "512Mi"
+      cpu: "500m"
+    type: Container
+
+---
+# bravo-redis-ns - Redis
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-redis-ns
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    max:
+      memory: "2Gi"
+      cpu: "2"
+    min:
+      memory: "128Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# bravo-efk-ns - Elasticsearch, Kibana
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-efk-ns
+spec:
+  limits:
+  - default:
+      memory: "2Gi"
+      cpu: "2000m"
+    defaultRequest:
+      memory: "1Gi"
+      cpu: "1000m"
+    max:
+      memory: "8Gi"
+      cpu: "4"
+    min:
+      memory: "512Mi"
+      cpu: "500m"
+    type: Container
+
+---
+# bravo-monitoring-ns - Monitoring Tools
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-monitoring-ns
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    max:
+      memory: "4Gi"
+      cpu: "4"
+    min:
+      memory: "64Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# bravo-platform-ns - Platform Tools (CI/CD)
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-platform-ns
+spec:
+  limits:
+  - default:
+      memory: "1Gi"
+      cpu: "1000m"
+    defaultRequest:
+      memory: "512Mi"
+      cpu: "500m"
+    max:
+      memory: "8Gi"
+      cpu: "8"
+    min:
+      memory: "128Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# bravo-backup-ns - Backup Tools (Velero)
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-backup-ns
+spec:
+  limits:
+  - default:
+      memory: "256Mi"
+      cpu: "250m"
+    defaultRequest:
+      memory: "128Mi"
+      cpu: "100m"
+    max:
+      memory: "2Gi"
+      cpu: "2"
+    min:
+      memory: "64Mi"
+      cpu: "50m"
+    type: Container
+
+---
+# bravo-security-ns - Security Tools
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: bravo-security-ns
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    max:
+      memory: "2Gi"
+      cpu: "2"
+    min:
+      memory: "64Mi"
+      cpu: "100m"
+    type: Container
+
+---
+# cert-manager - Certificate Management
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: cert-manager
+spec:
+  limits:
+  - default:
+      memory: "256Mi"
+      cpu: "250m"
+    defaultRequest:
+      memory: "128Mi"
+      cpu: "100m"
+    max:
+      memory: "1Gi"
+      cpu: "1"
+    min:
+      memory: "64Mi"
+      cpu: "50m"
+    type: Container
+
+---
+# istio-system - Istio Control Plane
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: istio-system
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    max:
+      memory: "4Gi"
+      cpu: "4"
+    min:
+      memory: "128Mi"
+      cpu: "100m"
+    type: Container
+

@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: monstache-rb
+  namespace: bravo-efk-ns
+subjects:
+- kind: ServiceAccount
+  name: efk-sa
+  namespace: bravo-efk-ns
+roleRef:
+  kind: Role
+  name: monstache-role
+  apiGroup: rbac.authorization.k8s.io

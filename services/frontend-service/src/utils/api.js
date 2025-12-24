@@ -28,3 +28,22 @@ function getApiUrl() {
 // 런타임에 동적으로 결정되도록 상수로 export
 export const API_URL = getApiUrl()
 
+/**
+ * 환경 변수를 가져옵니다.
+ * 런타임 환경 변수(window.__RUNTIME_ENV__)를 우선 확인하고,
+ * 없으면 빌드 시점 환경 변수(import.meta.env)를 사용합니다.
+ */
+export function getEnv(key) {
+  // 런타임 환경 변수 확인 (server.js에서 주입)
+  if (typeof window !== 'undefined' && window.__RUNTIME_ENV__) {
+    const runtimeValue = window.__RUNTIME_ENV__[key]
+    // 값이 존재하면 반환 (빈 문자열도 유효한 값으로 처리)
+    if (runtimeValue !== undefined && runtimeValue !== null) {
+      return runtimeValue
+    }
+  }
+  
+  // 빌드 시점 환경 변수 확인
+  return import.meta.env[key] || ''
+}
+

@@ -12,15 +12,40 @@ spec:
     metadata:
       labels:
         app: frontend
+        sidecar.istio.io/inject: "false"
+      annotations:
+        sidecar.istio.io/inject: "false"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+        prometheus.io/path: "/metrics"
     spec:
       imagePullSecrets:
       - name: harbor-registry-secret
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: frontend
         image: 192.168.0.244:30305/bravo/hiking-frontend:latest
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
         ports:
         - containerPort: 80
           name: http
+        volumeMounts:
+        - name: server-js
+          mountPath: /app/server.js
+          subPath: server.js
+          readOnly: true
         env:
         - name: TZ
           valueFrom:
@@ -56,6 +81,10 @@ spec:
             port: 80
           initialDelaySeconds: 10
           periodSeconds: 5
+      volumes:
+      - name: server-js
+        configMap:
+          name: frontend-server-js
 ---
 apiVersion: v1
 kind: Service

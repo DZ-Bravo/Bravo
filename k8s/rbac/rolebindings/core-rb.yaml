@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: core-rb
+  namespace: bravo-core-ns
+subjects:
+- kind: ServiceAccount
+  name: core-sa
+  namespace: bravo-core-ns
+roleRef:
+  kind: Role
+  name: core-role
+  apiGroup: rbac.authorization.k8s.io
+

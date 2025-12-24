@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-istio-to-ai
+  namespace: istio-system
+spec:
+  podSelector:
+    matchLabels:
+      istio: ingressgateway
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-ai-integration-ns
+    ports:
+    - protocol: TCP
+      port: 3007   # chatbot-service
+    - protocol: TCP
+      port: 3009   # ai-service
+    - protocol: TCP
+      port: 3011   # ai-infra-service
+
