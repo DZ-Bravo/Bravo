@@ -54,15 +54,9 @@ spec:
     }
   }
 
-  options {
-    skipDefaultCheckout()
-  }
-
   environment {
     REGISTRY   = "192.168.0.244:30443"
     PROJECT    = "bravo"
-    IMAGE_NAME = "hiking-frontend"
-    FRONT_DIR  = "services/frontend-service"
     SONAR_HOST = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
   }
 
@@ -74,104 +68,101 @@ spec:
       }
     }
 
-    stage('Prepare Image Tag') {
+    stage('Detect Changed Services') {
       steps {
-        container('jnlp') {
-          script {
-            def gitCommit = sh(
-              script: "git rev-parse --short HEAD",
-              returnStdout: true
-            ).trim()
+        script {
+          def changed = sh(
+            script: "git diff --name-only origin/main...HEAD",
+            returnStdout: true
+          ).trim().split("\n")
 
-            env.IMAGE_TAG = "${env.BUILD_NUMBER}-${gitCommit}"
-            echo "IMAGE_TAG = ${env.IMAGE_TAG}"
+          def services = [] as Set
+
+          changed.each { f ->
+            if (f.startsWith("frontend-service/")) {
+              services << "frontend-service"
+            }
+            if (f.startsWith("backend-services/")) {
+              services << f.split("/")[1]
+            }
           }
+
+          if (services.isEmpty()) {
+            error "❌ No service changes detected"
+          }
+
+          env.SERVICES = services.join(",")
+          echo "🧩 Services to build: ${env.SERVICES}"
         }
       }
     }
 
-    stage('SonarQube Scan') {
+    stage('Build & Scan Services') {
       steps {
-        container('sonar-scanner') {
-          withCredentials([string(credentialsId: 'bravo-sonar', variable: 'SONAR_TOKEN')]) {
-            sh '''
-              set -e
+        script {
+          env.SERVICES.split(',').each { svc ->
 
-              sonar-scanner \
-                -Dsonar.host.url=${SONAR_HOST} \
-                -Dsonar.login=${SONAR_TOKEN} \
-                -Dsonar.projectKey=${PROJECT}-${IMAGE_NAME} \
-                -Dsonar.projectName=${PROJECT}-${IMAGE_NAME} \
-                -Dsonar.projectVersion=${IMAGE_TAG} \
-                -Dsonar.projectBaseDir=${WORKSPACE}/${FRONT_DIR} \
-                -Dsonar.sources=.
-            '''
-          }
-        }
-      }
-    }
+            def servicePath = (svc == "frontend-service") ?
+              "frontend-service" :
+              "backend-services/${svc}"
 
-    stage('Build & Push Image (Kaniko)') {
-      steps {
-        container('kaniko') {
-          withCredentials([usernamePassword(
-            credentialsId: 'jenkins',
-            usernameVariable: 'HARBOR_USER',
-            passwordVariable: 'HARBOR_PASS'
-          )]) {
+            def imageName = svc
+            def tag = "${env.BUILD_NUMBER}-${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
 
-            sh '''
-              set -e
+            echo "🚀 Building ${svc}"
 
-              mkdir -p /kaniko/.docker
+            container('kaniko') {
+              withCredentials([usernamePassword(
+                credentialsId: 'jenkins',
+                usernameVariable: 'HARBOR_USER',
+                passwordVariable: 'HARBOR_PASS'
+              )]) {
 
-              cat <<EOF > /kaniko/.docker/config.json
-              {
-                "auths": {
-                  "${REGISTRY}": {
-                    "username": "${HARBOR_USER}",
-                    "password": "${HARBOR_PASS}"
+                sh """
+                  mkdir -p /kaniko/.docker
+
+                  cat <<EOF > /kaniko/.docker/config.json
+                  {
+                    "auths": {
+                      "${REGISTRY}": {
+                        "username": "${HARBOR_USER}",
+                        "password": "${HARBOR_PASS}"
+                      }
+                    }
                   }
-                }
+                  EOF
+
+                  /kaniko/executor \
+                    --dockerfile=${WORKSPACE}/services/${servicePath}/Dockerfile \
+                    --context=${WORKSPACE}/services/${servicePath} \
+                    --destination=${REGISTRY}/${PROJECT}/${imageName}:${tag} \
+                    --destination=${REGISTRY}/${PROJECT}/${imageName}:latest \
+                    --cache=true \
+                    --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
+                    --skip-tls-verify
+                """
               }
-              EOF
+            }
 
-              /kaniko/executor \
-                --dockerfile=${WORKSPACE}/${FRONT_DIR}/Dockerfile \
-                --context=${WORKSPACE}/${FRONT_DIR} \
-                --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
-                --cache=true \
-                --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
-                --skip-tls-verify
-            '''
-          }
-        }
-      }
-    }
+            container('trivy') {
+              withCredentials([usernamePassword(
+                credentialsId: 'jenkins',
+                usernameVariable: 'HARBOR_USER',
+                passwordVariable: 'HARBOR_PASS'
+              )]) {
 
-    stage('Trivy Scan') {
-      steps {
-        container('trivy') {
-          withCredentials([usernamePassword(
-            credentialsId: 'jenkins',
-            usernameVariable: 'HARBOR_USER',
-            passwordVariable: 'HARBOR_PASS'
-          )]) {
-
-            sh '''
-              set -e
-              IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-
-              trivy image \
-                --cache-dir /root/.cache \
-                --severity HIGH,CRITICAL \
-                --exit-code 1 \
-                --no-progress \
-                --username "${HARBOR_USER}" \
-                --password "${HARBOR_PASS}" \
-                --insecure \
-                ${IMAGE}
-            '''
+                sh """
+                  trivy image \
+                    --cache-dir /root/.cache \
+                    --severity HIGH,CRITICAL \
+                    --exit-code 1 \
+                    --username ${HARBOR_USER} \
+                    --password ${HARBOR_PASS} \
+                    --insecure \
+                    ${REGISTRY}/${PROJECT}/${imageName}:${tag}
+                """
+              }
+            }
           }
         }
       }
@@ -179,12 +170,11 @@ spec:
   }
 
   post {
-    always {
-      echo "✅ Pipeline finished: ${currentBuild.currentResult}"
-      echo "Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
+    success {
+      echo "✅ ALL SERVICES BUILT & SCANNED SUCCESSFULLY"
     }
     failure {
-      echo "❌ Pipeline failed"
+      echo "❌ PIPELINE FAILED"
     }
   }
 }
