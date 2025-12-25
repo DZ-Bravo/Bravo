@@ -162,7 +162,6 @@ fi
                   --destination=${REGISTRY}/bravo/${imageName}:${imageTag} \
                   --cache=true \
                   --cache-repo=${CACHE_REPO} \
-                  --insecure \
                   --skip-tls-verify
               """
             }
