@@ -15,6 +15,9 @@ spec:
     image: gcr.io/kaniko-project/executor:debug
     command: ["/busybox/sleep"]
     args: ["infinity"]
+    env:
+      - name: DOCKER_CONFIG
+        value: /kaniko/.docker
     volumeMounts:
       - name: workspace-volume
         mountPath: /home/jenkins/agent
@@ -189,7 +192,9 @@ fi
                   --destination=${REGISTRY}/bravo/${imageName}:${imageTag} \
                   --cache=true \
                   --cache-repo=${CACHE_REPO} \
-                  --skip-tls-verify
+                  --insecure \
+                  --skip-tls-verify \
+                  --verbosity=info 
               """
             }
           }
