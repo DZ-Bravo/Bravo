@@ -54,16 +54,16 @@ spec:
     }
   }
 
-  options {
-    skipDefaultCheckout()
+  parameters {
+    string(name: 'SERVICE_NAME', defaultValue: 'frontend-service', description: '빌드할 서비스 디렉토리 이름')
   }
 
   environment {
-    REGISTRY   = "192.168.0.244:30443"
-    PROJECT    = "bravo"
-    IMAGE_NAME = "hiking-frontend"
-    FRONT_DIR  = "services/frontend-service"
-    SONAR_HOST = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
+    REGISTRY    = "192.168.0.244:30443"
+    PROJECT     = "bravo"
+    IMAGE_NAME  = "${params.SERVICE_NAME}"
+    SERVICE_DIR = "services/${params.SERVICE_NAME}"
+    SONAR_HOST  = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
   }
 
   stages {
@@ -76,16 +76,13 @@ spec:
 
     stage('Prepare Image Tag') {
       steps {
-        container('jnlp') {
-          script {
-            def gitCommit = sh(
-              script: "git rev-parse --short HEAD",
-              returnStdout: true
-            ).trim()
-
-            env.IMAGE_TAG = "${env.BUILD_NUMBER}-${gitCommit}"
-            echo "IMAGE_TAG = ${env.IMAGE_TAG}"
-          }
+        script {
+          def gitCommit = sh(
+            script: "git rev-parse --short HEAD",
+            returnStdout: true
+          ).trim()
+          env.IMAGE_TAG = "${env.BUILD_NUMBER}-${gitCommit}"
+          echo "IMAGE_TAG = ${env.IMAGE_TAG}"
         }
       }
     }
@@ -94,18 +91,16 @@ spec:
       steps {
         container('sonar-scanner') {
           withCredentials([string(credentialsId: 'bravo-sonar', variable: 'SONAR_TOKEN')]) {
-            sh '''
-              set -e
-
+            sh """
               sonar-scanner \
                 -Dsonar.host.url=${SONAR_HOST} \
                 -Dsonar.login=${SONAR_TOKEN} \
                 -Dsonar.projectKey=${PROJECT}-${IMAGE_NAME} \
                 -Dsonar.projectName=${PROJECT}-${IMAGE_NAME} \
                 -Dsonar.projectVersion=${IMAGE_TAG} \
-                -Dsonar.projectBaseDir=${WORKSPACE}/${FRONT_DIR} \
+                -Dsonar.projectBaseDir=${WORKSPACE}/${SERVICE_DIR} \
                 -Dsonar.sources=.
-            '''
+            """
           }
         }
       }
@@ -120,8 +115,14 @@ spec:
             passwordVariable: 'HARBOR_PASS'
           )]) {
 
-            sh '''
+            sh """
               set -e
+
+              echo "========================================"
+              echo "🚀 Building & Pushing Image"
+              echo "IMAGE : ${REGISTRY}/${PROJECT}/${IMAGE_NAME}"
+              echo "TAG   : ${IMAGE_TAG}"
+              echo "========================================"
 
               mkdir -p /kaniko/.docker
 
@@ -137,13 +138,14 @@ spec:
               EOF
 
               /kaniko/executor \
-                --dockerfile=${WORKSPACE}/${FRONT_DIR}/Dockerfile \
-                --context=${WORKSPACE}/${FRONT_DIR} \
+                --dockerfile=${WORKSPACE}/${SERVICE_DIR}/Dockerfile \
+                --context=${WORKSPACE}/${SERVICE_DIR} \
                 --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
+                --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:latest \
                 --cache=true \
                 --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
                 --skip-tls-verify
-            '''
+            """
           }
         }
       }
@@ -158,20 +160,16 @@ spec:
             passwordVariable: 'HARBOR_PASS'
           )]) {
 
-            sh '''
-              set -e
-              IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-
+            sh """
               trivy image \
                 --cache-dir /root/.cache \
                 --severity HIGH,CRITICAL \
                 --exit-code 1 \
-                --no-progress \
-                --username "${HARBOR_USER}" \
-                --password "${HARBOR_PASS}" \
+                --username ${HARBOR_USER} \
+                --password ${HARBOR_PASS} \
                 --insecure \
-                ${IMAGE}
-            '''
+                ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
+            """
           }
         }
       }
@@ -179,12 +177,12 @@ spec:
   }
 
   post {
-    always {
-      echo "✅ Pipeline finished: ${currentBuild.currentResult}"
+    success {
+      echo "✅ Build & Scan SUCCESS"
       echo "Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
     }
     failure {
-      echo "❌ Pipeline failed"
+      echo "❌ Pipeline FAILED"
     }
   }
 }
