@@ -332,7 +332,7 @@ function Home() {
               />
             ))}
             <div className="search-overlay">
-              <h1>이번 주엔 어느 산으로 갈까요막걸리도 먹고 오나요 프로젝트힘들어 ?</h1>
+              <h1>이번 주엔 어느 산으로 갈까요다람쥐 한마리 데려가세요 ?</h1>
               <h2>어느 산을 찾으시나요?</h2>
               <form onSubmit={handleSearch} className="search-form">
                 <input
