@@ -42,8 +42,7 @@ spec:
   }
 
   options {
-    timestamps()
-    ansiColor('xterm')
+    skipDefaultCheckout()
   }
 
   environment {
@@ -57,65 +56,63 @@ spec:
 
     stage('Checkout') {
       steps {
-        container('jnlp') {
-          checkout scm
-        }
+        checkout scm
       }
     }
 
-    stage('Build & Push Image') {
+    stage('Build & Scan') {
       steps {
-        container('kaniko') {
-          withCredentials([usernamePassword(
-            credentialsId: 'jenkins',
-            usernameVariable: 'HARBOR_USER',
-            passwordVariable: 'HARBOR_PASS'
-          )]) {
+        wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+          timestamps {
+            container('kaniko') {
+              withCredentials([usernamePassword(
+                credentialsId: 'jenkins',
+                usernameVariable: 'HARBOR_USER',
+                passwordVariable: 'HARBOR_PASS'
+              )]) {
 
-            sh '''
-              mkdir -p /kaniko/.docker
+                sh '''
+                  mkdir -p /kaniko/.docker
 
-              cat <<EOF > /kaniko/.docker/config.json
-              {
-                "auths": {
-                  "${REGISTRY}": {
-                    "username": "${HARBOR_USER}",
-                    "password": "${HARBOR_PASS}"
+                  cat <<EOF > /kaniko/.docker/config.json
+                  {
+                    "auths": {
+                      "${REGISTRY}": {
+                        "username": "${HARBOR_USER}",
+                        "password": "${HARBOR_PASS}"
+                      }
+                    }
                   }
-                }
+                  EOF
+
+                  echo "🚀 Building Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
+
+                  /kaniko/executor \
+                    --dockerfile=${WORKSPACE}/services/frontend-service/Dockerfile \
+                    --context=${WORKSPACE}/services/frontend-service \
+                    --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
+                    --cache=true \
+                    --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
+                    --skip-tls-verify
+                '''
               }
-              EOF
+            }
 
-              echo "🚀 Building Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
+            container('trivy') {
+              sh '''
+                IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
 
-              /kaniko/executor \
-                --dockerfile=${WORKSPACE}/services/frontend-service/Dockerfile \
-                --context=${WORKSPACE}/services/frontend-service \
-                --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
-                --cache=true \
-                --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
-                --skip-tls-verify
-            '''
+                echo "🔍 Trivy scanning ${IMAGE}"
+
+                trivy image \
+                  --cache-dir /root/.cache \
+                  --severity HIGH,CRITICAL \
+                  --exit-code 1 \
+                  --no-progress \
+                  ${IMAGE}
+              '''
+            }
           }
-        }
-      }
-    }
-
-    stage('Trivy Scan') {
-      steps {
-        container('trivy') {
-          sh '''
-            IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-
-            echo "🔍 Trivy scan start: ${IMAGE}"
-
-            trivy image \
-              --cache-dir /root/.cache \
-              --severity HIGH,CRITICAL \
-              --exit-code 1 \
-              --no-progress \
-              ${IMAGE}
-          '''
         }
       }
     }
