@@ -5,7 +5,7 @@ controller:
     tag: lts-jdk17
     pullPolicy: IfNotPresent
 
-  # ✅ Jenkins Controller를 worker node1에 고정
+  # Jenkins Controller를 node2에 고정
   nodeSelector:
     kubernetes.io/hostname: node2
 
@@ -39,17 +39,18 @@ controller:
   JCasC:
     defaultConfig: true
 
-persistence:
-  enabled: true
-  storageClass: longhorn
-  size: 5Gi
 
+# =========================
+# Jenkins Agent 설정
+# =========================
 agent:
   enabled: true
+
   image:
     registry: docker.io
     repository: jenkins/inbound-agent
-    tag: lts-jdk17   # ✅ controller와 JDK 버전 통일
+    tag: lts-jdk17
+
   resources:
     requests:
       cpu: "200m"
@@ -58,6 +59,25 @@ agent:
       cpu: "1"
       memory: "1Gi"
 
+  # 🔥 핵심: Kaniko 인증 Secret mount
+  volumes:
+    - type: Secret
+      secretName: harbor-regcred
+      mountPath: /kaniko/.docker
+
+
+# =========================
+# Persistence
+# =========================
+persistence:
+  enabled: true
+  storageClass: longhorn
+  size: 5Gi
+
+
+# =========================
+# RBAC
+# =========================
 serviceAccount:
   create: true
   name: jenkins
