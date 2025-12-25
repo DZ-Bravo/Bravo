@@ -42,3 +42,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 # 프로덕션 모드로 실행
 CMD ["node", "server.js"]
 
+

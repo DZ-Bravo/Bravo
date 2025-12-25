@@ -1,21 +1,28 @@
 expose:
   type: nodePort
+  tls:
+    enabled: true
+    certSource: auto
+    auto:
+      commonName: harbor-registry.bravo-platform-ns.svc.cluster.local
+      sans:
+        - DNS:harbor-registry
+        - DNS:harbor-registry.bravo-platform-ns.svc.cluster.local
+        - IP:192.168.0.244
   nodePort:
     ports:
-      http:
-        nodePort: 30305
-          # https:
-          # nodePort: 31209
-  tls:
-    enabled: false
+      https:
+        nodePort: 30443
 
-externalURL: http://192.168.0.244:30305
+externalURL: https://harbor-registry.bravo-platform-ns.svc.cluster.local:30443
 
 harborAdminPassword: "bravo6785#"
 
+internalTLS:
+  enabled: false
+
 registry:
   replicaCount: 1
-
 
 persistence:
   enabled: true
@@ -32,9 +39,7 @@ persistence:
     redis:
       storageClass: longhorn
       size: 1Gi
-    trivy:
-      storageClass: longhorn
-      size: 1Gi
 
 metrics:
   enabled: false
+

@@ -214,3 +214,4 @@ aws ses get-identity-verification-attributes \
 2. 리소스 배포
 3. 테스트 이메일 발송 확인
 
+
