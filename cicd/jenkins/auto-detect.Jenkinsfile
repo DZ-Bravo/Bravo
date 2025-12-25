@@ -47,10 +47,11 @@ spec:
     PROJECT  = "bravo"
     SONAR_HOST_URL = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
     SONAR_TOKEN = credentials('bravo-sonar')
+    REGISTRY = "192.168.0.244:30443"
+    PROJECT  = "bravo"
   }
 
   stages {
-
     stage('Checkout') {
       steps {
         checkout scm
@@ -62,34 +63,37 @@ spec:
         script {
           sh '''
           echo "🔍 Detecting changed services..."
+	
+	    FROM_COMMIT="${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
+          TO_COMMIT="${GIT_COMMIT}"
 
-      # Jenkins에서 올바른 diff 기준
-          if [ -n "$GIT_PREVIOUS_COMMIT" ]; then
-            echo "Using Jenkins commit range:"
-            echo "FROM: $GIT_PREVIOUS_COMMIT"
-            echo "TO  : $GIT_COMMIT"
-            git diff --name-only $GIT_PREVIOUS_COMMIT $GIT_COMMIT > changed_files.txt
-          else
-            echo "⚠️ GIT_PREVIOUS_COMMIT not found, fallback to HEAD~1"
-            git diff --name-only HEAD~1 HEAD > changed_files.txt
+          if [ -z "$FROM_COMMIT" ]; then
+            echo "⚠️ No previous successful commit, using HEAD~1"
+            FROM_COMMIT=$(git rev-parse HEAD~1)
           fi
+	
+	    echo "FROM: $FROM_COMMIT"
+          echo "TO  : $TO_COMMIT"
+
+          git diff --name-only "$FROM_COMMIT" "$TO_COMMIT" > changed_files.txt
+
+
 
           echo "=== Changed Files ==="
-          cat changed_files.txt || true
+          cat changed_files.txt
 
           rm -f services.txt
 
-          while read file; do
-            # frontend
-            if [[ "$file" == frontend-service/* ]]; then
-              echo "frontend-service" >> services.txt
-            fi
-
-            # backend services
-            if [[ "$file" == backend-services/*/* ]]; then
-              svc=$(echo "$file" | cut -d'/' -f2)
-              echo "$svc" >> services.txt
-            fi
+          while IFS= read -r file; do
+             case "$file" in
+               services/frontend-service/*)
+                 echo "frontend-service" >> services.txt
+                   ;;
+              services/backend-services/*/*)
+                  svc=$(echo "$file" | cut -d'/' -f3)
+                  echo "$svc" >> services.txt
+                  ;;
+            esac
           done < changed_files.txt
 
           if [ ! -s services.txt ]; then

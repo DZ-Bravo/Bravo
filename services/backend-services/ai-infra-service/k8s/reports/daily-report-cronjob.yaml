@@ -11,11 +11,23 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            sidecar.istio.io/inject: "false"
         spec:
+          serviceAccountName: ai-infra-service
           containers:
           - name: report-generator
-            image: 192.168.0.244:30305/bravo/ai-infra-service:latest
+            image: 192.168.0.244:30305/bravo/hiking-ai-infra-service:latest
+            imagePullPolicy: IfNotPresent
             command: ["node", "/app/services/report-script.js", "daily"]
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "3Gi"
+                cpu: "2"
             envFrom:
             - configMapRef:
                 name: ai-infra-config
