@@ -17,8 +17,9 @@ router.get('/metrics', async (req, res) => {
     const clusterOverview = await kubernetesService.getClusterOverview()
     const nodes = await kubernetesService.getNodes()
     
-    // 2. 리소스 사용률
-    const resourceUsage = await prometheusService.getResourceUsageTimeline(node || null, startDate, endDate)
+    // 2. 리소스 사용률 (node가 'all'이면 null 전달)
+    const resourceUsageNode = node && node !== 'all' ? node : null
+    const resourceUsage = await prometheusService.getResourceUsageTimeline(resourceUsageNode, startDate, endDate)
     
     // 3. Container/Pod 메트릭
     const [containerCPU, containerMemory, podCPU, podMemory] = await Promise.all([
@@ -46,7 +47,8 @@ router.get('/metrics', async (req, res) => {
       errors: []
     }))
     
-    // CSV 생성
+    // CSV 생성 (node가 없으면 'all'로 설정)
+    const csvNode = node && node !== 'all' ? node : 'all'
     const csv = generateComprehensiveCSV({
       clusterOverview,
       nodes,
@@ -58,7 +60,7 @@ router.get('/metrics', async (req, res) => {
       errorBreakdown,
       topErrors,
       healthcheck,
-      node: node || 'all',
+      node: csvNode,
       startDate,
       endDate
     })

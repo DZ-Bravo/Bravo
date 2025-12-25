@@ -30,13 +30,29 @@ async function generateReportContent({ reportType, reportData }) {
   }
   
   try {
-    // 보고서 데이터 준비 (프롬프트는 Agent에서 관리)
+    // 보고서 데이터를 JSON 형식으로 준비
+    // Bedrock Agent의 프롬프트가 이 데이터를 받아서 보고서를 생성함
     const inputData = {
-      reportType,
-      data: reportData
+      reportType: reportType, // "daily", "weekly", "monthly"
+      data: {
+        clusterOverview: reportData.clusterOverview,
+        nodes: reportData.nodes,
+        resourceUsage: reportData.resourceUsage,
+        containerCPU: reportData.containerCPU?.slice(0, 10) || [], // Top 10
+        containerMemory: reportData.containerMemory?.slice(0, 10) || [], // Top 10
+        podCPU: reportData.podCPU?.slice(0, 10) || [], // Top 10
+        podMemory: reportData.podMemory?.slice(0, 10) || [], // Top 10
+        errors: reportData.errors,
+        topErrors: reportData.topErrors || [],
+        healthcheck: reportData.healthcheck,
+        periodStart: reportData.periodStart.toISOString(),
+        periodEnd: reportData.periodEnd.toISOString(),
+        generatedAt: reportData.generatedAt.toISOString()
+      }
     }
     
-    const input = JSON.stringify(inputData)
+    // JSON 문자열로 변환하여 Bedrock Agent에 전달
+    const input = JSON.stringify(inputData, null, 2)
     
     const command = new InvokeAgentCommand({
       agentId: BEDROCK_REPORT_AGENT_ID,
