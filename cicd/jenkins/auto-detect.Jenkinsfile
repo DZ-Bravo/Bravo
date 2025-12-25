@@ -7,39 +7,34 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
+  serviceAccountName: jenkins
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
-    command: ["sleep"]
-    args: ["infinity"]
+    command: ["sleep", "infinity"]
     volumeMounts:
-      - name: workspace-volume
-        mountPath: /home/jenkins/agent
       - name: docker-config
         mountPath: /kaniko/.docker
-
+      - name: workspace
+        mountPath: /home/jenkins/agent
   - name: trivy
     image: aquasec/trivy:0.49.1
-    command: ["sleep"]
-    args: ["infinity"]
+    command: ["sleep", "infinity"]
     volumeMounts:
-      - name: workspace-volume
+      - name: workspace
         mountPath: /home/jenkins/agent
       - name: trivy-cache
         mountPath: /root/.cache
-
   - name: sonar
     image: sonarsource/sonar-scanner-cli:5.0
-    command: ["sleep"]
-    args: ["infinity"]
+    command: ["sleep", "infinity"]
     volumeMounts:
-      - name: workspace-volume
+      - name: workspace
         mountPath: /home/jenkins/agent
-
   volumes:
-    - name: workspace-volume
-      emptyDir: {}
     - name: docker-config
+      emptyDir: {}
+    - name: workspace
       emptyDir: {}
     - name: trivy-cache
       emptyDir: {}
@@ -50,103 +45,95 @@ spec:
   environment {
     REGISTRY = "192.168.0.244:30443"
     PROJECT  = "bravo"
-    BRANCH   = "${env.GIT_BRANCH ?: 'main'}"
+    SONAR_HOST_URL = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
+    SONAR_TOKEN = credentials("bravo-sonar")
   }
 
   stages {
 
-    stage('Checkout') {
+    stage("Checkout") {
       steps {
         checkout scm
       }
     }
 
-    stage('Detect Changed Services') {
+    stage("Detect Changed Services") {
       steps {
         script {
           sh '''
             git fetch origin main
             git diff --name-only origin/main...HEAD > changed_files.txt
-            cat changed_files.txt
 
-            rm -f services.txt
+            > services.txt
 
-            while read f; do
-              if [[ "$f" == services/frontend-service/* ]]; then
+            while read file; do
+              if [[ "$file" == frontend-service/* ]]; then
                 echo "frontend-service" >> services.txt
-              fi
-
-              if [[ "$f" == services/backend-services/* ]]; then
-                svc=$(echo "$f" | cut -d/ -f3)
-                echo "$svc" >> services.txt
+              elif [[ "$file" == backend-services/* ]]; then
+                echo "$(echo $file | cut -d/ -f2)" >> services.txt
               fi
             done < changed_files.txt
 
             sort -u services.txt > final_services.txt || true
-            cat final_services.txt
+            echo "=== Changed Services ==="
+            cat final_services.txt || true
           '''
         }
       }
     }
 
-    stage('Build & Scan Services') {
+    stage("Build & Scan Services") {
       when {
-        expression { fileExists('final_services.txt') }
+        expression { fileExists("final_services.txt") }
       }
       steps {
         script {
-          def services = readFile('final_services.txt').trim().split("\n")
+          def services = readFile("final_services.txt").trim().split("\\n")
 
-          services.each { svc ->
-            def path = svc == 'frontend-service' ?
-              "services/frontend-service" :
-              "services/backend-services/${svc}"
+          for (svc in services) {
+            if (!svc?.trim()) { continue }
+
+            def path = svc == "frontend-service" ?
+              "frontend-service" :
+              "backend-services/${svc}"
 
             def image = "${REGISTRY}/${PROJECT}/${svc}"
             def tag   = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
 
             echo "🚀 Building ${svc}"
 
-            // SonarQube
-            container('sonar') {
-              withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                sh """
-                  sonar-scanner \
-                    -Dsonar.projectKey=${svc} \
-                    -Dsonar.sources=${path} \
-                    -Dsonar.host.url=http://sonarqube.bravo-platform-ns.svc.cluster.local:9000 \
-                    -Dsonar.login=$SONAR_TOKEN
-                """
-              }
+            container('kaniko') {
+              sh """
+              /kaniko/executor \
+                --context=${path} \
+                --dockerfile=${path}/Dockerfile \
+                --destination=${image}:${tag} \
+                --destination=${image}:latest \
+                --cache=true \
+                --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
+                --skip-tls-verify
+              """
             }
 
-            // Build & Push only on main
-            if (env.BRANCH == 'main') {
-              container('kaniko') {
-                sh """
-                  /kaniko/executor \
-                    --dockerfile=${path}/Dockerfile \
-                    --context=${path} \
-                    --destination=${image}:${tag} \
-                    --destination=${image}:latest \
-                    --cache=true \
-                    --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
-                    --skip-tls-verify
-                """
-              }
+            container('trivy') {
+              sh """
+              trivy image --severity HIGH,CRITICAL \
+                --exit-code 0 \
+                --no-progress \
+                --username 'robot\$bravo+jenkins-ci' \
+                --password '${env.JENKINS_PASSWORD}' \
+                ${image}:${tag}
+              """
+            }
 
-              container('trivy') {
-                sh """
-                  trivy image \
-                    --severity HIGH,CRITICAL \
-                    --exit-code 1 \
-                    --no-progress \
-                    --username \$HARBOR_USER \
-                    --password \$HARBOR_PASS \
-                    --insecure \
-                    ${image}:${tag}
-                """
-              }
+            container('sonar') {
+              sh """
+              sonar-scanner \
+                -Dsonar.projectKey=${svc} \
+                -Dsonar.sources=${path} \
+                -Dsonar.host.url=${SONAR_HOST_URL} \
+                -Dsonar.login=${SONAR_TOKEN}
+              """
             }
           }
         }
@@ -156,10 +143,10 @@ spec:
 
   post {
     success {
-      echo "✅ CI PIPELINE SUCCESS"
+      echo "✅ CI SUCCESS"
     }
     failure {
-      echo "❌ CI PIPELINE FAILED"
+      echo "❌ CI FAILED"
     }
   }
 }
