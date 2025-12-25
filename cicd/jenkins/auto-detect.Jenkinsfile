@@ -3,42 +3,6 @@ pipeline {
     kubernetes {
       label 'bravo-auto-ci'
       defaultContainer 'jnlp'
-      yaml """
-apiVersion: v1
-kind: Pod
-spec:
-  serviceAccountName: jenkins
-  containers:
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug
-    command: ["sleep", "infinity"]
-    volumeMounts:
-      - name: docker-config
-        mountPath: /kaniko/.docker
-      - name: workspace
-        mountPath: /home/jenkins/agent
-  - name: trivy
-    image: aquasec/trivy:0.49.1
-    command: ["sleep", "infinity"]
-    volumeMounts:
-      - name: workspace
-        mountPath: /home/jenkins/agent
-      - name: trivy-cache
-        mountPath: /root/.cache
-  - name: sonar
-    image: sonarsource/sonar-scanner-cli:5.0
-    command: ["sleep", "infinity"]
-    volumeMounts:
-      - name: workspace
-        mountPath: /home/jenkins/agent
-  volumes:
-    - name: docker-config
-      emptyDir: {}
-    - name: workspace
-      emptyDir: {}
-    - name: trivy-cache
-      emptyDir: {}
-"""
     }
   }
 
@@ -46,69 +10,93 @@ spec:
     REGISTRY = "192.168.0.244:30443"
     PROJECT  = "bravo"
     SONAR_HOST_URL = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
-    SONAR_TOKEN = credentials("bravo-sonar")
   }
 
   stages {
 
-    stage("Checkout") {
+    stage('Checkout') {
       steps {
         checkout scm
       }
     }
 
-    stage("Detect Changed Services") {
+    /************************************************************
+     * 🔍 Detect Changed Services (FIXED VERSION)
+     ************************************************************/
+    stage('Detect Changed Services') {
       steps {
         script {
-          sh '''
-            git fetch origin main
-            git diff --name-only origin/main...HEAD > changed_files.txt
+          def base = env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+          def head = env.GIT_COMMIT
 
-            > services.txt
+          if (!base) {
+            echo "⚠️ First build detected. Using HEAD~1"
+            base = "HEAD~1"
+          }
 
-            while read file; do
-              if [[ "$file" == frontend-service/* ]]; then
-                echo "frontend-service" >> services.txt
-              elif [[ "$file" == backend-services/* ]]; then
-                echo "$(echo $file | cut -d/ -f2)" >> services.txt
-              fi
-            done < changed_files.txt
+          echo "🔍 Diff base: ${base}"
+          echo "🔍 Diff head: ${head}"
 
-            sort -u services.txt > final_services.txt || true
-            echo "=== Changed Services ==="
-            cat final_services.txt || true
-          '''
+          sh """
+            git diff --name-only ${base} ${head} > changed_files.txt
+            echo "===== CHANGED FILES ====="
+            cat changed_files.txt || true
+          """
+
+          def services = []
+
+          readFile("changed_files.txt")
+            .split("\\n")
+            .each { file ->
+              if (file.startsWith("frontend-service/")) {
+                services << "frontend-service"
+              }
+              if (file.startsWith("backend-services/")) {
+                def svc = file.split("/")[1]
+                services << "backend-services/${svc}"
+              }
+            }
+
+          services = services.unique()
+
+          if (services.isEmpty()) {
+            echo "⚠️ 변경된 서비스 없음 → CI 종료"
+            currentBuild.result = "SUCCESS"
+            return
+          }
+
+          writeFile file: "services.txt", text: services.join("\n")
+
+          echo "✅ 변경된 서비스 목록:"
+          sh "cat services.txt"
         }
       }
     }
 
-    stage("Build & Scan Services") {
+    /************************************************************
+     * 🚀 Build & Scan
+     ************************************************************/
+    stage('Build & Scan Services') {
       when {
-        expression { fileExists("final_services.txt") }
+        expression { fileExists('services.txt') }
       }
       steps {
         script {
-          def services = readFile("final_services.txt").trim().split("\\n")
+          def services = readFile("services.txt").split("\n")
 
           for (svc in services) {
-            if (!svc?.trim()) { continue }
-
-            def path = svc == "frontend-service" ?
-              "frontend-service" :
-              "backend-services/${svc}"
-
-            def image = "${REGISTRY}/${PROJECT}/${svc}"
-            def tag   = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
-
             echo "🚀 Building ${svc}"
+
+            def imageName = svc.replace("backend-services/", "").replace("frontend-service", "hiking-frontend")
+            def imageTag  = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
 
             container('kaniko') {
               sh """
               /kaniko/executor \
-                --context=${path} \
-                --dockerfile=${path}/Dockerfile \
-                --destination=${image}:${tag} \
-                --destination=${image}:latest \
+                --dockerfile=\${WORKSPACE}/${svc}/Dockerfile \
+                --context=\${WORKSPACE}/${svc} \
+                --destination=${REGISTRY}/${PROJECT}/${imageName}:${imageTag} \
+                --destination=${REGISTRY}/${PROJECT}/${imageName}:latest \
                 --cache=true \
                 --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
                 --skip-tls-verify
@@ -121,18 +109,8 @@ spec:
                 --exit-code 0 \
                 --no-progress \
                 --username 'robot\$bravo+jenkins-ci' \
-                --password '${env.JENKINS_PASSWORD}' \
-                ${image}:${tag}
-              """
-            }
-
-            container('sonar') {
-              sh """
-              sonar-scanner \
-                -Dsonar.projectKey=${svc} \
-                -Dsonar.sources=${path} \
-                -Dsonar.host.url=${SONAR_HOST_URL} \
-                -Dsonar.login=${SONAR_TOKEN}
+                --password '${env.REGISTRY_PASSWORD}' \
+                ${REGISTRY}/${PROJECT}/${imageName}:${imageTag}
               """
             }
           }
