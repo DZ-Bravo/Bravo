@@ -2,6 +2,7 @@ pipeline {
   triggers {
     pollSCM('10 * * * *')
   }
+
   agent {
     kubernetes {
       label 'bravo-auto-ci'
@@ -90,7 +91,6 @@ set -e
 git fetch origin main
 
 BASE_COMMIT="${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-}"
-
 CURRENT_COMMIT="$(git rev-parse HEAD)"
 
 if [ -z "$BASE_COMMIT" ]; then
@@ -99,29 +99,15 @@ fi
 
 echo "Diff base: $BASE_COMMIT -> $CURRENT_COMMIT"
 
-if [ -n "$BASE_COMMIT" ]; then
-  git diff --name-only "$BASE_COMMIT" "$CURRENT_COMMIT" > changed_files.txt
-else
-  git diff --name-only "$CURRENT_COMMIT" > changed_files.txt
-
-fi
-
-cat changed_files.txt || true
+git diff --name-only "$BASE_COMMIT" "$CURRENT_COMMIT" > changed_files.txt || true
 
 > changed_services.txt
 
 while read file; do
   case "$file" in
-    services/backend-services/*/.ci-trigger)
-      svc=$(echo "$file" | cut -d/ -f3)
-      echo "backend-services/$svc" >> changed_services.txt
-      ;;
     services/backend-services/*/*)
       svc=$(echo "$file" | cut -d/ -f3)
       echo "backend-services/$svc" >> changed_services.txt
-      ;;
-    services/hiking-frontend/*/.ci-trigger)
-      echo "hiking-frontend" >> changed_services.txt
       ;;
     services/hiking-frontend/*)
       echo "hiking-frontend" >> changed_services.txt
@@ -153,39 +139,28 @@ fi
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
-              if (!svc?.trim()) {
-                continue
-              }
+              if (!svc?.trim()) continue
 
               def imageName = ""
               def dockerfilePath = ""
-              def versionFile = ""
               def contextPath = "${env.WORKSPACE}/services"
 
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
                 dockerfilePath = "${env.WORKSPACE}/services/backend-services/${svcName}/Dockerfile"
-                contextPath    = "${env.WORKSPACE}/services/backend-services/${svcName}"
-                versionFile = "${env.WORKSPACE}/application_cd/backend/${svcName}/VERSION"
-              }
-              else if (svc == "frontend-service" || svc == "hiking-frontend") {
+                contextPath = "${env.WORKSPACE}/services/backend-services/${svcName}"
+              } else if (svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
-                dockerfilePath = "${contextPath}/frontend-service/Dockerfile"
-                versionFile = "${env.WORKSPACE}/application_cd/frontend/frontend/VERSION"
-              }
-              else {
+                dockerfilePath = "${env.WORKSPACE}/services/frontend-service/Dockerfile"
+              } else {
                 error("Unknown service type: ${svc}")
               }
 
-              // 🔹 VERSION 읽기 (MAJOR)
-              def majorVersion = readFile(versionFile).trim()
-
-              // 🔹 최종 이미지 태그
-              def imageTag = "${majorVersion}.${env.BUILD_NUMBER}"
+              def imageTag = "build-${env.BUILD_NUMBER}"
 
               sh """
-                echo "Building image: ${imageName}:${imageTag}"
+                echo "🚀 Building image: ${imageName}:${imageTag}"
                 /kaniko/executor \
                   --dockerfile=${dockerfilePath} \
                   --context=${contextPath} \
@@ -193,8 +168,7 @@ fi
                   --cache=true \
                   --cache-repo=${CACHE_REPO} \
                   --insecure \
-                  --skip-tls-verify \
-                  --verbosity=info 
+                  --skip-tls-verify
               """
             }
           }
@@ -212,35 +186,18 @@ fi
             def services = readFile('changed_services.txt').trim().split('\n')
 
             for (svc in services) {
-              if (!svc?.trim()) {
-                continue
-              }
+              if (!svc?.trim()) continue
 
-              def imageName = ""
-              def versionFile = ""
-              def contextPath = "${env.WORKSPACE}/services"
+              def imageName = svc.startsWith("backend-services/")
+                ? "hiking-${svc.split('/').last()}"
+                : "hiking-frontend"
 
-              if (svc.startsWith("backend-services/")) {
-                def svcName = svc.split('/').last()
-                imageName = "hiking-${svcName}"
-                versionFile = "${env.WORKSPACE}/services/backend-services/${svcName}/VERSION"
-              }
-              else if (svc == "frontend-service" || svc == "hiking-frontend") {
-                imageName = "hiking-frontend"
-                versionFile = "${env.WORKSPACE}/services/frontend-service/VERSION"
-              }
-              else {
-                error("Unknown service type: ${svc}")
-              }
-
-              def majorVersion = readFile(versionFile).trim()
-              def imageTag = "${majorVersion}.${env.BUILD_NUMBER}"
+              def imageTag = "build-${env.BUILD_NUMBER}"
 
               sh """
-                echo "Trivy scan: ${imageName}:${imageTag}"
+                echo "🔍 Trivy scan: ${imageName}:${imageTag}"
                 trivy image \
                   --severity ${SEVERITY} \
-                  --scanners vuln \
                   --exit-code 1 \
                   --no-progress \
                   ${REGISTRY}/bravo/${imageName}:${imageTag}
@@ -251,7 +208,7 @@ fi
       }
     }
 
-  } // <-- stages 닫힘
+  }
 
   post {
     always {
@@ -261,8 +218,8 @@ fi
       echo "CI succeeded"
     }
     aborted {
-      echo "CI skipped (no relevant changes)"
+      echo "CI skipped"
     }
   }
+}
 
-} // <-- pipeline 닫힘
