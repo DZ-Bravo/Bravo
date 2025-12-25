@@ -7,6 +7,7 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
+  serviceAccountName: jenkins
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
@@ -22,6 +23,9 @@ spec:
     image: aquasec/trivy:0.49.1
     command: ["sleep"]
     args: ["infinity"]
+    volumeMounts:
+      - name: trivy-cache
+        mountPath: /root/.cache
 
   - name: jnlp
     image: jenkins/inbound-agent:3345.v03dee9b_f88fc-1
@@ -31,15 +35,22 @@ spec:
       emptyDir: {}
     - name: docker-config
       emptyDir: {}
+    - name: trivy-cache
+      emptyDir: {}
 """
     }
+  }
+
+  options {
+    timestamps()
+    ansiColor('xterm')
   }
 
   environment {
     REGISTRY   = "192.168.0.244:30443"
     PROJECT    = "bravo"
     IMAGE_NAME = "hiking-frontend"
-    IMAGE_TAG  = "build-${env.BUILD_NUMBER}"
+    IMAGE_TAG  = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
   }
 
   stages {
@@ -75,7 +86,7 @@ spec:
               }
               EOF
 
-              echo "🚀 Building & Pushing Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
+              echo "🚀 Building Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
 
               /kaniko/executor \
                 --dockerfile=${WORKSPACE}/services/frontend-service/Dockerfile \
@@ -95,10 +106,11 @@ spec:
         container('trivy') {
           sh '''
             IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-            echo "🔍 Trivy scanning ${IMAGE}"
+
+            echo "🔍 Trivy scan start: ${IMAGE}"
 
             trivy image \
-              --skip-db-update \
+              --cache-dir /root/.cache \
               --severity HIGH,CRITICAL \
               --exit-code 1 \
               --no-progress \
@@ -110,11 +122,11 @@ spec:
   }
 
   post {
-    success {
-      echo "✅ Image build & scan success"
+    always {
+      echo "✅ Pipeline finished: ${currentBuild.currentResult}"
     }
     failure {
-      echo "❌ Build or scan failed"
+      echo "❌ Build failed. Check logs above."
     }
   }
 }
