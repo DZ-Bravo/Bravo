@@ -32,12 +32,12 @@ spec:
       - name: workspace
         mountPath: /home/jenkins/agent
   volumes:
-  - name: workspace
-    emptyDir: {}
-  - name: docker-config
-    emptyDir: {}
-  - name: trivy-cache
-    emptyDir: {}
+    - name: docker-config
+      emptyDir: {}
+    - name: workspace
+      emptyDir: {}
+    - name: trivy-cache
+      emptyDir: {}
 """
     }
   }
@@ -46,75 +46,69 @@ spec:
     REGISTRY = "192.168.0.244:30443"
     PROJECT  = "bravo"
     SONAR_HOST_URL = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
-    SONAR_TOKEN = credentials('bravo-sonar')
+    SONAR_TOKEN = credentials("bravo-sonar")
   }
 
   stages {
 
-    stage('Checkout') {
+    stage("Checkout") {
       steps {
         checkout scm
       }
     }
 
-    stage('Detect Changed Services') {
+    stage("Detect Changed Services") {
       steps {
         script {
           sh '''
-          echo "🔍 Detecting changed services..."
+            git fetch origin main
+            git diff --name-only origin/main...HEAD > changed_files.txt
 
-          git fetch origin main
-          git diff --name-only origin/main...HEAD > changed_files.txt
+            > services.txt
 
-          rm -f services.txt
-
-          while read file; do
-            case "$file" in
-              services/frontend-service/*)
+            while read file; do
+              if [[ "$file" == frontend-service/* ]]; then
                 echo "frontend-service" >> services.txt
-                ;;
-              services/backend-services/*/*)
-                svc=$(echo "$file" | cut -d'/' -f3)
-                echo "$svc" >> services.txt
-                ;;
-            esac
-          done < changed_files.txt
+              elif [[ "$file" == backend-services/* ]]; then
+                echo "$(echo $file | cut -d/ -f2)" >> services.txt
+              fi
+            done < changed_files.txt
 
-          if [ ! -s services.txt ]; then
-            echo "❌ No service changes detected"
-            exit 1
-          fi
-
-          sort -u services.txt > final_services.txt
-
-          echo "=== Changed Services ==="
-          cat final_services.txt
+            sort -u services.txt > final_services.txt || true
+            echo "=== Changed Services ==="
+            cat final_services.txt || true
           '''
         }
       }
     }
 
-    stage('Build & Scan Services') {
+    stage("Build & Scan Services") {
+      when {
+        expression { fileExists("final_services.txt") }
+      }
       steps {
         script {
-          def services = readFile('final_services.txt').trim().split("\\n")
+          def services = readFile("final_services.txt").trim().split("\\n")
 
           for (svc in services) {
+            if (!svc?.trim()) { continue }
+
+            def path = svc == "frontend-service" ?
+              "frontend-service" :
+              "backend-services/${svc}"
+
+            def image = "${REGISTRY}/${PROJECT}/${svc}"
+            def tag   = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
+
             echo "🚀 Building ${svc}"
-
-            def contextPath = (svc == "frontend-service") ?
-              "services/frontend-service" :
-              "services/backend-services/${svc}"
-
-            def imageTag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(8)}"
 
             container('kaniko') {
               sh """
               /kaniko/executor \
-                --dockerfile=${contextPath}/Dockerfile \
-                --context=${contextPath} \
-                --destination=${REGISTRY}/${PROJECT}/${svc}:${imageTag} \
-                --destination=${REGISTRY}/${PROJECT}/${svc}:latest \
+                --context=${path} \
+                --dockerfile=${path}/Dockerfile \
+                --destination=${image}:${tag} \
+                --destination=${image}:latest \
                 --cache=true \
                 --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
                 --skip-tls-verify
@@ -126,7 +120,19 @@ spec:
               trivy image --severity HIGH,CRITICAL \
                 --exit-code 0 \
                 --no-progress \
-                ${REGISTRY}/${PROJECT}/${svc}:${imageTag}
+                --username 'robot\$bravo+jenkins-ci' \
+                --password '${env.JENKINS_PASSWORD}' \
+                ${image}:${tag}
+              """
+            }
+
+            container('sonar') {
+              sh """
+              sonar-scanner \
+                -Dsonar.projectKey=${svc} \
+                -Dsonar.sources=${path} \
+                -Dsonar.host.url=${SONAR_HOST_URL} \
+                -Dsonar.login=${SONAR_TOKEN}
               """
             }
           }
@@ -139,4 +145,9 @@ spec:
     success {
       echo "✅ CI SUCCESS"
     }
+    failure {
+      echo "❌ CI FAILED"
+    }
+  }
+}
 
