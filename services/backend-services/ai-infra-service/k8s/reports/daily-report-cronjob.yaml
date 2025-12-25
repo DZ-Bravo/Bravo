@@ -16,6 +16,11 @@ spec:
             sidecar.istio.io/inject: "false"
         spec:
           serviceAccountName: ai-infra-service
+          nodeName: master1
+          tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
           containers:
           - name: report-generator
             image: 192.168.0.244:30305/bravo/hiking-ai-infra-service:latest

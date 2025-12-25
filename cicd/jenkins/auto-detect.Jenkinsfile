@@ -102,9 +102,9 @@ spec:
           for (svc in services) {
             echo "🚀 Building ${svc}"
 
-            def contextPath = (svc == "frontend-service") ?
-              "services/frontend-service" :
-              "services/backend-services/${svc}"
+            def contextPath = (svc == "frontend-service")
+              ? "services/frontend-service"
+              : "services/backend-services/${svc}"
 
             def imageTag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(8)}"
 
@@ -123,7 +123,8 @@ spec:
 
             container('trivy') {
               sh """
-              trivy image --severity HIGH,CRITICAL \
+              trivy image \
+                --severity HIGH,CRITICAL \
                 --exit-code 0 \
                 --no-progress \
                 ${REGISTRY}/${PROJECT}/${svc}:${imageTag}
@@ -139,4 +140,9 @@ spec:
     success {
       echo "✅ CI SUCCESS"
     }
+    failure {
+      echo "❌ CI FAILED"
+    }
+  }
+}
 
