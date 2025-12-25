@@ -420,25 +420,36 @@ async function generatePDF(htmlContent) {
     const page = await browser.newPage()
     
     console.log('Setting content with timeout...')
-    // networkidle0 대신 domcontentloaded 사용하고 타임아웃 설정
-    await Promise.race([
-      page.setContent(htmlContent, { waitUntil: 'domcontentloaded', timeout: 30000 }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Content load timeout')), 30000))
-    ]).catch(err => {
-      console.warn('Content load timeout or error, continuing anyway:', err.message)
-    })
+    // HTML 내용 설정 (타임아웃 적용)
+    try {
+      await page.setContent(htmlContent, { 
+        waitUntil: 'domcontentloaded', 
+        timeout: 30000 
+      })
+      console.log('Content set successfully')
+    } catch (err) {
+      console.warn('Content load timeout or error, trying without wait:', err.message)
+      // 타임아웃 발생 시에도 계속 진행
+      await page.setContent(htmlContent, { waitUntil: 'load', timeout: 10000 }).catch(() => {
+        // 실패해도 계속 진행
+        console.warn('Content load failed, proceeding anyway')
+      })
+    }
     
-    console.log('Waiting for Chart.js to render...')
-    // Chart.js 렌더링 대기 (타임아웃 추가)
-    await page.waitForTimeout(3000).catch(() => {})
+    console.log('Waiting for rendering...')
+    // 렌더링 대기 (타임아웃 추가)
+    await page.waitForTimeout(2000).catch(() => {})
     
     console.log('Generating PDF...')
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: { top: '20mm', right: '15mm', bottom: '20mm', left: '15mm' },
-      timeout: 60000
-    })
+    const pdfBuffer = await Promise.race([
+      page.pdf({
+        format: 'A4',
+        printBackground: true,
+        margin: { top: '20mm', right: '15mm', bottom: '20mm', left: '15mm' }
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('PDF generation timeout')), 60000))
+    ])
+    console.log(`PDF generated, size: ${pdfBuffer.length} bytes`)
     
     console.log('PDF generated, closing browser...')
     await browser.close()
