@@ -25,16 +25,6 @@ spec:
       - name: harbor-regcred
         mountPath: /kaniko/.docker
 
-  - name: trivy
-    image: aquasec/trivy:0.51.1
-    command: ["sleep"]
-    args: ["infinity"]
-    volumeMounts:
-      - name: workspace-volume
-        mountPath: /home/jenkins/agent
-      - name: harbor-regcred
-        mountPath: /root/.docker
-
   - name: jnlp
     image: jenkins/inbound-agent:3345.v03dee9b_f88fc-1
     resources:
@@ -60,8 +50,8 @@ spec:
   }
 
   environment {
-    REGISTRY   = "harbor-registry.bravo-platform-ns.svc.cluster.local:5000"
-    CACHE_REPO = "harbor-registry.bravo-platform-ns.svc.cluster.local:5000/bravo/kaniko-cache"
+    REGISTRY   = "192.168.0.244:30305"
+    CACHE_REPO = "192.168.0.244:30305/bravo/kaniko-cache"
     SEVERITY   = "CRITICAL"
   }
 
@@ -198,7 +188,6 @@ fi
         }
       }
     }
-
   }
 
   post {
