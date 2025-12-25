@@ -129,6 +129,11 @@ function getLastMonthEnd() {
 // Bedrock AI 생성 내용을 HTML로 래핑
 function wrapAIContentInHTML(aiContent, reportData, reportType) {
   const { periodStart, periodEnd, generatedAt } = reportData
+  
+  // Bedrock Agent가 이미 HTML을 반환하므로, 완전한 HTML 문서로 래핑
+  // aiContent에 이미 HTML 태그가 포함되어 있을 수 있음
+  console.log(`Wrapping AI content (length: ${aiContent.length} bytes)`)
+  
   return `
 <!DOCTYPE html>
 <html>
@@ -136,18 +141,72 @@ function wrapAIContentInHTML(aiContent, reportData, reportType) {
   <meta charset="UTF-8">
   <title>HIKER 인프라 모니터링 보고서 - ${reportType}</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; color: #333; }
-    h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
-    h2 { color: #34495e; margin-top: 30px; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; }
-    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
-    th { background-color: #3498db; color: white; }
-    .report-content { line-height: 1.6; }
-    .meta-info { color: #7f8c8d; font-size: 0.9em; margin-bottom: 20px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      color: #333; 
+      line-height: 1.6;
+    }
+    h1 { 
+      color: #2c3e50; 
+      border-bottom: 3px solid #3498db; 
+      padding-bottom: 10px; 
+      margin-top: 0;
+    }
+    h2 { 
+      color: #34495e; 
+      margin-top: 30px; 
+      border-bottom: 2px solid #ecf0f1; 
+      padding-bottom: 5px; 
+    }
+    h3 {
+      color: #34495e;
+      margin-top: 20px;
+    }
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin: 15px 0; 
+    }
+    th, td { 
+      padding: 10px; 
+      text-align: left; 
+      border: 1px solid #ddd; 
+    }
+    th { 
+      background-color: #3498db; 
+      color: white; 
+    }
+    tr:nth-child(even) { 
+      background-color: #f9f9f9; 
+    }
+    ul, ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    li {
+      margin: 5px 0;
+    }
+    .report-content { 
+      line-height: 1.6; 
+    }
+    .meta-info { 
+      color: #7f8c8d; 
+      font-size: 0.9em; 
+      margin-bottom: 20px; 
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-left: 4px solid #3498db;
+    }
+    strong {
+      font-weight: bold;
+    }
+    em {
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
-  <h1>HIKER 인프라 모니터링 ${reportType} 보고서</h1>
   <div class="meta-info">
     <p><strong>보고 기간:</strong> ${periodStart.toISOString().split('T')[0]} ~ ${periodEnd.toISOString().split('T')[0]}</p>
     <p><strong>생성 일시:</strong> ${generatedAt.toISOString()}</p>
