@@ -1,0 +1,63 @@
+# MongoDB-0 (PRIMARY) NodePort Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-0-nodeport
+  namespace: bravo-mongo-ns
+  labels:
+    app: mongodb
+    statefulset.kubernetes.io/pod-name: mongodb-0
+spec:
+  type: NodePort
+  ports:
+  - port: 27017
+    targetPort: 27017
+    nodePort: 30020
+    name: mongodb
+  selector:
+    app: mongodb
+    statefulset.kubernetes.io/pod-name: mongodb-0
+  sessionAffinity: ClientIP
+---
+# MongoDB-1 (SECONDARY) NodePort Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-1-nodeport
+  namespace: bravo-mongo-ns
+  labels:
+    app: mongodb
+    statefulset.kubernetes.io/pod-name: mongodb-1
+spec:
+  type: NodePort
+  ports:
+  - port: 27017
+    targetPort: 27017
+    nodePort: 30018
+    name: mongodb
+  selector:
+    app: mongodb
+    statefulset.kubernetes.io/pod-name: mongodb-1
+  sessionAffinity: ClientIP
+---
+# MongoDB-2 (SECONDARY) NodePort Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-2-nodeport
+  namespace: bravo-mongo-ns
+  labels:
+    app: mongodb
+    statefulset.kubernetes.io/pod-name: mongodb-2
+spec:
+  type: NodePort
+  ports:
+  - port: 27017
+    targetPort: 27017
+    nodePort: 30019
+    name: mongodb
+  selector:
+    app: mongodb
+    statefulset.kubernetes.io/pod-name: mongodb-2
+  sessionAffinity: ClientIP
+

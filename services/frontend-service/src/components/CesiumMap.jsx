@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { API_URL } from '../utils/api'
+import { API_URL, getEnv } from '../utils/api'
 import { convertArcGISToGeoJSON } from '../utils/coordinateTransform'
 
 function CesiumMap({ 
@@ -47,12 +47,20 @@ function CesiumMap({
 
     const Cesium = window.Cesium
 
-    if (!import.meta.env.VITE_CESIUM_ACCESS_TOKEN) {
+    // 런타임 환경 변수 우선 확인 (window.__RUNTIME_ENV__ 또는 getEnv 사용)
+    const cesiumToken = getEnv('VITE_CESIUM_ACCESS_TOKEN') || 
+                        (typeof window !== 'undefined' && window.__RUNTIME_ENV__ && window.__RUNTIME_ENV__.VITE_CESIUM_ACCESS_TOKEN) ||
+                        import.meta.env.VITE_CESIUM_ACCESS_TOKEN
+
+    if (!cesiumToken) {
       console.error("[Cesium] 토큰이 없습니다")
+      console.error("[Cesium] window.__RUNTIME_ENV__:", window.__RUNTIME_ENV__)
+      console.error("[Cesium] import.meta.env.VITE_CESIUM_ACCESS_TOKEN:", import.meta.env.VITE_CESIUM_ACCESS_TOKEN)
       return
     }
 
-    Cesium.Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_ACCESS_TOKEN
+    Cesium.Ion.defaultAccessToken = cesiumToken
+    console.log("[Cesium] 토큰 설정 완료 (길이:", cesiumToken.length, ")")
 
     console.log("[Cesium] Viewer 생성")
 

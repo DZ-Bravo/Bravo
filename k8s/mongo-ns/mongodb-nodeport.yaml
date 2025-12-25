@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-nodeport
+  namespace: bravo-mongo-ns
+  labels:
+    app: mongodb
+spec:
+  type: NodePort
+  ports:
+  - port: 27017
+    targetPort: 27017
+    nodePort: 30017
+    name: mongodb
+  selector:
+    app: mongodb
+
