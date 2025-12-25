@@ -37,7 +37,7 @@ spec:
         - name: PORT
           value: "3008"
         - name: MONGODB_URI
-          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin"
+          value: "mongodb://mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking"
         - name: OPENWEATHER_API_KEY
           valueFrom:
             configMapKeyRef:
