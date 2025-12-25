@@ -63,9 +63,19 @@ spec:
           sh '''
           echo "🔍 Detecting changed services..."
 
-          git fetch origin main
+      # Jenkins에서 올바른 diff 기준
+          if [ -n "$GIT_PREVIOUS_COMMIT" ]; then
+            echo "Using Jenkins commit range:"
+            echo "FROM: $GIT_PREVIOUS_COMMIT"
+            echo "TO  : $GIT_COMMIT"
+            git diff --name-only $GIT_PREVIOUS_COMMIT $GIT_COMMIT > changed_files.txt
+          else
+            echo "⚠️ GIT_PREVIOUS_COMMIT not found, fallback to HEAD~1"
+            git diff --name-only HEAD~1 HEAD > changed_files.txt
+          fi
 
-          git diff --name-only origin/main...HEAD > changed_files.txt
+          echo "=== Changed Files ==="
+          cat changed_files.txt || true
 
           rm -f services.txt
 
@@ -82,7 +92,7 @@ spec:
             fi
           done < changed_files.txt
 
-          if [ ! -f services.txt ]; then
+          if [ ! -s services.txt ]; then
             echo "❌ No service changes detected"
             exit 1
           fi
@@ -148,4 +158,5 @@ spec:
     }
   }
 }
+
 
