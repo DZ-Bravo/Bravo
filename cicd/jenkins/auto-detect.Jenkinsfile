@@ -93,7 +93,7 @@ spec:
     stage('SonarQube Scan') {
       steps {
         container('sonar-scanner') {
-          withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+          withCredentials([string(credentialsId: 'bravo-sonar', variable: 'SONAR_TOKEN')]) {
             sh '''
               set -e
 
