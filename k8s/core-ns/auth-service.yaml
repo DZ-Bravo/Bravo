@@ -37,7 +37,7 @@ spec:
         - name: PORT
           value: "3001"
         - name: MONGODB_URI
-          value: "mongodb://admin:admin123@mongodb-0.mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?authSource=admin"
+          value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
         - name: REDIS_HOST
           value: "redis-0.redis.bravo-redis-ns.svc.cluster.local"
         - name: REDIS_PORT
