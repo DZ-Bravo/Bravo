@@ -1,3 +1,4 @@
+```groovy
 pipeline {
   agent {
     kubernetes {
@@ -18,6 +19,11 @@ spec:
       - name: docker-config
         mountPath: /kaniko/.docker
 
+  - name: trivy
+    image: aquasec/trivy:0.49.1
+    command: ["sleep"]
+    args: ["infinity"]
+
   - name: jnlp
     image: jenkins/inbound-agent:3345.v03dee9b_f88fc-1
 
@@ -31,8 +37,10 @@ spec:
   }
 
   environment {
-    REGISTRY  = "192.168.0.244:30443"
-    IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+    REGISTRY   = "192.168.0.244:30443"
+    PROJECT    = "bravo"
+    IMAGE_NAME = "hiking-frontend"
+    IMAGE_TAG  = "build-${env.BUILD_NUMBER}"
   }
 
   stages {
@@ -53,13 +61,14 @@ spec:
             usernameVariable: 'HARBOR_USER',
             passwordVariable: 'HARBOR_PASS'
           )]) {
+
             sh '''
               mkdir -p /kaniko/.docker
 
               cat <<EOF > /kaniko/.docker/config.json
               {
                 "auths": {
-                  "192.168.0.244:30443": {
+                  "${REGISTRY}": {
                     "username": "${HARBOR_USER}",
                     "password": "${HARBOR_PASS}"
                   }
@@ -67,17 +76,36 @@ spec:
               }
               EOF
 
-              echo "🚀 Pushing image to ${REGISTRY}/bravo/hiking-frontend:${IMAGE_TAG}"
+              echo "🚀 Building & Pushing Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
 
               /kaniko/executor \
                 --dockerfile=${WORKSPACE}/services/frontend-service/Dockerfile \
                 --context=${WORKSPACE}/services/frontend-service \
-                --destination=${REGISTRY}/bravo/hiking-frontend:${IMAGE_TAG} \
+                --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
                 --cache=true \
-                --cache-repo=${REGISTRY}/bravo/kaniko-cache \
+                --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
                 --skip-tls-verify
             '''
           }
+        }
+      }
+    }
+
+    stage('Trivy Scan') {
+      steps {
+        container('trivy') {
+          sh '''
+            IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
+
+            echo "🔍 Trivy scanning ${IMAGE}"
+
+            trivy image \
+              --skip-db-update \
+              --severity HIGH,CRITICAL \
+              --exit-code 1 \
+              --no-progress \
+              ${IMAGE}
+          '''
         }
       }
     }
@@ -85,11 +113,12 @@ spec:
 
   post {
     success {
-      echo "✅ Image pushed successfully to Harbor"
+      echo "✅ Image build & scan success: ${IMAGE_TAG}"
     }
     failure {
-      echo "❌ Image build or push failed"
+      echo "❌ Build or security scan failed"
     }
   }
 }
+```
 
