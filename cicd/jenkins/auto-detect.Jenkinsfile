@@ -62,10 +62,17 @@ spec:
     stage('Build & Scan') {
       steps {
         script {
-          env.IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
+          def gitCommit = sh(
+            script: "git rev-parse --short HEAD",
+            returnStdout: true
+          ).trim()
+
+          env.IMAGE_TAG = "${env.BUILD_NUMBER}-${gitCommit}"
+          echo "IMAGE_TAG = ${env.IMAGE_TAG}"
         }
 
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+
           container('kaniko') {
             withCredentials([usernamePassword(
               credentialsId: 'jenkins',
@@ -103,7 +110,6 @@ spec:
           container('trivy') {
             sh '''
               IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-
               echo "🔍 Trivy scanning ${IMAGE}"
 
               trivy image \
@@ -124,7 +130,7 @@ spec:
       echo "✅ Pipeline finished: ${currentBuild.currentResult}"
     }
     failure {
-      echo "❌ Build failed."
+      echo "❌ Build failed"
     }
   }
 }
