@@ -45,6 +45,26 @@ spec:
               key: OPENWEATHER_API_KEY
         - name: ELASTICSEARCH_URL
           value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: AWS_REGION
+        - name: AWS_S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: AWS_S3_BUCKET
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: AWS_SECRET_ACCESS_KEY
         volumeMounts:
         - name: mountain-data
           mountPath: /app/mountain
