@@ -1,17 +1,31 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-dns-egress
+  name: allow-dns-egress-bravo-platform-ns
   namespace: bravo-platform-ns
 spec:
   podSelector: {}
   policyTypes:
   - Egress
   egress:
+  # NodeLocal DNS
   - to:
-    - namespaceSelector: {}
+    - ipBlock:
+        cidr: 169.254.0.0/16
     ports:
     - protocol: UDP
       port: 53
     - protocol: TCP
       port: 53
+
+  # CoreDNS fallback
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+

@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-jenkins-egress-full
+  namespace: bravo-platform-ns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+
+  # 1. NodeLocal DNS Cache
+  - to:
+    - ipBlock:
+        cidr: 169.254.25.10/32
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+
+  # 2. CoreDNS Service (ClusterIP)
+  - to:
+    - ipBlock:
+        cidr: 10.233.0.3/32
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+
+  # 3. Kubernetes API Server
+  - to:
+    - ipBlock:
+        cidr: 192.168.0.0/24
+    ports:
+    - protocol: TCP
+      port: 6443
+
+  # 4. External HTTPS (GitHub, Harbor, etc.)
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 443
+
