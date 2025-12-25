@@ -223,11 +223,11 @@ fi
               if (svc.startsWith("backend-services/")) {
                 def svcName = svc.split('/').last()
                 imageName = "hiking-${svcName}"
-                versionFile = "${env.WORKSPACE}/application_cd/backend/${svcName}/VERSION"
+                versionFile = "${env.WORKSPACE}/services/backend-services/${svcName}/VERSION"
               }
               else if (svc == "frontend-service" || svc == "hiking-frontend") {
                 imageName = "hiking-frontend"
-                versionFile = "${env.WORKSPACE}/application_cd/frontend/frontend/VERSION"
+                versionFile = "${env.WORKSPACE}/services/frontend-service/VERSION"
               }
               else {
                 error("Unknown service type: ${svc}")
