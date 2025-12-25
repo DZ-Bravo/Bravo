@@ -11,7 +11,7 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
-    command: ["/busybox/sleep"]
+    command: ["sleep"]
     args: ["infinity"]
     volumeMounts:
       - name: workspace-volume
@@ -26,9 +26,22 @@ spec:
     volumeMounts:
       - name: trivy-cache
         mountPath: /root/.cache
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
+
+  - name: sonar-scanner
+    image: sonarsource/sonar-scanner-cli:5.0
+    command: ["sleep"]
+    args: ["infinity"]
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
 
   - name: jnlp
     image: jenkins/inbound-agent:3345.v03dee9b_f88fc-1
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
 
   volumes:
     - name: workspace-volume
@@ -49,6 +62,8 @@ spec:
     REGISTRY   = "192.168.0.244:30443"
     PROJECT    = "bravo"
     IMAGE_NAME = "hiking-frontend"
+    FRONT_DIR  = "services/frontend-service"
+    SONAR_HOST = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
   }
 
   stages {
@@ -59,64 +74,102 @@ spec:
       }
     }
 
-    stage('Build & Scan') {
+    stage('Prepare Image Tag') {
       steps {
-        script {
-          def gitCommit = sh(
-            script: "git rev-parse --short HEAD",
-            returnStdout: true
-          ).trim()
+        container('jnlp') {
+          script {
+            def gitCommit = sh(
+              script: "git rev-parse --short HEAD",
+              returnStdout: true
+            ).trim()
 
-          env.IMAGE_TAG = "${env.BUILD_NUMBER}-${gitCommit}"
-          echo "IMAGE_TAG = ${env.IMAGE_TAG}"
+            env.IMAGE_TAG = "${env.BUILD_NUMBER}-${gitCommit}"
+            echo "IMAGE_TAG = ${env.IMAGE_TAG}"
+          }
         }
+      }
+    }
 
-        wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+    stage('SonarQube Scan') {
+      steps {
+        container('sonar-scanner') {
+          withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+            sh '''
+              set -e
 
-          container('kaniko') {
-            withCredentials([usernamePassword(
-              credentialsId: 'jenkins',
-              usernameVariable: 'HARBOR_USER',
-              passwordVariable: 'HARBOR_PASS'
-            )]) {
+              sonar-scanner \
+                -Dsonar.host.url=${SONAR_HOST} \
+                -Dsonar.login=${SONAR_TOKEN} \
+                -Dsonar.projectKey=${PROJECT}-${IMAGE_NAME} \
+                -Dsonar.projectName=${PROJECT}-${IMAGE_NAME} \
+                -Dsonar.projectVersion=${IMAGE_TAG} \
+                -Dsonar.projectBaseDir=${WORKSPACE}/${FRONT_DIR} \
+                -Dsonar.sources=.
+            '''
+          }
+        }
+      }
+    }
 
-              sh '''
-                mkdir -p /kaniko/.docker
+    stage('Build & Push Image (Kaniko)') {
+      steps {
+        container('kaniko') {
+          withCredentials([usernamePassword(
+            credentialsId: 'jenkins',
+            usernameVariable: 'HARBOR_USER',
+            passwordVariable: 'HARBOR_PASS'
+          )]) {
 
-                cat <<EOF > /kaniko/.docker/config.json
-                {
-                  "auths": {
-                    "${REGISTRY}": {
-                      "username": "${HARBOR_USER}",
-                      "password": "${HARBOR_PASS}"
-                    }
+            sh '''
+              set -e
+
+              mkdir -p /kaniko/.docker
+
+              cat <<EOF > /kaniko/.docker/config.json
+              {
+                "auths": {
+                  "${REGISTRY}": {
+                    "username": "${HARBOR_USER}",
+                    "password": "${HARBOR_PASS}"
                   }
                 }
-                EOF
+              }
+              EOF
 
-                echo "🚀 Building Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
-
-                /kaniko/executor \
-                  --dockerfile=${WORKSPACE}/services/frontend-service/Dockerfile \
-                  --context=${WORKSPACE}/services/frontend-service \
-                  --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
-                  --cache=true \
-                  --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
-                  --skip-tls-verify
-              '''
-            }
+              /kaniko/executor \
+                --dockerfile=${WORKSPACE}/${FRONT_DIR}/Dockerfile \
+                --context=${WORKSPACE}/${FRONT_DIR} \
+                --destination=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG} \
+                --cache=true \
+                --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
+                --skip-tls-verify
+            '''
           }
+        }
+      }
+    }
 
-          container('trivy') {
+    stage('Trivy Scan') {
+      steps {
+        container('trivy') {
+          withCredentials([usernamePassword(
+            credentialsId: 'jenkins',
+            usernameVariable: 'HARBOR_USER',
+            passwordVariable: 'HARBOR_PASS'
+          )]) {
+
             sh '''
+              set -e
               IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-              echo "🔍 Trivy scanning ${IMAGE}"
 
               trivy image \
                 --cache-dir /root/.cache \
                 --severity HIGH,CRITICAL \
                 --exit-code 1 \
                 --no-progress \
+                --username "${HARBOR_USER}" \
+                --password "${HARBOR_PASS}" \
+                --insecure \
                 ${IMAGE}
             '''
           }
@@ -128,9 +181,10 @@ spec:
   post {
     always {
       echo "✅ Pipeline finished: ${currentBuild.currentResult}"
+      echo "Image: ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
     }
     failure {
-      echo "❌ Build failed"
+      echo "❌ Pipeline failed"
     }
   }
 }
