@@ -56,3 +56,4 @@ router.get('/workload/:namespace/:workload', (req, res) => {
 
 export default router
 
+

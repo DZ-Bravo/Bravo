@@ -24,7 +24,7 @@ spec:
         sidecar.istio.io/inject: "false"
     spec:
       imagePullSecrets:
-        - name: robot$bravo+jenkins-ci   # ✅ 정확한 로봇 계정
+        - name: harbor-regcred   # ✅ 정확한 로봇 계정
 
       containers:
         - name: frontend

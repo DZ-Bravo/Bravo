@@ -31,8 +31,8 @@ spec:
   }
 
   environment {
-    REGISTRY   = "harbor-registry.bravo-platform-ns.svc.cluster.local:5000"
-    IMAGE_TAG  = "build-${env.BUILD_NUMBER}"
+    REGISTRY  = "192.168.0.244:30443"
+    IMAGE_TAG = "build-${env.BUILD_NUMBER}"
   }
 
   stages {
@@ -59,7 +59,7 @@ spec:
               cat <<EOF > /kaniko/.docker/config.json
               {
                 "auths": {
-                  "${REGISTRY}": {
+                  "192.168.0.244:30443": {
                     "username": "${HARBOR_USER}",
                     "password": "${HARBOR_PASS}"
                   }
