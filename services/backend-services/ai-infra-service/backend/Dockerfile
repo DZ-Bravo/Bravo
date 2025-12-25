@@ -7,7 +7,7 @@ RUN apk add --no-cache tzdata && \
     ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
     echo "Asia/Seoul" > /etc/timezone
 
-# Puppeteer를 위한 의존성 설치
+# Puppeteer를 위한 의존성 설치 및 한글 폰트 설치
 RUN apk add --no-cache \
     chromium \
     nss \
@@ -15,6 +15,8 @@ RUN apk add --no-cache \
     harfbuzz \
     ca-certificates \
     ttf-freefont \
+    font-noto-cjk \
+    font-noto \
     && rm -rf /var/cache/apk/*
 
 # Puppeteer가 Chromium을 사용하도록 환경 변수 설정
