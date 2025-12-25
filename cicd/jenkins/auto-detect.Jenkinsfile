@@ -95,7 +95,6 @@ spec:
         container('trivy') {
           sh '''
             IMAGE=${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}
-
             echo "🔍 Trivy scanning ${IMAGE}"
 
             trivy image \
@@ -112,12 +111,11 @@ spec:
 
   post {
     success {
-      echo "✅ Image build & scan success: ${IMAGE_TAG}"
+      echo "✅ Image build & scan success"
     }
     failure {
-      echo "❌ Build or security scan failed"
+      echo "❌ Build or scan failed"
     }
   }
 }
-```
 
