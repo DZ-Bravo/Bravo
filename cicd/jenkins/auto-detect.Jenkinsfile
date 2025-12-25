@@ -97,8 +97,6 @@ if [ -z "$BASE_COMMIT" ]; then
   BASE_COMMIT=$(git rev-parse HEAD~1 2>/dev/null || echo "")
 fi
 
-echo "Diff base: $BASE_COMMIT -> $CURRENT_COMMIT"
-
 git diff --name-only "$BASE_COMMIT" "$CURRENT_COMMIT" > changed_files.txt || true
 
 > changed_services.txt
@@ -109,8 +107,8 @@ while read file; do
       svc=$(echo "$file" | cut -d/ -f3)
       echo "backend-services/$svc" >> changed_services.txt
       ;;
-    services/hiking-frontend/*)
-      echo "hiking-frontend" >> changed_services.txt
+    services/frontend-service/*)
+      echo "frontend-service" >> changed_services.txt
       ;;
   esac
 done < changed_files.txt
@@ -130,9 +128,7 @@ fi
     }
 
     stage('Build Images') {
-      when {
-        expression { !fileExists('.ci_skip') }
-      }
+      when { expression { !fileExists('.ci_skip') } }
       steps {
         container('kaniko') {
           script {
@@ -143,24 +139,23 @@ fi
 
               def imageName = ""
               def dockerfilePath = ""
-              def contextPath = "${env.WORKSPACE}/services"
+              def contextPath = ""
 
               if (svc.startsWith("backend-services/")) {
-                def svcName = svc.split('/').last()
-                imageName = "hiking-${svcName}"
-                dockerfilePath = "${env.WORKSPACE}/services/backend-services/${svcName}/Dockerfile"
-                contextPath = "${env.WORKSPACE}/services/backend-services/${svcName}"
-              } else if (svc == "hiking-frontend") {
+                def name = svc.split('/').last()
+                imageName = "hiking-${name}"
+                dockerfilePath = "${env.WORKSPACE}/services/backend-services/${name}/Dockerfile"
+                contextPath = "${env.WORKSPACE}/services/backend-services/${name}"
+              } else if (svc == "frontend-service") {
                 imageName = "hiking-frontend"
                 dockerfilePath = "${env.WORKSPACE}/services/frontend-service/Dockerfile"
-              } else {
-                error("Unknown service type: ${svc}")
+                contextPath = "${env.WORKSPACE}/services/frontend-service"
               }
 
               def imageTag = "build-${env.BUILD_NUMBER}"
 
               sh """
-                echo "🚀 Building image: ${imageName}:${imageTag}"
+                echo "🚀 Building ${imageName}:${imageTag}"
                 /kaniko/executor \
                   --dockerfile=${dockerfilePath} \
                   --context=${contextPath} \
@@ -177,9 +172,7 @@ fi
     }
 
     stage('Trivy Image Scan') {
-      when {
-        expression { !fileExists('.ci_skip') }
-      }
+      when { expression { !fileExists('.ci_skip') } }
       steps {
         container('trivy') {
           script {
@@ -195,7 +188,6 @@ fi
               def imageTag = "build-${env.BUILD_NUMBER}"
 
               sh """
-                echo "🔍 Trivy scan: ${imageName}:${imageTag}"
                 trivy image \
                   --severity ${SEVERITY} \
                   --exit-code 1 \
@@ -211,15 +203,9 @@ fi
   }
 
   post {
-    always {
-      echo "CI finished"
-    }
-    success {
-      echo "CI succeeded"
-    }
-    aborted {
-      echo "CI skipped"
-    }
+    always { echo "CI finished" }
+    success { echo "CI succeeded" }
+    aborted { echo "CI skipped" }
   }
 }
 
