@@ -59,8 +59,8 @@ spec:
   }
 
   environment {
-    REGISTRY   = "192.168.0.244:30305"
-    CACHE_REPO = "192.168.0.244:30305/bravo/kaniko-cache"
+    REGISTRY   = "harbor-registry.bravo-platform-ns.svc.cluster.local:5000"
+    CACHE_REPO = "harbor-registry.bravo-platform-ns.svc.cluster.local:5000/bravo/kaniko-cache"
     SEVERITY   = "CRITICAL"
   }
 
