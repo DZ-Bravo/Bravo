@@ -47,11 +47,10 @@ spec:
     PROJECT  = "bravo"
     SONAR_HOST_URL = "http://sonarqube.bravo-platform-ns.svc.cluster.local:9000"
     SONAR_TOKEN = credentials('bravo-sonar')
-    REGISTRY = "192.168.0.244:30443"
-    PROJECT  = "bravo"
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -63,36 +62,21 @@ spec:
         script {
           sh '''
           echo "🔍 Detecting changed services..."
-	
-	    FROM_COMMIT="${GIT_PREVIOUS_SUCCESSFUL_COMMIT}"
-          TO_COMMIT="${GIT_COMMIT}"
 
-          if [ -z "$FROM_COMMIT" ]; then
-            echo "⚠️ No previous successful commit, using HEAD~1"
-            FROM_COMMIT=$(git rev-parse HEAD~1)
-          fi
-	
-	    echo "FROM: $FROM_COMMIT"
-          echo "TO  : $TO_COMMIT"
-
-          git diff --name-only "$FROM_COMMIT" "$TO_COMMIT" > changed_files.txt
-
-
-
-          echo "=== Changed Files ==="
-          cat changed_files.txt
+          git fetch origin main
+          git diff --name-only origin/main...HEAD > changed_files.txt
 
           rm -f services.txt
 
-          while IFS= read -r file; do
-             case "$file" in
-               services/frontend-service/*)
-                 echo "frontend-service" >> services.txt
-                   ;;
+          while read file; do
+            case "$file" in
+              services/frontend-service/*)
+                echo "frontend-service" >> services.txt
+                ;;
               services/backend-services/*/*)
-                  svc=$(echo "$file" | cut -d'/' -f3)
-                  echo "$svc" >> services.txt
-                  ;;
+                svc=$(echo "$file" | cut -d'/' -f3)
+                echo "$svc" >> services.txt
+                ;;
             esac
           done < changed_files.txt
 
@@ -119,8 +103,8 @@ spec:
             echo "🚀 Building ${svc}"
 
             def contextPath = (svc == "frontend-service") ?
-                "services/frontend-service" :
-                "services/backend-services/${svc}"
+              "services/frontend-service" :
+              "services/backend-services/${svc}"
 
             def imageTag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(8)}"
 
@@ -142,8 +126,6 @@ spec:
               trivy image --severity HIGH,CRITICAL \
                 --exit-code 0 \
                 --no-progress \
-                --username '${env.REGISTRY_USER}' \
-                --password '${env.REGISTRY_PASSWORD}' \
                 ${REGISTRY}/${PROJECT}/${svc}:${imageTag}
               """
             }
@@ -157,10 +139,4 @@ spec:
     success {
       echo "✅ CI SUCCESS"
     }
-    failure {
-      echo "❌ CI FAILED"
-    }
-  }
-}
-
 
