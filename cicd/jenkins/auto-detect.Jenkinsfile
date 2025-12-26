@@ -61,6 +61,9 @@ spec:
       steps {
         script {
           sh '''
+            #!/bin/bash
+            set -e
+            
             git fetch --tags origin
             
             # 최신 버전 태그 찾기 (1.00, 1.01, 1.02 형식)
@@ -78,10 +81,10 @@ spec:
 
             if [ -s changed_files.txt ]; then
               while read file; do
-                if [[ "$file" == frontend-service/* ]]; then
+                if echo "$file" | grep -q "^services/frontend-service/"; then
                   echo "frontend-service" >> services.txt
-                elif [[ "$file" == backend-services/* ]]; then
-                  echo "$(echo $file | cut -d/ -f2)" >> services.txt
+                elif echo "$file" | grep -q "^services/backend-services/"; then
+                  echo "$(echo $file | cut -d/ -f3)" >> services.txt
                 fi
               done < changed_files.txt
             fi
@@ -134,8 +137,8 @@ spec:
             if (!svc?.trim()) { continue }
 
             def path = svc == "frontend-service" ?
-              "frontend-service" :
-              "backend-services/${svc}"
+              "services/frontend-service" :
+              "services/backend-services/${svc}"
 
             def image = "${REGISTRY}/${PROJECT}/${svc}"
             def tag = env.VERSION_TAG
@@ -182,12 +185,14 @@ spec:
     stage("Create Git Tag") {
       steps {
         script {
-          sh """
-            git config user.name "Jenkins"
-            git config user.email "jenkins@bravo"
-            git tag -a ${env.VERSION_TAG} -m "Version ${env.VERSION_TAG}"
-            git push origin ${env.VERSION_TAG}
-          """
+          withCredentials([gitUsernamePassword(credentialsId: 'github-pat', gitToolName: 'git')]) {
+            sh """
+              git config user.name "Jenkins"
+              git config user.email "jenkins@bravo"
+              git tag -a ${env.VERSION_TAG} -m "Version ${env.VERSION_TAG}"
+              git push origin ${env.VERSION_TAG}
+            """
+          }
           echo "✅ Git tag ${env.VERSION_TAG} created and pushed"
         }
       }

@@ -882,7 +882,7 @@ async function generatePDF(htmlContent) {
   try {
     console.log('Launching browser...')
     browser = await puppeteer.launch({
-      headless: 'new', // 새로운 headless 모드 사용
+      headless: 'new',
       args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox', 
@@ -901,7 +901,7 @@ async function generatePDF(htmlContent) {
     
     // 페이지 설정
     await page.setViewport({ width: 1200, height: 800 })
-    await page.setUserAgent('Mozilla/5.0 (Linux; x86_64) AppleWebKit/537.36')
+    console.log('Viewport set successfully')
     
     console.log('Setting content with timeout...')
     // HTML 내용 설정 (CDN 로드를 고려하여 domcontentloaded 사용)
