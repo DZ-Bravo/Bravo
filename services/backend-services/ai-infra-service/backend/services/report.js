@@ -903,6 +903,17 @@ async function generatePDF(htmlContent) {
     await page.setViewport({ width: 1200, height: 800 })
     console.log('Viewport set successfully')
     
+    // 네트워크 요청 차단 (CDN 로드 시간 단축)
+    await page.setRequestInterception(true)
+    page.on('request', (req) => {
+      const resourceType = req.resourceType()
+      if (resourceType === 'image' || resourceType === 'font' || resourceType === 'media') {
+        req.abort()
+      } else {
+        req.continue()
+      }
+    })
+    
     console.log('Setting content with timeout...')
     // HTML 내용 설정 (CDN 로드를 고려하여 domcontentloaded 사용)
     try {
