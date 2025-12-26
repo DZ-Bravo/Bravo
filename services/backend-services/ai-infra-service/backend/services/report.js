@@ -126,13 +126,33 @@ function getLastMonthEnd() {
   return date
 }
 
+// 한국 시간으로 변환
+function toKST(date) {
+  const kstDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+  const year = kstDate.getFullYear()
+  const month = String(kstDate.getMonth() + 1).padStart(2, '0')
+  const day = String(kstDate.getDate()).padStart(2, '0')
+  const hours = String(kstDate.getHours()).padStart(2, '0')
+  const minutes = String(kstDate.getMinutes()).padStart(2, '0')
+  const seconds = String(kstDate.getSeconds()).padStart(2, '0')
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} (KST)`
+}
+
 // Bedrock AI 생성 내용을 HTML로 래핑
 function wrapAIContentInHTML(aiContent, reportData, reportType) {
-  const { periodStart, periodEnd, generatedAt } = reportData
+  const { periodStart, periodEnd, generatedAt, resourceUsage, containerCPU, containerMemory, podCPU, podMemory, errors } = reportData
   
   // Bedrock Agent가 이미 HTML을 반환하므로, 완전한 HTML 문서로 래핑
   // aiContent에 이미 HTML 태그가 포함되어 있을 수 있음
   console.log(`Wrapping AI content (length: ${aiContent.length} bytes)`)
+  
+  // 차트 데이터 준비
+  const cpuTimeline = resourceUsage?.cpu?.timeline || []
+  const memoryTimeline = resourceUsage?.memory?.timeline || []
+  const containerCPUTop5 = (containerCPU || []).slice(0, 5)
+  const containerMemoryTop5 = (containerMemory || []).slice(0, 5)
+  const podCPUTop5 = (podCPU || []).slice(0, 5)
+  const podMemoryTop5 = (podMemory || []).slice(0, 5)
   
   return `
 <!DOCTYPE html>
@@ -155,33 +175,41 @@ function wrapAIContentInHTML(aiContent, reportData, reportType) {
       border-bottom: 3px solid #3498db; 
       padding-bottom: 10px; 
       margin-top: 0;
+      font-size: 28px;
     }
     h2 { 
       color: #34495e; 
       margin-top: 30px; 
       border-bottom: 2px solid #ecf0f1; 
       padding-bottom: 5px; 
+      font-size: 22px;
     }
     h3 {
       color: #34495e;
       margin-top: 20px;
+      font-size: 18px;
     }
     table { 
       width: 100%; 
       border-collapse: collapse; 
       margin: 15px 0; 
+      font-size: 14px;
     }
     th, td { 
-      padding: 10px; 
+      padding: 12px; 
       text-align: left; 
       border: 1px solid #ddd; 
     }
     th { 
       background-color: #3498db; 
       color: white; 
+      font-weight: 600;
     }
     tr:nth-child(even) { 
       background-color: #f9f9f9; 
+    }
+    tr:hover {
+      background-color: #f0f0f0;
     }
     ul, ol {
       margin: 10px 0;
@@ -189,34 +217,298 @@ function wrapAIContentInHTML(aiContent, reportData, reportType) {
     }
     li {
       margin: 5px 0;
+      line-height: 1.8;
     }
     .report-content { 
-      line-height: 1.6; 
+      line-height: 1.8; 
     }
     .meta-info { 
       color: #7f8c8d; 
-      font-size: 0.9em; 
-      margin-bottom: 20px; 
-      padding: 10px;
+      font-size: 14px; 
+      margin-bottom: 25px; 
+      padding: 15px;
       background-color: #f5f5f5;
       border-left: 4px solid #3498db;
+      border-radius: 4px;
     }
     strong {
-      font-weight: bold;
+      font-weight: 600;
+      color: #2c3e50;
     }
     em {
       font-style: italic;
+    }
+    .chart-container {
+      margin: 25px 0;
+      padding: 15px;
+      background-color: #fafafa;
+      border-radius: 4px;
+      page-break-inside: avoid;
+    }
+    canvas {
+      max-height: 400px;
+      margin: 10px 0;
+    }
+    p {
+      margin: 10px 0;
+      line-height: 1.8;
     }
   </style>
 </head>
 <body>
   <div class="meta-info">
     <p><strong>보고 기간:</strong> ${periodStart.toISOString().split('T')[0]} ~ ${periodEnd.toISOString().split('T')[0]}</p>
-    <p><strong>생성 일시:</strong> ${generatedAt.toISOString()}</p>
+    <p><strong>생성 일시:</strong> ${toKST(generatedAt)}</p>
   </div>
   <div class="report-content">
     ${aiContent}
   </div>
+  
+  ${cpuTimeline.length > 0 ? `
+  <h2>리소스 사용률 시계열</h2>
+  <div class="chart-container">
+    <canvas id="resourceChart"></canvas>
+  </div>
+  ` : ''}
+  
+  ${containerCPUTop5.length > 0 ? `
+  <h2>Container CPU 사용량 Top 5</h2>
+  <div class="chart-container">
+    <canvas id="containerCPUChart"></canvas>
+  </div>
+  ` : ''}
+  
+  ${containerMemoryTop5.length > 0 ? `
+  <h2>Container Memory 사용량 Top 5</h2>
+  <div class="chart-container">
+    <canvas id="containerMemoryChart"></canvas>
+  </div>
+  ` : ''}
+  
+  ${podCPUTop5.length > 0 ? `
+  <h2>Pod CPU 사용량 Top 5</h2>
+  <div class="chart-container">
+    <canvas id="podCPUChart"></canvas>
+  </div>
+  ` : ''}
+  
+  ${podMemoryTop5.length > 0 ? `
+  <h2>Pod Memory 사용량 Top 5</h2>
+  <div class="chart-container">
+    <canvas id="podMemoryChart"></canvas>
+  </div>
+  ` : ''}
+  
+  ${errors?.total > 0 ? `
+  <h2>5XX 에러 분류</h2>
+  <div class="chart-container">
+    <canvas id="errorPieChart"></canvas>
+  </div>
+  ` : ''}
+  
+  <script>
+    ${cpuTimeline.length > 0 ? `
+    const resourceCtx = document.getElementById('resourceChart');
+    if (resourceCtx) {
+      const cpuData = ${JSON.stringify(cpuTimeline.map(p => ({ x: new Date(p.timestamp * 1000).toISOString(), y: parseFloat(p.value.toFixed(2)) })))};
+      const memData = ${JSON.stringify(memoryTimeline.map(p => ({ x: new Date(p.timestamp * 1000).toISOString(), y: parseFloat(p.value.toFixed(2)) })))};
+      new Chart(resourceCtx, {
+        type: 'line',
+        data: {
+          datasets: [{
+            label: 'CPU 사용률 (%)',
+            data: cpuData,
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+            tension: 0.1
+          }, {
+            label: 'Memory 사용률 (%)',
+            data: memData,
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true, max: 100 }
+          },
+          plugins: { legend: { display: true } }
+        }
+      });
+    }
+    ` : ''}
+    
+    ${containerCPUTop5.length > 0 ? `
+    const containerCPUCtx = document.getElementById('containerCPUChart');
+    if (containerCPUCtx) {
+      const labels = ${JSON.stringify(containerCPUTop5.map(c => `${c.namespace}/${c.pod}/${c.name}`))};
+      const data = ${JSON.stringify(containerCPUTop5.map(c => {
+        const lastValue = c.data && c.data.length > 0 ? parseFloat(c.data[c.data.length - 1][1]) : 0;
+        return parseFloat(lastValue.toFixed(4));
+      }))};
+      new Chart(containerCPUCtx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'CPU 사용량 (cores)',
+            data: data,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+    ` : ''}
+    
+    ${containerMemoryTop5.length > 0 ? `
+    const containerMemoryCtx = document.getElementById('containerMemoryChart');
+    if (containerMemoryCtx) {
+      const labels = ${JSON.stringify(containerMemoryTop5.map(c => `${c.namespace}/${c.pod}/${c.name}`))};
+      const data = ${JSON.stringify(containerMemoryTop5.map(c => {
+        if (c.usageBytesData && c.usageBytesData.length > 0) {
+          const lastBytes = parseFloat(c.usageBytesData[c.usageBytesData.length - 1][1]);
+          return parseFloat((lastBytes / 1024 / 1024).toFixed(2));
+        }
+        return 0;
+      }))};
+      new Chart(containerMemoryCtx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Memory 사용량 (MB)',
+            data: data,
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+    ` : ''}
+    
+    ${podCPUTop5.length > 0 ? `
+    const podCPUCtx = document.getElementById('podCPUChart');
+    if (podCPUCtx) {
+      const labels = ${JSON.stringify(podCPUTop5.map(p => `${p.namespace}/${p.name}`))};
+      const data = ${JSON.stringify(podCPUTop5.map(p => {
+        const lastValue = p.data && p.data.length > 0 ? parseFloat(p.data[p.data.length - 1][1]) : 0;
+        return parseFloat(lastValue.toFixed(4));
+      }))};
+      new Chart(podCPUCtx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'CPU 사용량 (cores)',
+            data: data,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+    ` : ''}
+    
+    ${podMemoryTop5.length > 0 ? `
+    const podMemoryCtx = document.getElementById('podMemoryChart');
+    if (podMemoryCtx) {
+      const labels = ${JSON.stringify(podMemoryTop5.map(p => `${p.namespace}/${p.name}`))};
+      const data = ${JSON.stringify(podMemoryTop5.map(p => {
+        if (p.usageBytesData && p.usageBytesData.length > 0) {
+          const lastBytes = parseFloat(p.usageBytesData[p.usageBytesData.length - 1][1]);
+          return parseFloat((lastBytes / 1024 / 1024).toFixed(2));
+        }
+        return 0;
+      }))};
+      new Chart(podMemoryCtx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Memory 사용량 (MB)',
+            data: data,
+            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+    ` : ''}
+    
+    ${errors?.total > 0 ? `
+    const errorPieCtx = document.getElementById('errorPieChart');
+    if (errorPieCtx) {
+      new Chart(errorPieCtx, {
+        type: 'pie',
+        data: {
+          labels: ['HAProxy', 'Gateway', 'Application', 'Downstream'],
+          datasets: [{
+            data: [
+              ${errors.haproxy?.count || 0},
+              ${errors.gateway?.count || 0},
+              ${errors.application?.count || 0},
+              ${errors.downstream?.count || 0}
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(75, 192, 192, 0.6)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true, position: 'right' }
+          }
+        }
+      });
+    }
+    ` : ''}
+  </script>
 </body>
 </html>
   `
@@ -300,7 +592,7 @@ function generateHTMLTemplate(reportData, reportType) {
 <body>
   <h1>HIKER 인프라 모니터링 ${reportType} 보고서</h1>
   <p><strong>보고 기간:</strong> ${periodStart.toISOString().split('T')[0]} ~ ${periodEnd.toISOString().split('T')[0]}</p>
-  <p><strong>생성 일시:</strong> ${generatedAt.toISOString()}</p>
+  <p><strong>생성 일시:</strong> ${toKST(generatedAt)}</p>
   
   <h2>1. 클러스터 개요</h2>
   <table>
@@ -584,89 +876,91 @@ function generateHTMLTemplate(reportData, reportType) {
 
 // PDF 생성
 async function generatePDF(htmlContent) {
-  console.log('Launching browser...')
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox', 
-      '--disable-setuid-sandbox', 
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--disable-software-rasterizer',
-      '--disable-extensions',
-      '--single-process'
-    ],
-    timeout: 30000
-  })
-  console.log('Browser launched successfully')
+  let browser = null
+  let page = null
   
   try {
+    console.log('Launching browser...')
+    browser = await puppeteer.launch({
+      headless: 'new', // 새로운 headless 모드 사용
+      args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-software-rasterizer',
+        '--disable-extensions'
+      ],
+      timeout: 60000
+    })
+    console.log('Browser launched successfully')
+    
     console.log('Creating new page...')
-    const page = await Promise.race([
-      browser.newPage(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('newPage timeout')), 15000))
-    ])
+    page = await browser.newPage()
     console.log('Page created successfully')
     
+    // 페이지 설정
+    await page.setViewport({ width: 1200, height: 800 })
+    await page.setUserAgent('Mozilla/5.0 (Linux; x86_64) AppleWebKit/537.36')
+    
     console.log('Setting content with timeout...')
-    // HTML 내용 설정 (타임아웃 적용)
+    // HTML 내용 설정 (CDN 로드를 고려하여 domcontentloaded 사용)
     try {
       await page.setContent(htmlContent, { 
-        waitUntil: 'networkidle0', 
-        timeout: 60000 
+        waitUntil: 'domcontentloaded', 
+        timeout: 30000 
       })
       console.log('Content set successfully')
     } catch (err) {
-      console.warn('Content load timeout, trying domcontentloaded:', err.message)
-      try {
-        await page.setContent(htmlContent, { waitUntil: 'domcontentloaded', timeout: 30000 })
-        console.log('Content set with domcontentloaded')
-      } catch (err2) {
-        console.warn('Content load failed, proceeding anyway:', err2.message)
-        await page.setContent(htmlContent, { waitUntil: 'load', timeout: 10000 }).catch(() => {})
-      }
-    }
-    
-    console.log('Waiting for Chart.js to render...')
-    // Chart.js 렌더링 대기 (차트가 많으므로 충분한 시간 필요)
-    await page.waitForTimeout(5000).catch(() => {})
-    
-    // Chart.js가 완전히 렌더링되었는지 확인
-    try {
-      await page.evaluate(() => {
-        return new Promise((resolve) => {
-          if (typeof Chart !== 'undefined') {
-            // Chart.js가 로드되었는지 확인
-            setTimeout(resolve, 2000)
-          } else {
-            resolve()
-          }
-        })
+      console.warn('Content load timeout, trying without wait:', err.message)
+      await page.setContent(htmlContent, { waitUntil: 'load', timeout: 15000 }).catch(() => {
+        console.warn('Content load failed, proceeding anyway')
       })
-      console.log('Chart.js rendering completed')
-    } catch (err) {
-      console.warn('Chart.js wait error:', err.message)
     }
+    
+    console.log('Waiting for resources to load...')
+    // 외부 리소스(Chart.js CDN) 로드 대기
+    try {
+      await page.waitForFunction(() => {
+        return typeof Chart !== 'undefined' || document.readyState === 'complete'
+      }, { timeout: 20000 }).catch(() => {
+        console.warn('Chart.js load timeout, proceeding anyway')
+      })
+      console.log('Resources loaded')
+    } catch (err) {
+      console.warn('Resource wait error:', err.message)
+    }
+    
+    // 추가 렌더링 대기 시간
+    console.log('Waiting for rendering...')
+    await page.waitForTimeout(3000).catch(() => {})
+    console.log('Rendering completed')
     
     console.log('Generating PDF...')
     const pdfBuffer = await Promise.race([
       page.pdf({
-        format: 'A4',
-        printBackground: true,
-        margin: { top: '20mm', right: '15mm', bottom: '20mm', left: '15mm' }
+    format: 'A4',
+    printBackground: true,
+    margin: { top: '20mm', right: '15mm', bottom: '20mm', left: '15mm' }
       }),
       new Promise((_, reject) => setTimeout(() => reject(new Error('PDF generation timeout')), 60000))
     ])
     console.log(`PDF generated, size: ${pdfBuffer.length} bytes`)
-    
+  
     console.log('PDF generated, closing browser...')
-    await browser.close()
+  await browser.close()
     console.log('Browser closed.')
-    
-    return pdfBuffer
+  
+  return pdfBuffer
   } catch (error) {
     console.error('Error in PDF generation:', error)
-    await browser.close().catch(() => {})
+    console.error('Error stack:', error.stack)
+    if (page) {
+      await page.close().catch(() => {})
+    }
+    if (browser) {
+      await browser.close().catch(() => {})
+    }
     throw error
   }
 }
@@ -742,35 +1036,45 @@ async function sendReportToSES(pdfBuffer, reportType, periodStart, periodEnd, su
     console.log(`SES 이메일 전송 시작: ${recipientEmails.length}명에게 전송`)
     console.log(`받는 사람: ${recipientEmails.join(', ')}`)
     
-    const fileName = `hiker-infra-report-${reportType}-${new Date().toISOString().split('T')[0]}.pdf`
+  const fileName = `hiker-infra-report-${reportType}-${new Date().toISOString().split('T')[0]}.pdf`
     const fromEmail = process.env.AWS_SES_FROM_EMAIL || 'monitoring@hiker-cloud.site'
     
     console.log(`발신 이메일: ${fromEmail}`)
     console.log(`PDF 파일 크기: ${pdfBuffer.length} bytes`)
-    
-    // SES 직접 사용 (nodemailer 대신)
-    const rawMessage = await createRawEmailMessage(
+  
+  // SES 직접 사용 (nodemailer 대신)
+  const rawMessage = await createRawEmailMessage(
       fromEmail,
-      recipientEmails,
-      `HIKER 인프라 모니터링 ${reportType} 보고서 - ${new Date().toISOString().split('T')[0]}`,
-      pdfBuffer,
-      fileName
-    )
+    recipientEmails,
+    `HIKER 인프라 모니터링 ${reportType} 보고서 - ${new Date().toISOString().split('T')[0]}`,
+    pdfBuffer,
+    fileName
+  )
     
     console.log(`Raw 메시지 생성 완료: ${rawMessage.length} bytes`)
-    
-    const params = {
+  
+  const params = {
       Source: fromEmail,
-      Destinations: recipientEmails,
-      RawMessage: {
-        Data: rawMessage
-      }
+    Destinations: recipientEmails,
+    RawMessage: {
+      Data: rawMessage
     }
-    
+  }
+  
     console.log('SES sendRawEmail 호출 중...')
+    console.log(`전송 파라미터: Source=${params.Source}, Destinations=${params.Destinations.join(', ')}`)
     const result = await ses.sendRawEmail(params).promise()
     console.log(`SES 전송 성공: MessageId=${result.MessageId}`)
-    console.log(`SES를 통해 보고서 이메일 전송 완료: ${recipientEmails.join(', ')}`)
+    console.log(`응답 전체: ${JSON.stringify(result, null, 2)}`)
+  console.log(`SES를 통해 보고서 이메일 전송 완료: ${recipientEmails.join(', ')}`)
+    
+    // 각 수신자별로 전송 상태 확인
+    if (result.MessageId) {
+      console.log(`✅ 이메일이 SES를 통해 전송되었습니다.`)
+      console.log(`📧 받는 사람: ${recipientEmails.join(', ')}`)
+      console.log(`📬 MessageId: ${result.MessageId}`)
+      console.log(`⚠️  이메일이 도착하지 않았다면 스팸함을 확인하세요.`)
+    }
   } catch (error) {
     console.error('SES 이메일 전송 실패:', error.message)
     console.error('에러 상세:', JSON.stringify(error, null, 2))
@@ -851,14 +1155,14 @@ async function generateReport(reportType) {
   if (teamEmails.length > 0) {
     console.log('Sending report via SES...')
     try {
-      await sendReportToSES(
-        pdfBuffer,
-        reportType,
-        reportData.periodStart,
-        reportData.periodEnd,
-        summary,
-        teamEmails
-      )
+    await sendReportToSES(
+      pdfBuffer,
+      reportType,
+      reportData.periodStart,
+      reportData.periodEnd,
+      summary,
+      teamEmails
+    )
     } catch (error) {
       console.error('SES 전송 실패했지만 보고서 생성은 완료:', error.message)
       // SES 실패해도 보고서 생성은 성공으로 처리
