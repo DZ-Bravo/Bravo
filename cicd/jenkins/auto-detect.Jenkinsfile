@@ -148,9 +148,18 @@ spec:
             container('kaniko') {
               sh """
                 cd /home/jenkins/agent/workspace/hiker-service
+                echo "Current directory:"
+                pwd
+                echo "Listing workspace:"
+                ls -la
+                echo "Checking path: ${path}"
+                ls -la ${path} || echo "Path ${path} not found"
+                echo "Checking Dockerfile:"
+                ls -la ${path}/Dockerfile || echo "Dockerfile not found in ${path}"
+                echo "Running kaniko executor..."
                 /kaniko/executor \
                   --context=${path} \
-                  --dockerfile=Dockerfile \
+                  --dockerfile=${path}/Dockerfile \
                   --destination=${image}:${tag} \
                   --cache=true \
                   --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
