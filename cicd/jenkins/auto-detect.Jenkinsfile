@@ -61,23 +61,63 @@ spec:
       steps {
         script {
           sh '''
-            git fetch origin main
-            git diff --name-only origin/main...HEAD > changed_files.txt
+            git fetch --tags origin
+            
+            # 최신 버전 태그 찾기 (1.00, 1.01, 1.02 형식)
+            LATEST_TAG=$(git tag --sort=-version:refname | grep -E '^[0-9]+\\.[0-9]{2}$' | head -1)
+            
+            if [ -z "$LATEST_TAG" ]; then
+              echo "⚠️ No version tags found (format: 1.00, 1.01...), comparing with previous commit"
+              git diff --name-only HEAD~1..HEAD > changed_files.txt || true
+            else
+              echo "📌 Comparing with latest tag: $LATEST_TAG"
+              git diff --name-only ${LATEST_TAG}..HEAD > changed_files.txt || true
+            fi
 
             > services.txt
 
-            while read file; do
-              if [[ "$file" == frontend-service/* ]]; then
-                echo "frontend-service" >> services.txt
-              elif [[ "$file" == backend-services/* ]]; then
-                echo "$(echo $file | cut -d/ -f2)" >> services.txt
-              fi
-            done < changed_files.txt
+            if [ -s changed_files.txt ]; then
+              while read file; do
+                if [[ "$file" == frontend-service/* ]]; then
+                  echo "frontend-service" >> services.txt
+                elif [[ "$file" == backend-services/* ]]; then
+                  echo "$(echo $file | cut -d/ -f2)" >> services.txt
+                fi
+              done < changed_files.txt
+            fi
 
             sort -u services.txt > final_services.txt || true
             echo "=== Changed Services ==="
-            cat final_services.txt || true
+            cat final_services.txt || echo "No services changed"
           '''
+        }
+      }
+    }
+
+    stage("Generate Version Tag") {
+      steps {
+        script {
+          def versionTag = sh(
+            script: '''
+              git fetch --tags origin
+              LATEST_TAG=$(git tag --sort=-version:refname | grep -E '^[0-9]+\\.[0-9]{2}$' | head -1)
+              
+              if [ -z "$LATEST_TAG" ]; then
+                echo "1.00"
+              else
+                # 버전을 마이너 버전으로 증가 (1.02 -> 1.03)
+                MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
+                MINOR=$(echo $LATEST_TAG | cut -d. -f2)
+                NEW_MINOR=$((10#$MINOR + 1))
+                # 두 자리 소수점 형식 유지
+                printf "%d.%02d" $MAJOR $NEW_MINOR
+              fi
+            ''',
+            returnStdout: true
+          ).trim()
+          
+          env.VERSION_TAG = versionTag
+          echo "🏷️ Generated version tag: ${env.VERSION_TAG}"
         }
       }
     }
@@ -98,9 +138,9 @@ spec:
               "backend-services/${svc}"
 
             def image = "${REGISTRY}/${PROJECT}/${svc}"
-            def tag   = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}"
+            def tag = env.VERSION_TAG
 
-            echo "🚀 Building ${svc}"
+            echo "🚀 Building ${svc} with tag: ${tag}"
 
             container('kaniko') {
               sh """
@@ -108,7 +148,6 @@ spec:
                 --context=${path} \
                 --dockerfile=${path}/Dockerfile \
                 --destination=${image}:${tag} \
-                --destination=${image}:latest \
                 --cache=true \
                 --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
                 --skip-tls-verify
@@ -139,11 +178,25 @@ spec:
         }
       }
     }
+
+    stage("Create Git Tag") {
+      steps {
+        script {
+          sh """
+            git config user.name "Jenkins"
+            git config user.email "jenkins@bravo"
+            git tag -a ${env.VERSION_TAG} -m "Version ${env.VERSION_TAG}"
+            git push origin ${env.VERSION_TAG}
+          """
+          echo "✅ Git tag ${env.VERSION_TAG} created and pushed"
+        }
+      }
+    }
   }
 
   post {
     success {
-      echo "✅ CI SUCCESS"
+      echo "✅ CI SUCCESS - Version: ${env.VERSION_TAG}"
     }
     failure {
       echo "❌ CI FAILED"
