@@ -1136,10 +1136,17 @@ async function generateReport(reportType) {
   
   // 5. 전송
   console.log('Preparing to send reports...')
-  const teamEmails = process.env.TEAM_EMAILS ? 
-    process.env.TEAM_EMAILS.split(',').map(e => e.trim()) : 
+  const teamEmailsRaw = process.env.TEAM_EMAILS || ''
+  console.log(`TEAM_EMAILS env var (raw): "${teamEmailsRaw}"`)
+  const teamEmails = teamEmailsRaw ? 
+    teamEmailsRaw.split(',').map(e => e.trim()).filter(e => e.length > 0) : 
     []
-  console.log(`Team emails: ${teamEmails.length > 0 ? teamEmails.join(', ') : 'none'}`)
+  console.log(`Team emails parsed: ${teamEmails.length}명`)
+  if (teamEmails.length > 0) {
+    console.log(`받는 사람 목록: ${teamEmails.join(', ')}`)
+  } else {
+    console.warn('⚠️ 팀 이메일이 설정되지 않았습니다!')
+  }
   
   // Slack 전송
   console.log('Sending report to Slack...')

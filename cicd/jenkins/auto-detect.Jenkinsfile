@@ -147,13 +147,14 @@ spec:
 
             container('kaniko') {
               sh """
-              /kaniko/executor \
-                --context=${path} \
-                --dockerfile=${path}/Dockerfile \
-                --destination=${image}:${tag} \
-                --cache=true \
-                --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
-                --skip-tls-verify
+                cd /home/jenkins/agent/workspace/hiker-service
+                /kaniko/executor \
+                  --context=${path} \
+                  --dockerfile=Dockerfile \
+                  --destination=${image}:${tag} \
+                  --cache=true \
+                  --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
+                  --skip-tls-verify
               """
             }
 
