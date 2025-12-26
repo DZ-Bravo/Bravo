@@ -111,7 +111,9 @@ spec:
                 # 버전을 마이너 버전으로 증가 (1.02 -> 1.03)
                 MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
                 MINOR=$(echo $LATEST_TAG | cut -d. -f2)
-                NEW_MINOR=$((10#$MINOR + 1))
+                # 앞의 0을 제거하고 숫자로 변환 후 증가
+                MINOR_NUM=$((MINOR + 0))
+                NEW_MINOR=$((MINOR_NUM + 1))
                 # 두 자리 소수점 형식 유지
                 printf "%d.%02d" $MAJOR $NEW_MINOR
               fi
