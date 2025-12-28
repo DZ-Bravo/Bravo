@@ -56,16 +56,18 @@ spec:
       }
     }
 
+
     stage("Detect Changed Services") {
       steps {
         script {
           env.CURRENT_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
           
           sh '''
-            #!/bin/bash
+            #!/bin/sh  # bash 의존성을 없애기 위해 표준 sh 사용
             git fetch --tags origin
-            # v가 붙은 태그와 안 붙은 태그 모두 고려하여 최신순 정렬
-            LATEST_TAG=$(git tag -l "v*" "1.*" | sort -V | tail -n 1)
+            
+            # v가 붙은 태그 중 가장 최신 것 가져오기
+            LATEST_TAG=$(git tag -l "v*" | sort -V | tail -n 1)
 
             if [ -z "$LATEST_TAG" ]; then
               echo "⚠️ No tags found, comparing with HEAD~1"
@@ -75,24 +77,41 @@ spec:
               git diff --name-only $LATEST_TAG..HEAD > changed_files.txt
             fi
 
+            # 파일 목록 분석 (표준 sh 문법으로 수정)
             > services.txt
             while read file; do
-              if [[ "$file" == services/frontend-service/* ]] || [[ "$file" == frontend-service/* ]]; then
-                echo "frontend-service" >> services.txt
-              elif [[ "$file" == services/backend-services/* ]]; then
-                echo "$file" | cut -d/ -f3 >> services.txt
-              elif [[ "$file" == backend-services/* ]]; then
-                echo "$file" | cut -d/ -f2 >> services.txt
-              fi
+              case "$file" in
+                services/frontend-service/*|frontend-service/*)
+                  echo "frontend-service" >> services.txt
+                  ;;
+                services/backend-services/*)
+                  # services/backend-services/서비스명/... 구조에서 서비스명 추출
+                  svc_name=$(echo "$file" | cut -d/ -f3)
+                  echo "$svc_name" >> services.txt
+                  ;;
+                backend-services/*)
+                  # backend-services/서비스명/... 구조에서 서비스명 추출
+                  svc_name=$(echo "$file" | cut -d/ -f2)
+                  echo "$svc_name" >> services.txt
+                  ;;
+              esac
             done < changed_files.txt
             
-            sort -u services.txt > final_services.txt
+            # 중복 제거 및 결과 저장
+            if [ -f services.txt ]; then
+                sort -u services.txt > final_services.txt
+            else
+                touch final_services.txt
+            fi
+            
             echo "=== Changed Services ==="
-            cat final_services.txt
+            cat final_services.txt || echo "No services changed"
           '''
         }
       }
     }
+
+
 
     stage("Generate Version Tag") {
       steps {
