@@ -215,3 +215,4 @@ aws ses get-identity-verification-attributes \
 3. 테스트 이메일 발송 확인
 
 
+

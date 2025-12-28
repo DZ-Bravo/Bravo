@@ -1,0 +1,67 @@
+# =================================================
+# Prometheus Alert 규칙
+# 노드 리소스 사용률 모니터링 및 알림
+# =================================================
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-resource-alerts
+  namespace: bravo-monitoring-ns
+spec:
+  groups:
+  - name: node-resources
+    interval: 30s
+    rules:
+    # 노드 메모리 사용률 경고
+    - alert: NodeMemoryHigh
+      expr: |
+        (sum by (node) (
+          kube_pod_container_resource_requests{resource="memory"}
+        ) / 
+        sum by (node) (
+          kube_node_status_capacity{resource="memory"}
+        )) * 100 > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "노드 메모리 사용률이 높습니다"
+        description: "{{ $labels.node }}의 메모리 사용률이 80%를 초과했습니다."
+    
+    # 노드 CPU 사용률 경고
+    - alert: NodeCPUHigh
+      expr: |
+        (sum by (node) (
+          kube_pod_container_resource_requests{resource="cpu"}
+        ) / 
+        sum by (node) (
+          kube_node_status_capacity{resource="cpu"}
+        )) * 100 > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "노드 CPU 사용률이 높습니다"
+        description: "{{ $labels.node }}의 CPU 사용률이 80%를 초과했습니다."
+    
+    # 노드 리소스 불균형 경고
+    - alert: NodeResourceImbalance
+      expr: |
+        (
+          max by (node) (
+            (sum by (node) (kube_pod_container_resource_requests{resource="memory"}) / 
+             sum by (node) (kube_node_status_capacity{resource="memory"})) * 100
+          ) - 
+          min by (node) (
+            (sum by (node) (kube_pod_container_resource_requests{resource="memory"}) / 
+             sum by (node) (kube_node_status_capacity{resource="memory"})) * 100
+          )
+        ) > 30
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "노드 간 리소스 불균형이 감지되었습니다"
+        description: "노드 간 메모리 사용률 차이가 30%를 초과했습니다."
+
+

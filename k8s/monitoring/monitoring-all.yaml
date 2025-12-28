@@ -488,6 +488,7 @@ data:
     server:
       http_listen_port: 3101
       grpc_listen_port: 9096
+      log_level: debug
     
     positions:
       filename: /tmp/positions.yaml
@@ -503,36 +504,60 @@ data:
         pipeline_stages:
           - docker: {}
         relabel_configs:
+          # 노드 이름을 레이블로 추가
           - source_labels:
               - __meta_kubernetes_pod_node_name
             target_label: __host__
+          # Pod 레이블 매핑
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
+          # job 레이블 설정 (namespace/pod_name)
           - action: replace
-            replacement:
+            replacement: $1/$2
             separator: /
             source_labels:
               - __meta_kubernetes_namespace
               - __meta_kubernetes_pod_name
             target_label: job
+          # namespace 레이블 설정
           - action: replace
             source_labels:
               - __meta_kubernetes_namespace
             target_label: namespace
+          # pod 레이블 설정
           - action: replace
             source_labels:
               - __meta_kubernetes_pod_name
             target_label: pod
+          # container 레이블 설정
           - action: replace
             source_labels:
               - __meta_kubernetes_pod_container_name
             target_label: container
-          - replacement: /var/log/pods/*$1/*.log
-            separator: /
+          # 로그 파일 경로 설정 (표준 Kubernetes containers 경로 사용)
+          - action: replace
             source_labels:
-              - __meta_kubernetes_pod_uid
+              - __meta_kubernetes_pod_name
+              - __meta_kubernetes_namespace
               - __meta_kubernetes_pod_container_name
+            separator: ;
+            regex: (.+);(.+);(.+)
             target_label: __path__
+            replacement: /var/log/containers/$1_$2_$3-*.log
+          # __path__가 설정되지 않은 타겟 제거
+          - action: drop
+            regex: ^$
+            source_labels:
+              - __path__
+      
+      # Promtail 자체 로그 수집 (job="promtail" 레이블로)
+      - job_name: promtail
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              job: promtail
+              __path__: /var/log/pods/*/promtail/*.log
 
 ---
 # =================================================
@@ -560,6 +585,7 @@ rules:
   - services
   - endpoints
   - pods
+  - namespaces
   verbs: ["get", "list", "watch"]
 
 ---
@@ -600,7 +626,7 @@ spec:
       serviceAccountName: promtail
       containers:
       - name: promtail
-        image: grafana/promtail:2.9.4
+        image: grafana/promtail:latest
         args:
           - "-config.file=/etc/promtail/promtail.yaml"
         ports:

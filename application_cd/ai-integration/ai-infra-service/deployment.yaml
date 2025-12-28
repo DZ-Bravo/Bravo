@@ -32,8 +32,8 @@ spec:
                 name: ai-infra-config
             - secretRef:
                 name: ai-infra-secrets
-          image: 192.168.0.244:30305/bravo/ai-infra-service:latest
-          imagePullPolicy: Always
+          image: bravo/ai-infra-service:latest
+          imagePullPolicy: Never
           livenessProbe:
             failureThreshold: 3
             httpGet:

@@ -406,3 +406,4 @@ kubectl logs -n bravo-monitoring-ns -l app=loki
 - Promtail이 올바른 레이블로 로그를 수집하는지 확인
 - `namespace`, `pod`, `container` 레이블이 제대로 설정되어 있는지 확인
 
+

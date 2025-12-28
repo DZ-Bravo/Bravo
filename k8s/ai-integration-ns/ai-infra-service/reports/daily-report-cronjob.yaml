@@ -14,7 +14,8 @@ spec:
         spec:
           containers:
           - name: report-generator
-            image: 192.168.0.244:30305/bravo/ai-infra-service:latest
+            image: bravo/ai-infra-service:latest
+            imagePullPolicy: Never
             command: ["node", "/app/services/report-script.js", "daily"]
             envFrom:
             - configMapRef:
