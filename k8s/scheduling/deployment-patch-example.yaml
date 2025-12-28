@@ -1,0 +1,61 @@
+# =================================================
+# 기존 Deployment에 Anti-Affinity 추가하는 방법
+# kubectl patch를 사용하여 적용
+# =================================================
+
+# 방법 1: kubectl patch 사용
+# 예: auth-service에 적용
+kubectl patch deployment auth-service -n bravo-core-ns --type='json' -p='
+[
+  {
+    "op": "add",
+    "path": "/spec/template/spec/affinity",
+    "value": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "weight": 100,
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchExpressions": [
+                  {
+                    "key": "app",
+                    "operator": "In",
+                    "values": ["auth-service"]
+                  }
+                ]
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            }
+          }
+        ]
+      }
+    }
+  }
+]'
+
+# 방법 2: YAML 파일로 직접 수정
+# deployment.yaml의 spec.template.spec에 추가:
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  namespace: bravo-core-ns
+spec:
+  template:
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - auth-service
+              topologyKey: kubernetes.io/hostname
+
+

@@ -21,7 +21,8 @@ spec:
       - name: harbor-registry-secret
       containers:
       - name: chatbot-service
-        image: 192.168.0.244:30305/bravo/hiking-chatbot-service:latest
+        image: bravo/hiking-chatbot-service:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 3007
           name: http

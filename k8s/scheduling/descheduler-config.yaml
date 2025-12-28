@@ -1,0 +1,48 @@
+# =================================================
+# Descheduler 설정
+# 불균형한 Pod 배치를 자동으로 재분산
+# =================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: descheduler-config
+  namespace: kube-system
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha1"
+    kind: "DeschedulerPolicy"
+    strategies:
+      # LowNodeUtilization: 노드 리소스 사용률이 낮을 때 Pod 재분산
+      LowNodeUtilization:
+        enabled: true
+        params:
+          nodeResourceUtilizationThresholds:
+            thresholds:
+              cpu: 20      # CPU 사용률 20% 미만
+              memory: 20   # Memory 사용률 20% 미만
+              pods: 20    # Pod 수 20% 미만
+            targetThresholds:
+              cpu: 50     # 목표 CPU 사용률 50%
+              memory: 50  # 목표 Memory 사용률 50%
+              pods: 50    # 목표 Pod 수 50%
+      
+      # RemoveDuplicates: 같은 노드에 중복된 Pod 제거
+      RemoveDuplicates:
+        enabled: true
+      
+      # RemovePodsHavingTooManyRestarts: 재시작이 많은 Pod 제거
+      RemovePodsHavingTooManyRestarts:
+        enabled: true
+        params:
+          podsHavingTooManyRestarts:
+            podRestartThreshold: 100
+            includingInitContainers: true
+      
+      # PodLifeTime: 오래 실행된 Pod 재스케줄링
+      PodLifeTime:
+        enabled: false
+        params:
+          podLifeTime:
+            maxPodLifeTimeSeconds: 86400  # 24시간
+
+

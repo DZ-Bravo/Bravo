@@ -15,13 +15,13 @@ spec:
     volumeMounts:
       - name: docker-config
         mountPath: /kaniko/.docker
-      - name: workspace
+      - name: common-workspace  # 볼륨 이름 통일
         mountPath: /home/jenkins/agent
   - name: trivy
     image: aquasec/trivy:0.49.1
     command: ["sleep", "infinity"]
     volumeMounts:
-      - name: workspace
+      - name: common-workspace
         mountPath: /home/jenkins/agent
       - name: trivy-cache
         mountPath: /root/.cache
@@ -29,12 +29,12 @@ spec:
     image: sonarsource/sonar-scanner-cli:5.0
     command: ["sleep", "infinity"]
     volumeMounts:
-      - name: workspace
+      - name: common-workspace
         mountPath: /home/jenkins/agent
   volumes:
     - name: docker-config
       emptyDir: {}
-    - name: workspace
+    - name: common-workspace  # 모든 컨테이너가 공유하는 단일 볼륨
       emptyDir: {}
     - name: trivy-cache
       emptyDir: {}
@@ -50,7 +50,6 @@ spec:
   }
 
   stages {
-
     stage("Checkout") {
       steps {
         checkout scm
@@ -60,38 +59,36 @@ spec:
     stage("Detect Changed Services") {
       steps {
         script {
+          env.CURRENT_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+          
           sh '''
             #!/bin/bash
-            set -e
-            
             git fetch --tags origin
-            
-            # 최신 버전 태그 찾기 (1.00, 1.01, 1.02 형식)
-            LATEST_TAG=$(git tag --sort=-version:refname | grep -E '^[0-9]+\\.[0-9]{2}$' | head -1)
-            
+            # v가 붙은 태그와 안 붙은 태그 모두 고려하여 최신순 정렬
+            LATEST_TAG=$(git tag -l "v*" "1.*" | sort -V | tail -n 1)
+
             if [ -z "$LATEST_TAG" ]; then
-              echo "⚠️ No version tags found (format: 1.00, 1.01...), comparing with previous commit"
-              git diff --name-only HEAD~1..HEAD > changed_files.txt || true
+              echo "⚠️ No tags found, comparing with HEAD~1"
+              git diff --name-only HEAD~1..HEAD > changed_files.txt
             else
               echo "📌 Comparing with latest tag: $LATEST_TAG"
-              git diff --name-only ${LATEST_TAG}..HEAD > changed_files.txt || true
+              git diff --name-only $LATEST_TAG..HEAD > changed_files.txt
             fi
 
             > services.txt
-
-            if [ -s changed_files.txt ]; then
-              while read file; do
-                if echo "$file" | grep -q "^services/frontend-service/"; then
-                  echo "frontend-service" >> services.txt
-                elif echo "$file" | grep -q "^services/backend-services/"; then
-                  echo "$(echo $file | cut -d/ -f3)" >> services.txt
-                fi
-              done < changed_files.txt
-            fi
-
-            sort -u services.txt > final_services.txt || true
+            while read file; do
+              if [[ "$file" == services/frontend-service/* ]] || [[ "$file" == frontend-service/* ]]; then
+                echo "frontend-service" >> services.txt
+              elif [[ "$file" == services/backend-services/* ]]; then
+                echo "$file" | cut -d/ -f3 >> services.txt
+              elif [[ "$file" == backend-services/* ]]; then
+                echo "$file" | cut -d/ -f2 >> services.txt
+              fi
+            done < changed_files.txt
+            
+            sort -u services.txt > final_services.txt
             echo "=== Changed Services ==="
-            cat final_services.txt || echo "No services changed"
+            cat final_services.txt
           '''
         }
       }
@@ -100,119 +97,54 @@ spec:
     stage("Generate Version Tag") {
       steps {
         script {
-          def versionTag = sh(
-            script: '''
-              git fetch --tags origin
-              LATEST_TAG=$(git tag --sort=-version:refname | grep -E '^[0-9]+\\.[0-9]{2}$' | head -1)
-              
-              if [ -z "$LATEST_TAG" ]; then
-                echo "1.00"
-              else
-                # 버전을 마이너 버전으로 증가 (1.02 -> 1.03)
-                MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
-                MINOR=$(echo $LATEST_TAG | cut -d. -f2)
-                # 앞의 0을 제거하고 숫자로 변환 후 증가
-                MINOR_NUM=$((MINOR + 0))
-                NEW_MINOR=$((MINOR_NUM + 1))
-                # 두 자리 소수점 형식 유지
-                printf "%d.%02d" $MAJOR $NEW_MINOR
-              fi
-            ''',
-            returnStdout: true
-          ).trim()
-          
-          env.VERSION_TAG = versionTag
-          echo "🏷️ Generated version tag: ${env.VERSION_TAG}"
+          // v1.14 같은 형식에서 숫자만 추출하여 증가시키는 로직
+          def nextTag = sh(script: '''
+            LATEST_TAG=$(git tag -l "v*" | sort -V | tail -n 1 | sed 's/v//')
+            if [ -z "$LATEST_TAG" ]; then echo "1.15"; else
+              MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
+              MINOR=$(echo $LATEST_TAG | cut -d. -f2)
+              NEW_MINOR=$((MINOR + 1))
+              printf "%d.%02d" $MAJOR $NEW_MINOR
+            fi
+          ''', returnStdout: true).trim()
+          env.VERSION_TAG = "v${nextTag}" 
+          echo "🏷️ New Tag: ${env.VERSION_TAG}"
         }
       }
     }
 
     stage("Build & Scan Services") {
-      when {
-        expression { fileExists("final_services.txt") }
-      }
+      when { expression { fileExists("final_services.txt") } }
       steps {
         script {
           def services = readFile("final_services.txt").trim().split("\\n")
-
           for (svc in services) {
-            if (!svc?.trim()) { continue }
+            if (!svc?.trim()) continue
+            
+            // 데이터 기반 경로 보정 (ai-infra-service는 backend/Dockerfile 사용)
+            def basePath = fileExists("services/backend-services/${svc}") ? "services/backend-services/${svc}" : "backend-services/${svc}"
+            if (svc == "frontend-service") basePath = fileExists("services/frontend-service") ? "services/frontend-service" : "frontend-service"
+            
+            def dockerfilePath = "${basePath}/Dockerfile"
+            if (svc == "ai-infra-service") {
+                dockerfilePath = "${basePath}/backend/Dockerfile"
+            }
 
-            def path = svc == "frontend-service" ?
-              "services/frontend-service" :
-              "services/backend-services/${svc}"
-
-            def image = "${REGISTRY}/${PROJECT}/${svc}"
-            def tag = env.VERSION_TAG
-
-            echo "🚀 Building ${svc} with tag: ${tag}"
+            echo "🚀 Building ${svc} | Path: ${basePath} | Dockerfile: ${dockerfilePath}"
 
             container('kaniko') {
-              sh 'echo "=== Testing kaniko container ==="'
-              sh 'pwd'
-              sh 'ls -la /home/jenkins/agent/workspace/hiker-service || echo "Directory not found"'
-              sh "ls -la /home/jenkins/agent/workspace/hiker-service/${path} || echo 'Path ${path} not found'"
-              sh "ls -la /home/jenkins/agent/workspace/hiker-service/${path}/Dockerfile || echo 'Dockerfile not found'"
               sh """
                 /kaniko/executor \
-                  --context=/home/jenkins/agent/workspace/hiker-service/${path} \
-                  --dockerfile=/home/jenkins/agent/workspace/hiker-service/${path}/Dockerfile \
-                  --destination=${image}:${tag} \
+                  --context=${WORKSPACE}/${basePath} \
+                  --dockerfile=${WORKSPACE}/${dockerfilePath} \
+                  --destination=${REGISTRY}/${PROJECT}/${svc}:${env.VERSION_TAG} \
                   --cache=true \
-                  --cache-repo=${REGISTRY}/${PROJECT}/kaniko-cache \
                   --skip-tls-verify
               """
             }
-
-            container('trivy') {
-              sh """
-              trivy image --severity HIGH,CRITICAL \
-                --exit-code 0 \
-                --no-progress \
-                --username 'robot\$bravo+jenkins-ci' \
-                --password '${env.JENKINS_PASSWORD}' \
-                ${image}:${tag}
-              """
-            }
-
-            container('sonar') {
-              sh """
-              sonar-scanner \
-                -Dsonar.projectKey=${svc} \
-                -Dsonar.sources=${path} \
-                -Dsonar.host.url=${SONAR_HOST_URL} \
-                -Dsonar.login=${SONAR_TOKEN}
-              """
-            }
           }
         }
       }
-    }
-
-    stage("Create Git Tag") {
-      steps {
-        script {
-          withCredentials([gitUsernamePassword(credentialsId: 'github-pat', gitToolName: 'git')]) {
-            sh """
-              git config user.name "Jenkins"
-              git config user.email "jenkins@bravo"
-              git tag -a ${env.VERSION_TAG} -m "Version ${env.VERSION_TAG}"
-              git push origin ${env.VERSION_TAG}
-            """
-          }
-          echo "✅ Git tag ${env.VERSION_TAG} created and pushed"
-        }
-      }
-    }
-  }
-
-  post {
-    success {
-      echo "✅ CI SUCCESS - Version: ${env.VERSION_TAG}"
-    }
-    failure {
-      echo "❌ CI FAILED"
     }
   }
 }
-

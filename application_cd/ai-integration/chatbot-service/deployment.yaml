@@ -72,8 +72,8 @@ spec:
                 secretKeyRef:
                   key: JWT_SECRET
                   name: bravo-secrets
-          image: 192.168.0.244:30305/bravo/hiking-chatbot-service:latest
-          imagePullPolicy: Always
+          image: bravo/hiking-chatbot-service:latest
+          imagePullPolicy: Never
           livenessProbe:
             failureThreshold: 3
             httpGet:

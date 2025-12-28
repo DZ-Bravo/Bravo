@@ -1,0 +1,49 @@
+# =================================================
+# Pod Anti-Affinity 예제
+# 같은 앱의 Pod들이 같은 노드에 집중되지 않도록 설정
+# =================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  namespace: bravo-core-ns
+spec:
+  replicas: 2
+  template:
+    spec:
+      affinity:
+        # Pod Anti-Affinity: 같은 앱의 Pod을 다른 노드에 배치
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - auth-service
+              topologyKey: kubernetes.io/hostname
+---
+# =================================================
+# Topology Spread Constraints 예제
+# 노드 간 균등 분산 보장
+# =================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: community-service
+  namespace: bravo-core-ns
+spec:
+  replicas: 3
+  template:
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1                    # 최대 편차: 1개
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule  # 조건 불만족 시 스케줄링 안 함
+        labelSelector:
+          matchLabels:
+            app: community-service
+
+
