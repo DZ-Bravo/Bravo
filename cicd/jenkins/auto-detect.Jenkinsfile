@@ -38,7 +38,11 @@ spec:
         mountPath: /home/jenkins/agent
   volumes:
     - name: docker-config
-      emptyDir: {}
+      secret:
+        secretName: harbor-regcred
+          items:
+            - key: .dockerconfigjson
+              path: config.json  # Kaniko가 인식할 수 있게 파일명을 config.json으로 매핑  
     - name: common-workspace  # 모든 컨테이너가 공유하는 단일 볼륨
       emptyDir: {}
     - name: trivy-cache
