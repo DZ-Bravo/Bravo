@@ -9,6 +9,11 @@ kind: Pod
 spec:
   serviceAccountName: jenkins
   containers:
+  # === jnlp 컨테이너 명시적 추가 (가장 중요) ===
+  - name: jnlp
+    volumeMounts:
+      - name: common-workspace
+        mountPath: /home/jenkins/agent
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command: ["sleep", "infinity"]
