@@ -18,7 +18,7 @@ spec:
     command: ["sleep", "infinity"]
     env:
     - name: DOCKER_CONFIG
-      value: /kaniko/.docker  # 인증 정보를 찾을 디렉토리 지정
+      value: /kaniko/.docker
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker
@@ -44,17 +44,12 @@ spec:
       secretName: harbor-regcred
       items:
       - key: .dockerconfigjson
-        path: config.json        # 파일명을 config.json으로 고정
+        path: config.json
   - name: common-workspace
     emptyDir: {}
   - name: trivy-cache
     emptyDir: {}
 """
-    }
-  }
-
-  // ... (environment 및 stages 로직은 그대로 유지)
-
     }
   }
 
@@ -71,7 +66,6 @@ spec:
         checkout scm
       }
     }
-
 
     stage("Detect Changed Services") {
       steps {
@@ -183,4 +177,5 @@ spec:
     }
   }
 }
+
 
