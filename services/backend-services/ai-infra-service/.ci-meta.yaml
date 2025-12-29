@@ -1,0 +1,4 @@
+dockerfile: backend/Dockerfile
+context: backend
+image: hiking-ai-infra-service
+
