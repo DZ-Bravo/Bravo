@@ -1,0 +1,11 @@
+# CloudFormation
+*.swp
+*.bak
+*~
+
+# AWS credentials
+.aws/
+
+# Logs
+*.log
+
