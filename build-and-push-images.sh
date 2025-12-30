@@ -1,17 +1,16 @@
 #!/bin/bash
-# Harbor에 이미지를 빌드하고 push하는 스크립트
+# Docker Hub에 이미지를 빌드하고 push하는 스크립트
 # 사용법: ./build-and-push-images.sh
 
 set -e
 
-HARBOR_REGISTRY="192.168.0.244:30305"
-HARBOR_PROJECT="bravo"
-HARBOR_USER="admin"
-HARBOR_PASS="bravo6785#"
+DOCKERHUB_USER="dprxrx"
+IMAGE_VERSION="2.0"
 
-# Harbor 로그인
-echo "Harbor에 로그인 중..."
-docker login -u "$HARBOR_USER" -p "$HARBOR_PASS" "$HARBOR_REGISTRY"
+# Docker Hub 로그인
+echo "Docker Hub에 로그인 중..."
+echo "Docker Hub 사용자명: $DOCKERHUB_USER"
+docker login -u "$DOCKERHUB_USER"
 
 # 빌드 컨텍스트 (services 디렉토리)
 BUILD_CONTEXT="/home/bravo/LABs/services"
@@ -37,7 +36,7 @@ echo "이미지 빌드 및 push 시작..."
 for service_info in "${SERVICES[@]}"; do
     IFS=':' read -r service_name dockerfile_path <<< "$service_info"
     
-    IMAGE_NAME="$HARBOR_REGISTRY/$HARBOR_PROJECT/hiking-$service_name:latest"
+    IMAGE_NAME="$DOCKERHUB_USER/hiking-$service_name:$IMAGE_VERSION"
     
     # frontend-service와 ai-infra-service는 빌드 컨텍스트가 다름
     if [ "$service_name" == "frontend" ]; then
@@ -73,8 +72,8 @@ for service_info in "${SERVICES[@]}"; do
             "$SERVICE_BUILD_CONTEXT"
     fi
     
-    # Harbor에 push
-    echo "Harbor에 push 중..."
+    # Docker Hub에 push
+    echo "Docker Hub에 push 중..."
     docker push "$IMAGE_NAME"
     
     echo "✅ $service_name 완료"
@@ -82,12 +81,12 @@ done
 
 echo ""
 echo "=========================================="
-echo "모든 이미지 빌드 및 push 완료!"
+echo "모든 이미지 빌드 및 Docker Hub push 완료!"
 echo "=========================================="
 echo ""
-echo "이제 Kubernetes Deployment를 다시 스케일 업하세요:"
-echo "  kubectl scale deployment -n bravo-core-ns auth-service --replicas=2"
-echo "  kubectl scale deployment -n bravo-core-ns community-service --replicas=2"
-echo "  kubectl scale deployment -n bravo-core-ns mountain-service --replicas=2"
-echo "  kubectl scale deployment -n bravo-core-ns store-service --replicas=2"
+echo "업로드된 이미지 목록:"
+for service_info in "${SERVICES[@]}"; do
+    IFS=':' read -r service_name dockerfile_path <<< "$service_info"
+    echo "  $DOCKERHUB_USER/hiking-$service_name:$IMAGE_VERSION"
+done
 
