@@ -15,6 +15,29 @@ stages:
   - analyze
   - build
   - deploy
+  
+
+# ===============================
+# Slack Notification (공통)
+# ===============================
+.notify_slack_failure: &notify_slack_failure
+  after_script:
+    - |
+      if [ "$CI_JOB_STATUS" != "success" ]; then
+        curl -s -X POST -H 'Content-type: application/json' \
+        --data "{
+          \"text\": \"❌ *CI/CD FAILURE*\n
+• Project: $CI_PROJECT_NAME
+• Job: $CI_JOB_NAME
+• Branch: $CI_COMMIT_REF_NAME
+• Commit: $CI_COMMIT_SHORT_SHA
+• Trigger: GitHub → GitLab
+• URL: $CI_PIPELINE_URL\"
+        }" \
+        $SLACK_WEBHOOK_URL
+      fi
+
+
 # ===============================
 # 공통 Build 로직 (Anchor)
 # ===============================
@@ -61,6 +84,7 @@ sonar-frontend:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - services/frontend-service/**/*
+  <<: *notify_slack_failure  
 
 
 # ===============================
@@ -86,6 +110,7 @@ build-frontend:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - services/frontend-service/**/*
+  <<: *notify_slack_failure
 
 
 deploy-frontend:
@@ -124,6 +149,7 @@ deploy-frontend:
       kubectl set image deployment/frontend \
         frontend=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
         -n bravo-front-ns
+  <<: *notify_slack_failure
 
 sonar-backend:
   stage: analyze
@@ -149,10 +175,11 @@ sonar-backend:
         -Dsonar.login=$SONAR_TOKEN \
         -Dsonar.qualitygate.wait=true
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"' 
       changes:
         - services/backend-services/${SERVICE_NAME}/**/*
         - shared/**/*
+  <<: *notify_slack_failure 
 
 # ===============================
 # Backend (Multiple Services)
@@ -195,6 +222,7 @@ build-backend:
       changes:
         - services/backend-services/$SERVICE_NAME/**/*
         - shared/**/*
+  <<: *notify_slack_failure
 
 
 
@@ -244,6 +272,7 @@ deploy-backend:
 
     # 상태 확인
     - kubectl rollout status deployment/$SERVICE_NAME -n bravo-core-ns
+  <<: *notify_slack_failure
 
  
 sonar-ai-infra:
@@ -262,6 +291,7 @@ sonar-ai-infra:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - services/backend-services/ai-infra-service/**/*
+  <<: *notify_slack_failure
 
 # ===============================
 # AI Infra Service
@@ -285,6 +315,7 @@ build-ai-infra:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - services/backend-services/ai-infra-service/**/*
+  <<: *notify_slack_failure
 
 deploy-ai-infra:
   stage: deploy
@@ -327,4 +358,5 @@ deploy-ai-infra:
 
     # 롤아웃 확인
     - kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NS}
+  <<: *notify_slack_failure
 

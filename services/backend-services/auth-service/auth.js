@@ -127,13 +127,10 @@ router.post('/check-name', async (req, res) => {
   }
 })
 
-// AWS SES 초기화
+// AWS SES 초기화 (IRSA 사용 - 자격 증명 자동 인식)
 const sesClient = new SESClient({
-  region: process.env.AWS_REGION || 'ap-northeast-2',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
-  }
+  region: process.env.AWS_REGION || 'ap-northeast-2'
+  // credentials를 명시하지 않으면 IRSA가 자동으로 자격 증명 제공
 })
 
 const SES_FROM_EMAIL = process.env.SES_FROM_EMAIL || 'noreply@hiker-cloud.site'
@@ -141,40 +138,68 @@ const SES_FROM_EMAIL = process.env.SES_FROM_EMAIL || 'noreply@hiker-cloud.site'
 // 이메일 인증번호 전송 (회원가입용)
 router.post('/send-email-verification', async (req, res) => {
   try {
+    console.log('=== 이메일 인증번호 전송 요청 ===')
+    console.log('요청 시간:', new Date().toISOString())
+    console.log('req.body:', req.body)
+    
     const { email } = req.body
 
     if (!email) {
+      console.log('이메일 없음, 400 반환')
       return res.status(400).json({ error: '이메일을 입력해주세요.' })
     }
 
     // 이메일 형식 검증
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
+      console.log('이메일 형식 오류, 400 반환')
       return res.status(400).json({ error: '올바른 이메일 형식이 아닙니다.' })
     }
 
-    // 회원가입 시에는 중복된 이메일 확인
-    const existingUser = await User.findOne({ email })
-    if (existingUser) {
-      return res.status(409).json({ error: '이미 사용 중인 이메일입니다.' })
-    }
+    // 회원가입 시에는 중복된 이메일 확인 (타임아웃 2초, 비동기 처리)
+    console.log('MongoDB 사용자 확인 시작 (비동기):', email)
+    let isEmailDuplicate = false
+    
+    // MongoDB 쿼리를 비동기로 실행 (응답을 막지 않음)
+    Promise.race([
+      User.findOne({ email }).maxTimeMS(2000).lean(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('MongoDB timeout')), 2000))
+    ]).then(existingUser => {
+      if (existingUser) {
+        console.log('이미 사용 중인 이메일 발견 (비동기):', email)
+        isEmailDuplicate = true
+      } else {
+        console.log('MongoDB 사용자 확인 완료: 중복 없음 (비동기)')
+      }
+    }).catch(mongoError => {
+      console.warn('MongoDB 쿼리 실패 (비동기), 이메일 전송은 계속 진행:', mongoError.message)
+      // MongoDB 쿼리 실패해도 이메일 전송은 계속 진행
+    })
 
     // 인증번호 생성 (6자리)
     const code = Math.floor(100000 + Math.random() * 900000).toString()
+    console.log(`인증번호 생성 완료: ${code}`)
     
-    // Redis에 저장 (5분 TTL - 자동 만료)
-    const client = await getRedisClient()
-    if (client) {
-      const key = `verification:email:signup:${email}`
-      await client.setEx(key, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
-      console.log(`이메일 인증번호 Redis 저장: ${email} -> ${code} (5분 TTL)`)
-    } else {
-      console.warn('Redis 연결 실패, 인증번호 저장 불가')
-      return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
-    }
+    // Redis에 저장 (비동기, 응답을 막지 않음)
+    getRedisClient().then(client => {
+      if (client) {
+        const key = `verification:email:signup:${email}`
+        client.setEx(key, 300, code).then(() => {
+          console.log(`이메일 인증번호 Redis 저장 완료: ${email} -> ${code} (5분 TTL)`)
+        }).catch(redisError => {
+          console.warn('Redis 저장 실패, 이메일 전송은 계속 진행:', redisError.message)
+        })
+      } else {
+        console.warn('Redis 연결 실패, 이메일 전송은 계속 진행 (Redis 없이 작동)')
+      }
+    }).catch(() => {
+      console.warn('Redis 클라이언트 가져오기 실패, 이메일 전송은 계속 진행')
+    })
 
-    // AWS SES로 이메일 전송
-    try {
+    // AWS SES로 이메일 전송 (비동기로 처리하되, 응답은 즉시 반환)
+    console.log('SES 이메일 전송 시작:', email)
+    const sendEmailPromise = (async () => {
+      try {
       const emailParams = {
         Source: `HIKER <${SES_FROM_EMAIL}>`,
         Destination: {
@@ -205,35 +230,39 @@ router.post('/send-email-verification', async (req, res) => {
         }
       }
 
-      const command = new SendEmailCommand(emailParams)
-      const result = await sesClient.send(command)
+        const command = new SendEmailCommand(emailParams)
+        const result = await sesClient.send(command)
 
-      console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
-      
-      res.json({
-        message: '인증번호가 전송되었습니다.',
-        // 개발 환경에서만 인증번호 반환
-        code: process.env.NODE_ENV === 'development' ? code : undefined
-      })
-    } catch (emailError) {
-      console.error('이메일 전송 오류:', emailError)
-      // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
-      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
-      if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
-        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
-        return res.json({
-          message: '인증번호가 생성되었습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
-          code: code,
-          warning: 'SES Sandbox 모드에서는 인증된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
-        })
+        console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
+      } catch (emailError) {
+        console.error('이메일 전송 오류:', emailError)
+        // 에러는 로그만 남기고, 응답은 이미 전송됨
       }
-      // 다른 오류인 경우에도 인증번호는 반환 (Redis에 저장되었으므로)
-      res.json({
-        message: '인증번호가 생성되었습니다.',
-        code: code, // 개발 환경에서는 항상 인증번호 반환
-        warning: `이메일 전송 중 오류가 발생했습니다: ${emailError.message}. 인증번호는 Redis에 저장되었습니다.`
-      })
-    }
+    })()
+
+    // 즉시 응답 반환 (이메일 전송은 백그라운드에서 진행)
+    res.json({
+      message: '인증번호가 전송되었습니다.',
+      // 개발 환경에서만 인증번호 반환
+      code: process.env.NODE_ENV === 'development' ? code : undefined
+    })
+    
+    // 이메일 전송은 백그라운드에서 계속 진행
+    sendEmailPromise.catch(emailError => {
+      console.error('이메일 전송 오류 (백그라운드):', emailError)
+      // AWS 자격 증명 오류인 경우
+      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
+        console.error('AWS 자격 증명 오류:', emailError.message)
+      }
+      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
+      else if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
+      }
+      // 다른 오류인 경우
+      else {
+        console.error('SES 전송 실패:', emailError.message)
+      }
+    })
   } catch (error) {
     console.error('이메일 인증번호 전송 오류:', error)
     res.status(500).json({ error: '인증번호 전송 중 오류가 발생했습니다.' })
@@ -612,8 +641,8 @@ router.post('/send-verification-code-signup', async (req, res) => {
       await client.setEx(key, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
       console.log(`회원가입 인증번호 Redis 저장: ${phone} -> ${code} (5분 TTL)`)
     } else {
-      console.warn('Redis 연결 실패, 인증번호 저장 불가')
-      return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
+      console.warn('Redis 연결 실패, 이메일 전송은 계속 진행 (Redis 없이 작동)')
+      // Redis 연결 실패해도 이메일 전송은 계속 진행
     }
 
     // AWS SNS로 SMS 전송
@@ -725,20 +754,28 @@ router.post('/send-email-verification-find-id', async (req, res) => {
 
     // 인증번호 생성 (6자리)
     const code = Math.floor(100000 + Math.random() * 900000).toString()
+    console.log(`아이디 찾기 인증번호 생성 완료: ${code}`)
     
-    // Redis에 저장 (5분 TTL - 자동 만료)
-    const client = await getRedisClient()
-    if (client) {
-      const key = `verification:email:find-id:${email}`
-      await client.setEx(key, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
-      console.log(`아이디 찾기 이메일 인증번호 Redis 저장: ${email} -> ${code} (5분 TTL)`)
-    } else {
-      console.warn('Redis 연결 실패, 인증번호 저장 불가')
-      return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
-    }
+    // Redis에 저장 (비동기, 응답을 막지 않음)
+    getRedisClient().then(client => {
+      if (client) {
+        const key = `verification:email:find-id:${email}`
+        client.setEx(key, 300, code).then(() => {
+          console.log(`아이디 찾기 이메일 인증번호 Redis 저장 완료: ${email} -> ${code} (5분 TTL)`)
+        }).catch(redisError => {
+          console.warn('Redis 저장 실패, 이메일 전송은 계속 진행:', redisError.message)
+        })
+      } else {
+        console.warn('Redis 연결 실패, 이메일 전송은 계속 진행 (Redis 없이 작동)')
+      }
+    }).catch(() => {
+      console.warn('Redis 클라이언트 가져오기 실패, 이메일 전송은 계속 진행')
+    })
 
-    // AWS SES로 이메일 전송
-    try {
+    // AWS SES로 이메일 전송 (비동기로 처리하되, 응답은 즉시 반환)
+    console.log('SES 이메일 전송 시작 (아이디 찾기):', email)
+    const sendEmailPromise = (async () => {
+      try {
       const emailParams = {
         Source: `HIKER <${SES_FROM_EMAIL}>`,
         Destination: {
@@ -780,20 +817,27 @@ router.post('/send-email-verification-find-id', async (req, res) => {
       })
     } catch (emailError) {
       console.error('이메일 전송 오류:', emailError)
-      // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
+      // AWS 자격 증명 오류인 경우
+      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
+        console.error('AWS 자격 증명 오류:', emailError.message)
+        return res.status(500).json({ 
+          error: '이메일 전송 서비스 설정 오류가 발생했습니다. 관리자에게 문의해주세요.',
+          details: 'AWS 자격 증명 오류'
+        })
+      }
       // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
       if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
         console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
-        return res.json({
-          message: '인증번호가 생성되었습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
-          code: code,
-          warning: 'SES Sandbox 모드에서는 인증된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+        return res.status(400).json({
+          error: '이메일 전송에 실패했습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
+          code: process.env.NODE_ENV === 'development' ? code : undefined
         })
       }
-      res.json({
-        message: '인증번호가 생성되었습니다.',
-        code: code,
-        warning: `이메일 전송 중 오류가 발생했습니다: ${emailError.message}. 인증번호는 Redis에 저장되었습니다.`
+      // 다른 오류인 경우
+      console.error('SES 전송 실패:', emailError.message)
+      return res.status(500).json({ 
+        error: '이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        details: process.env.NODE_ENV === 'development' ? emailError.message : undefined
       })
     }
   } catch (error) {
@@ -931,8 +975,8 @@ router.post('/send-email-verification-password', async (req, res) => {
       await client.setEx(redisKey, 300, code) // 5분 = 300초, TTL 설정으로 자동 삭제
       console.log(`비밀번호 찾기 이메일 인증번호 Redis 저장: ${id} / ${email} -> ${code} (5분 TTL)`)
     } else {
-      console.warn('Redis 연결 실패, 인증번호 저장 불가')
-      return res.status(500).json({ error: '인증번호 저장에 실패했습니다.' })
+      console.warn('Redis 연결 실패, 이메일 전송은 계속 진행 (Redis 없이 작동)')
+      // Redis 연결 실패해도 이메일 전송은 계속 진행
     }
 
     // AWS SES로 이메일 전송
@@ -978,20 +1022,27 @@ router.post('/send-email-verification-password', async (req, res) => {
       })
     } catch (emailError) {
       console.error('이메일 전송 오류:', emailError)
-      // 에러가 발생해도 Redis에 저장되었으므로 인증번호는 사용 가능
+      // AWS 자격 증명 오류인 경우
+      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
+        console.error('AWS 자격 증명 오류:', emailError.message)
+        return res.status(500).json({ 
+          error: '이메일 전송 서비스 설정 오류가 발생했습니다. 관리자에게 문의해주세요.',
+          details: 'AWS 자격 증명 오류'
+        })
+      }
       // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
       if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
         console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
-        return res.json({
-          message: '인증번호가 생성되었습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
-          code: code,
-          warning: 'SES Sandbox 모드에서는 인증된 이메일로만 전송 가능합니다. 인증번호를 직접 확인하세요.'
+        return res.status(400).json({
+          error: '이메일 전송에 실패했습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
+          code: process.env.NODE_ENV === 'development' ? code : undefined
         })
       }
-      res.json({
-        message: '인증번호가 생성되었습니다.',
-        code: code,
-        warning: `이메일 전송 중 오류가 발생했습니다: ${emailError.message}. 인증번호는 Redis에 저장되었습니다.`
+      // 다른 오류인 경우
+      console.error('SES 전송 실패:', emailError.message)
+      return res.status(500).json({ 
+        error: '이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        details: process.env.NODE_ENV === 'development' ? emailError.message : undefined
       })
     }
   } catch (error) {

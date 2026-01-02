@@ -11,6 +11,10 @@ const __dirname = dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 80
 
+// JSON 및 URL-encoded 본문 파싱 미들웨어 (프록시 전에 필요)
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+
 const distPath = join(__dirname, 'dist')
 const indexHtmlPath = join(distPath, 'index.html')
 
@@ -64,6 +68,7 @@ const backendServices = [
   { path: '/api/posts', host: 'community-service.bravo-core-ns.svc.cluster.local', port: 3002 },
   { path: '/api/community', host: 'community-service.bravo-core-ns.svc.cluster.local', port: 3002 },
   { path: '/api/user', host: 'user-service.bravo-core-ns.svc.cluster.local', port: 3002 },
+  { path: '/api/utils', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 }, // imgbb-url 엔드포인트
   { path: '/api/mountains', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
   { path: '/api/mountain', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
   { path: '/api/courses', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
@@ -80,6 +85,51 @@ const backendServices = [
 ]
 
 app.use((req, res, next) => {
+  // /uploads 경로는 community-service로 프록시
+  if (req.path.startsWith('/uploads')) {
+    const backend = { host: 'community-service.bravo-core-ns.svc.cluster.local', port: 3002 }
+    const backendPath = req.path
+    const queryString = req.url.includes('?') ? '?' + req.url.split('?')[1] : ''
+    
+    console.log(`[프록시] ${req.method} ${req.path} -> ${backend.host}:${backend.port}${backendPath}${queryString}`)
+    
+    const options = {
+      hostname: backend.host,
+      port: backend.port,
+      path: backendPath + queryString,
+      method: req.method,
+      headers: {
+        ...req.headers,
+        host: `${backend.host}:${backend.port}`,
+      },
+      timeout: 30000,
+    }
+
+    const proxyReq = http.request(options, (proxyRes) => {
+      console.log(`[프록시 응답] ${req.method} ${req.path} -> ${proxyRes.statusCode}`)
+      res.writeHead(proxyRes.statusCode, proxyRes.headers)
+      proxyRes.pipe(res)
+    })
+
+    proxyReq.on('error', (err) => {
+      console.error(`[프록시 에러] ${req.method} ${req.path} -> ${err.message}`)
+      if (!res.headersSent) {
+        res.status(502).json({ error: 'Backend service unavailable', details: err.message })
+      }
+    })
+
+    proxyReq.on('timeout', () => {
+      console.error(`[프록시 타임아웃] ${req.method} ${req.path} -> 30초 초과`)
+      proxyReq.destroy()
+      if (!res.headersSent) {
+        res.status(504).json({ error: 'Gateway Timeout', details: 'Backend service did not respond within 30 seconds' })
+      }
+    })
+
+    req.pipe(proxyReq)
+    return
+  }
+
   const isApiPath = req.path.startsWith('/api/') || 
                     req.path.startsWith('/store') ||
                     (req.path.startsWith('/auth') && req.path !== '/auth/success' && !req.path.startsWith('/auth/success/')) ||
@@ -106,10 +156,11 @@ app.use((req, res, next) => {
   // - auth-service: /api/auth prefix로 마운트 → 경로 그대로 전달
   // - community-service: /api/posts prefix로 마운트 → 경로 그대로 전달
   // - store-service: /api/store prefix로 마운트 → 경로 그대로 전달
-  // - mountain-service: 직접 라우트 정의 (/api/courses, /api/mountains) → 경로 그대로 전달
+  // - mountain-service: 직접 라우트 정의 (/api/courses, /api/mountains, /api/utils) → 경로 그대로 전달
   // - notification-service: 직접 라우트 정의 → 경로 그대로 전달
+  // - notice-service: /api/notices prefix로 마운트 → 경로 그대로 전달
   // - 기타 서비스: path를 제거하고 나머지만 전달
-  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/chatbot', '/api/ai']
+  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/utils', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/notices', '/api/schedules', '/api/chatbot', '/api/ai']
   const backendPath = servicesWithFullPath.some(path => req.path.startsWith(path)) ? req.path : (req.path.replace(backend.path, '') || '/')
   const queryString = req.url.includes('?') ? '?' + req.url.split('?')[1] : ''
   
@@ -124,19 +175,40 @@ app.use((req, res, next) => {
       ...req.headers,
       host: `${backend.host}:${backend.port}`,
     },
+    timeout: 30000, // 30초 타임아웃
   }
 
   const proxyReq = http.request(options, (proxyRes) => {
+    console.log(`[프록시 응답] ${req.method} ${req.path} -> ${proxyRes.statusCode}`)
     res.writeHead(proxyRes.statusCode, proxyRes.headers)
     proxyRes.pipe(res)
   })
 
   proxyReq.on('error', (err) => {
-    console.error(`[프록시 에러] ${err.message}`)
-    res.status(502).send('Bad Gateway')
+    console.error(`[프록시 에러] ${req.method} ${req.path} -> ${err.message}`)
+    if (!res.headersSent) {
+      res.status(502).json({ error: 'Backend service unavailable', details: err.message })
+    }
   })
 
-  req.pipe(proxyReq)
+  proxyReq.on('timeout', () => {
+    console.error(`[프록시 타임아웃] ${req.method} ${req.path} -> 30초 초과`)
+    proxyReq.destroy()
+    if (!res.headersSent) {
+      res.status(504).json({ error: 'Gateway Timeout', details: 'Backend service did not respond within 30 seconds' })
+    }
+  })
+
+  // 요청 본문 처리
+  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+    const body = JSON.stringify(req.body || {})
+    proxyReq.setHeader('Content-Type', 'application/json')
+    proxyReq.setHeader('Content-Length', Buffer.byteLength(body))
+    proxyReq.write(body)
+    proxyReq.end()
+  } else {
+    req.pipe(proxyReq)
+  }
 })
 
 // 루트 경로와 HTML 파일 요청 처리 (환경 변수 주입)
