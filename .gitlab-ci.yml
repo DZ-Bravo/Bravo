@@ -1,0 +1,330 @@
+image: docker:27
+
+services:
+  - name: docker:27-dind
+    alias: docker
+    command: ["--tls=false"]
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  SONAR_HOST_URL: http://43.200.134.128:9000
+  
+stages:
+  - analyze
+  - build
+  - deploy
+# ===============================
+# 공통 Build 로직 (Anchor)
+# ===============================
+.before_build: &before_build |
+  apk add --no-cache curl aws-cli
+  docker info
+
+  aws ecr get-login-password --region "$AWS_DEFAULT_REGION" |
+  docker login --username AWS --password-stdin \
+    "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+
+  MAJOR_VERSION=2
+  LATEST_VERSION=$(aws ecr describe-images \
+    --repository-name "$ECR_REPO" \
+    --region "$AWS_DEFAULT_REGION" \
+    --query 'imageDetails[].imageTags[]' \
+    --output text | tr '\t' '\n' \
+    | grep "^${MAJOR_VERSION}\.[0-9]\+$" | sort -V | tail -n 1)
+
+  if [ -z "$LATEST_VERSION" ]; then
+    NEXT_VERSION="${MAJOR_VERSION}.0"
+  else
+    NEXT_MINOR=$(echo "$LATEST_VERSION" | awk -F. '{print $2}')
+    NEXT_VERSION="${MAJOR_VERSION}.$((NEXT_MINOR + 1))"
+  fi
+
+  NEXT_VERSION="$(echo "$NEXT_VERSION" | tr -d '\n')"
+  echo "NEXT_VERSION=$NEXT_VERSION" > version.env
+  
+
+sonar-frontend:
+  stage: analyze
+  needs: []
+  image: sonarsource/sonar-scanner-cli:5
+  script:
+    - |
+      sonar-scanner \
+        -Dsonar.projectKey=frontend \
+        -Dsonar.sources=services/frontend-service \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.qualitygate.wait=true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/frontend-service/**/*
+
+
+# ===============================
+# Frontend
+# ===============================
+
+build-frontend:
+  stage: build
+  variables:
+    ECR_REPO: "$FRONTEND_ECR_REPO"
+  script:
+    - *before_build
+    - |
+      docker build \
+        -f services/frontend-service/Dockerfile \
+        -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}" \
+        services/frontend-service
+    - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}"
+  artifacts:
+    reports:
+      dotenv: version.env
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/frontend-service/**/*
+
+
+deploy-frontend:
+  stage: deploy
+  variables:
+    ECR_REPO: "$FRONTEND_ECR_REPO"
+  image:
+    name: amazon/aws-cli:2.15.0
+    entrypoint: [""]
+  needs: 
+    - job: build-frontend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/frontend-service/**/*
+  script:
+    # kubectl 설치 (EKS 1.34)
+    - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
+    - chmod +x kubectl
+    - mv kubectl /usr/local/bin/kubectl
+
+    # 🔥 EKS kubeconfig 직접 생성
+    - |
+      aws eks update-kubeconfig \
+        --region ap-northeast-2 \
+        --name bravo-eks
+
+    # 🔍 AWS 인증 확인
+    - aws sts get-caller-identity
+
+    # 🔍 Kubernetes 연결 확인
+    - kubectl get ns
+
+    # 🚀 배포
+    - |
+      kubectl set image deployment/frontend \
+        frontend=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
+        -n bravo-front-ns
+
+sonar-backend:
+  stage: analyze
+  needs: []
+  image: sonarsource/sonar-scanner-cli:5
+  parallel:
+    matrix:
+      - SERVICE_NAME: auth-service
+      - SERVICE_NAME: chatbot-service
+      - SERVICE_NAME: community-service
+      - SERVICE_NAME: mountain-service
+      - SERVICE_NAME: notice-service
+      - SERVICE_NAME: notification-service
+      - SERVICE_NAME: schedule-service
+      - SERVICE_NAME: stamp-service
+      - SERVICE_NAME: store-service
+  script:
+    - |
+      sonar-scanner \
+        -Dsonar.projectKey=${SERVICE_NAME} \
+        -Dsonar.sources=services/backend-services/${SERVICE_NAME} \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.qualitygate.wait=true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/${SERVICE_NAME}/**/*
+        - shared/**/*
+
+# ===============================
+# Backend (Multiple Services)
+# ===============================
+build-backend:
+  stage: build
+  script:
+    - *before_build
+    - |
+      docker build \
+        -f services/backend-services/${SERVICE_NAME}/Dockerfile \
+        -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}" \
+        services
+    - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}"
+  artifacts:
+    reports:
+      dotenv: version.env
+  parallel:
+    matrix:
+      - SERVICE_NAME: auth-service
+        ECR_REPO: $AUTH_ECR_REPO
+      - SERVICE_NAME: chatbot-service
+        ECR_REPO: $CHATBOT_ECR_REPO
+      - SERVICE_NAME: community-service
+        ECR_REPO: $COMMUNITY_ECR_REPO
+      - SERVICE_NAME: mountain-service
+        ECR_REPO: $MOUNTAIN_ECR_REPO
+      - SERVICE_NAME: notice-service
+        ECR_REPO: $NOTICE_ECR_REPO
+      - SERVICE_NAME: notification-service
+        ECR_REPO: $NOTIFICATION_ECR_REPO
+      - SERVICE_NAME: schedule-service
+        ECR_REPO: $SCHEDULE_ECR_REPO
+      - SERVICE_NAME: stamp-service
+        ECR_REPO: $STAMP_ECR_REPO
+      - SERVICE_NAME: store-service
+        ECR_REPO: $STORE_ECR_REPO
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/$SERVICE_NAME/**/*
+        - shared/**/*
+
+
+
+deploy-backend:
+  stage: deploy
+  image:
+    name: amazon/aws-cli:2.15.0
+    entrypoint: [""]
+  parallel:
+    matrix:
+      - SERVICE_NAME: auth-service
+        ECR_REPO: $AUTH_ECR_REPO
+      - SERVICE_NAME: chatbot-service
+        ECR_REPO: $CHATBOT_ECR_REPO
+      - SERVICE_NAME: community-service
+        ECR_REPO: $COMMUNITY_ECR_REPO
+      - SERVICE_NAME: mountain-service
+        ECR_REPO: $MOUNTAIN_ECR_REPO
+      - SERVICE_NAME: notice-service
+        ECR_REPO: $NOTICE_ECR_REPO
+      - SERVICE_NAME: notification-service
+        ECR_REPO: $NOTIFICATION_ECR_REPO
+      - SERVICE_NAME: schedule-service
+        ECR_REPO: $SCHEDULE_ECR_REPO
+      - SERVICE_NAME: stamp-service
+        ECR_REPO: $STAMP_ECR_REPO
+      - SERVICE_NAME: store-service
+        ECR_REPO: $STORE_ECR_REPO
+  needs:
+    - job: build-backend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/$SERVICE_NAME/**/*
+        - shared/**/*
+  script:
+    # kubectl 설치
+    - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
+    - chmod +x kubectl
+    - mv kubectl /usr/local/bin/kubectl
+
+    # EKS 인증
+    - aws eks update-kubeconfig --region ap-northeast-2 --name bravo-eks
+
+    # 배포
+    - kubectl set image deployment/$SERVICE_NAME $SERVICE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} -n bravo-core-ns
+
+    # 상태 확인
+    - kubectl rollout status deployment/$SERVICE_NAME -n bravo-core-ns
+
+ 
+sonar-ai-infra:
+  stage: analyze
+  needs: []
+  image: sonarsource/sonar-scanner-cli:5
+  script:
+    - |
+      sonar-scanner \
+        -Dsonar.projectKey=ai-infra-service \
+        -Dsonar.sources=services/backend-services/ai-infra-service \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.qualitygate.wait=true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/ai-infra-service/**/*
+
+# ===============================
+# AI Infra Service
+# ===============================
+build-ai-infra:
+  stage: build
+  variables:
+    ECR_REPO: "$AI_ECR_REPO"
+  script:
+    - *before_build
+    - |
+      docker build \
+        -f services/backend-services/ai-infra-service/backend/Dockerfile \
+        -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}" \
+        services/backend-services/ai-infra-service/backend
+    - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}"
+  artifacts:
+    reports:
+      dotenv: version.env
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/ai-infra-service/**/*
+
+deploy-ai-infra:
+  stage: deploy
+  image:
+    name: amazon/aws-cli:2.15.0
+    entrypoint: [""]
+  variables:
+    DEPLOYMENT_NAME: "ai-service"
+    K8S_NS: "bravo-ai-integration-ns"
+    ECR_REPO: "$AI_ECR_REPO"
+  needs:
+    - job: build-ai-infra
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/ai-infra-service/**/*
+  script:
+    # kubectl 설치
+    - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
+    - chmod +x kubectl
+    - mv kubectl /usr/local/bin/kubectl
+
+    # EKS 인증
+    - |
+      aws eks update-kubeconfig \
+        --region ap-northeast-2 \
+        --name bravo-eks
+
+    # 컨테이너 이름 자동 추출 (중요)
+    - |
+      CONTAINER_NAME=$(kubectl get deploy ${DEPLOYMENT_NAME} -n ${K8S_NS} \
+        -o jsonpath='{.spec.template.spec.containers[0].name}')
+      echo confirmed container: $CONTAINER_NAME
+
+    # 이미지 교체
+    - |
+      kubectl set image deployment/${DEPLOYMENT_NAME} \
+        ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
+        -n ${K8S_NS}
+
+    # 롤아웃 확인
+    - kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NS}
+
