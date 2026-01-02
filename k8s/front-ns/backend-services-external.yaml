@@ -1,0 +1,127 @@
+# =================================================
+# ExternalName Services for Backend APIs
+# =================================================
+# ALB Ingress는 같은 네임스페이스의 서비스만 참조할 수 있으므로,
+# frontend 네임스페이스에 ExternalName Service를 생성하여
+# 다른 네임스페이스의 백엔드 서비스를 참조합니다.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: store-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3006
+    targetPort: 3006
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: auth-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3001
+    targetPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: community-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: community-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3002
+    targetPort: 3002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: notice-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3003
+    targetPort: 3003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: schedule-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: schedule-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3004
+    targetPort: 3004
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: notification-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3005
+    targetPort: 3005
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mountain-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: mountain-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3008
+    targetPort: 3008
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stamp-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: stamp-service.bravo-core-ns.svc.cluster.local
+  ports:
+  - port: 3010
+    targetPort: 3010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatbot-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: chatbot-service.bravo-ai-integration-ns.svc.cluster.local
+  ports:
+  - port: 3007
+    targetPort: 3007
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+  namespace: bravo-front-ns
+spec:
+  type: ExternalName
+  externalName: ai-service.bravo-ai-integration-ns.svc.cluster.local
+  ports:
+  - port: 3009
+    targetPort: 3009
+

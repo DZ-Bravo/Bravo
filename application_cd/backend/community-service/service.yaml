@@ -9,13 +9,6 @@ metadata:
   name: community-service
   namespace: bravo-core-ns
 spec:
-  clusterIP: 10.233.2.69
-  clusterIPs:
-    - 10.233.2.69
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
     - name: http
       port: 3002

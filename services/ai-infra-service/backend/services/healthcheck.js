@@ -5,26 +5,25 @@ async function getHealthcheckStatus() {
   try {
     const k8sApi = kubernetesService.getK8sApi()
     
-    // healthcheck Pod 목록 조회
-    const response = await k8sApi.listNamespacedPod(
-      'bravo-ai-integration-ns',
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      'app=healthcheck'
+    // 모든 네임스페이스의 Pod 목록 조회 (bravo-로 시작하는 네임스페이스의 모든 서비스 Pod 확인)
+    const allPodsResponse = await k8sApi.listPodForAllNamespaces()
+    const pods = allPodsResponse.body.items.filter(pod => 
+      pod.metadata.namespace?.startsWith('bravo-') && 
+      pod.status.phase === 'Running'
     )
     
-    const pods = response.body.items
     const errors = []
     
     // 각 Pod의 로그를 읽어서 최근 에러 확인 (최근 100줄)
-    for (const pod of pods) {
+    // 최대 20개 Pod만 확인 (성능 고려)
+    const podsToCheck = pods.slice(0, 20)
+    
+    for (const pod of podsToCheck) {
       try {
         const logResponse = await k8sApi.readNamespacedPodLog(
           pod.metadata.name,
-          'bravo-ai-integration-ns',
-          'healthcheck',
+          pod.metadata.namespace,
+          undefined, // container name (첫 번째 컨테이너 사용)
           undefined,
           undefined,
           undefined,

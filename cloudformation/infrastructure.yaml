@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Hiking Cloud Infrastructure - VPC, EC2, ALB, EKS'
+Description: 'Hiking Cloud Infrastructure - VPC, EC2, EKS with NAT Gateway'
 
 Parameters:
   KeyPairName:
@@ -7,15 +7,10 @@ Parameters:
     Description: Name of an existing EC2 KeyPair for SSH access (optional, leave empty if using Session Manager)
     Default: ''
     
-  CertificateArn:
-    Type: String
-    Description: ARN of ACM certificate for ALB HTTPS (optional, leave empty if not available)
-    Default: ''
-    
   InstanceTypeMonitoring:
     Type: String
     Default: t3.large
-    Description: Instance type for Monitoring NAT
+    Description: Instance type for Monitoring EC2 (Prometheus/Grafana)
     
   InstanceTypeGitLab:
     Type: String
@@ -25,17 +20,18 @@ Parameters:
   InstanceTypeMongoDB:
     Type: String
     Default: t3.large
-    Description: Instance type for MongoDB
+    Description: Instance type for MongoDB Primary
     
-  InstanceTypeElasticsearch:
+  InstanceTypeMongoDBSecondary:
+    Type: String
+    Default: t3.medium
+    Description: Instance type for MongoDB Secondary
+    
+  InstanceTypeElasticsearchRedisMonstacheKibana:
     Type: String
     Default: t3.xlarge
-    Description: Instance type for Elasticsearch/Kibana/Redis
+    Description: Instance type for Elasticsearch + Redis + Monstache + Kibana (통합 노드)
     
-  InstanceTypeEKSNode:
-    Type: String
-    Default: m6i.large
-    Description: Instance type for EKS Worker Nodes
 
 Mappings:
   RegionMap:
@@ -49,7 +45,7 @@ Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 192.168.0.0/22
+      CidrBlock: 10.0.0.0/16
       EnableDnsHostnames: true
       EnableDnsSupport: true
       Tags:
@@ -79,7 +75,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 192.168.0.0/26
+      CidrBlock: 10.0.0.0/24
       AvailabilityZone: !Select [0, !GetAZs '']
       MapPublicIpOnLaunch: true
       Tags:
@@ -87,12 +83,16 @@ Resources:
           Value: bravo-public-a
         - Key: Type
           Value: public
+        - Key: kubernetes.io/cluster/bravo-eks
+          Value: shared
+        - Key: kubernetes.io/role/elb
+          Value: "1"
 
   PublicSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 192.168.0.64/26
+      CidrBlock: 10.0.1.0/24
       AvailabilityZone: !Select [1, !GetAZs '']
       MapPublicIpOnLaunch: true
       Tags:
@@ -100,36 +100,48 @@ Resources:
           Value: bravo-public-b
         - Key: Type
           Value: public
+        - Key: kubernetes.io/cluster/bravo-eks
+          Value: shared
+        - Key: kubernetes.io/role/elb
+          Value: "1"
 
   PrivateEKSSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 192.168.1.0/26
+      CidrBlock: 10.0.20.0/21
       AvailabilityZone: !Select [0, !GetAZs '']
       Tags:
         - Key: Name
           Value: bravo-private-eks-a
         - Key: Type
           Value: private-eks
+        - Key: kubernetes.io/cluster/bravo-eks
+          Value: shared
+        - Key: kubernetes.io/role/internal-elb
+          Value: "1"
 
   PrivateEKSSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 192.168.1.64/26
+      CidrBlock: 10.0.28.0/21
       AvailabilityZone: !Select [1, !GetAZs '']
       Tags:
         - Key: Name
           Value: bravo-private-eks-b
         - Key: Type
           Value: private-eks
+        - Key: kubernetes.io/cluster/bravo-eks
+          Value: shared
+        - Key: kubernetes.io/role/internal-elb
+          Value: "1"
 
   PrivateSvcSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 192.168.2.0/26
+      CidrBlock: 10.0.8.0/22
       AvailabilityZone: !Select [0, !GetAZs '']
       Tags:
         - Key: Name
@@ -141,7 +153,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 192.168.2.64/26
+      CidrBlock: 10.0.12.0/22
       AvailabilityZone: !Select [1, !GetAZs '']
       Tags:
         - Key: Name
@@ -219,14 +231,24 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: bravo-monitoring-sg
-      GroupDescription: Security group for Monitoring NAT instance
+      GroupDescription: Security group for Monitoring EC2 (Prometheus/Grafana)
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 0
-          ToPort: 65535
-          CidrIp: 192.168.0.0/22
-          Description: Allow all from VPC
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: SSH
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
+          Description: Grafana
+        - IpProtocol: tcp
+          FromPort: 9090
+          ToPort: 9090
+          CidrIp: 10.0.0.0/16
+          Description: Prometheus from VPC
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
@@ -273,14 +295,9 @@ Resources:
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          CidrIp: 192.168.0.0/22
-          Description: MongoDB from VPC
-        - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 192.168.0.0/22
+          CidrIp: 10.0.0.0/16
           Description: SSH from VPC
       SecurityGroupEgress:
         - IpProtocol: -1
@@ -290,20 +307,72 @@ Resources:
         - Key: Name
           Value: bravo-mongodb-sg
 
-  # MongoDB Security Group 규칙 (EKS에서 접근)
-  # 별도 리소스로 분리하여 순환 의존성 방지
-  MongoDBSecurityGroupIngressFromEKS:
+  # MongoDB Replica Set 통신 규칙 (Primary ↔ Secondary 간 통신)
+  MongoDBSecurityGroupIngressReplicaSet:
     Type: AWS::EC2::SecurityGroupIngress
-    DependsOn:
-      - MongoDBSecurityGroup
-      - EKSSecurityGroup
+    DependsOn: MongoDBSecurityGroup
     Properties:
       GroupId: !Ref MongoDBSecurityGroup
       IpProtocol: tcp
       FromPort: 27017
       ToPort: 27017
-      SourceSecurityGroupId: !Ref EKSSecurityGroup
-      Description: MongoDB from EKS
+      SourceSecurityGroupId: !Ref MongoDBSecurityGroup
+      Description: MongoDB Replica Set communication (self-referencing)
+
+  # Monstache → MongoDB 통신 규칙 (ElasticsearchRedisMonstacheKibana → MongoDB)
+  MongoDBSecurityGroupIngressFromElasticsearch:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn:
+      - MongoDBSecurityGroup
+      - ElasticsearchRedisMonstacheKibanaSecurityGroup
+    Properties:
+      GroupId: !Ref MongoDBSecurityGroup
+      IpProtocol: tcp
+      FromPort: 27017
+      ToPort: 27017
+      SourceSecurityGroupId: !Ref ElasticsearchRedisMonstacheKibanaSecurityGroup
+      Description: MongoDB access from Elasticsearch/Redis/Monstache/Kibana instance (Monstache)
+
+  # Elasticsearch/Redis/Monstache/Kibana Security Group
+  ElasticsearchRedisMonstacheKibanaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: bravo-elasticsearch-redis-monstache-kibana-sg
+      GroupDescription: Security group for Elasticsearch + Redis + Monstache + Kibana EC2
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 9200
+          ToPort: 9200
+          CidrIp: 10.0.0.0/16
+          Description: Elasticsearch from VPC
+        - IpProtocol: tcp
+          FromPort: 5601
+          ToPort: 5601
+          CidrIp: 10.0.0.0/16
+          Description: Kibana from VPC
+        - IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          CidrIp: 10.0.0.0/16
+          Description: Redis from VPC
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 10.0.0.0/16
+          Description: SSH from VPC
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound
+      Tags:
+        - Key: Name
+          Value: bravo-elasticsearch-redis-monstache-kibana-sg
+
+  # MongoDB Security Group 규칙 (EKS에서 접근)
+  # NOTE: EKS를 직접 생성한 후, EKS 노드의 Security Group을 여기에 추가해야 합니다
+  # 예: aws ec2 authorize-security-group-ingress --group-id <MongoDBSecurityGroupId> \
+  #     --protocol tcp --port 27017 --source-group <EKSNodeSecurityGroupId>
 
   EKSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -315,12 +384,12 @@ Resources:
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: 192.168.0.0/22
+          CidrIp: 10.0.0.0/16
           Description: Allow HTTPS from VPC
         - IpProtocol: tcp
           FromPort: 1025
           ToPort: 65535
-          CidrIp: 192.168.0.0/22
+          CidrIp: 10.0.0.0/16
           Description: Allow ephemeral ports from VPC
       SecurityGroupEgress:
         - IpProtocol: -1
@@ -330,42 +399,22 @@ Resources:
         - Key: Name
           Value: bravo-eks-sg
 
-  ALBSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: bravo-alb-sg
-      GroupDescription: Security group for ALB
-      VpcId: !Ref VPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-          Description: HTTP
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-          Description: HTTPS
-      SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
-          Description: Allow all outbound
-      Tags:
-        - Key: Name
-          Value: bravo-alb-sg
+  # NOTE: EKS 클러스터 Security Group 규칙은 EKS를 직접 생성한 후 수동으로 추가해야 합니다
+  # EKS 클러스터 생성 시 자동 생성되는 Cluster Security Group에 다음 규칙 추가:
+  # - VPC CIDR (10.0.0.0/16)에서 443 포트 허용
+  # - EKSSecurityGroup에서 443 포트 허용
 
   # ============================================
   # Elastic IPs
   # ============================================
-  MonitoringNATElasticIP:
+  NATGatewayElasticIP:
     Type: AWS::EC2::EIP
     DependsOn: InternetGatewayAttachment
     Properties:
       Domain: vpc
       Tags:
         - Key: Name
-          Value: bravo-monitoring-nat-eip
+          Value: bravo-nat-gateway-eip
 
   GitLabElasticIP:
     Type: AWS::EC2::EIP
@@ -377,9 +426,29 @@ Resources:
           Value: bravo-gitlab-eip
 
   # ============================================
-  # Monitoring EC2 (NAT Instance)
+  # NAT Gateway
   # ============================================
-  # EC2 Instance Profile for Session Manager
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn: NATGatewayElasticIP
+    Properties:
+      AllocationId: !GetAtt NATGatewayElasticIP.AllocationId
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        - Key: Name
+          Value: bravo-nat-gateway
+
+  PrivateNATRoute:
+    Type: AWS::EC2::Route
+    DependsOn: NATGateway
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway
+
+  # ============================================
+  # EC2 Instance Profile for Session Manager (GitLab, MongoDB 등)
+  # ============================================
   EC2InstanceProfileRole:
     Type: AWS::IAM::Role
     Properties:
@@ -404,7 +473,10 @@ Resources:
       Roles:
         - !Ref EC2InstanceProfileRole
 
-  MonitoringNATInstance:
+  # ============================================
+  # Monitoring EC2 (Prometheus + Grafana)
+  # ============================================
+  MonitoringInstance:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', UbuntuAMI]
@@ -414,7 +486,12 @@ Resources:
       SubnetId: !Ref PublicSubnetA
       SecurityGroupIds:
         - !Ref MonitoringSecurityGroup
-      SourceDestCheck: false
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp3
+            VolumeSize: 50
+            Encrypted: true
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -425,42 +502,34 @@ Resources:
           apt-get update
           apt-get upgrade -y
           
-          # Enable IP forwarding
-          echo 1 > /proc/sys/net/ipv4/ip_forward
-          sysctl -w net.ipv4.ip_forward=1
-          echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+          # Install SSM Agent
+          snap install amazon-ssm-agent --classic
+          snap start amazon-ssm-agent
+          systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
           
-          # Configure NAT
-          iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-          
-          # Install iptables-persistent
-          apt-get install -y iptables-persistent
-          
-          # Save iptables rules
-          netfilter-persistent save
-          
-          # Install monitoring tools
-          apt-get install -y htop iotop net-tools curl wget jq
+          # Log SSM Agent status
+          echo "$(date): SSM Agent installed and started" >> /var/log/ssm-setup.log
       Tags:
         - Key: Name
-          Value: bravo-monitoring-nat
+          Value: bravo-monitoring
         - Key: Role
-          Value: monitoring-nat
+          Value: monitoring
 
-  MonitoringNATEIPAssociation:
+  MonitoringElasticIP:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: bravo-monitoring-eip
+
+  MonitoringEIPAssociation:
     Type: AWS::EC2::EIPAssociation
-    DependsOn: MonitoringNATInstance
+    DependsOn: MonitoringInstance
     Properties:
-      InstanceId: !Ref MonitoringNATInstance
-      AllocationId: !GetAtt MonitoringNATElasticIP.AllocationId
-
-  PrivateNATRoute:
-    Type: AWS::EC2::Route
-    DependsOn: MonitoringNATInstance
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      InstanceId: !Ref MonitoringNATInstance
+      InstanceId: !Ref MonitoringInstance
+      AllocationId: !GetAtt MonitoringElasticIP.AllocationId
 
   # ============================================
   # GitLab EC2
@@ -472,7 +541,7 @@ Resources:
       InstanceType: !Ref InstanceTypeGitLab
       IamInstanceProfile: !Ref EC2InstanceProfile
       KeyName: !If [HasKeyPair, !Ref KeyPairName, !Ref 'AWS::NoValue']
-      SubnetId: !Ref PublicSubnetB
+      SubnetId: !Ref PublicSubnetA
       SecurityGroupIds:
         - !Ref GitLabSecurityGroup
       BlockDeviceMappings:
@@ -481,6 +550,23 @@ Resources:
             VolumeType: gp3
             VolumeSize: 50
             Encrypted: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          
+          # Install SSM Agent
+          snap install amazon-ssm-agent --classic
+          snap start amazon-ssm-agent
+          systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+          
+          # Log SSM Agent status
+          echo "$(date): SSM Agent installed and started" >> /var/log/ssm-setup.log
       Tags:
         - Key: Name
           Value: bravo-gitlab
@@ -497,7 +583,8 @@ Resources:
   # ============================================
   # MongoDB EC2
   # ============================================
-  MongoDBInstance:
+  # MongoDB Primary
+  MongoDBPrimaryInstance:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', UbuntuAMI]
@@ -513,189 +600,173 @@ Resources:
             VolumeType: gp3
             VolumeSize: 50
             Encrypted: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          
+          # Install SSM Agent
+          snap install amazon-ssm-agent --classic
+          snap start amazon-ssm-agent
+          systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+          
+          # Log SSM Agent status
+          echo "$(date): SSM Agent installed and started" >> /var/log/ssm-setup.log
       Tags:
         - Key: Name
-          Value: bravo-mongodb
+          Value: bravo-mongodb-primary
         - Key: Role
-          Value: mongodb
+          Value: mongodb-primary
 
-  # ============================================
-  # Elasticsearch + Kibana + Redis EC2
-  # ============================================
-  ElasticsearchKibanaRedisInstance:
+  # MongoDB Secondary 1
+  MongoDBSecondary1Instance:
     Type: AWS::EC2::Instance
+    DependsOn: MongoDBSecurityGroup
     Properties:
       ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', UbuntuAMI]
-      InstanceType: !Ref InstanceTypeElasticsearch
+      InstanceType: !Ref InstanceTypeMongoDBSecondary
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      KeyName: !If [HasKeyPair, !Ref KeyPairName, !Ref 'AWS::NoValue']
+      SubnetId: !Ref PrivateSvcSubnetA
+      SecurityGroupIds:
+        - !Ref MongoDBSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp3
+            VolumeSize: 50
+            Encrypted: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          
+          # Install SSM Agent
+          snap install amazon-ssm-agent --classic
+          snap start amazon-ssm-agent
+          systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+          
+          # Log SSM Agent status
+          echo "$(date): SSM Agent installed and started" >> /var/log/ssm-setup.log
+      Tags:
+        - Key: Name
+          Value: bravo-mongodb-secondary-1
+        - Key: Role
+          Value: mongodb-secondary
+
+  # MongoDB Secondary 2
+  MongoDBSecondary2Instance:
+    Type: AWS::EC2::Instance
+    DependsOn: MongoDBSecurityGroup
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', UbuntuAMI]
+      InstanceType: !Ref InstanceTypeMongoDBSecondary
       IamInstanceProfile: !Ref EC2InstanceProfile
       KeyName: !If [HasKeyPair, !Ref KeyPairName, !Ref 'AWS::NoValue']
       SubnetId: !Ref PrivateSvcSubnetB
       SecurityGroupIds:
-        - !Ref EKSSecurityGroup
+        - !Ref MongoDBSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp3
+            VolumeSize: 50
+            Encrypted: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          
+          # Install SSM Agent
+          snap install amazon-ssm-agent --classic
+          snap start amazon-ssm-agent
+          systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+          
+          # Log SSM Agent status
+          echo "$(date): SSM Agent installed and started" >> /var/log/ssm-setup.log
+      Tags:
+        - Key: Name
+          Value: bravo-mongodb-secondary-2
+        - Key: Role
+          Value: mongodb-secondary
+
+  # ============================================
+  # Elasticsearch + Redis + Monstache + Kibana EC2 (통합 노드)
+  # ============================================
+  ElasticsearchRedisMonstacheKibanaInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', UbuntuAMI]
+      InstanceType: !Ref InstanceTypeElasticsearchRedisMonstacheKibana
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      KeyName: !If [HasKeyPair, !Ref KeyPairName, !Ref 'AWS::NoValue']
+      SubnetId: !Ref PrivateSvcSubnetB
+      SecurityGroupIds:
+        - !Ref ElasticsearchRedisMonstacheKibanaSecurityGroup
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
             VolumeType: gp3
             VolumeSize: 100
             Encrypted: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # Update system
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get upgrade -y
+          
+          # Install SSM Agent
+          snap install amazon-ssm-agent --classic
+          snap start amazon-ssm-agent
+          systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+          
+          # Log SSM Agent status
+          echo "$(date): SSM Agent installed and started" >> /var/log/ssm-setup.log
       Tags:
         - Key: Name
-          Value: bravo-elasticsearch-kibana-redis
+          Value: bravo-elasticsearch-redis-monstache-kibana
         - Key: Role
-          Value: elasticsearch-kibana-redis
+          Value: elasticsearch-redis-monstache-kibana
 
   # ============================================
-  # ALB
+  # EKS Cluster (직접 AWS에서 생성)
   # ============================================
-  ApplicationLoadBalancer:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Name: bravo-alb
-      Type: application
-      Scheme: internet-facing
-      Subnets:
-        - !Ref PublicSubnetA
-        - !Ref PublicSubnetB
-      SecurityGroups:
-        - !Ref ALBSecurityGroup
-      Tags:
-        - Key: Name
-          Value: bravo-alb
-
-  ALBTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      Name: bravo-alb-default
-      Port: 80
-      Protocol: HTTP
-      VpcId: !Ref VPC
-      HealthCheckPath: /health
-      HealthCheckIntervalSeconds: 30
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 2
-      Matcher:
-        HttpCode: '200'
-      Tags:
-        - Key: Name
-          Value: bravo-alb-default
-
-  ALBHTTPListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port: 80
-      Protocol: HTTP
-      DefaultActions:
-        - Type: redirect
-          RedirectConfig:
-            Protocol: HTTPS
-            Port: 443
-            StatusCode: HTTP_301
-
-  ALBHTTPSListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Condition: HasCertificate
-    Properties:
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port: 443
-      Protocol: HTTPS
-      SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
-      Certificates:
-        - CertificateArn: !Ref CertificateArn
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref ALBTargetGroup
-
-  # ============================================
-  # EKS Cluster
-  # ============================================
-  EKSClusterRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: bravo-eks-cluster-role
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: eks.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
-
-  EKSNodeRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: bravo-eks-node-role
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ec2.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
-        - arn:aws:iam::aws:policy/AmazonEKSVPCResourceController
-        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-
-  EKSCluster:
-    Type: AWS::EKS::Cluster
-    DependsOn: EKSClusterRole
-    Properties:
-      Name: bravo-eks
-      RoleArn: !GetAtt EKSClusterRole.Arn
-      Version: '1.34'
-      ResourcesVpcConfig:
-        SubnetIds:
-          - !Ref PrivateEKSSubnetA
-          - !Ref PrivateEKSSubnetB
-        SecurityGroupIds:
-          - !Ref EKSSecurityGroup
-        EndpointPrivateAccess: true
-        EndpointPublicAccess: false
-      Logging:
-        ClusterLogging:
-          EnabledTypes:
-            - Type: api
-            - Type: audit
-            - Type: authenticator
-            - Type: controllerManager
-            - Type: scheduler
-
-  EKSNodeGroup:
-    Type: AWS::EKS::Nodegroup
-    DependsOn: EKSCluster
-    Properties:
-      ClusterName: !Ref EKSCluster
-      NodegroupName: bravo-node-group
-      NodeRole: !GetAtt EKSNodeRole.Arn
-      Subnets:
-        - !Ref PrivateEKSSubnetA
-        - !Ref PrivateEKSSubnetB
-      InstanceTypes:
-        - !Ref InstanceTypeEKSNode
-      CapacityType: ON_DEMAND
-      ScalingConfig:
-        DesiredSize: 2
-        MinSize: 2
-        MaxSize: 10
-      RemoteAccess: !If
-        - HasKeyPair
-        - Ec2SshKey: !Ref KeyPairName
-        - !Ref 'AWS::NoValue'
-      UpdateConfig:
-        MaxUnavailable: 1
-      Labels:
-        role: general
-      Tags:
-        Name: bravo-node-group
+  # NOTE: EKS 클러스터는 AWS Console 또는 CLI로 직접 생성하세요
+  # 
+  # 생성 시 필요한 정보:
+  # - VPC: !Ref VPC
+  # - Subnets: PrivateEKSSubnetA, PrivateEKSSubnetB
+  # - Security Group: EKSSecurityGroup
+  # - Cluster Role: IAM Role with AmazonEKSClusterPolicy
+  # - Node Role: IAM Role with AmazonEKSWorkerNodePolicy, AmazonEKS_CNI_Policy 등
+  #
+  # 생성 명령어 예시:
+  # aws eks create-cluster \
+  #   --name bravo-eks \
+  #   --role-arn <CLUSTER_ROLE_ARN> \
+  #   --resources-vpc-config subnetIds=<SUBNET_IDS>,securityGroupIds=<SG_ID> \
+  #   --endpoint-config privateAccess=true,publicAccess=false
 
 Conditions:
-  HasCertificate: !Not [!Equals [!Ref CertificateArn, '']]
   HasKeyPair: !Not [!Equals [!Ref KeyPairName, '']]
 
 Outputs:
@@ -741,17 +812,13 @@ Outputs:
     Export:
       Name: !Sub '${AWS::StackName}-PrivateSvcSubnetBId'
 
-  MonitoringNATInstanceId:
-    Description: Monitoring NAT Instance ID
-    Value: !Ref MonitoringNATInstance
+  NATGatewayId:
+    Description: NAT Gateway ID
+    Value: !Ref NATGateway
 
-  MonitoringNATPrivateIP:
-    Description: Monitoring NAT Private IP
-    Value: !GetAtt MonitoringNATInstance.PrivateIp
-
-  MonitoringNATPublicIP:
-    Description: Monitoring NAT Public IP (Elastic IP)
-    Value: !Ref MonitoringNATElasticIP
+  NATGatewayPublicIP:
+    Description: NAT Gateway Public IP (Elastic IP)
+    Value: !Ref NATGatewayElasticIP
 
   GitLabInstanceId:
     Description: GitLab Instance ID
@@ -761,43 +828,46 @@ Outputs:
     Description: GitLab Public IP (Elastic IP)
     Value: !Ref GitLabElasticIP
 
-  MongoDBInstanceId:
-    Description: MongoDB Instance ID
-    Value: !Ref MongoDBInstance
+  MonitoringInstanceId:
+    Description: Monitoring Instance ID
+    Value: !Ref MonitoringInstance
 
-  MongoDBPrivateIP:
-    Description: MongoDB Private IP
-    Value: !GetAtt MongoDBInstance.PrivateIp
+  MonitoringPublicIP:
+    Description: Monitoring Public IP (Elastic IP)
+    Value: !Ref MonitoringElasticIP
 
-  ElasticsearchKibanaRedisInstanceId:
-    Description: Elasticsearch + Kibana + Redis Instance ID
-    Value: !Ref ElasticsearchKibanaRedisInstance
+  MongoDBPrimaryInstanceId:
+    Description: MongoDB Primary Instance ID
+    Value: !Ref MongoDBPrimaryInstance
 
-  ElasticsearchKibanaRedisPrivateIP:
-    Description: Elasticsearch + Kibana + Redis Private IP
-    Value: !GetAtt ElasticsearchKibanaRedisInstance.PrivateIp
+  MongoDBPrimaryPrivateIP:
+    Description: MongoDB Primary Private IP
+    Value: !GetAtt MongoDBPrimaryInstance.PrivateIp
 
-  ALBDNSName:
-    Description: ALB DNS Name
-    Value: !GetAtt ApplicationLoadBalancer.DNSName
+  MongoDBSecondary1InstanceId:
+    Description: MongoDB Secondary 1 Instance ID
+    Value: !Ref MongoDBSecondary1Instance
 
-  ALBArn:
-    Description: ALB ARN
-    Value: !Ref ApplicationLoadBalancer
+  MongoDBSecondary1PrivateIP:
+    Description: MongoDB Secondary 1 Private IP
+    Value: !GetAtt MongoDBSecondary1Instance.PrivateIp
 
-  EKSClusterId:
-    Description: EKS Cluster ID
-    Value: !Ref EKSCluster
+  MongoDBSecondary2InstanceId:
+    Description: MongoDB Secondary 2 Instance ID
+    Value: !Ref MongoDBSecondary2Instance
 
-  EKSClusterEndpoint:
-    Description: EKS Cluster Endpoint
-    Value: !GetAtt EKSCluster.Endpoint
+  MongoDBSecondary2PrivateIP:
+    Description: MongoDB Secondary 2 Private IP
+    Value: !GetAtt MongoDBSecondary2Instance.PrivateIp
 
-  EKSClusterSecurityGroupId:
-    Description: EKS Cluster Security Group ID
-    Value: !GetAtt EKSCluster.ClusterSecurityGroupId
+  ElasticsearchRedisMonstacheKibanaInstanceId:
+    Description: Elasticsearch + Redis + Monstache + Kibana Instance ID (통합 노드)
+    Value: !Ref ElasticsearchRedisMonstacheKibanaInstance
 
-  EKSKubeconfigCommand:
-    Description: Command to update kubeconfig
-    Value: !Sub 'aws eks update-kubeconfig --region ${AWS::Region} --name bravo-eks'
+  ElasticsearchRedisMonstacheKibanaPrivateIP:
+    Description: Elasticsearch + Redis + Monstache + Kibana Private IP (통합 노드)
+    Value: !GetAtt ElasticsearchRedisMonstacheKibanaInstance.PrivateIp
 
+  EKSSecurityGroupId:
+    Description: EKS Security Group ID (for EKS cluster creation)
+    Value: !Ref EKSSecurityGroup

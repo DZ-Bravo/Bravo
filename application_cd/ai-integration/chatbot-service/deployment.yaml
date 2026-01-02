@@ -72,8 +72,8 @@ spec:
                 secretKeyRef:
                   key: JWT_SECRET
                   name: bravo-secrets
-          image: bravo/hiking-chatbot-service:latest
-          imagePullPolicy: Never
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-chatbot-service:2.0
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -109,8 +109,6 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-        - name: harbor-registry-secret
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}

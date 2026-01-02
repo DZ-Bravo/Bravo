@@ -111,7 +111,21 @@ router.get('/history', async (req, res) => {
   }
 })
 
-// Container CPU 사용률 (시계열)
+// Container CPU 사용률 (시계열) - /container/cpu와 /containers/cpu 모두 지원
+router.get('/container/cpu', async (req, res) => {
+  try {
+    const { node, start, end, step = '15s' } = req.query
+    if (!start || !end) {
+      return res.status(400).json({ error: 'start and end parameters are required' })
+    }
+    const metrics = await prometheusService.getContainerCPUMetrics(node, start, end, step)
+    res.json(metrics)
+  } catch (error) {
+    console.error('Error getting container CPU metrics:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 router.get('/containers/cpu', async (req, res) => {
   try {
     const { node, start, end, step = '15s' } = req.query
@@ -126,7 +140,21 @@ router.get('/containers/cpu', async (req, res) => {
   }
 })
 
-// Container Memory 사용률 (시계열)
+// Container Memory 사용률 (시계열) - /container/memory와 /containers/memory 모두 지원
+router.get('/container/memory', async (req, res) => {
+  try {
+    const { node, start, end, step = '15s' } = req.query
+    if (!start || !end) {
+      return res.status(400).json({ error: 'start and end parameters are required' })
+    }
+    const metrics = await prometheusService.getContainerMemoryMetrics(node, start, end, step)
+    res.json(metrics)
+  } catch (error) {
+    console.error('Error getting container memory metrics:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 router.get('/containers/memory', async (req, res) => {
   try {
     const { node, start, end, step = '15s' } = req.query
@@ -141,7 +169,21 @@ router.get('/containers/memory', async (req, res) => {
   }
 })
 
-// Pod CPU 사용률 (시계열)
+// Pod CPU 사용률 (시계열) - /pod/cpu와 /pods/cpu 모두 지원
+router.get('/pod/cpu', async (req, res) => {
+  try {
+    const { node, start, end, step = '15s' } = req.query
+    if (!start || !end) {
+      return res.status(400).json({ error: 'start and end parameters are required' })
+    }
+    const metrics = await prometheusService.getPodCPUMetrics(node, start, end, step)
+    res.json(metrics)
+  } catch (error) {
+    console.error('Error getting pod CPU metrics:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 router.get('/pods/cpu', async (req, res) => {
   try {
     const { node, start, end, step = '15s' } = req.query
@@ -156,7 +198,21 @@ router.get('/pods/cpu', async (req, res) => {
   }
 })
 
-// Pod Memory 사용률 (시계열)
+// Pod Memory 사용률 (시계열) - /pod/memory와 /pods/memory 모두 지원
+router.get('/pod/memory', async (req, res) => {
+  try {
+    const { node, start, end, step = '15s' } = req.query
+    if (!start || !end) {
+      return res.status(400).json({ error: 'start and end parameters are required' })
+    }
+    const metrics = await prometheusService.getPodMemoryMetrics(node, start, end, step)
+    res.json(metrics)
+  } catch (error) {
+    console.error('Error getting pod memory metrics:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 router.get('/pods/memory', async (req, res) => {
   try {
     const { node, start, end, step = '15s' } = req.query

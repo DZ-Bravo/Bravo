@@ -9,13 +9,6 @@ metadata:
   name: ai-service
   namespace: bravo-ai-integration-ns
 spec:
-  clusterIP: 10.233.33.196
-  clusterIPs:
-    - 10.233.33.196
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
     - name: http
       port: 3009

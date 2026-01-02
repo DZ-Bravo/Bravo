@@ -29,11 +29,11 @@ spec:
       containers:
         - envFrom:
             - configMapRef:
-                name: ai-infra-config
+                name: ai-integration-config
             - secretRef:
-                name: ai-infra-secrets
-          image: bravo/ai-infra-service:latest
-          imagePullPolicy: Never
+                name: ai-integration-secrets
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-infra-service:2.0
+          imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -72,6 +72,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccount: ai-infra-service
-      serviceAccountName: ai-infra-service
+      serviceAccount: ai-integration-service
+      serviceAccountName: ai-integration-service
       terminationGracePeriodSeconds: 30

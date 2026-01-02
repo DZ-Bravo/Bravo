@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ai-ingress-core
+  namespace: bravo-ai-integration-ns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: bravo-core-ns
+    ports:
+    - protocol: TCP
+      port: 3007
+    - protocol: TCP
+      port: 3009
+

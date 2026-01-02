@@ -9,7 +9,7 @@ metadata:
   namespace: bravo-core-ns
 spec:
   progressDeadlineSeconds: 600
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -101,7 +101,7 @@ spec:
                 configMapKeyRef:
                   key: AWS_REGION
                   name: bravo-config
-          image: 192.168.0.244:30305/bravo/hiking-auth-service:latest
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-auth-service:2.0
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

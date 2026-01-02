@@ -9,13 +9,6 @@ metadata:
   name: stamp-service
   namespace: bravo-core-ns
 spec:
-  clusterIP: 10.233.6.115
-  clusterIPs:
-    - 10.233.6.115
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
     - name: http
       port: 3010

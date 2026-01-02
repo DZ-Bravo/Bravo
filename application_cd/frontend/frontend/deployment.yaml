@@ -23,12 +23,10 @@ spec:
       annotations:
         sidecar.istio.io/inject: "false"
     spec:
-      imagePullSecrets:
-        - name: harbor-regcred   # ✅ 정확한 로봇 계정
 
       containers:
         - name: frontend
-          image: harbor-registry.bravo-platform-ns.svc.cluster.local:5000/bravo/hiking-frontend:build-202
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-frontend:2.0
           imagePullPolicy: Always
 
           env:

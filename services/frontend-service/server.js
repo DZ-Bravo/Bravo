@@ -3,6 +3,7 @@ import express from 'express'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { existsSync, readFileSync } from 'fs'
+import http from 'http'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -56,6 +57,87 @@ app.use(express.static(distPath, {
   // HTML 파일은 정적 파일 미들웨어에서 제외
   index: false
 }))
+
+// API 프록시 미들웨어
+const backendServices = [
+  { path: '/api/auth', host: 'auth-service.bravo-core-ns.svc.cluster.local', port: 3001 },
+  { path: '/api/posts', host: 'community-service.bravo-core-ns.svc.cluster.local', port: 3002 },
+  { path: '/api/community', host: 'community-service.bravo-core-ns.svc.cluster.local', port: 3002 },
+  { path: '/api/user', host: 'user-service.bravo-core-ns.svc.cluster.local', port: 3002 },
+  { path: '/api/mountains', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
+  { path: '/api/mountain', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
+  { path: '/api/courses', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
+  { path: '/api/course', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
+  { path: '/api/cctv', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
+  { path: '/api/stamp', host: 'stamp-service.bravo-core-ns.svc.cluster.local', port: 3007 },
+  { path: '/api/notifications', host: 'notification-service.bravo-core-ns.svc.cluster.local', port: 3005 },
+  { path: '/api/notification', host: 'notification-service.bravo-core-ns.svc.cluster.local', port: 3005 },
+  { path: '/api/notices', host: 'notice-service.bravo-core-ns.svc.cluster.local', port: 3003 },
+  { path: '/api/schedules', host: 'schedule-service.bravo-core-ns.svc.cluster.local', port: 3004 },
+  { path: '/api/store', host: 'store-service.bravo-core-ns.svc.cluster.local', port: 3006 },
+  { path: '/api/chatbot', host: 'chatbot-service.bravo-ai-integration-ns.svc.cluster.local', port: 3007 },
+  { path: '/api/ai', host: 'ai-service.bravo-ai-integration-ns.svc.cluster.local', port: 3009 },
+]
+
+app.use((req, res, next) => {
+  const isApiPath = req.path.startsWith('/api/') || 
+                    req.path.startsWith('/store') ||
+                    (req.path.startsWith('/auth') && req.path !== '/auth/success' && !req.path.startsWith('/auth/success/')) ||
+                    req.path.startsWith('/posts') ||
+                    req.path.startsWith('/notices') ||
+                    req.path.startsWith('/schedules') ||
+                    req.path.startsWith('/notifications') ||
+                    req.path.startsWith('/mountains') ||
+                    req.path.startsWith('/courses') ||
+                    req.path.startsWith('/cctv') ||
+                    req.path.startsWith('/stamps') ||
+                    req.path.startsWith('/chatbot') ||
+                    req.path.startsWith('/ai')
+
+  if (!isApiPath) {
+    return next()
+  }
+
+  // 백엔드 서비스 찾기 (긴 경로부터 매칭)
+  const sortedServices = [...backendServices].sort((a, b) => b.path.length - a.path.length)
+  const backend = sortedServices.find(svc => req.path.startsWith(svc.path)) || backendServices[0]
+  
+  // 각 서비스별 경로 처리:
+  // - auth-service: /api/auth prefix로 마운트 → 경로 그대로 전달
+  // - community-service: /api/posts prefix로 마운트 → 경로 그대로 전달
+  // - store-service: /api/store prefix로 마운트 → 경로 그대로 전달
+  // - mountain-service: 직접 라우트 정의 (/api/courses, /api/mountains) → 경로 그대로 전달
+  // - notification-service: 직접 라우트 정의 → 경로 그대로 전달
+  // - 기타 서비스: path를 제거하고 나머지만 전달
+  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/chatbot', '/api/ai']
+  const backendPath = servicesWithFullPath.some(path => req.path.startsWith(path)) ? req.path : (req.path.replace(backend.path, '') || '/')
+  const queryString = req.url.includes('?') ? '?' + req.url.split('?')[1] : ''
+  
+  console.log(`[프록시] ${req.method} ${req.path} -> ${backend.host}:${backend.port}${backendPath}${queryString}`)
+  
+  const options = {
+    hostname: backend.host,
+    port: backend.port,
+    path: backendPath + queryString,
+    method: req.method,
+    headers: {
+      ...req.headers,
+      host: `${backend.host}:${backend.port}`,
+    },
+  }
+
+  const proxyReq = http.request(options, (proxyRes) => {
+    res.writeHead(proxyRes.statusCode, proxyRes.headers)
+    proxyRes.pipe(res)
+  })
+
+  proxyReq.on('error', (err) => {
+    console.error(`[프록시 에러] ${err.message}`)
+    res.status(502).send('Bad Gateway')
+  })
+
+  req.pipe(proxyReq)
+})
 
 // 루트 경로와 HTML 파일 요청 처리 (환경 변수 주입)
 app.get('/', (req, res) => {

@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: core-egress-db
+  namespace: bravo-core-ns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.11.82/32   # MongoDB Primary (bravo-mongodb-primary) - 실제 IP
+    - ipBlock:
+        cidr: 10.0.9.41/32    # MongoDB Secondary1 (bravo-mongodb-secondary1)
+    - ipBlock:
+        cidr: 10.0.15.147/32  # MongoDB Secondary2 (bravo-mongodb-secondary-2)
+    ports:
+    - protocol: TCP
+      port: 27017
+

@@ -9,7 +9,7 @@ metadata:
   namespace: bravo-core-ns
 spec:
   progressDeadlineSeconds: 600
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -49,7 +49,7 @@ spec:
                   name: bravo-secrets
             - name: ELASTICSEARCH_URL
               value: http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200
-          image: 192.168.0.244:30305/bravo/hiking-community-service:latest
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-community-service:2.0
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

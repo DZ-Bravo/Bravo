@@ -6,8 +6,8 @@ let errorLogCountChart
 
 let selectedNode = ''
 
-// API 베이스 경로
-const API_BASE = window.location.origin + '/api/monitoring'
+// API 베이스 경로 - 현재 경로 기준으로 설정
+const API_BASE = window.location.origin + (window.location.pathname.startsWith('/monitoring') ? '/monitoring/api/monitoring' : '/api/monitoring')
 
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {

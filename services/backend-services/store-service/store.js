@@ -91,9 +91,9 @@ router.get('/recent', optionalAuthenticateToken, async (req, res) => {
     console.log('[최근 본 상품 API] Redis 키:', key)
     
     // 최근 5개 가져오기 (최신순)
-    const productIds = await client.zRange(key, -5, -1, {
-      REV: true // 역순 (최신순)
-    })
+    // zRange로 전체를 가져온 후 역순으로 정렬하여 최신 5개 선택
+    const allProductIds = await client.zRange(key, 0, -1)
+    const productIds = allProductIds.reverse().slice(0, 5) // 역순 정렬 후 최대 5개
     
     console.log('[최근 본 상품 API] Redis에서 가져온 productIds:', productIds)
     
@@ -245,8 +245,8 @@ router.post('/recent/:productId', optionalAuthenticateToken, async (req, res) =>
     }
     
     // 최종 목록 확인 (디버깅)
-    const allItems = await client.zRange(key, 0, -1, { REV: true })
-    console.log('[최근 본 상품 API] 현재 저장된 모든 상품 ID (최신순):', allItems)
+    const allItems = await client.zRange(key, 0, -1)
+    console.log('[최근 본 상품 API] 현재 저장된 모든 상품 ID (최신순):', allItems.reverse())
     
     // 30일 TTL 설정
     await client.expire(key, 30 * 24 * 60 * 60)

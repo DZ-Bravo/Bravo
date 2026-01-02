@@ -1,0 +1,94 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  scrape_protocols:
+  - OpenMetricsText1.0.0
+  - OpenMetricsText0.0.1
+  - PrometheusText0.0.4
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Prometheus 자체 메트릭
+  - job_name: prometheus
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  # Node Exporter 메트릭
+  - job_name: node-exporter
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - localhost:9100
+
+  # Kubernetes API Server 메트릭 (EKS API 서버)
+  - job_name: kubernetes-apiservers
+    kubernetes_sd_configs:
+      - role: endpoints
+        kubeconfig_file: /root/.kube/config
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
+
+  # Kubernetes Nodes - kubelet 메트릭 (cAdvisor 포함)
+  # 각 노드의 kubelet 메트릭을 직접 스크랩
+  - job_name: kubernetes-nodes-cadvisor
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          # 노드 1: ip-10-0-17-71
+          - 10.0.17.71:10250
+          # 노드 2: ip-10-0-24-98
+          - 10.0.24.98:10250
+    metrics_path: /metrics/cadvisor
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '([^:]+):(\d+)'
+        target_label: __address__
+        replacement: '${1}:10250'
+      - target_label: instance
+        replacement: '${1}'
+
+  # Kubernetes Nodes - kubelet 자체 메트릭
+  - job_name: kubernetes-nodes
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - 10.0.17.71:10250
+          - 10.0.24.98:10250
+    metrics_path: /metrics
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+  # kube-state-metrics (설치되어 있는 경우)
+  - job_name: kube-state-metrics
+    kubernetes_sd_configs:
+      - role: endpoints
+        kubeconfig_file: /root/.kube/config
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name]
+        action: keep
+        regex: kube-system;kube-state-metrics
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http-metrics
+
