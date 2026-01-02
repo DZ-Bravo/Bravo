@@ -21,20 +21,24 @@ stages:
 # Slack Notification (공통)
 # ===============================
 .notify_slack_failure: &notify_slack_failure
+  script: []
   after_script:
     - |
       if [ "$CI_JOB_STATUS" != "success" ]; then
-        curl -s -X POST -H 'Content-type: application/json' \
-        --data "{
-          \"text\": \"❌ *CI/CD FAILURE*\n
+        cat <<EOF > payload.json
+{
+  "text": "❌ CI/CD FAILURE
 • Project: $CI_PROJECT_NAME
 • Job: $CI_JOB_NAME
 • Branch: $CI_COMMIT_REF_NAME
 • Commit: $CI_COMMIT_SHORT_SHA
 • Trigger: GitHub → GitLab
-• URL: $CI_PIPELINE_URL\"
-        }" \
-        $SLACK_WEBHOOK_URL
+• URL: $CI_PIPELINE_URL"
+}
+EOF
+        curl -s -X POST -H "Content-type: application/json" \
+          --data @payload.json \
+          "$SLACK_WEBHOOK_URL"
       fi
 
 
