@@ -1806,18 +1806,24 @@ router.get('/kakao/callback', async (req, res) => {
 
     const lambdaResult = await lambdaResponse.json()
     const username = lambdaResult.username
+    const tokens = lambdaResult.tokens
 
-    // Cognito 로그인 (비밀번호 없이 불가능하므로, Pre Token Generation Trigger에서 처리)
-    // 실제로는 Cognito에서 직접 로그인하거나, 별도 처리 필요
-    
     // MongoDB에서 사용자 정보 조회
     const user = await User.findOne({ id: username })
     
-    // Cognito IdToken을 받기 위해 별도 처리 필요
-    // 여기서는 Lambda Function이 반환한 정보를 사용하여 리다이렉트
-    const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${username}`
-    console.log('카카오 로그인 성공, 사용자:', username)
-    res.redirect(redirectUrl)
+    // Lambda Function에서 Cognito 토큰을 받았으면 그대로 사용
+    if (tokens && tokens.idToken) {
+      // Cognito 토큰을 쿼리 파라미터로 전달 (보안상 좋지 않지만, 일단 동작 확인용)
+      // 실제로는 서버 세션이나 더 안전한 방법 사용 권장
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${username}&idToken=${encodeURIComponent(tokens.idToken)}&accessToken=${encodeURIComponent(tokens.accessToken)}&refreshToken=${encodeURIComponent(tokens.refreshToken)}`
+      console.log('카카오 로그인 성공, 사용자:', username, 'Cognito 토큰 받음')
+      res.redirect(redirectUrl)
+    } else {
+      // 토큰이 없으면 username만 전달 (프론트엔드에서 Cognito SDK로 로그인 시도)
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${username}`
+      console.log('카카오 로그인 성공, 사용자:', username, 'Cognito 토큰 없음 (프론트엔드에서 처리 필요)')
+      res.redirect(redirectUrl)
+    }
   } catch (error) {
     console.error('카카오 로그인 오류:', error)
     const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'https://hiker-cloud.site'
@@ -1892,15 +1898,24 @@ router.get('/naver/callback', async (req, res) => {
 
     const lambdaResult = await lambdaResponse.json()
     const username = lambdaResult.username
+    const tokens = lambdaResult.tokens
 
     // MongoDB에서 사용자 정보 조회
     const user = await User.findOne({ id: username })
     
-    // Cognito IdToken을 받기 위해 별도 처리 필요
-    // 여기서는 Lambda Function이 반환한 정보를 사용하여 리다이렉트
-    const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${username}`
-    console.log('네이버 로그인 성공, 사용자:', username)
-    res.redirect(redirectUrl)
+    // Lambda Function에서 Cognito 토큰을 받았으면 그대로 사용
+    if (tokens && tokens.idToken) {
+      // Cognito 토큰을 쿼리 파라미터로 전달 (보안상 좋지 않지만, 일단 동작 확인용)
+      // 실제로는 서버 세션이나 더 안전한 방법 사용 권장
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${username}&idToken=${encodeURIComponent(tokens.idToken)}&accessToken=${encodeURIComponent(tokens.accessToken)}&refreshToken=${encodeURIComponent(tokens.refreshToken)}`
+      console.log('네이버 로그인 성공, 사용자:', username, 'Cognito 토큰 받음')
+      res.redirect(redirectUrl)
+    } else {
+      // 토큰이 없으면 username만 전달 (프론트엔드에서 Cognito SDK로 로그인 시도)
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${username}`
+      console.log('네이버 로그인 성공, 사용자:', username, 'Cognito 토큰 없음 (프론트엔드에서 처리 필요)')
+      res.redirect(redirectUrl)
+    }
   } catch (error) {
     console.error('네이버 로그인 오류:', error)
     const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'https://hiker-cloud.site'

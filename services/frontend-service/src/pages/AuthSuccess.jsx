@@ -19,6 +19,9 @@ function AuthSuccess() {
     const userStr = searchParams.get('user')
     const provider = searchParams.get('provider') // Cognito 소셜 로그인
     const username = searchParams.get('username') // Cognito 사용자명
+    const idToken = searchParams.get('idToken') // Lambda에서 받은 Cognito 토큰
+    const accessToken = searchParams.get('accessToken')
+    const refreshToken = searchParams.get('refreshToken')
 
     console.log('=== AuthSuccess 디버깅 ===')
     console.log('전체 URL:', window.location.href)
@@ -27,21 +30,22 @@ function AuthSuccess() {
     console.log('userStr:', userStr ? userStr.substring(0, 50) + '...' : '없음')
     console.log('provider:', provider)
     console.log('username:', username)
+    console.log('idToken:', idToken ? idToken.substring(0, 20) + '...' : '없음')
 
     // Cognito 소셜 로그인 처리
     if (provider && username) {
       try {
-        // Cognito 세션 가져오기
-        getCurrentSession().then(session => {
+        // Lambda에서 받은 Cognito 토큰이 있으면 바로 사용
+        if (idToken && accessToken && refreshToken) {
           // Cognito 토큰 저장
-          localStorage.setItem('accessToken', session.accessToken)
-          localStorage.setItem('idToken', session.idToken)
-          localStorage.setItem('refreshToken', session.refreshToken)
+          localStorage.setItem('accessToken', accessToken)
+          localStorage.setItem('idToken', idToken)
+          localStorage.setItem('refreshToken', refreshToken)
           
           // 사용자 정보 가져오기
           fetch(`${API_URL}/api/auth/me`, {
             headers: {
-              'Authorization': `Bearer ${session.idToken}`
+              'Authorization': `Bearer ${idToken}`
             }
           }).then(response => {
             if (response.ok) {
@@ -56,11 +60,38 @@ function AuthSuccess() {
             // 사용자 정보 없어도 로그인은 성공
             window.location.replace('/')
           })
-        }).catch(error => {
-          console.error('Cognito 세션 가져오기 오류:', error)
-          alert('로그인 처리 중 오류가 발생했습니다.')
-          navigate('/login', { replace: true })
-        })
+        } else {
+          // 토큰이 없으면 Cognito SDK로 세션 가져오기 시도
+          getCurrentSession().then(session => {
+            // Cognito 토큰 저장
+            localStorage.setItem('accessToken', session.accessToken)
+            localStorage.setItem('idToken', session.idToken)
+            localStorage.setItem('refreshToken', session.refreshToken)
+            
+            // 사용자 정보 가져오기
+            fetch(`${API_URL}/api/auth/me`, {
+              headers: {
+                'Authorization': `Bearer ${session.idToken}`
+              }
+            }).then(response => {
+              if (response.ok) {
+                return response.json()
+              }
+              throw new Error('사용자 정보 가져오기 실패')
+            }).then(data => {
+              localStorage.setItem('user', JSON.stringify(data.user))
+              window.location.replace('/')
+            }).catch(error => {
+              console.error('사용자 정보 가져오기 오류:', error)
+              // 사용자 정보 없어도 로그인은 성공
+              window.location.replace('/')
+            })
+          }).catch(error => {
+            console.error('Cognito 세션 가져오기 오류:', error)
+            alert('로그인 처리 중 오류가 발생했습니다.')
+            navigate('/login', { replace: true })
+          })
+        }
       } catch (error) {
         console.error('소셜 로그인 처리 오류:', error)
         alert('로그인 처리 중 오류가 발생했습니다: ' + error.message)

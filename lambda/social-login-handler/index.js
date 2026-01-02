@@ -92,6 +92,7 @@ exports.handler = async (event) => {
     
     // 2. Cognito에서 사용자 찾기 또는 생성
     let cognitoUser = null
+    let tempPassword = null
     const username = userInfo.id
     
     try {
@@ -108,8 +109,8 @@ exports.handler = async (event) => {
       })
       await cognitoClient.send(createUserCommand)
       
-      // 임시 비밀번호 설정
-      const tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12).toUpperCase()
+      // 임시 비밀번호 생성 및 설정
+      tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12).toUpperCase() + '!@#'
       const setPasswordCommand = new AdminSetUserPasswordCommand({
         UserPoolId: USER_POOL_ID,
         Username: username,
@@ -123,36 +124,40 @@ exports.handler = async (event) => {
       if (error.name === 'UsernameExistsException') {
         // 사용자가 이미 존재함
         cognitoUser = { username, isNew: false }
+        // 기존 사용자의 경우 비밀번호를 알 수 없으므로 로그인 불가
+        // 대신 사용자가 직접 로그인하도록 프론트엔드에서 처리
       } else {
         throw error
       }
     }
     
-    // 3. Cognito 로그인 (임시 비밀번호로 로그인)
+    // 3. Cognito 로그인 (새 사용자인 경우에만 임시 비밀번호로 로그인)
     let tokens = null
-    try {
-      // 임시 비밀번호로 로그인 시도
-      const authCommand = new InitiateAuthCommand({
-        AuthFlow: 'USER_PASSWORD_AUTH',
-        ClientId: CLIENT_ID,
-        AuthParameters: {
-          USERNAME: username,
-          PASSWORD: tempPassword
+    if (cognitoUser.isNew && tempPassword) {
+      try {
+        // 임시 비밀번호로 로그인 시도
+        const authCommand = new InitiateAuthCommand({
+          AuthFlow: 'USER_PASSWORD_AUTH',
+          ClientId: CLIENT_ID,
+          AuthParameters: {
+            USERNAME: username,
+            PASSWORD: tempPassword
+          }
+        })
+        
+        const authResponse = await cognitoClient.send(authCommand)
+        
+        if (authResponse.AuthenticationResult) {
+          tokens = {
+            accessToken: authResponse.AuthenticationResult.AccessToken,
+            idToken: authResponse.AuthenticationResult.IdToken,
+            refreshToken: authResponse.AuthenticationResult.RefreshToken
+          }
         }
-      })
-      
-      const authResponse = await cognitoClient.send(authCommand)
-      
-      if (authResponse.AuthenticationResult) {
-        tokens = {
-          accessToken: authResponse.AuthenticationResult.AccessToken,
-          idToken: authResponse.AuthenticationResult.IdToken,
-          refreshToken: authResponse.AuthenticationResult.RefreshToken
-        }
+      } catch (authError) {
+        console.error('Cognito 로그인 오류:', authError)
+        // 로그인 실패해도 사용자 정보는 반환
       }
-    } catch (authError) {
-      console.error('Cognito 로그인 오류:', authError)
-      // 로그인 실패해도 사용자 정보는 반환
     }
     
     return {
