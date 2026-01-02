@@ -1,0 +1,115 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  scrape_protocols:
+  - OpenMetricsText1.0.0
+  - OpenMetricsText0.0.1
+  - PrometheusText0.0.4
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Prometheus 자체 메트릭
+  - job_name: prometheus
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  # Node Exporter 메트릭
+  - job_name: node-exporter
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - localhost:9100
+
+  # cAdvisor 메트릭 - 노드 1 (ip-10-0-17-71)
+  - job_name: cadvisor-node1
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - 10.0.17.71:10250
+    metrics_path: /metrics/cadvisor
+    # Kubernetes ServiceAccount 토큰 사용 (EC2에서 실행 중인 경우 토큰 파일 경로 지정 필요)
+    # bearer_token_file: /path/to/token
+    relabel_configs:
+      - target_label: instance
+        replacement: 'ip-10-0-17-71.ap-northeast-2.compute.internal'
+      - target_label: node
+        replacement: 'ip-10-0-17-71.ap-northeast-2.compute.internal'
+
+  # cAdvisor 메트릭 - 노드 2 (ip-10-0-24-98)
+  - job_name: cadvisor-node2
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - 10.0.24.98:10250
+    metrics_path: /metrics/cadvisor
+    relabel_configs:
+      - target_label: instance
+        replacement: 'ip-10-0-24-98.ap-northeast-2.compute.internal'
+      - target_label: node
+        replacement: 'ip-10-0-24-98.ap-northeast-2.compute.internal'
+
+  # kubelet 메트릭 - 노드 1
+  - job_name: kubelet-node1
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - 10.0.17.71:10250
+    metrics_path: /metrics
+    relabel_configs:
+      - target_label: instance
+        replacement: 'ip-10-0-17-71.ap-northeast-2.compute.internal'
+
+  # kubelet 메트릭 - 노드 2
+  - job_name: kubelet-node2
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - 10.0.24.98:10250
+    metrics_path: /metrics
+    relabel_configs:
+      - target_label: instance
+        replacement: 'ip-10-0-24-98.ap-northeast-2.compute.internal'
+
+  # Kubernetes API Server를 통한 cAdvisor 메트릭 (권장 방법)
+  # 이 방법은 Kubernetes API 서버를 통해 노드 메트릭에 접근하므로 인증이 자동으로 처리됩니다
+  # EC2에서 실행 중인 경우 kubeconfig 파일이 필요합니다
+  - job_name: kubernetes-cadvisor-via-api-node1
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - CD954D03FD7521324954E667CB2450E9.yl4.ap-northeast-2.eks.amazonaws.com:443
+    metrics_path: /api/v1/nodes/ip-10-0-17-71.ap-northeast-2.compute.internal/proxy/metrics/cadvisor
+    # kubeconfig 파일이 있으면 자동 인증, 없으면 bearer_token_file 사용
+    # bearer_token_file: /path/to/token
+    
+  - job_name: kubernetes-cadvisor-via-api-node2
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - CD954D03FD7521324954E667CB2450E9.yl4.ap-northeast-2.eks.amazonaws.com:443
+    metrics_path: /api/v1/nodes/ip-10-0-24-98.ap-northeast-2.compute.internal/proxy/metrics/cadvisor
+

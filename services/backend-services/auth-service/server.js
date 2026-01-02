@@ -10,6 +10,10 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3001
 
+// ALB/프록시를 통한 요청을 신뢰하도록 설정
+// X-Forwarded-* 헤더를 신뢰하여 req.protocol, req.hostname 등을 올바르게 설정
+app.set('trust proxy', true)
+
 // 미들웨어6
 app.use(cors())
 app.use(express.json())

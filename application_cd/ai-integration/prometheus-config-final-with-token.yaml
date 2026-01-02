@@ -1,0 +1,33 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: [localhost:9090]
+
+  - job_name: node-exporter
+    static_configs:
+      - targets: [localhost:9100]
+
+  - job_name: kubernetes-cadvisor-node1
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - CD954D03FD7521324954E667CB2450E9.yl4.ap-northeast-2.eks.amazonaws.com:443
+    metrics_path: /api/v1/nodes/ip-10-0-17-71.ap-northeast-2.compute.internal/proxy/metrics/cadvisor
+    bearer_token_file: /tmp/prometheus-k8s-token
+
+  - job_name: kubernetes-cadvisor-node2
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - CD954D03FD7521324954E667CB2450E9.yl4.ap-northeast-2.eks.amazonaws.com:443
+    metrics_path: /api/v1/nodes/ip-10-0-24-98.ap-northeast-2.compute.internal/proxy/metrics/cadvisor
+    bearer_token_file: /tmp/prometheus-k8s-token

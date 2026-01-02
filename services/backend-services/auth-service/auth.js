@@ -364,6 +364,25 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     let profileImagePath = null
     if (req.file) {
       profileImagePath = `/uploads/profiles/${req.file.filename}`
+      
+      // 파일 메타데이터를 MongoDB에 저장
+      try {
+        const mongoose = await import('mongoose')
+        const db = mongoose.default.connection.db
+        const profileFilesCollection = db.collection('profile_files')
+        
+        await profileFilesCollection.insertOne({
+          filename: req.file.filename,
+          path: `/uploads/profiles/${req.file.filename}`,
+          size: req.file.size,
+          uploadedAt: new Date(),
+          type: 'profile',
+          createdAt: new Date()
+        })
+        console.log(`[파일 메타데이터] 프로필 이미지 메타데이터 저장 완료: ${req.file.filename}`)
+      } catch (error) {
+        console.error('[파일 메타데이터] 저장 실패 (무시됨):', error.message)
+      }
       const actualFilePath = path.join(req.file.destination, req.file.filename)
       console.log('=== 프로필 이미지 업로드 (회원가입) ===')
       console.log('파일명:', req.file.filename)
@@ -1239,6 +1258,25 @@ router.put('/update', authenticateToken, upload.single('profileImage'), async (r
         }
       }
       updateFields.profileImage = `/uploads/profiles/${req.file.filename}`
+      
+      // 파일 메타데이터를 MongoDB에 저장
+      try {
+        const mongoose = await import('mongoose')
+        const db = mongoose.default.connection.db
+        const profileFilesCollection = db.collection('profile_files')
+        
+        await profileFilesCollection.insertOne({
+          filename: req.file.filename,
+          path: `/uploads/profiles/${req.file.filename}`,
+          size: req.file.size,
+          uploadedAt: new Date(),
+          type: 'profile',
+          createdAt: new Date()
+        })
+        console.log(`[파일 메타데이터] 프로필 이미지 메타데이터 저장 완료: ${req.file.filename}`)
+      } catch (error) {
+        console.error('[파일 메타데이터] 저장 실패 (무시됨):', error.message)
+      }
       const actualFilePath = path.join(req.file.destination, req.file.filename)
       console.log('=== 프로필 이미지 업데이트 ===')
       console.log('파일명:', req.file.filename)
@@ -1698,6 +1736,10 @@ router.get('/kakao/callback', async (req, res) => {
     const FRONTEND_URL = process.env.FRONTEND_URL || 'http://192.168.0.242'
     
     console.log('카카오 콜백 받음 - code:', code ? '있음' : '없음', 'error:', error, 'error_description:', error_description)
+    console.log('카카오 콜백 - req.url:', req.url)
+    console.log('카카오 콜백 - req.query 전체:', JSON.stringify(req.query))
+    console.log('카카오 콜백 - req.headers.host:', req.headers.host)
+    console.log('카카오 콜백 - req.protocol:', req.protocol)
     
     if (error) {
       console.error('카카오 OAuth 오류:', error, error_description)
@@ -1802,15 +1844,17 @@ router.get('/kakao/callback', async (req, res) => {
     )
 
     // 프론트엔드로 리다이렉트 (토큰을 쿼리 파라미터로 전달)
-    console.log('카카오 로그인 성공, 사용자:', user.id, user.name)
-    res.redirect(`${FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
+    const redirectUrl = `${FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
       id: user.id,
       name: user.name,
       gender: user.gender,
       fitnessLevel: user.fitnessLevel,
       profileImage: user.profileImage,
       role: user.role || 'user'
-    }))}`)
+    }))}`
+    console.log('카카오 로그인 성공, 사용자:', user.id, user.name)
+    console.log('카카오 리다이렉트 URL:', redirectUrl)
+    res.redirect(redirectUrl)
   } catch (error) {
     console.error('카카오 로그인 오류:', error)
     const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'http://192.168.0.242'
@@ -1846,6 +1890,10 @@ router.get('/naver/callback', async (req, res) => {
     const FRONTEND_URL = process.env.FRONTEND_URL || 'http://192.168.0.242'
     
     console.log('네이버 콜백 받음 - code:', code ? '있음' : '없음', 'error:', error, 'error_description:', error_description)
+    console.log('네이버 콜백 - req.url:', req.url)
+    console.log('네이버 콜백 - req.query 전체:', JSON.stringify(req.query))
+    console.log('네이버 콜백 - req.headers.host:', req.headers.host)
+    console.log('네이버 콜백 - req.protocol:', req.protocol)
     
     if (error) {
       console.error('네이버 OAuth 오류:', error, error_description)
@@ -1945,15 +1993,17 @@ router.get('/naver/callback', async (req, res) => {
     )
 
     // 프론트엔드로 리다이렉트 (토큰을 쿼리 파라미터로 전달)
-    console.log('네이버 로그인 성공, 사용자:', user.id, user.name, '신규:', !user.createdAt || user.createdAt > new Date(Date.now() - 10000))
-    res.redirect(`${FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
+    const redirectUrl = `${FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify({
       id: user.id,
       name: user.name,
       gender: user.gender,
       fitnessLevel: user.fitnessLevel,
       profileImage: user.profileImage,
       role: user.role || 'user'
-    }))}`)
+    }))}`
+    console.log('네이버 로그인 성공, 사용자:', user.id, user.name, '신규:', !user.createdAt || user.createdAt > new Date(Date.now() - 10000))
+    console.log('네이버 리다이렉트 URL:', redirectUrl)
+    res.redirect(redirectUrl)
   } catch (error) {
     console.error('네이버 로그인 오류:', error)
     const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'http://192.168.0.242'

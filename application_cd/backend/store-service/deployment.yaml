@@ -53,7 +53,7 @@ spec:
                   name: bravo-secrets
             - name: ELASTICSEARCH_URL
               value: http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200
-          image: 192.168.0.244:30305/bravo/hiking-store-service:latest
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-store-service:2.0
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

@@ -1190,6 +1190,29 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
 
     // 이미지 경로 처리
     const images = req.files ? req.files.map(file => `/uploads/posts/${file.filename}`) : []
+    
+    // 파일 메타데이터를 MongoDB에 저장
+    if (req.files && req.files.length > 0) {
+      try {
+        const mongoose = await import('mongoose')
+        const db = mongoose.default.connection.db
+        const postFilesCollection = db.collection('post_files')
+        
+        const fileDocs = req.files.map(file => ({
+          filename: file.filename,
+          path: `/uploads/posts/${file.filename}`,
+          size: file.size,
+          uploadedAt: new Date(),
+          type: 'post',
+          createdAt: new Date()
+        }))
+        
+        await postFilesCollection.insertMany(fileDocs)
+        console.log(`[파일 메타데이터] ${fileDocs.length}개 파일 메타데이터 저장 완료`)
+      } catch (error) {
+        console.error('[파일 메타데이터] 저장 실패 (무시됨):', error.message)
+      }
+    }
 
     // 등산일지 전용 필드 추출
     let mountainCode = null
@@ -1658,6 +1681,27 @@ router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res
     if (req.files && req.files.length > 0) {
       const newImages = req.files.map(file => `/uploads/posts/${file.filename}`)
       post.images = [...(post.images || []), ...newImages]
+      
+      // 새로 업로드된 파일 메타데이터를 MongoDB에 저장
+      try {
+        const mongoose = await import('mongoose')
+        const db = mongoose.default.connection.db
+        const postFilesCollection = db.collection('post_files')
+        
+        const fileDocs = req.files.map(file => ({
+          filename: file.filename,
+          path: `/uploads/posts/${file.filename}`,
+          size: file.size,
+          uploadedAt: new Date(),
+          type: 'post',
+          createdAt: new Date()
+        }))
+        
+        await postFilesCollection.insertMany(fileDocs)
+        console.log(`[파일 메타데이터] ${fileDocs.length}개 파일 메타데이터 저장 완료`)
+      } catch (error) {
+        console.error('[파일 메타데이터] 저장 실패 (무시됨):', error.message)
+      }
     }
 
     if (title) post.title = title

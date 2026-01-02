@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-infra-ingress
+  namespace: bravo-ai-integration-ns
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: hiker-cloud-alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:940482451773:certificate/be0c2b32-10e1-4d84-be2c-ac407e5c50eb
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+spec:
+  ingressClassName: alb
+  rules:
+  - host: hiker-cloud.site
+    http:
+      paths:
+      - path: /monitoring
+        pathType: Prefix
+        backend:
+          service:
+            name: ai-infra-service
+            port:
+              number: 80
+

@@ -9,13 +9,6 @@ metadata:
   name: notice-service
   namespace: bravo-core-ns
 spec:
-  clusterIP: 10.233.48.145
-  clusterIPs:
-    - 10.233.48.145
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
     - name: http
       port: 3003
