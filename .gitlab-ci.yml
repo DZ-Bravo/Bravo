@@ -76,6 +76,7 @@ sonar-frontend:
   stage: analyze
   needs: []
   image: sonarsource/sonar-scanner-cli:5
+  <<: *notify_slack_failure  
   script:
     - |
       sonar-scanner \
@@ -88,7 +89,7 @@ sonar-frontend:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - services/frontend-service/**/*
-  <<: *notify_slack_failure  
+  
 
 
 # ===============================
