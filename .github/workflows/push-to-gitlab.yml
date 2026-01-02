@@ -1,0 +1,28 @@
+name: Push to GitLab
+
+on:
+  push:
+    branches:
+      - main
+      - seonjae
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 중요: 전체 히스토리
+
+      - name: Push to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@43.200.134.128/root/Bravo.git || true
+          git push gitlab --all
+          git push gitlab --tags
