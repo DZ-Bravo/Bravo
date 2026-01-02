@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { API_URL } from '../utils/api'
+import { API_URL, getAuthHeaders } from '../utils/api'
 import './Header.css'
 
 function Header({ hideNav = false }) {
@@ -33,8 +33,8 @@ function Header({ hideNav = false }) {
     }
 
     const fetchNotifications = async () => {
-      const token = localStorage.getItem('token')
-      if (!token) {
+      const headers = getAuthHeaders()
+      if (!headers['Authorization']) {
         console.log('Header - 알림 가져오기 스킵: token 없음')
         return
       }
@@ -42,9 +42,7 @@ function Header({ hideNav = false }) {
       try {
         console.log('Header - 알림 가져오기 시작:', `${API_URL}/api/notifications?limit=20`)
         const response = await fetch(`${API_URL}/api/notifications?limit=20`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          headers
         })
 
         console.log('Header - 알림 응답 상태:', response.status, response.ok)
@@ -94,17 +92,15 @@ function Header({ hideNav = false }) {
   }, [showNotifications, showUserMenu])
 
   const handleNotificationClick = async (notification) => {
-    const token = localStorage.getItem('token')
-    if (!token) return
+    const headers = getAuthHeaders()
+    if (!headers['Authorization']) return
 
     // 읽음 처리
     if (!notification.read) {
       try {
         await fetch(`${API_URL}/api/notifications/${notification._id}/read`, {
           method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          headers
         })
         setNotifications(notifications.map(n => 
           n._id === notification._id ? { ...n, read: true } : n
@@ -142,15 +138,13 @@ function Header({ hideNav = false }) {
   }
 
   const handleMarkAllAsRead = async () => {
-    const token = localStorage.getItem('token')
-    if (!token) return
+    const headers = getAuthHeaders()
+    if (!headers['Authorization']) return
 
     try {
       const response = await fetch(`${API_URL}/api/notifications/read-all`, {
         method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers
       })
 
       if (response.ok) {
@@ -163,17 +157,15 @@ function Header({ hideNav = false }) {
   }
 
   const handleDeleteNotification = async (notificationId) => {
-    const token = localStorage.getItem('token')
-    if (!token) return
+    const headers = getAuthHeaders()
+    if (!headers['Authorization']) return
 
     if (!window.confirm('알림을 삭제하시겠습니까?')) return
 
     try {
       const response = await fetch(`${API_URL}/api/notifications/${notificationId}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers
       })
 
       if (response.ok) {
@@ -197,7 +189,10 @@ function Header({ hideNav = false }) {
     // 로그아웃 확인 팝업
     if (window.confirm('로그아웃하시겠습니까?')) {
       // localStorage에서 토큰과 사용자 정보 제거
-      localStorage.removeItem('token')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('idToken')
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('token') // 하위 호환성
       localStorage.removeItem('user')
       setUser(null)
       navigate('/')

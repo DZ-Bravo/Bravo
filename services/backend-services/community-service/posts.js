@@ -4,7 +4,7 @@ import User from './shared/models/User.js'
 import Comment from './shared/models/Comment.js'
 import Course from './shared/models/Course.js'
 import Notification from './shared/models/Notification.js'
-import { authenticateToken } from './shared/utils/auth.js'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 import axios from 'axios'
 import multer from 'multer'
 import path from 'path'
@@ -124,7 +124,7 @@ const upload = multer({
 })
 
 // 북마크 목록 조회 (인증 필요) - /:id보다 먼저 정의해야 함
-router.get('/bookmarks/my', authenticateToken, async (req, res) => {
+router.get('/bookmarks/my', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const page = parseInt(req.query.page) || 1
@@ -220,7 +220,7 @@ router.get('/bookmarks/my', authenticateToken, async (req, res) => {
 })
 
 // 즐겨찾기 목록 조회 (하위 호환성을 위해 유지)
-router.get('/favorites/my', authenticateToken, async (req, res) => {
+router.get('/favorites/my', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const page = parseInt(req.query.page) || 1
@@ -313,7 +313,7 @@ router.get('/favorites/my', authenticateToken, async (req, res) => {
 })
 
 // 내 게시글 조회 (인증 필요)
-router.get('/my', authenticateToken, async (req, res) => {
+router.get('/my', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const page = parseInt(req.query.page) || 1
@@ -1160,7 +1160,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // 게시글 작성 (인증 필요)
-router.post('/', authenticateToken, upload.array('images', 5), async (req, res) => {
+router.post('/', authenticateCognitoToken, upload.array('images', 5), async (req, res) => {
   try {
     const { title, content, category } = req.body
     const userId = req.user.userId
@@ -1628,7 +1628,7 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
 })
 
 // 게시글 수정 (인증 필요, 작성자만)
-router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res) => {
+router.put('/:id', authenticateCognitoToken, upload.array('images', 5), async (req, res) => {
   try {
     const { title, content, category, removedImages } = req.body
     const userId = req.user.userId
@@ -1733,7 +1733,7 @@ router.put('/:id', authenticateToken, upload.array('images', 5), async (req, res
 })
 
 // 게시글 삭제 (인증 필요, 작성자만)
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const postId = req.params.id
@@ -1784,7 +1784,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 })
 
 // 댓글 작성 (인증 필요)
-router.post('/:id/comments', authenticateToken, async (req, res) => {
+router.post('/:id/comments', authenticateCognitoToken, async (req, res) => {
   try {
     const { content } = req.body
     const userId = req.user.userId
@@ -1911,7 +1911,7 @@ router.get('/:id/comments', async (req, res) => {
 })
 
 // 댓글 수정 (인증 필요, 작성자만)
-router.put('/:postId/comments/:commentId', authenticateToken, async (req, res) => {
+router.put('/:postId/comments/:commentId', authenticateCognitoToken, async (req, res) => {
   try {
     const { content } = req.body
     const userId = req.user.userId
@@ -1952,7 +1952,7 @@ router.put('/:postId/comments/:commentId', authenticateToken, async (req, res) =
 })
 
 // 댓글 삭제 (인증 필요, 작성자만)
-router.delete('/:postId/comments/:commentId', authenticateToken, async (req, res) => {
+router.delete('/:postId/comments/:commentId', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { postId, commentId } = req.params
@@ -1980,7 +1980,7 @@ router.delete('/:postId/comments/:commentId', authenticateToken, async (req, res
 })
 
 // 좋아요 토글 (인증 필요)
-router.post('/:id/like', authenticateToken, async (req, res) => {
+router.post('/:id/like', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const postId = req.params.id
@@ -2019,7 +2019,7 @@ router.post('/:id/like', authenticateToken, async (req, res) => {
 })
 
 // 북마크 토글 (인증 필요)
-router.post('/:id/bookmark', authenticateToken, async (req, res) => {
+router.post('/:id/bookmark', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const postId = req.params.id
@@ -2087,7 +2087,7 @@ router.post('/:id/bookmark', authenticateToken, async (req, res) => {
 })
 
 // 사용자의 등산 완료 산 목록 가져오기 (스탬프용)
-router.get('/stamps/completed', authenticateToken, async (req, res) => {
+router.get('/stamps/completed', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     console.log(`[스탬프] API 호출됨 - 사용자 ID: ${userId}, 타입: ${typeof userId}`)
@@ -2162,7 +2162,7 @@ router.get('/stamps/completed', authenticateToken, async (req, res) => {
 })
 
 // 게시글 일괄 인덱싱 (관리자용) - 기존 MongoDB 데이터를 Elasticsearch로 옮기기
-router.post('/index/init', authenticateToken, async (req, res) => {
+router.post('/index/init', authenticateCognitoToken, async (req, res) => {
   try {
     // 관리자 권한 확인
     const user = await User.findById(req.user.userId)

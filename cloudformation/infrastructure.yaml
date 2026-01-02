@@ -16,7 +16,10 @@ Parameters:
     Type: String
     Default: t3.xlarge
     Description: Instance type for GitLab
-    
+  InstanceTypeMongoDBPrimary:
+    Type: String
+    Default: t3.large
+    Description: Instance type for MongoDB Primary              
   InstanceTypeMongoDB:
     Type: String
     Default: t3.large

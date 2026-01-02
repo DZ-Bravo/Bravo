@@ -45,6 +45,16 @@ spec:
                 secretKeyRef:
                   name: bravo-secrets
                   key: VITE_CESIUM_ACCESS_TOKEN
+            - name: VITE_COGNITO_USER_POOL_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: bravo-config
+                  key: VITE_COGNITO_USER_POOL_ID
+            - name: VITE_COGNITO_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: bravo-config
+                  key: VITE_COGNITO_CLIENT_ID
 
           ports:
             - name: http

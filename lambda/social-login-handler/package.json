@@ -1,0 +1,10 @@
+{
+  "name": "social-login-handler",
+  "version": "1.0.0",
+  "description": "Lambda function for handling Naver/Kakao social login",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.0.0"
+  }
+}
+

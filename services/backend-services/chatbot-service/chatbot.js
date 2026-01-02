@@ -1,6 +1,6 @@
 import express from 'express'
 import { BedrockAgentRuntimeClient, InvokeAgentCommand } from '@aws-sdk/client-bedrock-agent-runtime'
-import { authenticateToken } from './shared/utils/auth.js'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 import ChatConversation from './shared/models/ChatConversation.js'
 import User from './shared/models/User.js'
 
@@ -54,7 +54,7 @@ function getGreetingResponse() {
 }
 
 // 대화 목록 조회
-router.get('/conversations', authenticateToken, async (req, res) => {
+router.get('/conversations', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     
@@ -71,7 +71,7 @@ router.get('/conversations', authenticateToken, async (req, res) => {
 })
 
 // 특정 대화 조회
-router.get('/conversations/:sessionId', authenticateToken, async (req, res) => {
+router.get('/conversations/:sessionId', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { sessionId } = req.params
@@ -96,7 +96,7 @@ router.get('/conversations/:sessionId', authenticateToken, async (req, res) => {
 })
 
 // 새 대화 시작
-router.post('/conversations', authenticateToken, async (req, res) => {
+router.post('/conversations', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const sessionId = generateSessionId()
@@ -129,7 +129,7 @@ function getKoreaTime() {
 }
 
 // 챗봇 메시지 전송 및 응답 받기
-router.post('/message', authenticateToken, async (req, res) => {
+router.post('/message', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { message, sessionId } = req.body
