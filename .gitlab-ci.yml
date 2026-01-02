@@ -22,7 +22,7 @@ stages:
 # ===============================
 .notify_slack_failure: &notify_slack_failure
   script:
-    - true
+    - "true"
   after_script:
     - |
       if [ "$CI_JOB_STATUS" != "success" ]; then
