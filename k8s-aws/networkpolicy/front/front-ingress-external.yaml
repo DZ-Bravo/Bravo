@@ -6,7 +6,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: react
+      app: frontend
   policyTypes:
   - Ingress
   ingress:
@@ -15,5 +15,5 @@ spec:
         cidr: 0.0.0.0/0
     ports:
     - protocol: TCP
-      port: 3000
+      port: 80
 
