@@ -21,7 +21,8 @@ stages:
 # Slack Notification (공통)
 # ===============================
 .notify_slack_failure: &notify_slack_failure
-  script: []
+  script:
+    - true
   after_script:
     - |
       if [ "$CI_JOB_STATUS" != "success" ]; then
