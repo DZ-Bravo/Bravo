@@ -81,7 +81,7 @@ sonar-frontend:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - services/frontend-service/**/*
-    <<: *notify_slack_failure  
+  <<: *notify_slack_failure  
   
 
 build-frontend:

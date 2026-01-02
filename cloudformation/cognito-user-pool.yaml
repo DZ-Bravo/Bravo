@@ -1,0 +1,267 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS Cognito User Pool for Hiker Cloud Authentication'
+
+Parameters:
+  UserPoolName:
+    Type: String
+    Default: 'hiker-cloud-user-pool'
+    Description: 'Cognito User Pool Name'
+  
+  DomainPrefix:
+    Type: String
+    Default: 'hiker-cloud'
+    Description: 'Cognito Domain Prefix (must be unique globally)'
+  
+  AllowedOAuthFlows:
+    Type: CommaDelimitedList
+    Default: 'code'
+    Description: 'Allowed OAuth Flows'
+  
+  AllowedOAuthScopes:
+    Type: CommaDelimitedList
+    Default: 'email,openid,profile'
+    Description: 'Allowed OAuth Scopes'
+  
+  CallbackURLs:
+    Type: CommaDelimitedList
+    Default: 'https://hiker-cloud.site/auth/success,https://hiker-cloud.site'
+    Description: 'OAuth Callback URLs'
+  
+  LogoutURLs:
+    Type: CommaDelimitedList
+    Default: 'https://hiker-cloud.site/login,https://hiker-cloud.site'
+    Description: 'OAuth Logout URLs'
+
+Resources:
+  # Cognito User Pool
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref UserPoolName
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireUppercase: true
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: custom:provider
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: custom:userId
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: custom:userRole
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: custom:mongoId
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+      LambdaConfig:
+        PreTokenGeneration: !GetAtt PreTokenGenerationFunction.Arn
+      MfaConfiguration: OFF
+
+  # Cognito User Pool Domain
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Ref DomainPrefix
+      UserPoolId: !Ref UserPool
+
+  # Cognito User Pool Client
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub '${UserPoolName}-client'
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_SRP_AUTH
+      AllowedOAuthFlows: !Ref AllowedOAuthFlows
+      AllowedOAuthScopes: !Ref AllowedOAuthScopes
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs: !Ref CallbackURLs
+      LogoutURLs: !Ref LogoutURLs
+      SupportedIdentityProviders:
+        - COGNITO
+      TokenValidityUnits:
+        AccessToken: hours
+        IdToken: hours
+        RefreshToken: days
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      RefreshTokenValidity: 30
+
+  # Lambda Function: Pre Token Generation
+  PreTokenGenerationFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: pre-token-generation
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt PreTokenGenerationRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            // Placeholder - 실제 코드는 배포 시 업데이트
+            return event;
+          };
+      Timeout: 30
+      MemorySize: 256
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref MongoDBURI
+      Tags:
+        - Key: Name
+          Value: pre-token-generation
+
+  # Lambda Function: Social Login Handler
+  SocialLoginHandlerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: social-login-handler
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt SocialLoginHandlerRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            // Placeholder - 실제 코드는 배포 시 업데이트
+            return { statusCode: 200, body: JSON.stringify({ message: 'placeholder' }) };
+          };
+      Timeout: 30
+      MemorySize: 256
+      Environment:
+        Variables:
+          AWS_REGION: !Ref AWS::Region
+          USER_POOL_ID: !Ref UserPool
+          CLIENT_ID: !Ref UserPoolClient
+          KAKAO_REST_API_KEY: !Ref KakaoRestApiKey
+          NAVER_CLIENT_ID: !Ref NaverClientId
+          NAVER_CLIENT_SECRET: !Ref NaverClientSecret
+      Tags:
+        - Key: Name
+          Value: social-login-handler
+
+  # Lambda Permission for Pre Token Generation
+  PreTokenGenerationPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref PreTokenGenerationFunction
+      Principal: cognito-idp.amazonaws.com
+      Action: lambda:InvokeFunction
+      SourceArn: !GetAtt UserPool.Arn
+
+  # IAM Role for Pre Token Generation
+  PreTokenGenerationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: pre-token-generation-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: MongoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:CreateNetworkInterface
+                  - ec2:DeleteNetworkInterface
+                  - ec2:DescribeInstances
+                  - ec2:AttachNetworkInterface
+                Resource: '*'
+
+  # IAM Role for Social Login Handler
+  SocialLoginHandlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: social-login-handler-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: CognitoAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cognito-idp:AdminCreateUser
+                  - cognito-idp:AdminSetUserPassword
+                  - cognito-idp:AdminGetUser
+                  - cognito-idp:ListUsers
+                  - cognito-idp:AdminUpdateUserAttributes
+                  - cognito-idp:InitiateAuth
+                Resource: !GetAtt UserPool.Arn
+
+Outputs:
+  UserPoolId:
+    Description: 'Cognito User Pool ID'
+    Value: !Ref UserPool
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolId'
+
+  UserPoolArn:
+    Description: 'Cognito User Pool ARN'
+    Value: !GetAtt UserPool.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolArn'
+
+  UserPoolClientId:
+    Description: 'Cognito User Pool Client ID'
+    Value: !Ref UserPoolClient
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolClientId'
+
+  UserPoolDomain:
+    Description: 'Cognito User Pool Domain'
+    Value: !GetAtt UserPoolDomain.Domain
+    Export:
+      Name: !Sub '${AWS::StackName}-UserPoolDomain'
+
+  PreTokenGenerationFunctionArn:
+    Description: 'Pre Token Generation Lambda Function ARN'
+    Value: !GetAtt PreTokenGenerationFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-PreTokenGenerationFunctionArn'
+
+  SocialLoginHandlerFunctionArn:
+    Description: 'Social Login Handler Lambda Function ARN'
+    Value: !GetAtt SocialLoginHandlerFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-SocialLoginHandlerFunctionArn'
+
