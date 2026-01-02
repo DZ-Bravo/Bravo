@@ -76,7 +76,10 @@ app.use('/uploads/profiles/:filename', (req, res, next) => {
 connectDB()
 
 // 라우트
-app.use('/api/auth', authRoutes)
+// Keycloak 연동 시 auth-keycloak.js 사용
+// app.use('/api/auth', authRoutes) // 기존 MongoDB 기반
+import authKeycloakRoutes from './auth-keycloak.js'
+app.use('/api/auth', authKeycloakRoutes) // Keycloak 기반
 
 // 헬스체크
 app.get('/health', (req, res) => {

@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: bravo-keycloak-ns
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:25.0.1
+        args:
+          - start
+          - --optimized
+          - --hostname-strict=false
+          - --http-enabled=true
+          - --proxy-headers=xforwarded
+        env:
+        - name: KC_DB
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_DB
+        - name: KC_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_DB_URL
+        - name: KC_DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_DB_USERNAME
+        - name: KC_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_DB_PASSWORD
+        - name: KC_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_HOSTNAME
+        - name: KC_HOSTNAME_STRICT
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_HOSTNAME_STRICT
+        - name: KC_HTTP_ENABLED
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_HTTP_ENABLED
+        - name: KC_HTTP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_HTTP_PORT
+        - name: KC_HTTPS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KC_HTTPS_PORT
+        - name: KEYCLOAK_ADMIN
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KEYCLOAK_ADMIN
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: KEYCLOAK_ADMIN_PASSWORD
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+
