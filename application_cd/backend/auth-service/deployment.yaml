@@ -86,16 +86,6 @@ spec:
                 configMapKeyRef:
                   key: FRONTEND_URL
                   name: bravo-config
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  key: AWS_ACCESS_KEY_ID
-                  name: bravo-secrets
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  key: AWS_SECRET_ACCESS_KEY
-                  name: bravo-secrets
             - name: AWS_REGION
               valueFrom:
                 configMapKeyRef:
@@ -144,6 +134,7 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
+      serviceAccountName: auth-service
       terminationGracePeriodSeconds: 30
       volumes:
         - name: uploads
