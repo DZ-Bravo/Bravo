@@ -25,19 +25,8 @@ stages:
   after_script:
     - |
       if [ "$CI_JOB_STATUS" != "success" ]; then
-        cat <<EOF > payload.json
-{
-  "text": "❌ CI/CD FAILURE
-• Project: $CI_PROJECT_NAME
-• Job: $CI_JOB_NAME
-• Branch: $CI_COMMIT_REF_NAME
-• Commit: $CI_COMMIT_SHORT_SHA
-• Trigger: GitHub → GitLab
-• URL: $CI_PIPELINE_URL"
-}
-EOF
         curl -s -X POST -H "Content-type: application/json" \
-          --data @payload.json \
+          --data "{\"text\":\"❌ CI/CD FAILED | Project=$CI_PROJECT_NAME | Job=$CI_JOB_NAME | Branch=$CI_COMMIT_REF_NAME | Commit=$CI_COMMIT_SHORT_SHA | $CI_PIPELINE_URL\"}" \
           "$SLACK_WEBHOOK_URL"
       fi
 
