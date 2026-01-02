@@ -1,7 +1,7 @@
 import express from 'express'
 import Schedule from './shared/models/Schedule.js'
 import Notification from './shared/models/Notification.js'
-import { authenticateToken } from './shared/utils/auth.js'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 
 // 등산일정 알림 생성 헬퍼 함수
 async function createScheduleReminderIfNeeded(schedule) {
@@ -55,7 +55,7 @@ async function createScheduleReminderIfNeeded(schedule) {
 const router = express.Router()
 
 // 등산일정 생성
-router.post('/', authenticateToken, async (req, res) => {
+router.post('/', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { mountainCode, mountainName, scheduledDate, scheduledTime, courseName, notes } = req.body
@@ -132,7 +132,7 @@ router.post('/', authenticateToken, async (req, res) => {
 })
 
 // 등산일정 목록 조회
-router.get('/', authenticateToken, async (req, res) => {
+router.get('/', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { year, month } = req.query
@@ -161,7 +161,7 @@ router.get('/', authenticateToken, async (req, res) => {
 })
 
 // 등산일정 삭제
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const scheduleId = req.params.id
@@ -182,7 +182,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 })
 
 // 등산일정 수정
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put('/:id', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const scheduleId = req.params.id

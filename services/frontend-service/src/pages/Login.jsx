@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import { API_URL } from '../utils/api'
+import { login } from '../utils/cognito'
 import './Login.css'
 
 function Login() {
@@ -62,31 +63,47 @@ function Login() {
     setErrorMessage('')
     
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
+      // Cognito 로그인
+      const tokens = await login(formData.id, formData.password)
       
-      const data = await response.json()
+      // 토큰 저장
+      localStorage.setItem('accessToken', tokens.accessToken)
+      localStorage.setItem('idToken', tokens.idToken)
+      localStorage.setItem('refreshToken', tokens.refreshToken)
       
-      if (response.ok) {
-        // 토큰 저장
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
+      // 사용자 정보 가져오기 (백엔드 API 호출)
+      try {
+        const userResponse = await fetch(`${API_URL}/api/auth/me`, {
+          headers: {
+            'Authorization': `Bearer ${tokens.idToken}`
+          }
+        })
         
-        // 페이지 새로고침하여 Header 컴포넌트 업데이트
-        window.location.href = '/'
-      } else {
-        setErrorMessage(data.error || '로그인에 실패했습니다.')
-        alert(data.error || 'ID 또는 비밀번호가 올바르지 않습니다.')
+        if (userResponse.ok) {
+          const userData = await userResponse.json()
+          localStorage.setItem('user', JSON.stringify(userData.user))
+        }
+      } catch (userError) {
+        console.warn('사용자 정보 가져오기 실패:', userError)
+        // 사용자 정보 가져오기 실패해도 로그인은 계속 진행
       }
+      
+      // 페이지 새로고침하여 Header 컴포넌트 업데이트
+      window.location.href = '/'
     } catch (error) {
       console.error('로그인 오류:', error)
-      setErrorMessage('서버 오류가 발생했습니다.')
-      alert('서버 오류가 발생했습니다. 다시 시도해주세요.')
+      let errorMsg = '로그인에 실패했습니다.'
+      
+      if (error.code === 'NotAuthorizedException') {
+        errorMsg = 'ID 또는 비밀번호가 올바르지 않습니다.'
+      } else if (error.code === 'UserNotConfirmedException') {
+        errorMsg = '이메일 인증이 완료되지 않았습니다.'
+      } else if (error.message) {
+        errorMsg = error.message
+      }
+      
+      setErrorMessage(errorMsg)
+      alert(errorMsg)
     } finally {
       setIsLoading(false)
     }

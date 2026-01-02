@@ -2,7 +2,7 @@ import express from 'express'
 import Notice from './shared/models/Notice.js'
 import User from './shared/models/User.js'
 import Notification from './shared/models/Notification.js'
-import { authenticateToken } from './shared/utils/auth.js'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -149,7 +149,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // 공지사항 작성 (관리자만)
-router.post('/', authenticateToken, requireAdmin, upload.array('images', 5), async (req, res) => {
+router.post('/', authenticateCognitoToken, requireAdmin, upload.array('images', 5), async (req, res) => {
   try {
     const { title, content, icon, type } = req.body
     const userId = req.user.userId
@@ -219,7 +219,7 @@ router.post('/', authenticateToken, requireAdmin, upload.array('images', 5), asy
 })
 
 // 공지사항 수정 (관리자만)
-router.put('/:id', authenticateToken, requireAdmin, upload.array('images', 5), async (req, res) => {
+router.put('/:id', authenticateCognitoToken, requireAdmin, upload.array('images', 5), async (req, res) => {
   try {
     const { title, content, icon, type, removedImages: removedImagesJson } = req.body
     const noticeId = req.params.id
@@ -275,7 +275,7 @@ router.put('/:id', authenticateToken, requireAdmin, upload.array('images', 5), a
 })
 
 // 공지사항 삭제 (관리자만)
-router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
+router.delete('/:id', authenticateCognitoToken, requireAdmin, async (req, res) => {
   try {
     const noticeId = req.params.id
 

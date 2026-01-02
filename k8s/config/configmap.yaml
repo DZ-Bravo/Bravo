@@ -17,4 +17,11 @@ data:
   OPENWEATHER_API_KEY: "5845f67e1cb9eac922b39d43844a8fc1"
   VITE_KAKAO_MAP_API_KEY: "650caaa8d67f90186c6a48c0df81607b"
   VITE_NAVER_MAP_CLIENT_ID: "amwq6xvj0j"
+  # Cognito 설정
+  COGNITO_USER_POOL_ID: ""  # AWS Cognito User Pool ID (예: ap-northeast-2_XXXXXXXXX)
+  COGNITO_CLIENT_ID: ""  # AWS Cognito App Client ID
+  SOCIAL_LOGIN_LAMBDA_URL: ""  # Lambda Function URL (소셜 로그인 처리용)
+  # 프론트엔드 Cognito 설정
+  VITE_COGNITO_USER_POOL_ID: ""  # AWS Cognito User Pool ID (프론트엔드용)
+  VITE_COGNITO_CLIENT_ID: ""  # AWS Cognito App Client ID (프론트엔드용)
 

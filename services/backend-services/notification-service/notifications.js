@@ -1,11 +1,11 @@
 import express from 'express'
 import Notification from './shared/models/Notification.js'
-import { authenticateToken } from './shared/utils/auth.js'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 
 const router = express.Router()
 
 // 알림 목록 조회1
-router.get('/', authenticateToken, async (req, res) => {
+router.get('/', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { limit = 50, unreadOnly = false } = req.query
@@ -38,7 +38,7 @@ router.get('/', authenticateToken, async (req, res) => {
 })
 
 // 알림 읽음 처리
-router.put('/:id/read', authenticateToken, async (req, res) => {
+router.put('/:id/read', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const notificationId = req.params.id
@@ -60,7 +60,7 @@ router.put('/:id/read', authenticateToken, async (req, res) => {
 })
 
 // 모든 알림 읽음 처리
-router.put('/read-all', authenticateToken, async (req, res) => {
+router.put('/read-all', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
 
@@ -77,7 +77,7 @@ router.put('/read-all', authenticateToken, async (req, res) => {
 })
 
 // 알림 삭제
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete('/:id', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const notificationId = req.params.id

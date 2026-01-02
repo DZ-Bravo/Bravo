@@ -1,7 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import User from './shared/models/User.js'
-import { authenticateToken, optionalAuthenticateToken } from './shared/utils/auth.js'
+import { authenticateCognitoToken, optionalAuthenticateCognitoToken } from './shared/utils/cognito-auth.js'
 import { createClient } from 'redis'
 import { getElasticsearchClient } from './shared/config/elasticsearch.js'
 import { buildFuzzySearchQuery, search, createIndex } from './shared/utils/search.js'
@@ -65,7 +65,7 @@ const getCollection = async (collectionName) => {
 }
 
 // 최근 본 상품 조회 - /:category보다 먼저 정의
-router.get('/recent', optionalAuthenticateToken, async (req, res) => {
+router.get('/recent', optionalAuthenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user?.userId || null
     const sessionId = req.headers['x-session-id'] || req.cookies?.sessionId || null
@@ -177,7 +177,7 @@ router.get('/recent', optionalAuthenticateToken, async (req, res) => {
 })
 
 // 최근 본 상품 기록 - /:category보다 먼저 정의
-router.post('/recent/:productId', optionalAuthenticateToken, async (req, res) => {
+router.post('/recent/:productId', optionalAuthenticateCognitoToken, async (req, res) => {
   try {
     const { productId } = req.params
     const userId = req.user?.userId || null
@@ -262,7 +262,7 @@ router.post('/recent/:productId', optionalAuthenticateToken, async (req, res) =>
 })
 
 // 스토어 즐겨찾기 목록 조회 (인증 필요) - /:category보다 먼저 정의
-router.get('/favorites/my', authenticateToken, async (req, res) => {
+router.get('/favorites/my', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
 
@@ -344,7 +344,7 @@ router.get('/favorites/my', authenticateToken, async (req, res) => {
 })
 
 // 스토어 즐겨찾기 토글 (인증 필요) - /:category보다 먼저 정의
-router.post('/:productId/favorite', authenticateToken, async (req, res) => {
+router.post('/:productId/favorite', authenticateCognitoToken, async (req, res) => {
   try {
     const userId = req.user.userId
     const { productId } = req.params
@@ -718,7 +718,7 @@ router.get('/:category', async (req, res) => {
 })
 
 // 상품 인덱싱 초기화 (관리자용)
-router.post('/index/init', authenticateToken, async (req, res) => {
+router.post('/index/init', authenticateCognitoToken, async (req, res) => {
   try {
     // 관리자 권한 확인 (간단한 예시)
     const user = await User.findById(req.user.userId)

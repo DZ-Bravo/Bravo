@@ -1,48 +1,26 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import Stamp from './shared/models/Stamp.js'
-import jwt from 'jsonwebtoken'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 
 const router = express.Router()
 
-// JWT_SECRET 로깅용 객체
-const stampService = {}
-
-// JWT 토큰 검증 미들웨어
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-
-  if (!token) {
-    return res.status(401).json({ error: '인증 토큰이 필요합니다.' })
-  }
-
-  try {
-    // backend와 동일한 JWT_SECRET 사용 (환경 변수가 없으면 기본값 사용)
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-    
-    // 디버깅: JWT_SECRET 확인 (처음 요청 시에만)
-    if (!stampService._jwtSecretLogged) {
-      console.log(`[스탬프] JWT_SECRET 사용 중: ${JWT_SECRET ? (JWT_SECRET.substring(0, 20) + '...') : '없음'}`)
-      stampService._jwtSecretLogged = true
+// Cognito 토큰에서 userId 추출을 위한 미들웨어 래퍼
+const authenticateCognitoTokenWithUserId = (req, res, next) => {
+  authenticateCognitoToken(req, res, () => {
+    // Cognito 토큰에서 userId 추출
+    if (req.user && req.user.userId) {
+      req.userId = mongoose.Types.ObjectId.isValid(req.user.userId) 
+        ? new mongoose.Types.ObjectId(req.user.userId)
+        : req.user.userId
+      req.userIdStr = req.user.id || req.user.userId
     }
-    
-    const decoded = jwt.verify(token, JWT_SECRET)
-    // userId를 ObjectId로 변환
-    req.userId = mongoose.Types.ObjectId.isValid(decoded.userId) 
-      ? new mongoose.Types.ObjectId(decoded.userId)
-      : decoded.userId
-    req.userIdStr = decoded.id
     next()
-  } catch (error) {
-    console.error('[스탬프] 토큰 검증 실패:', error.message)
-    console.error('[스탬프] 사용 중인 JWT_SECRET:', process.env.JWT_SECRET ? (process.env.JWT_SECRET.substring(0, 20) + '...') : '기본값 사용')
-    return res.status(403).json({ error: '유효하지 않은 토큰입니다.' })
-  }
+  })
 }
 
 // 스탬프 생성 (이미 있으면 무시)
-router.post('/', authenticateToken, async (req, res) => {
+router.post('/', authenticateCognitoTokenWithUserId, async (req, res) => {
   try {
     const userId = req.userId
     const { mountainCode } = req.body
@@ -218,7 +196,7 @@ router.get('/completed/:userId', async (req, res) => {
 })
 
 // 기존 API 유지 (하위 호환성) - stamps 컬렉션 기반으로 변경
-router.get('/completed', authenticateToken, async (req, res) => {
+router.get('/completed', authenticateCognitoTokenWithUserId, async (req, res) => {
   try {
     const userId = req.userId
     console.log(`[스탬프] API 호출됨 - 사용자 ID: ${userId}`)
