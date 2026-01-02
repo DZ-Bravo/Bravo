@@ -23,6 +23,6 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@43.200.134.128/root/Bravo.git || true
+          git remote add gitlab http://oauth2:${GITLAB_TOKEN}@43.200.134.128/root/Bravo.git || true
           git push gitlab --all
           git push gitlab --tags
