@@ -172,6 +172,7 @@ deploy-frontend:
 # ===============================
 # Backend (Multiple Services)
 # ===============================
+
 sonar-backend:
   stage: analyze
   needs: []
@@ -190,11 +191,15 @@ sonar-backend:
       - SERVICE_NAME: store-service
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/**
+        - shared/**
+        - services/shared/**
   script:
     - *detect_changes_backend_service
     - |
-      if [ "${SHOULD_RUN}" != "1" ]; then
-        echo "⏭ sonar-backend(${SERVICE_NAME}) skipped by diff filter"
+      if [ "$SHOULD_RUN" != "1" ]; then
+        echo "⏭ sonar-backend(${SERVICE_NAME}) skipped"
         exit 0
       fi
     - |
@@ -205,6 +210,7 @@ sonar-backend:
         -Dsonar.login=$SONAR_TOKEN \
         -Dsonar.qualitygate.wait=true
   <<: *notify_slack_failure
+
 
 build-backend:
   stage: build
@@ -232,28 +238,39 @@ build-backend:
         ECR_REPO: $STORE_ECR_REPO
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/**
+        - shared/**
+        - services/shared/**
   script:
     - *detect_changes_backend_service
     - |
-      if [ "${SHOULD_RUN}" != "1" ]; then
-        echo "⏭ build-backend(${SERVICE_NAME}) skipped by diff filter"
+      if [ "$SHOULD_RUN" != "1" ]; then
+        echo "⏭ build-backend(${SERVICE_NAME}) skipped"
         exit 0
       fi
 
-    # ✅ 태그는 결정론적으로 통일 (dotenv/next_version 의존 제거)
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
-    - echo "▶ IMAGE_TAG=${IMAGE_TAG}"
-    - echo "▶ ECR_REPO=${ECR_REPO}"
+    - echo "IMAGE_TAG=${IMAGE_TAG}"
+    - echo "ECR_REPO=${ECR_REPO}"
 
-    - *before_build
+    - apk add --no-cache curl aws-cli
+    - docker info
+
+    - |
+      aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | \
+      docker login --username AWS --password-stdin \
+        "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
 
     - |
       docker build \
         -f services/backend-services/${SERVICE_NAME}/Dockerfile \
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}" \
         services/backend-services/${SERVICE_NAME}
+
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
   <<: *notify_slack_failure
+
 
 deploy-backend:
   stage: deploy
@@ -287,18 +304,21 @@ deploy-backend:
       optional: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - services/backend-services/**
+        - shared/**
+        - services/shared/**
   script:
     - *detect_changes_backend_service
     - |
-      if [ "${SHOULD_RUN}" != "1" ]; then
-        echo "⏭ deploy-backend(${SERVICE_NAME}) skipped by diff filter"
+      if [ "$SHOULD_RUN" != "1" ]; then
+        echo "⏭ deploy-backend(${SERVICE_NAME}) skipped"
         exit 0
       fi
 
-    # ✅ build와 동일 태그 사용
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
-    - echo "▶ IMAGE_TAG=${IMAGE_TAG}"
-    - echo "▶ ECR_REPO=${ECR_REPO}"
+    - echo "IMAGE_TAG=${IMAGE_TAG}"
+    - echo "ECR_REPO=${ECR_REPO}"
 
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
@@ -306,13 +326,11 @@ deploy-backend:
 
     - aws eks update-kubeconfig --region ap-northeast-2 --name bravo-eks
 
-    # ✅ 존재 확인도 동일 태그로
     - |
-      echo "▶ Checking image ${ECR_REPO}:${IMAGE_TAG}"
       if ! aws ecr describe-images \
         --repository-name "${ECR_REPO}" \
         --image-ids imageTag="${IMAGE_TAG}" >/dev/null 2>&1; then
-        echo "⏭ No image tag ${IMAGE_TAG} in ${ECR_REPO}, skipping deploy"
+        echo "⏭ Image not found: ${ECR_REPO}:${IMAGE_TAG}"
         exit 0
       fi
 
@@ -323,7 +341,6 @@ deploy-backend:
 
     - kubectl rollout status deployment/${SERVICE_NAME} -n bravo-core-ns
   <<: *notify_slack_failure
-
 
 # ===============================
 # AI Infra Service
