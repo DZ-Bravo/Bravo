@@ -173,7 +173,6 @@ deploy-frontend:
 
 sonar-backend:
   stage: analyze
-  needs: []
   image: sonarsource/sonar-scanner-cli:5
   parallel:
     matrix:
@@ -192,7 +191,6 @@ sonar-backend:
       changes:
         - services/backend-services/**
         - shared/**
-        - services/shared/**
   script:
     - *detect_changes_backend_service
     - |
@@ -239,7 +237,6 @@ build-backend:
       changes:
         - services/backend-services/**
         - shared/**
-        - services/shared/**
   script:
     - *detect_changes_backend_service
     - |
@@ -247,14 +244,9 @@ build-backend:
         echo "⏭ build-backend(${SERVICE_NAME}) skipped"
         exit 0
       fi
-
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
-    - echo "IMAGE_TAG=${IMAGE_TAG}"
-    - echo "ECR_REPO=${ECR_REPO}"
-
     - apk add --no-cache curl aws-cli
     - docker info
-
     - |
       aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | \
       docker login --username AWS --password-stdin \
@@ -265,7 +257,6 @@ build-backend:
         -f services/backend-services/${SERVICE_NAME}/Dockerfile \
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}" \
         services/backend-services/${SERVICE_NAME}
-
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
   <<: *notify_slack_failure
 
@@ -305,7 +296,6 @@ deploy-backend:
       changes:
         - services/backend-services/**
         - shared/**
-        - services/shared/**
   script:
     - *detect_changes_backend_service
     - |
@@ -313,17 +303,11 @@ deploy-backend:
         echo "⏭ deploy-backend(${SERVICE_NAME}) skipped"
         exit 0
       fi
-
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
-    - echo "IMAGE_TAG=${IMAGE_TAG}"
-    - echo "ECR_REPO=${ECR_REPO}"
-
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/kubectl
-
     - aws eks update-kubeconfig --region ap-northeast-2 --name bravo-eks
-
     - |
       if ! aws ecr describe-images \
         --repository-name "${ECR_REPO}" \
@@ -331,12 +315,10 @@ deploy-backend:
         echo "⏭ Image not found: ${ECR_REPO}:${IMAGE_TAG}"
         exit 0
       fi
-
     - |
       kubectl set image deployment/${SERVICE_NAME} \
         ${SERVICE_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} \
         -n bravo-core-ns
-
     - kubectl rollout status deployment/${SERVICE_NAME} -n bravo-core-ns
   <<: *notify_slack_failure
 
@@ -345,8 +327,12 @@ deploy-backend:
 # ===============================
 sonar-ai-infra:
   stage: analyze
-  needs: []
   image: sonarsource/sonar-scanner-cli:5
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+          - services/backend-services/ai-infra-service/**
+          - shared/**
   script:
     - |
       sonar-scanner \
@@ -355,33 +341,35 @@ sonar-ai-infra:
         -Dsonar.host.url=$SONAR_HOST_URL \
         -Dsonar.login=$SONAR_TOKEN \
         -Dsonar.qualitygate.wait=true
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        paths:
-          - services/backend-services/ai-infra-service/**
   <<: *notify_slack_failure
 
 build-ai-infra:
   stage: build
   variables:
     ECR_REPO: "$AI_ECR_REPO"
-  script:
-    - *before_build
-    - |
-      docker build \
-        -f services/backend-services/ai-infra-service/backend/Dockerfile \
-        -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}" \
-        services/backend-services/ai-infra-service/backend
-    - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}"
-  artifacts:
-    reports:
-      dotenv: version.env
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        paths:
-          - services/backend-services/ai-infra-service/backend/**
+        - services/backend-services/ai-infra-service/backend/**
+        - shared/**
+  script:
+    - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
+    - echo "IMAGE_TAG=${IMAGE_TAG}"
+    - echo "ECR_REPO=${ECR_REPO}"
+
+    - apk add --no-cache curl aws-cli
+    - docker info
+
+    - |
+      aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | \
+      docker login --username AWS --password-stdin \
+        "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+    - |
+      docker build \
+        -f services/backend-services/ai-infra-service/backend/Dockerfile \
+        -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}" \
+        services/backend-services/ai-infra-service/backend
+    - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
   <<: *notify_slack_failure
 
 deploy-ai-infra:
@@ -395,15 +383,15 @@ deploy-ai-infra:
     ECR_REPO: "$AI_ECR_REPO"
   needs:
     - job: build-ai-infra
-      artifacts: true
       optional: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        paths:
           - services/backend-services/ai-infra-service/backend/**
           - services/backend-services/ai-infra-service/k8s/**
+          - shared/**
   script:
+    - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/kubectl
@@ -412,6 +400,13 @@ deploy-ai-infra:
       aws eks update-kubeconfig \
         --region ap-northeast-2 \
         --name bravo-eks
+    - |
+      if ! aws ecr describe-images \
+        --repository-name "${ECR_REPO}" \
+        --image-ids imageTag="${IMAGE_TAG}" >/dev/null 2>&1; then
+        echo "⏭ Image not found: ${ECR_REPO}:${IMAGE_TAG}"
+        exit 0
+      fi
 
     - |
       CONTAINER_NAME=$(kubectl get deploy ${DEPLOYMENT_NAME} -n ${K8S_NS} \
@@ -420,7 +415,7 @@ deploy-ai-infra:
 
     - |
       kubectl set image deployment/${DEPLOYMENT_NAME} \
-        ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
+        ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} \
         -n ${K8S_NS}
 
     - kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NS}
