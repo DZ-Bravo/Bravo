@@ -111,3 +111,5 @@ kubectl describe node node1 | grep -A 10 "Allocated resources"
 ```
 
 
+
+

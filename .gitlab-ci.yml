@@ -259,7 +259,7 @@ build-backend:
       docker build \
         -f services/backend-services/${SERVICE_NAME}/Dockerfile \
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}" \
-        services/backend-services/${SERVICE_NAME}
+        .
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
   <<: *notify_slack_failure
 
