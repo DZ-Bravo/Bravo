@@ -63,29 +63,74 @@ function Login() {
     setErrorMessage('')
     
     try {
-      // Cognito 로그인
-      const tokens = await login(formData.id, formData.password)
-      
-      // 토큰 저장
-      localStorage.setItem('accessToken', tokens.accessToken)
-      localStorage.setItem('idToken', tokens.idToken)
-      localStorage.setItem('refreshToken', tokens.refreshToken)
-      
-      // 사용자 정보 가져오기 (백엔드 API 호출)
+      // 먼저 Cognito 로그인 시도
+      let tokens = null
       try {
-        const userResponse = await fetch(`${API_URL}/api/auth/me`, {
+        tokens = await login(formData.id, formData.password)
+        console.log('Cognito 로그인 성공')
+      } catch (cognitoError) {
+        console.log('Cognito 로그인 실패, 백엔드 API로 폴백:', cognitoError)
+        // Cognito 로그인 실패 시 백엔드 API로 폴백
+        // 백엔드는 Cognito 실패 시 MongoDB로 폴백하고, 성공 시 Cognito로 마이그레이션
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
           headers: {
-            'Authorization': `Bearer ${tokens.idToken}`
-          }
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: formData.id,
+            password: formData.password
+          })
         })
         
-        if (userResponse.ok) {
-          const userData = await userResponse.json()
-          localStorage.setItem('user', JSON.stringify(userData.user))
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || '로그인에 실패했습니다.')
         }
-      } catch (userError) {
-        console.warn('사용자 정보 가져오기 실패:', userError)
-        // 사용자 정보 가져오기 실패해도 로그인은 계속 진행
+        
+        const data = await response.json()
+        
+        // 백엔드 응답 형식에 따라 토큰 처리
+        if (data.IdToken && data.AccessToken && data.RefreshToken) {
+          // Cognito 토큰
+          tokens = {
+            idToken: data.IdToken,
+            accessToken: data.AccessToken,
+            refreshToken: data.RefreshToken
+          }
+        } else if (data.token) {
+          // JWT 토큰 (하위 호환성)
+          localStorage.setItem('token', data.token)
+        }
+        
+        // 사용자 정보 저장
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user))
+        }
+      }
+      
+      // Cognito 토큰이 있으면 저장
+      if (tokens) {
+        localStorage.setItem('accessToken', tokens.accessToken)
+        localStorage.setItem('idToken', tokens.idToken)
+        localStorage.setItem('refreshToken', tokens.refreshToken)
+        
+        // 사용자 정보 가져오기 (백엔드 API 호출)
+        try {
+          const userResponse = await fetch(`${API_URL}/api/auth/me`, {
+            headers: {
+              'Authorization': `Bearer ${tokens.idToken}`
+            }
+          })
+          
+          if (userResponse.ok) {
+            const userData = await userResponse.json()
+            localStorage.setItem('user', JSON.stringify(userData.user))
+          }
+        } catch (userError) {
+          console.warn('사용자 정보 가져오기 실패:', userError)
+          // 사용자 정보 가져오기 실패해도 로그인은 계속 진행
+        }
       }
       
       // 페이지 새로고침하여 Header 컴포넌트 업데이트
@@ -94,12 +139,12 @@ function Login() {
       console.error('로그인 오류:', error)
       let errorMsg = '로그인에 실패했습니다.'
       
-      if (error.code === 'NotAuthorizedException') {
+      if (error.message) {
+        errorMsg = error.message
+      } else if (error.code === 'NotAuthorizedException') {
         errorMsg = 'ID 또는 비밀번호가 올바르지 않습니다.'
       } else if (error.code === 'UserNotConfirmedException') {
         errorMsg = '이메일 인증이 완료되지 않았습니다.'
-      } else if (error.message) {
-        errorMsg = error.message
       }
       
       setErrorMessage(errorMsg)

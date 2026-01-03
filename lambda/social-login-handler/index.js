@@ -5,7 +5,21 @@ const USER_POOL_ID = process.env.USER_POOL_ID
 const CLIENT_ID = process.env.CLIENT_ID
 
 exports.handler = async (event) => {
-  const { provider, code, redirectUri } = event
+  // Lambda Function URL을 통해 호출될 때는 event.body가 JSON 문자열
+  let body = event.body
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body)
+    } catch (e) {
+      // 이미 객체인 경우 그대로 사용
+      body = event
+    }
+  } else if (!body) {
+    // event.body가 없으면 event 자체를 사용 (직접 호출 시)
+    body = event
+  }
+  
+  const { provider, code, redirectUri, state } = body
   
   try {
     // 1. 네이버/카카오 OAuth 인증 코드로 사용자 정보 조회
@@ -179,6 +193,12 @@ exports.handler = async (event) => {
     console.error('소셜 로그인 오류:', error)
     return {
       statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      },
       body: JSON.stringify({ 
         error: error.message,
         stack: error.stack

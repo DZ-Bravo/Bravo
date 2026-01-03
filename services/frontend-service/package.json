@@ -16,7 +16,7 @@
     "react-router-dom": "^6.20.0",
     "leaflet": "^1.9.4",
     "proj4": "^2.11.0",
-    "amazon-cognito-identity-js": "^7.3.2"
+    "amazon-cognito-identity-js": "^6.3.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
