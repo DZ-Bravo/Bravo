@@ -59,29 +59,73 @@ app.post('/api/ai/recommend-course', authenticateCognitoToken, async (req, res) 
     const command = new InvokeAgentCommand({
       agentId: COURSE_AGENT_ID,
       agentAliasId: COURSE_AGENT_ALIAS_ID,
-      sessionId: `ai-recommend-${Date.now()}`,
+      sessionId: `ai-recommend-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       inputText: prompt,
       enableTrace: false
     })
     
-    const response = await bedrockClient.send(command)
+    console.log('[AI 코스 추천] Bedrock Agent 호출 시작:', { agentId: COURSE_AGENT_ID, prompt: prompt.substring(0, 100) })
+    
+    let response
+    try {
+      response = await bedrockClient.send(command)
+      console.log('[AI 코스 추천] Bedrock Agent 응답 받음:', { hasCompletion: !!response.completion })
+    } catch (bedrockError) {
+      console.error('[AI 코스 추천] Bedrock Agent 호출 오류:', bedrockError)
+      // 에러 객체에서 원본 응답 확인
+      if (bedrockError.$response) {
+        console.error('[AI 코스 추천] Bedrock 원본 응답:', JSON.stringify(bedrockError.$response, null, 2))
+      }
+      throw bedrockError
+    }
     
     let assistantResponse = ''
-    if (response.completion) {
-      for await (const chunk of response.completion) {
-        if (chunk.chunk?.bytes) {
-          const chunkText = new TextDecoder().decode(chunk.chunk.bytes)
-          assistantResponse += chunkText
+    try {
+      if (response.completion) {
+        for await (const chunk of response.completion) {
+          if (chunk.chunk?.bytes) {
+            const chunkText = new TextDecoder().decode(chunk.chunk.bytes)
+            assistantResponse += chunkText
+          } else if (chunk.chunk?.text) {
+            // text 형식도 지원
+            assistantResponse += chunk.chunk.text
+          }
         }
+      } else {
+        console.warn('[AI 코스 추천] response.completion이 없습니다. response:', JSON.stringify(response, null, 2))
+      }
+    } catch (streamError) {
+      console.error('[AI 코스 추천] 스트림 처리 오류:', streamError)
+      // 스트림 오류가 발생해도 지금까지 받은 응답이 있으면 사용
+      if (assistantResponse.trim()) {
+        console.log('[AI 코스 추천] 부분 응답 사용:', assistantResponse.substring(0, 100))
+      } else {
+        throw streamError
       }
     }
     
+    if (!assistantResponse || !assistantResponse.trim()) {
+      console.error('[AI 코스 추천] 빈 응답 받음')
+      return res.status(500).json({ error: 'AI가 응답을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.' })
+    }
+    
+    console.log('[AI 코스 추천] 응답 생성 완료, 길이:', assistantResponse.length)
     res.json({
-      recommendation: assistantResponse || '추천을 생성할 수 없습니다.'
+      recommendation: assistantResponse
     })
   } catch (error) {
-    console.error('AI 코스 추천 오류:', error)
-    res.status(500).json({ error: error.message })
+    console.error('[AI 코스 추천] 전체 오류:', error)
+    console.error('[AI 코스 추천] 오류 스택:', error.stack)
+    
+    // 사용자 친화적인 에러 메시지
+    let errorMessage = 'AI 코스 추천 중 오류가 발생했습니다.'
+    if (error.message && error.message.includes('parse')) {
+      errorMessage = 'AI 응답 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+    } else if (error.message) {
+      errorMessage = error.message
+    }
+    
+    res.status(500).json({ error: errorMessage })
   }
 })
 
