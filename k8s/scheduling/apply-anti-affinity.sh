@@ -64,3 +64,5 @@ echo "Pod 재시작을 위해 rollout restart 실행:"
 echo "kubectl rollout restart deployment -n $NAMESPACE"
 
 
+
+
