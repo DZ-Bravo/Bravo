@@ -10,18 +10,17 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
   SONAR_HOST_URL: http://43.200.134.128:9000
-  
+
 stages:
   - analyze
   - build
   - deploy
-  
 
 # ===============================
 # Slack Notification (공통)
 # ===============================
 .notify_slack_failure: &notify_slack_failure
-  script: 
+  script:
     - "true"
   after_script:
     - |
@@ -31,12 +30,11 @@ stages:
           "$SLACK_WEBHOOK_URL"
       fi
 
-
 # ===============================
 # 공통 Build 로직 (Anchor)
 # ===============================
 .before_build: &before_build |
-  apk add --no-cache curl aws-cli
+  apk add --no-cache curl aws-cli git
   docker info
 
   aws ecr get-login-password --region "$AWS_DEFAULT_REGION" |
@@ -60,11 +58,47 @@ stages:
 
   NEXT_VERSION="$(echo "$NEXT_VERSION" | tr -d '\n')"
   echo "NEXT_VERSION=$NEXT_VERSION" > version.env
-  
+
+# ===============================
+# 공통: 변경 감지 유틸 (런타임)
+# - rules에서 변수($SERVICE_NAME)로 경로 매칭하지 말고,
+#   job 실행 시점에 git diff로 필터링
+# ===============================
+.detect_changes_backend_service: &detect_changes_backend_service |
+  apk add --no-cache git >/dev/null 2>&1 || true
+
+  # merge commit에서도 안정적으로 비교하기 위해 target(main) 준비
+  git fetch origin main --depth=50 >/dev/null 2>&1 || true
+
+  # compare base: origin/main(최우선) -> CI_MERGE_REQUEST_TARGET_BRANCH_NAME -> HEAD~1 fallback
+  BASE_REF="origin/main"
+  if ! git rev-parse --verify "$BASE_REF" >/dev/null 2>&1; then
+    BASE_REF="HEAD~1"
+  fi
+
+  echo "▶ BASE_REF=$BASE_REF"
+  echo "▶ SERVICE_NAME=$SERVICE_NAME"
+
+  # 변경 파일 목록
+  CHANGED_FILES=$(git diff --name-only "$BASE_REF"...HEAD || true)
+  echo "▶ CHANGED_FILES (top 50):"
+  echo "$CHANGED_FILES" | sed -n '1,50p' || true
+
+  # shared 변경이면 모든 서비스 대상
+  if echo "$CHANGED_FILES" | grep -qE '^services/shared/|^shared/'; then
+    echo "✅ shared changed -> build/deploy all services"
+    export SHOULD_RUN="1"
+  elif echo "$CHANGED_FILES" | grep -qE "^services/backend-services/${SERVICE_NAME}/"; then
+    echo "✅ service changed -> ${SERVICE_NAME}"
+    export SHOULD_RUN="1"
+  else
+    echo "⏭ No changes for ${SERVICE_NAME} (and no shared change) -> skip"
+    export SHOULD_RUN="0"
+  fi
+
 # ===============================
 # Frontend
 # ===============================
-
 sonar-frontend:
   stage: analyze
   needs: []
@@ -80,14 +114,15 @@ sonar-frontend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        - services/frontend-service/**/*
-  <<: *notify_slack_failure  
-  
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/frontend-service/**
+  <<: *notify_slack_failure
 
 build-frontend:
   stage: build
   variables:
-    ECR_REPO: "$bravo/hiking-frontend"
+    ECR_REPO: "bravo/hiking-frontend"
   script:
     - *before_build
     - |
@@ -104,9 +139,8 @@ build-frontend:
       changes:
         compare_to: 'refs/heads/main'
         paths:
-          - services/frontend-service/**/*
+          - services/frontend-service/**
   <<: *notify_slack_failure
-
 
 deploy-frontend:
   stage: deploy
@@ -115,40 +149,35 @@ deploy-frontend:
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
-  needs: 
+  needs:
     - job: build-frontend
       artifacts: true
       optional: true
-
   script:
-    # kubectl 설치 (EKS 1.34)
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/kubectl
 
-    # 🔥 EKS kubeconfig 직접 생성
     - |
       aws eks update-kubeconfig \
         --region ap-northeast-2 \
         --name bravo-eks
 
-    # 🔍 AWS 인증 확인
     - aws sts get-caller-identity
-
-    # 🔍 Kubernetes 연결 확인
     - kubectl get ns
 
-    # 🚀 배포
     - |
       kubectl set image deployment/frontend \
         frontend=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
         -n bravo-front-ns
+
+    - kubectl rollout status deployment/frontend -n bravo-front-ns
   rules:
-  - if: '$CI_COMMIT_BRANCH == "main"'
-    changes:
-      compare_to: 'refs/heads/main'
-      paths:
-        - services/frontend-service/**/*
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/frontend-service/**
   <<: *notify_slack_failure
 
 # ===============================
@@ -179,14 +208,14 @@ sonar-backend:
         -Dsonar.login=$SONAR_TOKEN \
         -Dsonar.qualitygate.wait=true
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"' 
+    - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-          compare_to: 'refs/heads/main'
-          paths:
-             - services/backend-services/$SERVICE_NAME/**/*
-             - shared/**/*
-  <<: *notify_slack_failure 
-
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/backend-services/**
+          - shared/**
+          - services/shared/**
+  <<: *notify_slack_failure
 
 build-backend:
   stage: build
@@ -215,28 +244,19 @@ build-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        - services/backend-services/$SERVICE_NAME/**/*
-        - shared/**/*
-  
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/backend-services/**
+          - shared/**
+          - services/shared/**
   script:
-    # ---------------------------
-    # 공통 준비
-    # ---------------------------
-    - apk add --no-cache curl aws-cli
-    - docker info
+    - *detect_changes_backend_service
+    - |
+      if [ "${SHOULD_RUN}" != "1" ]; then
+        echo "⏭ build-backend(${SERVICE_NAME}) skipped by diff filter"
+        exit 0
+      fi
 
-    - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" |
-      docker login --username AWS --password-stdin \
-        "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-
-    # ---------------------------
-    # 서비스별 버전 (독립)
-    # ---------------------------
-    - VERSION="2.${CI_PIPELINE_IID}"
-    - echo "SERVICE=${SERVICE_NAME}"
-    - echo "VERSION=${VERSION}"
-    - echo "ECR_REPO=${ECR_REPO}"
-    
     - *before_build
     - |
       docker build \
@@ -244,10 +264,11 @@ build-backend:
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}" \
         services/backend-services/${SERVICE_NAME}
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}"
-    
+  artifacts:
+    reports:
+      dotenv: version.env
   <<: *notify_slack_failure
 
-    #Deploy
 deploy-backend:
   stage: deploy
   image:
@@ -282,34 +303,42 @@ deploy-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        - services/backend-services/$SERVICE_NAME/**/*
-        - shared/**/*
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/backend-services/**
+          - shared/**
+          - services/shared/**
   script:
-    # kubectl 설치
+    - *detect_changes_backend_service
+    - |
+      if [ "${SHOULD_RUN}" != "1" ]; then
+        echo "⏭ deploy-backend(${SERVICE_NAME}) skipped by diff filter"
+        exit 0
+      fi
+
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/kubectl
 
-    # EKS 인증
     - aws eks update-kubeconfig --region ap-northeast-2 --name bravo-eks
-    
+
     - |
-        echo "▶ Checking image ${ECR_REPO}:${NEXT_VERSION}"
-        if ! aws ecr describe-images \
-          --repository-name "${ECR_REPO}" \
-          --image-ids imageTag="${NEXT_VERSION}" >/dev/null 2>&1; then
-          echo "⏭ No new image for ${SERVICE_NAME}, skipping deploy"
-          exit 0
-        fi
+      echo "▶ Checking image ${ECR_REPO}:${NEXT_VERSION}"
+      if ! aws ecr describe-images \
+        --repository-name "${ECR_REPO}" \
+        --image-ids imageTag="${NEXT_VERSION}" >/dev/null 2>&1; then
+        echo "⏭ No new image tag ${NEXT_VERSION} in ${ECR_REPO}, skipping deploy"
+        exit 0
+      fi
 
-    # 배포
-    - kubectl set image deployment/$SERVICE_NAME $SERVICE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} -n bravo-core-ns
+    - kubectl set image deployment/${SERVICE_NAME} \
+        ${SERVICE_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
+        -n bravo-core-ns
 
-    # 상태 확인
-    - kubectl rollout status deployment/$SERVICE_NAME -n bravo-core-ns
+    - kubectl rollout status deployment/${SERVICE_NAME} -n bravo-core-ns
   <<: *notify_slack_failure
 
- # ===============================
+# ===============================
 # AI Infra Service
 # ===============================
 sonar-ai-infra:
@@ -327,7 +356,9 @@ sonar-ai-infra:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        - services/backend-services/ai-infra-service/**/*
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/backend-services/ai-infra-service/**
   <<: *notify_slack_failure
 
 build-ai-infra:
@@ -348,7 +379,9 @@ build-ai-infra:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        - services/backend-services/ai-infra-service/**/*
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/backend-services/ai-infra-service/backend/**
   <<: *notify_slack_failure
 
 deploy-ai-infra:
@@ -362,36 +395,35 @@ deploy-ai-infra:
     ECR_REPO: "$AI_ECR_REPO"
   needs:
     - job: build-ai-infra
+      artifacts: true
+      optional: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-        - services/backend-services/ai-infra-service/**/*
+        compare_to: 'refs/heads/main'
+        paths:
+          - services/backend-services/ai-infra-service/backend/**
+          - services/backend-services/ai-infra-service/k8s/**
   script:
-    # kubectl 설치
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/kubectl
 
-    # EKS 인증
     - |
       aws eks update-kubeconfig \
         --region ap-northeast-2 \
         --name bravo-eks
 
-    # 컨테이너 이름 자동 추출 (중요)
     - |
       CONTAINER_NAME=$(kubectl get deploy ${DEPLOYMENT_NAME} -n ${K8S_NS} \
         -o jsonpath='{.spec.template.spec.containers[0].name}')
-      echo confirmed container: $CONTAINER_NAME
+      echo "confirmed container: $CONTAINER_NAME"
 
-    # 이미지 교체
     - |
       kubectl set image deployment/${DEPLOYMENT_NAME} \
         ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
         -n ${K8S_NS}
 
-    # 롤아웃 확인
     - kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NS}
   <<: *notify_slack_failure
-  
 
