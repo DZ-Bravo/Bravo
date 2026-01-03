@@ -178,10 +178,10 @@ sonar-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"' 
       changes:
-      compare_to: 'refs/heads/main'
-      paths:
-         - services/backend-services/$SERVICE_NAME/**/*
-         - shared/**/*
+          compare_to: 'refs/heads/main'
+          paths:
+             - services/backend-services/$SERVICE_NAME/**/*
+             - shared/**/*
   <<: *notify_slack_failure 
 
 
