@@ -156,7 +156,6 @@ sonar-backend:
   parallel:
     matrix:
       - SERVICE_NAME: ai-service
-        ECR_REPO: $AI_ECR_REPO
       - SERVICE_NAME: auth-service
       - SERVICE_NAME: chatbot-service
       - SERVICE_NAME: community-service
@@ -190,7 +189,7 @@ build-backend:
       docker build \
         -f services/backend-services/${SERVICE_NAME}/Dockerfile \
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}" \
-        services
+        services/backend-services/${SERVICE_NAME}
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION}"
   artifacts:
     reports:
