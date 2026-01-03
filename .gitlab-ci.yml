@@ -249,13 +249,16 @@ build-backend:
   script:
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     # 👇 Dockerfile이 기대하는 구조를 CI에서 생성
+    - rm -rf backend-services shared
     - mkdir -p backend-services
-    - ln -s services/backend-services/${SERVICE_NAME} backend-services/${SERVICE_NAME}
+    - cp -r services/backend-services/${SERVICE_NAME} backend-services/${SERVICE_NAME}
 
     # shared가 필요한 Dockerfile 대응 (없는 경우 대비)
     - |
       if [ -d services/shared ]; then
-        ln -s services/shared shared
+        cp -r services/shared ./shared
+      else
+        mkdir -p shared
       fi
     - apk add --no-cache curl aws-cli
     - docker info
