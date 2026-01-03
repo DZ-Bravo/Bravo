@@ -207,12 +207,6 @@ sonar-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - *detect_changes_backend_service
-    - |
-      if [ "$SHOULD_RUN" != "1" ]; then
-        echo "⏭ sonar-backend(${SERVICE_NAME}) skipped"
-        exit 0
-      fi
     - |
       sonar-scanner \
         -Dsonar.projectKey=${SERVICE_NAME} \
@@ -225,6 +219,9 @@ sonar-backend:
 
 build-backend:
   stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
   parallel:
     matrix:
       - SERVICE_NAME: ai-service
@@ -250,12 +247,6 @@ build-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - *detect_changes_backend_service
-    - |
-      if [ "$SHOULD_RUN" != "1" ]; then
-        echo "⏭ build-backend(${SERVICE_NAME}) skipped"
-        exit 0
-      fi
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - apk add --no-cache curl aws-cli
     - docker info
@@ -306,12 +297,6 @@ deploy-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - *detect_changes_backend_service
-    - |
-      if [ "$SHOULD_RUN" != "1" ]; then
-        echo "⏭ deploy-backend(${SERVICE_NAME}) skipped"
-        exit 0
-      fi
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
@@ -340,12 +325,6 @@ sonar-ai-infra:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - *detect_changes_ai_infra
-    - |
-      if [ "$SHOULD_RUN" != "1" ]; then
-        echo "⏭ sonar-ai-infra skipped"
-        exit 0
-      fi
     - |
       sonar-scanner \
         -Dsonar.projectKey=ai-infra-service \
@@ -366,12 +345,6 @@ build-ai-infra:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - *detect_changes_ai_infra
-    - |
-      if [ "$SHOULD_RUN" != "1" ]; then
-        echo "⏭ build-ai-infra skipped"
-        exit 0
-      fi
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - echo "IMAGE_TAG=${IMAGE_TAG}"
     - echo "ECR_REPO=${ECR_REPO}"
@@ -406,12 +379,6 @@ deploy-ai-infra:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - *detect_changes_ai_infra
-    - |
-      if [ "$SHOULD_RUN" != "1" ]; then
-        echo "⏭ deploy-ai-infra skipped"
-        exit 0
-      fi
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
