@@ -102,7 +102,7 @@ build-frontend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
-	  compare_to: 'refs/heads/main'
+        compare_to: 'refs/heads/main'
         paths:
           - services/frontend-service/**/*
   <<: *notify_slack_failure
@@ -178,8 +178,8 @@ sonar-backend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"' 
       changes:
-	  compare_to: 'refs/heads/main'
-	  paths:
+      compare_to: 'refs/heads/main'
+       paths:
           - services/backend-services/$SERVICE_NAME/**/*
           - shared/**/*
   <<: *notify_slack_failure 
