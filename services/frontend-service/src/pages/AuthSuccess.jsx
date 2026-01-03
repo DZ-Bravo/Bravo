@@ -51,29 +51,32 @@ function AuthSuccess() {
         console.log('localStorage 저장 완료')
         
         // API에서 JWT 토큰을 받아오기 시도 (소셜 로그인 사용자용)
-        try {
-          const tokenResponse = await fetch(`${API_URL}/api/auth/social-token`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              userId: user.id,
-              email: user.email
-            })
+        fetch(`${API_URL}/api/auth/social-token`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userId: user.id,
+            email: user.email
           })
-          
+        })
+        .then(tokenResponse => {
           if (tokenResponse.ok) {
-            const tokenData = await tokenResponse.json()
-            if (tokenData.token) {
-              localStorage.setItem('token', tokenData.token)
-              console.log('소셜 로그인 JWT 토큰 저장 완료')
-            }
+            return tokenResponse.json()
           }
-        } catch (tokenError) {
+          return null
+        })
+        .then(tokenData => {
+          if (tokenData && tokenData.token) {
+            localStorage.setItem('token', tokenData.token)
+            console.log('소셜 로그인 JWT 토큰 저장 완료')
+          }
+        })
+        .catch(tokenError => {
           console.warn('소셜 로그인 토큰 요청 실패:', tokenError)
           // 토큰 요청 실패해도 사용자 정보는 저장했으므로 계속 진행
-        }
+        })
         
         // 즉시 리다이렉트 (타임아웃 방지)
         console.log('홈으로 리다이렉트 시작')

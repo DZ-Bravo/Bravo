@@ -37,29 +37,40 @@ function MyPage() {
     const token = localStorage.getItem('token')
     const idToken = localStorage.getItem('idToken')
     const authToken = token || idToken
-    if (!authToken) return
+    if (!authToken) {
+      console.log('[찜목록 개수] 토큰 없음 - 조회하지 않음')
+      return
+    }
 
+    console.log('[찜목록 개수] 조회 시작')
     try {
-      // 게시글 즐겨찾기 개수
-      const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
-      })
-      
-      // 산 즐겨찾기 개수
-      const mountainsResponse = await fetch(`${API_URL}/api/auth/mountains/favorites/my`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
-      })
-
-      // 스토어 즐겨찾기 개수
-      const storesResponse = await fetch(`${API_URL}/api/store/favorites/my`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
-      })
+      // 병렬로 모든 요청 실행
+      const [postsResponse, mountainsResponse, storesResponse] = await Promise.all([
+        fetch(`${API_URL}/api/posts/favorites/my`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        }).catch(err => {
+          console.error('[찜목록 개수] 게시글 조회 오류:', err)
+          return { ok: false }
+        }),
+        fetch(`${API_URL}/api/auth/mountains/favorites/my`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        }).catch(err => {
+          console.error('[찜목록 개수] 산 조회 오류:', err)
+          return { ok: false }
+        }),
+        fetch(`${API_URL}/api/store/favorites/my`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        }).catch(err => {
+          console.error('[찜목록 개수] 스토어 조회 오류:', err)
+          return { ok: false }
+        })
+      ])
 
       let postsCount = 0
       let mountainsCount = 0
@@ -68,27 +79,34 @@ function MyPage() {
       if (postsResponse.ok) {
         const postsData = await postsResponse.json()
         postsCount = postsData.posts?.length || 0
+        console.log('[찜목록 개수] 게시글:', postsCount)
       }
 
       if (mountainsResponse.ok) {
         const mountainsData = await mountainsResponse.json()
         mountainsCount = mountainsData.mountains?.length || 0
+        console.log('[찜목록 개수] 산:', mountainsCount)
       }
 
       if (storesResponse.ok) {
         const storesData = await storesResponse.json()
         storesCount = storesData.products?.length || storesData.count || 0
+        console.log('[찜목록 개수] 스토어:', storesCount)
       }
 
       const totalCount = postsCount + mountainsCount + storesCount
-      console.log('찜목록 개수:', totalCount, '(게시글:', postsCount, '산:', mountainsCount, '스토어:', storesCount, ')')
+      console.log('[찜목록 개수] 총합:', totalCount, '(게시글:', postsCount, '산:', mountainsCount, '스토어:', storesCount, ')')
       
-      setStats(prevStats => ({
-        ...prevStats,
-        items: totalCount
-      }))
+      setStats(prevStats => {
+        const newStats = {
+          ...prevStats,
+          items: totalCount
+        }
+        console.log('[찜목록 개수] 상태 업데이트:', newStats.items)
+        return newStats
+      })
     } catch (err) {
-      console.error('찜목록 개수 조회 오류:', err)
+      console.error('[찜목록 개수] 조회 오류:', err)
     }
   }
 
@@ -141,10 +159,21 @@ function MyPage() {
     
     // 페이지 포커스 시에도 찜목록 개수 갱신
     const handleFocus = () => {
+      console.log('페이지 포커스 - 찜목록 개수 갱신')
       refreshFavoritesCount()
     }
     
     window.addEventListener('focus', handleFocus)
+    
+    // 페이지 가시성 변경 시에도 갱신
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('페이지 가시성 변경 - 찜목록 개수 갱신')
+        refreshFavoritesCount()
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     
     // localStorage 플래그 확인 (주기적으로)
     const checkInterval = setInterval(() => {
@@ -168,9 +197,10 @@ function MyPage() {
     return () => {
       window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
       window.removeEventListener('focus', handleFocus)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       clearInterval(checkInterval)
     }
-  }, [API_URL])
+  }, [])
 
   useEffect(() => {
     // 중복 체크 방지
@@ -191,47 +221,13 @@ function MyPage() {
       return
     }
 
-    // userData가 없으면 API에서 가져오기 시도
-    if (!userData && (token || idToken)) {
-      const authToken = token || idToken
-      try {
-        const userResponse = await fetch(`${API_URL}/api/auth/me`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        })
-        
-        if (userResponse.ok) {
-          const userDataResponse = await userResponse.json()
-          localStorage.setItem('user', JSON.stringify(userDataResponse.user))
-          // userData를 다시 가져와서 사용
-          const updatedUserData = localStorage.getItem('user')
-          if (updatedUserData) {
-            // userData가 있으면 계속 진행
-          } else {
-            alert('사용자 정보를 가져올 수 없습니다.')
-            navigate('/login', { replace: true })
-            return
-          }
-        } else {
-          alert('로그인이 필요합니다.')
-          navigate('/login', { replace: true })
-          return
-        }
-      } catch (error) {
-        console.error('사용자 정보 가져오기 오류:', error)
-        alert('로그인이 필요합니다.')
-        navigate('/login', { replace: true })
-        return
-      }
-    }
-
     const loadUserData = async () => {
       try {
         // userData가 있으면 파싱, 없으면 API에서 가져오기
         let parsedUser = null
         const authToken = token || idToken
-        // localStorage에서 최신 userData 가져오기 (위에서 저장했을 수 있음)
+        
+        // userData가 없으면 API에서 가져오기
         const currentUserData = localStorage.getItem('user')
         
         if (currentUserData) {
@@ -377,7 +373,7 @@ function MyPage() {
         // 등산일정 가져오기
         const schedulesResponse = await fetch(`${API_URL}/api/schedules`, {
           headers: {
-            'Authorization': `Bearer ${authTokenForSchedules}`
+            'Authorization': `Bearer ${authToken}`
           }
         })
         
@@ -400,6 +396,9 @@ function MyPage() {
   const handleLogout = () => {
     if (window.confirm('로그아웃하시겠습니까?')) {
       localStorage.removeItem('token')
+      localStorage.removeItem('idToken')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
       localStorage.removeItem('user')
       alert('로그아웃되었습니다.')
       navigate('/')
@@ -418,10 +417,12 @@ function MyPage() {
 
     try {
       const token = localStorage.getItem('token')
+      const idToken = localStorage.getItem('idToken')
+      const authToken = token || idToken
       const response = await fetch(`${API_URL}/api/auth/delete`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authToken}`
         }
       })
 
@@ -430,6 +431,9 @@ function MyPage() {
       if (response.ok) {
         alert('회원 탈퇴가 완료되었습니다.')
         localStorage.removeItem('token')
+        localStorage.removeItem('idToken')
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
         localStorage.removeItem('user')
         navigate('/')
       } else {
