@@ -35,27 +35,29 @@ function MyPage() {
   // 찜목록 개수 직접 계산
   const refreshFavoritesCount = async () => {
     const token = localStorage.getItem('token')
-    if (!token) return
+    const idToken = localStorage.getItem('idToken')
+    const authToken = token || idToken
+    if (!authToken) return
 
     try {
       // 게시글 즐겨찾기 개수
       const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authToken}`
         }
       })
       
       // 산 즐겨찾기 개수
       const mountainsResponse = await fetch(`${API_URL}/api/auth/mountains/favorites/my`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authToken}`
         }
       })
 
       // 스토어 즐겨찾기 개수
       const storesResponse = await fetch(`${API_URL}/api/store/favorites/my`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authToken}`
         }
       })
 
@@ -177,26 +179,86 @@ function MyPage() {
     }
     hasChecked.current = true
 
-    // 로그인 상태 확인
+    // 로그인 상태 확인 (token 또는 idToken 확인)
     const token = localStorage.getItem('token')
+    const idToken = localStorage.getItem('idToken')
     const userData = localStorage.getItem('user')
 
-    if (!token || !userData) {
-      // 로그인하지 않았으면 로그인 페이지로 리다이렉트
+    // token 또는 idToken이 없으면 로그인 페이지로 리다이렉트
+    if (!token && !idToken) {
       alert('로그인이 필요합니다.')
       navigate('/login', { replace: true })
       return
     }
 
+    // userData가 없으면 API에서 가져오기 시도
+    if (!userData && (token || idToken)) {
+      const authToken = token || idToken
+      try {
+        const userResponse = await fetch(`${API_URL}/api/auth/me`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        })
+        
+        if (userResponse.ok) {
+          const userDataResponse = await userResponse.json()
+          localStorage.setItem('user', JSON.stringify(userDataResponse.user))
+          // userData를 다시 가져와서 사용
+          const updatedUserData = localStorage.getItem('user')
+          if (updatedUserData) {
+            // userData가 있으면 계속 진행
+          } else {
+            alert('사용자 정보를 가져올 수 없습니다.')
+            navigate('/login', { replace: true })
+            return
+          }
+        } else {
+          alert('로그인이 필요합니다.')
+          navigate('/login', { replace: true })
+          return
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 오류:', error)
+        alert('로그인이 필요합니다.')
+        navigate('/login', { replace: true })
+        return
+      }
+    }
+
     const loadUserData = async () => {
       try {
-        const parsedUser = JSON.parse(userData)
-        setUser(parsedUser)
+        // userData가 있으면 파싱, 없으면 API에서 가져오기
+        let parsedUser = null
+        const authToken = token || idToken
+        // localStorage에서 최신 userData 가져오기 (위에서 저장했을 수 있음)
+        const currentUserData = localStorage.getItem('user')
+        
+        if (currentUserData) {
+          parsedUser = JSON.parse(currentUserData)
+          setUser(parsedUser)
+        } else {
+          // userData가 없으면 API에서 가져오기
+          const userResponse = await fetch(`${API_URL}/api/auth/me`, {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            }
+          })
+          
+          if (userResponse.ok) {
+            const userDataResponse = await userResponse.json()
+            parsedUser = userDataResponse.user
+            localStorage.setItem('user', JSON.stringify(parsedUser))
+            setUser(parsedUser)
+          } else {
+            throw new Error('사용자 정보를 가져올 수 없습니다.')
+          }
+        }
         
         // 사용자 통계 가져오기
         const statsResponse = await fetch(`${API_URL}/api/auth/stats`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${authToken}`
           }
         })
         
@@ -223,19 +285,19 @@ function MyPage() {
         try {
           const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
             headers: {
-              'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${authToken}`
             }
           })
           
           const mountainsResponse = await fetch(`${API_URL}/api/auth/mountains/favorites/my`, {
             headers: {
-              'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${authToken}`
             }
           })
 
           const storesResponse = await fetch(`${API_URL}/api/store/favorites/my`, {
             headers: {
-              'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${authToken}`
             }
           })
 
@@ -272,7 +334,7 @@ function MyPage() {
         // 최근 등산일지 가져오기 (사용자 본인의 등산일지만, 최대 5개)
         const recordsResponse = await fetch(`${API_URL}/api/posts/my?category=diary&limit=5`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${authToken}`
           }
         })
         
@@ -315,7 +377,7 @@ function MyPage() {
         // 등산일정 가져오기
         const schedulesResponse = await fetch(`${API_URL}/api/schedules`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${authTokenForSchedules}`
           }
         })
         

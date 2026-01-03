@@ -65,24 +65,20 @@ stages:
 .detect_changes_backend_service: &detect_changes_backend_service |
   apk add --no-cache git >/dev/null 2>&1 || true
 
-  # merge commit에서도 안정적으로 비교하기 위해 target(main) 준비
-  git fetch origin main --depth=50 >/dev/null 2>&1 || true
+  echo "▶ CI_COMMIT_SHA=$CI_COMMIT_SHA"
+  echo "▶ CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME"
 
-  # compare base: origin/main(최우선) -> CI_MERGE_REQUEST_TARGET_BRANCH_NAME -> HEAD~1 fallback
+  # 원격 브랜치 확보 (실패하면 fail)
+  git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main --depth=200
+
   BASE_REF="origin/main"
-  if ! git rev-parse --verify "$BASE_REF" >/dev/null 2>&1; then
-    BASE_REF="HEAD~1"
-  fi
-
   echo "▶ BASE_REF=$BASE_REF"
   echo "▶ SERVICE_NAME=$SERVICE_NAME"
 
-  # 변경 파일 목록
-  CHANGED_FILES=$(git diff --name-only "$BASE_REF"...HEAD || true)
+  CHANGED_FILES="$(git diff --name-only "$BASE_REF"...HEAD)"
   echo "▶ CHANGED_FILES (top 50):"
-  echo "$CHANGED_FILES" | sed -n '1,50p' || true
+  echo "$CHANGED_FILES" | sed -n '1,50p'
 
-  # shared 변경이면 모든 서비스 대상
   if echo "$CHANGED_FILES" | grep -qE '^services/shared/|^shared/'; then
     echo "✅ shared changed -> build/deploy all services"
     export SHOULD_RUN="1"
@@ -90,7 +86,29 @@ stages:
     echo "✅ service changed -> ${SERVICE_NAME}"
     export SHOULD_RUN="1"
   else
-    echo "⏭ No changes for ${SERVICE_NAME} (and no shared change) -> skip"
+    echo "⏭ No changes for ${SERVICE_NAME} -> skip"
+    export SHOULD_RUN="0"
+  fi
+
+
+#===============================
+#ai-infra detect_changes
+#===============================
+
+.detect_changes_ai_infra: &detect_changes_ai_infra |
+  apk add --no-cache git >/dev/null 2>&1 || true
+  git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main --depth=200
+
+  BASE_REF="origin/main"
+  CHANGED_FILES="$(git diff --name-only "$BASE_REF"...HEAD)"
+
+  echo "▶ BASE_REF=$BASE_REF"
+  echo "▶ CHANGED_FILES (top 50):"
+  echo "$CHANGED_FILES" | sed -n '1,50p'
+
+  if echo "$CHANGED_FILES" | grep -qE '^services/backend-services/ai-infra-service/|^services/shared/|^shared/'; then
+    export SHOULD_RUN="1"
+  else
     export SHOULD_RUN="0"
   fi
 
@@ -188,9 +206,6 @@ sonar-backend:
       - SERVICE_NAME: store-service
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        - services/backend-services/**
-        - shared/**
   script:
     - *detect_changes_backend_service
     - |
@@ -234,9 +249,6 @@ build-backend:
         ECR_REPO: $STORE_ECR_REPO
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        - services/backend-services/**
-        - shared/**
   script:
     - *detect_changes_backend_service
     - |
@@ -293,9 +305,6 @@ deploy-backend:
       optional: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        - services/backend-services/**
-        - shared/**
   script:
     - *detect_changes_backend_service
     - |
@@ -330,10 +339,13 @@ sonar-ai-infra:
   image: sonarsource/sonar-scanner-cli:5
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-          - services/backend-services/ai-infra-service/**
-          - shared/**
   script:
+    - *detect_changes_ai_infra
+    - |
+      if [ "$SHOULD_RUN" != "1" ]; then
+        echo "⏭ sonar-ai-infra skipped"
+        exit 0
+      fi
     - |
       sonar-scanner \
         -Dsonar.projectKey=ai-infra-service \
@@ -345,14 +357,21 @@ sonar-ai-infra:
 
 build-ai-infra:
   stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
   variables:
+    DOCKER_TLS_CERTDIR: ""
     ECR_REPO: "$AI_ECR_REPO"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        - services/backend-services/ai-infra-service/backend/**
-        - shared/**
   script:
+    - *detect_changes_ai_infra
+    - |
+      if [ "$SHOULD_RUN" != "1" ]; then
+        echo "⏭ build-ai-infra skipped"
+        exit 0
+      fi
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - echo "IMAGE_TAG=${IMAGE_TAG}"
     - echo "ECR_REPO=${ECR_REPO}"
@@ -386,11 +405,13 @@ deploy-ai-infra:
       optional: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-          - services/backend-services/ai-infra-service/backend/**
-          - services/backend-services/ai-infra-service/k8s/**
-          - shared/**
   script:
+    - *detect_changes_ai_infra
+    - |
+      if [ "$SHOULD_RUN" != "1" ]; then
+        echo "⏭ deploy-ai-infra skipped"
+        exit 0
+      fi
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl

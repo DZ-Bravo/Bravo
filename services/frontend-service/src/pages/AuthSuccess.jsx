@@ -36,8 +36,9 @@ function AuthSuccess() {
 
     // userStr만 있는 경우 최우선 처리 (Cognito 토큰 생성 실패했지만 사용자 정보는 있음)
     // provider와 username이 있어도 idToken이 없으면 userStr만 처리
+    // 하지만 이 경우는 마이페이지 접속 시 문제가 될 수 있으므로, API에서 JWT 토큰을 받아오도록 시도
     if (userStr && !token && !idToken) {
-      console.log('✅ userStr만 있는 경우 처리 시작')
+      console.log('✅ userStr만 있는 경우 처리 시작 (토큰 없음)')
       try {
         console.log('사용자 정보만 파싱 시작 (token/idToken 없음)')
         const decodedUserStr = decodeURIComponent(userStr)
@@ -48,6 +49,31 @@ function AuthSuccess() {
         // 사용자 정보 저장
         localStorage.setItem('user', JSON.stringify(user))
         console.log('localStorage 저장 완료')
+        
+        // API에서 JWT 토큰을 받아오기 시도 (소셜 로그인 사용자용)
+        try {
+          const tokenResponse = await fetch(`${API_URL}/api/auth/social-token`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              userId: user.id,
+              email: user.email
+            })
+          })
+          
+          if (tokenResponse.ok) {
+            const tokenData = await tokenResponse.json()
+            if (tokenData.token) {
+              localStorage.setItem('token', tokenData.token)
+              console.log('소셜 로그인 JWT 토큰 저장 완료')
+            }
+          }
+        } catch (tokenError) {
+          console.warn('소셜 로그인 토큰 요청 실패:', tokenError)
+          // 토큰 요청 실패해도 사용자 정보는 저장했으므로 계속 진행
+        }
         
         // 즉시 리다이렉트 (타임아웃 방지)
         console.log('홈으로 리다이렉트 시작')
@@ -71,6 +97,8 @@ function AuthSuccess() {
           localStorage.setItem('accessToken', accessToken)
           localStorage.setItem('idToken', idToken)
           localStorage.setItem('refreshToken', refreshToken)
+          // 하위 호환성: idToken을 token으로도 저장 (기존 컴포넌트들이 token을 사용)
+          localStorage.setItem('token', idToken)
           
           // userStr이 있으면 사용자 정보 저장
           if (userStr) {
@@ -110,6 +138,8 @@ function AuthSuccess() {
             localStorage.setItem('accessToken', session.accessToken)
             localStorage.setItem('idToken', session.idToken)
             localStorage.setItem('refreshToken', session.refreshToken)
+            // 하위 호환성: idToken을 token으로도 저장 (기존 컴포넌트들이 token을 사용)
+            localStorage.setItem('token', session.idToken)
             
             // userStr이 있으면 사용자 정보 저장
             if (userStr) {

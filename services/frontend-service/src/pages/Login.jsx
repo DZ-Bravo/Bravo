@@ -114,6 +114,8 @@ function Login() {
         localStorage.setItem('accessToken', tokens.accessToken)
         localStorage.setItem('idToken', tokens.idToken)
         localStorage.setItem('refreshToken', tokens.refreshToken)
+        // 하위 호환성: idToken을 token으로도 저장 (기존 컴포넌트들이 token을 사용)
+        localStorage.setItem('token', tokens.idToken)
         
         // 사용자 정보 가져오기 (백엔드 API 호출)
         try {
