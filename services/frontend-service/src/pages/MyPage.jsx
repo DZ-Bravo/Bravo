@@ -1,5 +1,5 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import Header from '../components/Header'
 import { API_URL } from '../utils/api'
@@ -32,7 +32,55 @@ function MyPage() {
   const [schedules, setSchedules] = useState([])
   const hasChecked = useRef(false)
 
-  // 찜목록 개수 직접 계산
+  // 전체 통계 새로고침 함수 (useCallback으로 메모이제이션)
+  const refreshAllStats = useCallback(async () => {
+    const token = localStorage.getItem('token')
+    const idToken = localStorage.getItem('idToken')
+    const authToken = token || idToken
+    if (!authToken) {
+      console.log('[통계 새로고침] 토큰 없음 - 조회하지 않음')
+      return
+    }
+
+    console.log('[통계 새로고침] 시작')
+    try {
+      // 통계 API 호출
+      const statsResponse = await fetch(`${API_URL}/api/auth/stats`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      })
+
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json()
+        console.log('[통계 새로고침] 받은 데이터:', statsData)
+        
+        setStats(prevStats => ({
+          ...prevStats,
+          totalElevation: statsData.totalElevation || 0,
+          totalTime: statsData.totalTime || 0,
+          climbedMountains: statsData.climbedMountains || 0,
+          postCount: statsData.postCount || 0,
+          totalLikes: statsData.totalLikes || 0,
+          diaryLikes: statsData.diaryLikes || 0,
+          communityLikes: statsData.communityLikes || 0,
+          points: statsData.points || 0,
+          schedules: statsData.schedules || 0,
+          hikingLogs: statsData.hikingLogs || 0,
+          items: statsData.items || 0, // API에서 받은 즐겨찾기 수 사용
+        }))
+        console.log('[통계 새로고침] 완료 - 상태 업데이트됨')
+      } else {
+        console.error('[통계 새로고침] Stats 조회 실패:', statsResponse.status)
+        const errorText = await statsResponse.text()
+        console.error('[통계 새로고침] 에러 내용:', errorText)
+      }
+    } catch (err) {
+      console.error('[통계 새로고침] 조회 오류:', err)
+    }
+  }, [API_URL])
+
+  // 찜목록 개수 직접 계산 (찜목록만 빠르게 업데이트할 때 사용)
   const refreshFavoritesCount = async () => {
     const token = localStorage.getItem('token')
     const idToken = localStorage.getItem('idToken')
@@ -110,6 +158,14 @@ function MyPage() {
     }
   }
 
+  // 탭 전환 시 통계 새로고침
+  useEffect(() => {
+    if (activeTab === 'hiking' && user) {
+      console.log('[나의 하이킹] 탭 활성화 - 통계 새로고침')
+      refreshAllStats()
+    }
+  }, [activeTab, user, refreshAllStats])
+
   // URL 파라미터 확인하여 탭과 캘린더 자동 열기
   useEffect(() => {
     const tab = searchParams.get('tab')
@@ -148,19 +204,21 @@ function MyPage() {
     }
   }, [searchParams, setSearchParams, schedules])
 
-  // 즐겨찾기 업데이트 이벤트 리스너 (별도 useEffect로 분리)
+  // 즐겨찾기 업데이트 이벤트 리스너 및 통계 새로고침 (별도 useEffect로 분리)
   useEffect(() => {
     const handleFavoritesUpdate = () => {
       console.log('즐겨찾기 업데이트 이벤트 수신 - MyPage')
       refreshFavoritesCount()
+      // 통계도 함께 새로고침 (좋아요 수 등이 변경될 수 있음)
+      setTimeout(() => refreshAllStats(), 500)
     }
 
     window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
     
-    // 페이지 포커스 시에도 찜목록 개수 갱신
+    // 페이지 포커스 시에도 전체 통계 갱신
     const handleFocus = () => {
-      console.log('페이지 포커스 - 찜목록 개수 갱신')
-      refreshFavoritesCount()
+      console.log('페이지 포커스 - 전체 통계 갱신')
+      refreshAllStats()
     }
     
     window.addEventListener('focus', handleFocus)
@@ -168,19 +226,26 @@ function MyPage() {
     // 페이지 가시성 변경 시에도 갱신
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        console.log('페이지 가시성 변경 - 찜목록 개수 갱신')
-        refreshFavoritesCount()
+        console.log('페이지 가시성 변경 - 전체 통계 갱신')
+        refreshAllStats()
       }
     }
     
     document.addEventListener('visibilitychange', handleVisibilityChange)
     
+    // 주기적으로 통계 새로고침 (30초마다)
+    const statsInterval = setInterval(() => {
+      console.log('주기적 통계 새로고침')
+      refreshAllStats()
+    }, 30000) // 30초마다
+    
     // localStorage 플래그 확인 (주기적으로)
     const checkInterval = setInterval(() => {
       const favoritesUpdated = localStorage.getItem('favoritesUpdated')
       if (favoritesUpdated) {
-        console.log('localStorage 플래그 발견 - 찜목록 개수 갱신')
+        console.log('localStorage 플래그 발견 - 통계 갱신')
         refreshFavoritesCount()
+        setTimeout(() => refreshAllStats(), 500)
         localStorage.removeItem('favoritesUpdated')
       }
     }, 500) // 0.5초마다 확인
@@ -190,6 +255,7 @@ function MyPage() {
     if (favoritesUpdated) {
       setTimeout(() => {
         refreshFavoritesCount()
+        refreshAllStats()
         localStorage.removeItem('favoritesUpdated')
       }, 100)
     }
@@ -198,9 +264,10 @@ function MyPage() {
       window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
       window.removeEventListener('focus', handleFocus)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      clearInterval(statsInterval)
       clearInterval(checkInterval)
     }
-  }, [])
+  }, [refreshAllStats])
 
   useEffect(() => {
     // 중복 체크 방지
@@ -251,81 +318,8 @@ function MyPage() {
           }
         }
         
-        // 사용자 통계 가져오기
-        const statsResponse = await fetch(`${API_URL}/api/auth/stats`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        })
-        
-        if (statsResponse.ok) {
-          const statsData = await statsResponse.json()
-          setStats({
-            totalElevation: statsData.totalElevation || 0,
-            totalTime: statsData.totalTime || 0,
-            climbedMountains: statsData.climbedMountains || 0,
-            postCount: statsData.postCount || 0,
-            totalLikes: statsData.totalLikes || 0,
-            diaryLikes: statsData.diaryLikes || 0,
-            communityLikes: statsData.communityLikes || 0,
-            points: statsData.points || 0,
-            schedules: statsData.schedules || 0,
-            hikingLogs: statsData.hikingLogs || 0,
-            items: 0, // 초기값은 0, 아래에서 직접 계산
-          })
-        } else {
-          console.error('Stats 조회 실패:', statsResponse.status)
-        }
-
-        // 찜목록 개수 직접 계산
-        try {
-          const postsResponse = await fetch(`${API_URL}/api/posts/favorites/my`, {
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
-          })
-          
-          const mountainsResponse = await fetch(`${API_URL}/api/auth/mountains/favorites/my`, {
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
-          })
-
-          const storesResponse = await fetch(`${API_URL}/api/store/favorites/my`, {
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
-          })
-
-          let postsCount = 0
-          let mountainsCount = 0
-          let storesCount = 0
-
-          if (postsResponse.ok) {
-            const postsData = await postsResponse.json()
-            postsCount = postsData.posts?.length || 0
-          }
-
-          if (mountainsResponse.ok) {
-            const mountainsData = await mountainsResponse.json()
-            mountainsCount = mountainsData.mountains?.length || 0
-          }
-
-          if (storesResponse.ok) {
-            const storesData = await storesResponse.json()
-            storesCount = storesData.products?.length || storesData.count || 0
-          }
-
-          const totalCount = postsCount + mountainsCount + storesCount
-          console.log('초기 찜목록 개수:', totalCount, '(게시글:', postsCount, '산:', mountainsCount, '스토어:', storesCount, ')')
-          
-          setStats(prevStats => ({
-            ...prevStats,
-            items: totalCount
-          }))
-        } catch (err) {
-          console.error('찜목록 개수 조회 오류:', err)
-        }
+        // 사용자 통계 가져오기 (refreshAllStats 함수 사용)
+        await refreshAllStats()
 
         // 최근 등산일지 가져오기 (사용자 본인의 등산일지만, 최대 5개)
         const recordsResponse = await fetch(`${API_URL}/api/posts/my?category=diary&limit=5`, {

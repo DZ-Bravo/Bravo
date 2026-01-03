@@ -28,7 +28,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: frontend
-        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-frontend-service:2.17
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-frontend-service:2.23
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

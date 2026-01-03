@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: stamp-service
-        image: 192.168.0.244:30305/bravo/hiking-stamp-service:latest
+        image: 192.168.0.244:30443/bravo/hiking-stamp-service:latest
         ports:
         - containerPort: 3010
           name: http

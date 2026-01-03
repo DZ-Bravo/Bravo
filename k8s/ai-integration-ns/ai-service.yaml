@@ -21,7 +21,7 @@ spec:
       - name: harbor-registry-secret
       containers:
       - name: ai-service
-        image: 192.168.0.244:30305/bravo/hiking-ai-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-service:latest
         ports:
         - containerPort: 3009
           name: http
@@ -55,6 +55,11 @@ spec:
             configMapKeyRef:
               name: bravo-config
               key: AWS_REGION
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: bravo-secrets
+              key: JWT_SECRET
         - name: BEDROCK_COURSE_AGENT_ID
           valueFrom:
             secretKeyRef:

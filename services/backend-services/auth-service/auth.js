@@ -1393,7 +1393,7 @@ router.post('/reset-password', async (req, res) => {
 })
 
 // Cognito 인증 미들웨어 사용
-import { authenticateCognitoToken, optionalAuthenticateCognitoToken } from '../../shared/utils/cognito-auth.js'
+import { authenticateCognitoToken, optionalAuthenticateCognitoToken } from './shared/utils/cognito-auth.js'
 
 // 사용자 찾기 헬퍼 함수 (userId가 MongoDB ObjectId가 아닐 수 있으므로 email로도 찾기)
 const findUserByIdOrEmail = async (userId, email) => {
