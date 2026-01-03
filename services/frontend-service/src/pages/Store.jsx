@@ -46,12 +46,14 @@ function Store() {
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
       const token = localStorage.getItem('token')
-      if (!token) return
+      const idToken = localStorage.getItem('idToken')
+      const authToken = token || idToken
+      if (!authToken) return
 
       try {
         const response = await fetch(`${API_URL}/api/store/favorites/my`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${authToken}`
           }
         })
 
@@ -76,16 +78,18 @@ function Store() {
     const fetchRecentProducts = async () => {
       try {
         const token = localStorage.getItem('token')
+        const idToken = localStorage.getItem('idToken')
+        const authToken = token || idToken
         
         // 비회원은 최근 본 상품 조회하지 않음
-        if (!token) {
+        if (!authToken) {
           console.log('[최근 본 상품] 비회원 - 조회하지 않음')
           setRecentProducts([])
           return
         }
         
         const headers = {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authToken}`
         }
 
         console.log('[최근 본 상품] 조회 - 회원')
@@ -114,57 +118,63 @@ function Store() {
   const recordRecentProduct = async (productId) => {
     try {
       const token = localStorage.getItem('token')
+      const idToken = localStorage.getItem('idToken')
+      const authToken = token || idToken
       
       // 비회원은 최근 본 상품 기록하지 않음
-      if (!token) {
+      if (!authToken) {
         console.log('[최근 본 상품] 비회원 - 기록하지 않음')
         return
       }
       
       const headers = {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${authToken}`,
         'Content-Type': 'application/json'
       }
 
       console.log('[최근 본 상품] 기록 시도 - productId:', productId, '회원')
       
-      const recordResponse = await fetch(`${API_URL}/api/store/recent/${productId}`, {
+      // 최근 본 상품 목록을 먼저 가져와서 로컬 상태 업데이트에 사용
+      const currentProduct = products.find(p => {
+        const pid = p._id?.toString() || p.id?.toString()
+        return pid === productId
+      })
+      
+      // 즉시 로컬 상태 업데이트 (낙관적 업데이트)
+      if (currentProduct) {
+        setRecentProducts(prev => {
+          // 이미 존재하는 상품이면 제거하고 맨 앞에 추가
+          const filtered = prev.filter(p => {
+            const pid = p._id?.toString() || p.id?.toString()
+            return pid !== productId
+          })
+          // 맨 앞에 추가하고 최대 5개만 유지
+          return [currentProduct, ...filtered].slice(0, 5)
+        })
+      }
+      
+      // 백그라운드에서 기록 요청 (비동기, 응답 기다리지 않음)
+      fetch(`${API_URL}/api/store/recent/${productId}`, {
         method: 'POST',
         headers
-      })
-      
-      console.log('[최근 본 상품] 기록 응답:', recordResponse.status, recordResponse.ok)
-      
-      if (!recordResponse.ok) {
-        const errorText = await recordResponse.text()
-        console.error('[최근 본 상품] 기록 실패:', errorText)
-        return // 실패하면 조회하지 않음
-      }
-
-      const recordData = await recordResponse.json()
-      console.log('[최근 본 상품] 기록 응답 데이터:', recordData)
-
-      // 약간의 지연 후 최근 본 상품 목록 갱신 (Redis 업데이트 반영 시간 확보)
-      await new Promise(resolve => setTimeout(resolve, 200))
-
-      // 최근 본 상품 목록 갱신
-      const response = await fetch(`${API_URL}/api/store/recent`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+      }).then(async (recordResponse) => {
+        if (recordResponse.ok) {
+          // 기록 성공 후 최근 본 상품 목록 갱신 (서버에서 최신 데이터 가져오기)
+          // 약간의 지연 없이 바로 조회 (Redis는 빠르게 업데이트됨)
+          const response = await fetch(`${API_URL}/api/store/recent`, {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            }
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            setRecentProducts(data.products || [])
+          }
         }
+      }).catch(error => {
+        console.error('[최근 본 상품] 기록 오류:', error)
       })
-      
-      console.log('[최근 본 상품] 조회 응답:', response.status, response.ok)
-      
-      if (response.ok) {
-        const data = await response.json()
-        console.log('[최근 본 상품] 받은 데이터:', data.products?.length || 0, '개')
-        console.log('[최근 본 상품] 상품 ID 목록:', data.products?.map(p => p._id || p.id))
-        setRecentProducts(data.products || [])
-      } else {
-        const errorText = await response.text()
-        console.error('[최근 본 상품] 조회 실패:', errorText)
-      }
     } catch (error) {
       console.error('최근 본 상품 기록 오류:', error)
     }
@@ -410,7 +420,9 @@ function Store() {
     e.stopPropagation()
 
     const token = localStorage.getItem('token')
-    if (!token) {
+    const idToken = localStorage.getItem('idToken')
+    const authToken = token || idToken
+    if (!authToken) {
       alert('로그인이 필요합니다.')
       return
     }
@@ -419,7 +431,7 @@ function Store() {
       const response = await fetch(`${API_URL}/api/store/${productId}/favorite`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json'
         }
       })
@@ -658,7 +670,7 @@ function Store() {
         </div>
 
         {/* 최근 본 상품 배너 - 오른쪽 고정 (회원만 표시) */}
-        {localStorage.getItem('token') && (
+        {(localStorage.getItem('token') || localStorage.getItem('idToken')) && (
         <aside className="store-recent-sidebar">
             <div className="recent-products-banner">
               <div className="recent-products-header">

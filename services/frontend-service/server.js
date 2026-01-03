@@ -129,7 +129,15 @@ const backendServices = [
   { path: '/api/ai', host: 'ai-service.bravo-ai-integration-ns.svc.cluster.local', port: 3009 },
 ]
 
+// 프론트엔드 라우트 목록 (API로 프록시하지 않음)
+const frontendRoutes = ['/store', '/mypage', '/community', '/mountain', '/mountains-map', '/login', '/signup', '/notice', '/stamps', '/ai-course', '/search', '/auth/success']
+
 app.use((req, res, next) => {
+  // 프론트엔드 라우트는 API 프록시에서 제외
+  if (frontendRoutes.some(route => req.path === route || req.path.startsWith(route + '/'))) {
+    return next()
+  }
+  
   // /uploads 경로는 community-service로 프록시
   if (req.path.startsWith('/uploads')) {
     const backend = { host: 'community-service.bravo-core-ns.svc.cluster.local', port: 3002 }
@@ -176,7 +184,6 @@ app.use((req, res, next) => {
   }
 
   const isApiPath = req.path.startsWith('/api/') || 
-                    req.path.startsWith('/store') ||
                     (req.path.startsWith('/auth') && req.path !== '/auth/success' && !req.path.startsWith('/auth/success/')) ||
                     req.path.startsWith('/posts') ||
                     req.path.startsWith('/notices') ||

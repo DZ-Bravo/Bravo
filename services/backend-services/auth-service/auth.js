@@ -1393,16 +1393,42 @@ router.post('/reset-password', async (req, res) => {
 })
 
 // Cognito 인증 미들웨어 사용
-import { authenticateCognitoToken, optionalAuthenticateCognitoToken } from './shared/utils/cognito-auth.js'
+import { authenticateCognitoToken, optionalAuthenticateCognitoToken } from '../../shared/utils/cognito-auth.js'
+
+// 사용자 찾기 헬퍼 함수 (userId가 MongoDB ObjectId가 아닐 수 있으므로 email로도 찾기)
+const findUserByIdOrEmail = async (userId, email) => {
+  // MongoDB ObjectId 형식인지 확인 (24자리 16진수)
+  const isObjectId = /^[0-9a-fA-F]{24}$/.test(userId)
+  
+  if (isObjectId) {
+    // ObjectId 형식이면 직접 찾기
+    const user = await User.findById(userId)
+    if (user) return user
+  }
+  
+  // ObjectId가 아니거나 찾지 못한 경우 email로 찾기
+  if (email) {
+    const userByEmail = await User.findOne({ email })
+    if (userByEmail) return userByEmail
+  }
+  
+  // userId가 email 형식일 수도 있음
+  if (userId && userId.includes('@')) {
+    const userByEmail = await User.findOne({ email: userId })
+    if (userByEmail) return userByEmail
+  }
+  
+  return null
+}
 
 // 현재 사용자 정보 가져오기
 router.get('/me', authenticateCognitoToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('-password')
+    const user = await findUserByIdOrEmail(req.user.userId, req.user.email)
     if (!user) {
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
     }
-    res.json({ user })
+    res.json({ user: { ...user.toObject(), password: undefined } })
   } catch (error) {
     console.error('사용자 정보 조회 오류:', error)
     res.status(500).json({ error: '사용자 정보를 가져오는 중 오류가 발생했습니다.' })
@@ -1427,9 +1453,9 @@ router.put('/update', authenticateCognitoToken, upload.single('profileImage'), a
       profileImage: req.file ? req.file.filename : '없음'
     })
     
-    const user = await User.findById(userId)
+    const user = await findUserByIdOrEmail(userId, req.user.email)
     if (!user) {
-      console.error('사용자를 찾을 수 없음:', userId)
+      console.error('사용자를 찾을 수 없음:', userId, req.user.email)
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
     }
     
@@ -1540,7 +1566,7 @@ router.put('/update', authenticateCognitoToken, upload.single('profileImage'), a
     
     // findByIdAndUpdate 사용 (email 필드는 자동으로 유지됨)
     const updatedUser = await User.findByIdAndUpdate(
-      userId,
+      user._id,
       { $set: updateFields },
       { new: true, runValidators: false } // runValidators: false로 설정하여 email validation 우회
     )
@@ -1584,7 +1610,12 @@ router.put('/update', authenticateCognitoToken, upload.single('profileImage'), a
 // 사용자 통계 가져오기
 router.get('/stats', authenticateCognitoToken, async (req, res) => {
   try {
-    const userId = req.user.userId
+    const user = await findUserByIdOrEmail(req.user.userId, req.user.email)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+    
+    const userId = user._id
     
     // 아래에서 등산일지 기반으로 계산
     
@@ -1616,18 +1647,18 @@ router.get('/stats', authenticateCognitoToken, async (req, res) => {
     const communityLikes = totalLikes
     
     // 즐겨찾기 수 (찜 목록) - 게시글 + 산 즐겨찾기 모두 카운트
-    const user = await User.findById(userId).select('favorites favoriteMountains favoriteStores points').lean()
+    const userData = await User.findById(userId).select('favorites favoriteMountains favoriteStores points').lean()
     let favoriteCount = 0
     
     // 게시글 즐겨찾기 카운트
-    if (user && user.favorites && user.favorites.length > 0) {
+    if (userData && userData.favorites && userData.favorites.length > 0) {
       // 실제 존재하는 게시글만 카운트
-      const existingPosts = await Post.find({ _id: { $in: user.favorites } }).select('_id').lean()
+      const existingPosts = await Post.find({ _id: { $in: userData.favorites } }).select('_id').lean()
       favoriteCount += existingPosts.length
       
       // 존재하지 않는 게시글 ID 제거 (정리)
       const existingPostIds = existingPosts.map(p => p._id.toString())
-      const invalidFavorites = user.favorites.filter(favId => !existingPostIds.includes(favId.toString()))
+      const invalidFavorites = userData.favorites.filter(favId => !existingPostIds.includes(favId.toString()))
       if (invalidFavorites.length > 0) {
         await User.findByIdAndUpdate(userId, {
           $pull: { favorites: { $in: invalidFavorites } }
@@ -1637,13 +1668,13 @@ router.get('/stats', authenticateCognitoToken, async (req, res) => {
     }
     
     // 산 즐겨찾기 카운트
-    if (user && user.favoriteMountains && user.favoriteMountains.length > 0) {
-      favoriteCount += user.favoriteMountains.length
+    if (userData && userData.favoriteMountains && userData.favoriteMountains.length > 0) {
+      favoriteCount += userData.favoriteMountains.length
     }
     
     // 스토어 즐겨찾기 카운트
-    if (user && user.favoriteStores && user.favoriteStores.length > 0) {
-      favoriteCount += user.favoriteStores.length
+    if (userData && userData.favoriteStores && userData.favoriteStores.length > 0) {
+      favoriteCount += userData.favoriteStores.length
     }
     
     console.log(
@@ -1652,13 +1683,13 @@ router.get('/stats', authenticateCognitoToken, async (req, res) => {
       '즐겨찾기 수:',
       favoriteCount,
       '(게시글:',
-      user?.favorites?.length || 0,
+      userData?.favorites?.length || 0,
       '산:',
-      user?.favoriteMountains?.length || 0,
+      userData?.favoriteMountains?.length || 0,
       '스토어:',
-      user?.favoriteStores?.length || 0,
+      userData?.favoriteStores?.length || 0,
       ') 포인트:',
-      user?.points ?? 0
+      userData?.points ?? 0
     )
     
     // 누적 시간/다녀온 산 수 계산
@@ -1688,7 +1719,7 @@ router.get('/stats', authenticateCognitoToken, async (req, res) => {
     console.log('누적고도 최종 계산 결과:', totalElevation, '등산일지 수:', diaryPosts.length)
 
     // 포인트 요약 및 내역 구성
-    const currentPoints = user?.points ?? 0
+    const currentPoints = userData?.points ?? 0
     const earnedPoints = currentPoints // 현재는 적립만 존재하므로 earned = total
     const usedPoints = 0
 
@@ -1732,12 +1763,16 @@ router.get('/stats', authenticateCognitoToken, async (req, res) => {
 // 산 즐겨찾기 상태 조회
 router.get('/mountains/:code/favorite', authenticateCognitoToken, async (req, res) => {
   try {
-    const userId = req.user.userId
+    const user = await findUserByIdOrEmail(req.user.userId, req.user.email)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+    
     const { code } = req.params
     const mountainCode = String(code)
 
-    const user = await User.findById(userId).select('favoriteMountains').lean()
-    const isFavorited = !!(user && user.favoriteMountains && user.favoriteMountains.includes(mountainCode))
+    const userData = await User.findById(user._id).select('favoriteMountains').lean()
+    const isFavorited = !!(userData && userData.favoriteMountains && userData.favoriteMountains.includes(mountainCode))
 
     res.json({ isFavorited })
   } catch (error) {
@@ -1749,14 +1784,13 @@ router.get('/mountains/:code/favorite', authenticateCognitoToken, async (req, re
 // 산 즐겨찾기 토글
 router.post('/mountains/:code/favorite', authenticateCognitoToken, async (req, res) => {
   try {
-    const userId = req.user.userId
-    const { code } = req.params
-    const mountainCode = String(code)
-
-    const user = await User.findById(userId)
+    const user = await findUserByIdOrEmail(req.user.userId, req.user.email)
     if (!user) {
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
     }
+    
+    const { code } = req.params
+    const mountainCode = String(code)
 
     if (!user.favoriteMountains) {
       user.favoriteMountains = []
@@ -1766,12 +1800,12 @@ router.post('/mountains/:code/favorite', authenticateCognitoToken, async (req, r
     if (idx > -1) {
       user.favoriteMountains.splice(idx, 1)
       // user.save() 대신 findByIdAndUpdate 사용 (email 검증 오류 방지)
-      await User.findByIdAndUpdate(userId, { favoriteMountains: user.favoriteMountains }, { runValidators: false })
+      await User.findByIdAndUpdate(user._id, { favoriteMountains: user.favoriteMountains }, { runValidators: false })
       return res.json({ isFavorited: false, message: '즐겨찾기에서 제거되었습니다.' })
     } else {
       user.favoriteMountains.push(mountainCode)
       // user.save() 대신 findByIdAndUpdate 사용 (email 검증 오류 방지)
-      await User.findByIdAndUpdate(userId, { favoriteMountains: user.favoriteMountains }, { runValidators: false })
+      await User.findByIdAndUpdate(user._id, { favoriteMountains: user.favoriteMountains }, { runValidators: false })
       return res.json({ isFavorited: true, message: '즐겨찾기에 추가되었습니다.' })
     }
   } catch (error) {
@@ -1783,9 +1817,13 @@ router.post('/mountains/:code/favorite', authenticateCognitoToken, async (req, r
 // 즐겨찾기한 산 목록 조회
 router.get('/mountains/favorites/my', authenticateCognitoToken, async (req, res) => {
   try {
-    const userId = req.user.userId
-    const user = await User.findById(userId).select('favoriteMountains').lean()
-    const favoriteCodes = user?.favoriteMountains || []
+    const user = await findUserByIdOrEmail(req.user.userId, req.user.email)
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+    
+    const userData = await User.findById(user._id).select('favoriteMountains').lean()
+    const favoriteCodes = userData?.favoriteMountains || []
 
     // MongoDB에서 산 정보 가져오기
     const db = mongoose.connection.db
@@ -1885,13 +1923,12 @@ router.get('/mountains/favorites/my', authenticateCognitoToken, async (req, res)
 // 회원 탈퇴 (인증 필요)
 router.delete('/delete', authenticateCognitoToken, async (req, res) => {
   try {
-    const userId = req.user.userId
-    
-    // 사용자 확인
-    const user = await User.findById(userId)
+    const user = await findUserByIdOrEmail(req.user.userId, req.user.email)
     if (!user) {
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
     }
+
+    const userId = user._id
 
     // 관리자는 탈퇴 불가
     if (user.role === 'admin') {
@@ -1934,7 +1971,7 @@ router.delete('/delete', authenticateCognitoToken, async (req, res) => {
     }
 
     // 사용자 삭제
-    await User.findByIdAndDelete(userId)
+    await User.findByIdAndDelete(user._id)
 
     res.json({ message: '회원 탈퇴가 완료되었습니다.' })
   } catch (error) {
@@ -2400,6 +2437,44 @@ router.get('/naver/callback', async (req, res) => {
     console.error('네이버 로그인 오류:', error)
     const FRONTEND_URL_ERROR = process.env.FRONTEND_URL || 'https://hiker-cloud.site'
     res.redirect(`${FRONTEND_URL_ERROR}/login?error=naver_login_failed`)
+  }
+})
+
+// 소셜 로그인용 JWT 토큰 생성 (Cognito 토큰이 없을 때 사용)
+router.post('/social-token', async (req, res) => {
+  try {
+    const { userId, email } = req.body
+    
+    if (!userId) {
+      return res.status(400).json({ error: '사용자 ID가 필요합니다.' })
+    }
+    
+    // MongoDB에서 사용자 찾기
+    const user = await User.findOne({ id: userId })
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
+    }
+    
+    // JWT 토큰 생성
+    const token = jwt.sign(
+      { userId: user._id, id: user.id, role: user.role || 'user' },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    )
+    
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        profileImage: user.profileImage,
+        role: user.role || 'user'
+      }
+    })
+  } catch (error) {
+    console.error('소셜 로그인 토큰 생성 오류:', error)
+    res.status(500).json({ error: '토큰 생성 중 오류가 발생했습니다.' })
   }
 })
 
