@@ -15,6 +15,11 @@ export const getAuthHeaders = () => {
   return headers
 }
 
+// 환경 변수 가져오기
+export const getEnv = (key) => {
+  return import.meta.env[key] || (typeof window !== 'undefined' && window.__RUNTIME_ENV__ && window.__RUNTIME_ENV__[key])
+}
+
 // API 요청 함수 (자동으로 IdToken 포함)
 export const apiRequest = async (url, options = {}) => {
   const headers = getAuthHeaders()

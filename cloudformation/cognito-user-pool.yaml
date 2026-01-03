@@ -9,8 +9,28 @@ Parameters:
   
   DomainPrefix:
     Type: String
-    Default: 'hiker-cloud'
+    Default: 'hiker-cloud-auth'
     Description: 'Cognito Domain Prefix (must be unique globally)'
+  
+  MongoDBURI:
+    Type: String
+    Description: 'MongoDB Connection URI'
+    NoEcho: true
+  
+  KakaoRestApiKey:
+    Type: String
+    Description: 'Kakao REST API Key'
+    NoEcho: true
+  
+  NaverClientId:
+    Type: String
+    Description: 'Naver Client ID'
+    NoEcho: true
+  
+  NaverClientSecret:
+    Type: String
+    Description: 'Naver Client Secret'
+    NoEcho: true
   
   AllowedOAuthFlows:
     Type: CommaDelimitedList
@@ -74,9 +94,6 @@ Resources:
           AttributeDataType: String
           Mutable: true
           Required: false
-      LambdaConfig:
-        PreTokenGeneration: !GetAtt PreTokenGenerationFunction.Arn
-      MfaConfiguration: OFF
 
   # Cognito User Pool Domain
   UserPoolDomain:

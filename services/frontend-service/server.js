@@ -11,12 +11,23 @@ const __dirname = dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 80
 
-// JSON 및 URL-encoded 본문 파싱 미들웨어 (프록시 전에 필요)
-app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
-
 const distPath = join(__dirname, 'dist')
 const indexHtmlPath = join(distPath, 'index.html')
+
+// JSON 및 URL-encoded 본문 파싱 미들웨어 (FormData가 아닌 경우에만)
+// FormData는 multer로만 파싱 가능하므로, 프록시에서 그대로 전달해야 함
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || ''
+  // FormData (multipart/form-data)인 경우 파싱하지 않고 그대로 전달
+  if (contentType.includes('multipart/form-data')) {
+    return next()
+  }
+  // JSON 또는 URL-encoded인 경우에만 파싱
+  express.json({ limit: '10mb' })(req, res, (err) => {
+    if (err) return next(err)
+    express.urlencoded({ extended: true, limit: '10mb' })(req, res, next)
+  })
+})
 
 // dist 폴더 확인1
 if (!existsSync(distPath)) {
@@ -33,12 +44,25 @@ if (!existsSync(indexHtmlPath)) {
 
 // 환경 변수를 HTML에 주입하는 함수
 function injectEnvToHtml(html) {
+  // 환경 변수 디버깅
+  const cognitoUserPoolId = process.env.VITE_COGNITO_USER_POOL_ID || process.env.COGNITO_USER_POOL_ID || ''
+  const cognitoClientId = process.env.VITE_COGNITO_CLIENT_ID || process.env.COGNITO_CLIENT_ID || ''
+  console.log('[환경 변수 주입] Cognito 환경 변수 확인:', {
+    VITE_COGNITO_USER_POOL_ID: process.env.VITE_COGNITO_USER_POOL_ID ? '있음' : '없음',
+    COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID ? '있음' : '없음',
+    VITE_COGNITO_CLIENT_ID: process.env.VITE_COGNITO_CLIENT_ID ? '있음' : '없음',
+    COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID ? '있음' : '없음',
+    최종값: { UserPoolId: cognitoUserPoolId ? cognitoUserPoolId.substring(0, 20) + '...' : '없음', ClientId: cognitoClientId ? cognitoClientId.substring(0, 10) + '...' : '없음' }
+  })
+  
   // 즉시 실행되는 인라인 스크립트로 환경 변수 설정 (가장 먼저 실행되도록)
   const envScript = `<script>
       (function() {
         window.__RUNTIME_ENV__ = {
           VITE_KAKAO_MAP_API_KEY: ${JSON.stringify(process.env.VITE_KAKAO_MAP_API_KEY || '')},
-          VITE_CESIUM_ACCESS_TOKEN: ${JSON.stringify(process.env.VITE_CESIUM_ACCESS_TOKEN || '')}
+          VITE_CESIUM_ACCESS_TOKEN: ${JSON.stringify(process.env.VITE_CESIUM_ACCESS_TOKEN || '')},
+          VITE_COGNITO_USER_POOL_ID: ${JSON.stringify(cognitoUserPoolId)},
+          VITE_COGNITO_CLIENT_ID: ${JSON.stringify(cognitoClientId)}
         };
         console.log('[환경 변수 주입] window.__RUNTIME_ENV__ 설정 완료:', window.__RUNTIME_ENV__);
       })();
@@ -61,6 +85,27 @@ app.use(express.static(distPath, {
   // HTML 파일은 정적 파일 미들웨어에서 제외
   index: false
 }))
+
+// JSON 및 URL-encoded 본문 파싱 미들웨어 (FormData가 아닌 경우에만)
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || ''
+  // FormData (multipart/form-data)인 경우 파싱하지 않고 그대로 전달
+  if (contentType.includes('multipart/form-data')) {
+    return next()
+  }
+  // JSON 또는 URL-encoded인 경우에만 파싱
+  express.json({ limit: '10mb' })(req, res, next)
+})
+
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || ''
+  // FormData (multipart/form-data)인 경우 파싱하지 않고 그대로 전달
+  if (contentType.includes('multipart/form-data')) {
+    return next()
+  }
+  // URL-encoded인 경우에만 파싱
+  express.urlencoded({ extended: true, limit: '10mb' })(req, res, next)
+})
 
 // API 프록시 미들웨어
 const backendServices = [
@@ -200,7 +245,16 @@ app.use((req, res, next) => {
   })
 
   // 요청 본문 처리
-  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+  const contentType = req.headers['content-type'] || ''
+  console.log(`[프록시 본문 처리] Content-Type: ${contentType}`)
+  
+  if (contentType.includes('multipart/form-data')) {
+    // FormData는 그대로 파이프로 전달 (파일 업로드 포함)
+    // express.json()과 express.urlencoded()가 본문을 소비하지 않도록 이미 처리됨
+    console.log(`[프록시] FormData 감지, req.pipe()로 전달`)
+    req.pipe(proxyReq)
+  } else if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+    // JSON 요청인 경우
     const body = JSON.stringify(req.body || {})
     proxyReq.setHeader('Content-Type', 'application/json')
     proxyReq.setHeader('Content-Length', Buffer.byteLength(body))

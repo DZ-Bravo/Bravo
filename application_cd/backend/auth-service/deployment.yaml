@@ -91,7 +91,22 @@ spec:
                 configMapKeyRef:
                   key: AWS_REGION
                   name: bravo-config
-          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-auth-service:2.0
+            - name: COGNITO_USER_POOL_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: COGNITO_USER_POOL_ID
+                  name: bravo-config
+            - name: COGNITO_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: COGNITO_CLIENT_ID
+                  name: bravo-config
+            - name: SOCIAL_LOGIN_LAMBDA_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: SOCIAL_LOGIN_LAMBDA_URL
+                  name: bravo-config
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-auth-service:2.11
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

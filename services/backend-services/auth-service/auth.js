@@ -483,25 +483,107 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     await client.del(emailRedisKey)
     console.log(`회원가입 완료 - 이메일 인증번호 삭제: ${email}`)
     
-    // JWT 토큰 생성 (role 포함)
-    const token = jwt.sign(
-      { userId: user._id, id: user.id, role: user.role || 'user' },
-      JWT_SECRET,
-      { expiresIn: '7d' }
-    )
-    
-    res.status(201).json({
-      message: '회원가입이 완료되었습니다.',
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        gender: user.gender,
-        fitnessLevel: user.fitnessLevel,
-        profileImage: user.profileImage,
-        role: user.role || 'user'
+    // Cognito에 사용자 생성
+    let cognitoTokens = null
+    try {
+      const { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminSetUserPasswordCommand, InitiateAuthCommand } = await import('@aws-sdk/client-cognito-identity-provider')
+      const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION || 'ap-northeast-2' })
+      const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID
+      const CLIENT_ID = process.env.COGNITO_CLIENT_ID
+      
+      if (USER_POOL_ID && CLIENT_ID) {
+        // Cognito User Pool이 UsernameAttributes: email로 설정되어 있으므로 email을 username으로 사용
+        const cognitoUsername = email.trim()
+        
+        // Cognito 사용자 생성
+        const createUserCommand = new AdminCreateUserCommand({
+          UserPoolId: USER_POOL_ID,
+          Username: cognitoUsername, // email을 username으로 사용
+          UserAttributes: [
+            { Name: 'email', Value: email.trim() },
+            { Name: 'name', Value: name },
+            { Name: 'custom:provider', Value: 'local' },
+            { Name: 'custom:userId', Value: id } // MongoDB ID를 custom attribute로 저장
+          ],
+          MessageAction: 'SUPPRESS' // 이메일 인증 스킵 (이미 이메일 인증 완료)
+        })
+        await cognitoClient.send(createUserCommand)
+        console.log(`Cognito 사용자 생성 완료: ${cognitoUsername} (MongoDB ID: ${id})`)
+        
+        // 비밀번호 설정
+        const setPasswordCommand = new AdminSetUserPasswordCommand({
+          UserPoolId: USER_POOL_ID,
+          Username: cognitoUsername, // email을 username으로 사용
+          Password: password,
+          Permanent: true
+        })
+        await cognitoClient.send(setPasswordCommand)
+        console.log(`Cognito 비밀번호 설정 완료: ${cognitoUsername}`)
+        
+        // Cognito 로그인하여 토큰 획득
+        const authCommand = new InitiateAuthCommand({
+          AuthFlow: 'USER_PASSWORD_AUTH',
+          ClientId: CLIENT_ID,
+          AuthParameters: {
+            USERNAME: cognitoUsername, // email을 username으로 사용
+            PASSWORD: password
+          }
+        })
+        const authResponse = await cognitoClient.send(authCommand)
+        
+        if (authResponse.AuthenticationResult) {
+          cognitoTokens = {
+            idToken: authResponse.AuthenticationResult.IdToken,
+            accessToken: authResponse.AuthenticationResult.AccessToken,
+            refreshToken: authResponse.AuthenticationResult.RefreshToken
+          }
+          console.log(`Cognito 토큰 획득 완료: ${id}`)
+        }
+      } else {
+        console.warn('Cognito 환경 변수가 설정되지 않아 Cognito 사용자 생성을 건너뜁니다.')
       }
-    })
+    } catch (cognitoError) {
+      console.error('Cognito 사용자 생성 오류:', cognitoError)
+      // Cognito 오류가 발생해도 MongoDB 저장은 완료되었으므로 계속 진행
+      // 단, 로그는 남김
+    }
+    
+    // 응답 반환 (Cognito 토큰이 있으면 Cognito 토큰, 없으면 JWT 토큰)
+    if (cognitoTokens) {
+      res.status(201).json({
+        message: '회원가입이 완료되었습니다.',
+        idToken: cognitoTokens.idToken,
+        accessToken: cognitoTokens.accessToken,
+        refreshToken: cognitoTokens.refreshToken,
+        user: {
+          id: user.id,
+          name: user.name,
+          gender: user.gender,
+          fitnessLevel: user.fitnessLevel,
+          profileImage: user.profileImage,
+          role: user.role || 'user'
+        }
+      })
+    } else {
+      // Cognito 토큰이 없으면 JWT 토큰 반환 (하위 호환성)
+      const token = jwt.sign(
+        { userId: user._id, id: user.id, role: user.role || 'user' },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+      )
+      res.status(201).json({
+        message: '회원가입이 완료되었습니다.',
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          gender: user.gender,
+          fitnessLevel: user.fitnessLevel,
+          profileImage: user.profileImage,
+          role: user.role || 'user'
+        }
+      })
+    }
   } catch (error) {
     console.error('회원가입 오류:', error)
     if (error.code === 11000) {
@@ -520,6 +602,16 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'ID와 비밀번호를 입력해주세요.' })
     }
     
+    // Cognito User Pool이 UsernameAttributes: email로 설정되어 있으므로
+    // 먼저 MongoDB에서 사용자를 찾아 email을 가져와야 함
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(401).json({ error: 'ID 또는 비밀번호가 올바르지 않습니다.' })
+    }
+    
+    // email을 username으로 사용
+    const cognitoUsername = user.email
+    
     // Cognito 로그인
     const { CognitoIdentityProviderClient, InitiateAuthCommand } = await import('@aws-sdk/client-cognito-identity-provider')
     const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION || 'ap-northeast-2' })
@@ -535,15 +627,12 @@ router.post('/login', async (req, res) => {
         AuthFlow: 'USER_PASSWORD_AUTH',
         ClientId: CLIENT_ID,
         AuthParameters: {
-          USERNAME: id,
+          USERNAME: cognitoUsername, // email을 username으로 사용
           PASSWORD: password
         }
       })
       
       const response = await cognitoClient.send(command)
-      
-      // MongoDB에서 사용자 정보 조회
-      const user = await User.findOne({ id })
       
       res.json({
         message: '로그인 성공',
@@ -551,22 +640,98 @@ router.post('/login', async (req, res) => {
         RefreshToken: response.AuthenticationResult.RefreshToken,
         IdToken: response.AuthenticationResult.IdToken,
         user: {
-          id: user?.id || id,
-          name: user?.name || '',
-          gender: user?.gender || '',
-          fitnessLevel: user?.fitnessLevel || '',
-          profileImage: user?.profileImage || null,
-          role: user?.role || 'user'
+          id: user.id,
+          name: user.name,
+          gender: user.gender,
+          fitnessLevel: user.fitnessLevel,
+          profileImage: user.profileImage,
+          role: user.role || 'user'
         }
       })
     } catch (cognitoError) {
       console.error('Cognito 로그인 오류:', cognitoError)
-      if (cognitoError.name === 'NotAuthorizedException' || cognitoError.name === 'UserNotFoundException') {
+      
+      // Cognito에 사용자가 없는 경우, MongoDB로 폴백 (기존 사용자 지원)
+      if (cognitoError.name === 'UserNotFoundException') {
+        console.log(`Cognito에 사용자가 없음: ${cognitoUsername}, MongoDB로 폴백 시도`)
+        
+        // 비밀번호 확인
+        const bcrypt = await import('bcryptjs')
+        const isPasswordValid = await bcrypt.default.compare(password, user.password)
+        if (!isPasswordValid) {
+          return res.status(401).json({ error: 'ID 또는 비밀번호가 올바르지 않습니다.' })
+        }
+        
+        // JWT 토큰 생성 (하위 호환성)
+        const token = jwt.sign(
+          { userId: user._id, id: user.id, role: user.role || 'user' },
+          JWT_SECRET,
+          { expiresIn: '7d' }
+        )
+        
+        // Cognito에 사용자 생성 시도 (백그라운드)
+        try {
+          const { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminSetUserPasswordCommand } = await import('@aws-sdk/client-cognito-identity-provider')
+          const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION || 'ap-northeast-2' })
+          const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID
+          const CLIENT_ID = process.env.COGNITO_CLIENT_ID
+          
+          if (USER_POOL_ID && CLIENT_ID) {
+            // 비동기로 Cognito에 사용자 생성 (응답을 막지 않음)
+            Promise.resolve().then(async () => {
+              try {
+                const createUserCommand = new AdminCreateUserCommand({
+                  UserPoolId: USER_POOL_ID,
+                  Username: cognitoUsername, // email을 username으로 사용
+                  UserAttributes: [
+                    { Name: 'email', Value: user.email || `${user.id}@temp.com` },
+                    { Name: 'name', Value: user.name || user.id },
+                    { Name: 'custom:provider', Value: 'local' },
+                    { Name: 'custom:userId', Value: user.id } // MongoDB ID를 custom attribute로 저장
+                  ],
+                  MessageAction: 'SUPPRESS'
+                })
+                await cognitoClient.send(createUserCommand)
+                
+                const setPasswordCommand = new AdminSetUserPasswordCommand({
+                  UserPoolId: USER_POOL_ID,
+                  Username: cognitoUsername, // email을 username으로 사용
+                  Password: password,
+                  Permanent: true
+                })
+                await cognitoClient.send(setPasswordCommand)
+                console.log(`기존 사용자 Cognito 마이그레이션 완료: ${cognitoUsername} (MongoDB ID: ${user.id})`)
+              } catch (migrationError) {
+                console.error(`기존 사용자 Cognito 마이그레이션 실패: ${cognitoUsername}`, migrationError)
+              }
+            })
+          }
+        } catch (migrationSetupError) {
+          console.error('Cognito 마이그레이션 설정 오류:', migrationSetupError)
+        }
+        
+        return res.json({
+          message: '로그인 성공 (MongoDB)',
+          token,
+          user: {
+            id: user.id,
+            name: user.name,
+            gender: user.gender,
+            fitnessLevel: user.fitnessLevel,
+            profileImage: user.profileImage,
+            role: user.role || 'user'
+          }
+        })
+      }
+      
+      if (cognitoError.name === 'NotAuthorizedException') {
         return res.status(401).json({ error: 'ID 또는 비밀번호가 올바르지 않습니다.' })
       }
       if (cognitoError.name === 'UserNotConfirmedException') {
         return res.status(401).json({ error: '이메일 인증이 완료되지 않았습니다.' })
       }
+      
+      // 기타 Cognito 오류는 500 에러로 반환
       throw cognitoError
     }
   } catch (error) {
@@ -1191,7 +1356,7 @@ router.post('/reset-password', async (req, res) => {
 })
 
 // Cognito 인증 미들웨어 사용
-export { authenticateCognitoToken, optionalAuthenticateCognitoToken } from './shared/utils/cognito-auth.js'
+import { authenticateCognitoToken, optionalAuthenticateCognitoToken } from './shared/utils/cognito-auth.js'
 
 // 현재 사용자 정보 가져오기
 router.get('/me', authenticateCognitoToken, async (req, res) => {
@@ -1780,48 +1945,151 @@ router.get('/kakao/callback', async (req, res) => {
     }
 
     const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI || `${FRONTEND_URL}/api/auth/kakao/callback`
-    const LAMBDA_FUNCTION_URL = process.env.SOCIAL_LOGIN_LAMBDA_URL
+    const KAKAO_REST_API_KEY = process.env.KAKAO_REST_API_KEY
+    const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID
+    const CLIENT_ID = process.env.COGNITO_CLIENT_ID
 
-    if (!LAMBDA_FUNCTION_URL) {
-      console.error('SOCIAL_LOGIN_LAMBDA_URL 환경 변수가 설정되지 않았습니다.')
+    if (!KAKAO_REST_API_KEY || !USER_POOL_ID || !CLIENT_ID) {
+      console.error('필수 환경 변수가 설정되지 않았습니다.')
       return res.redirect(`${FRONTEND_URL}/login?error=server_config_error`)
     }
 
-    // Lambda Function 호출
-    const lambdaResponse = await fetch(LAMBDA_FUNCTION_URL, {
+    // 1. 카카오 OAuth 토큰 요청
+    const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        provider: 'kakao',
-        code: code,
-        redirectUri: REDIRECT_URI
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: KAKAO_REST_API_KEY,
+        redirect_uri: REDIRECT_URI,
+        code: code
       })
     })
 
-    if (!lambdaResponse.ok) {
-      const errorData = await lambdaResponse.json()
-      console.error('Lambda Function 오류:', errorData)
-      return res.redirect(`${FRONTEND_URL}/login?error=kakao_lambda_error`)
+    const tokenData = await tokenResponse.json()
+    
+    if (!tokenData.access_token) {
+      console.error('카카오 토큰 요청 실패:', tokenData)
+      return res.redirect(`${FRONTEND_URL}/login?error=kakao_token_failed`)
     }
 
-    const lambdaResult = await lambdaResponse.json()
-    const username = lambdaResult.username
-    const tokens = lambdaResult.tokens
+    // 2. 카카오 사용자 정보 요청
+    const userInfoResponse = await fetch('https://kapi.kakao.com/v2/user/me', {
+      headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+    })
+    const kakaoUser = await userInfoResponse.json()
 
-    // MongoDB에서 사용자 정보 조회
-    const user = await User.findOne({ id: username })
-    
-    // Lambda Function에서 Cognito 토큰을 받았으면 그대로 사용
-    if (tokens && tokens.idToken) {
-      // Cognito 토큰을 쿼리 파라미터로 전달 (보안상 좋지 않지만, 일단 동작 확인용)
-      // 실제로는 서버 세션이나 더 안전한 방법 사용 권장
-      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${username}&idToken=${encodeURIComponent(tokens.idToken)}&accessToken=${encodeURIComponent(tokens.accessToken)}&refreshToken=${encodeURIComponent(tokens.refreshToken)}`
-      console.log('카카오 로그인 성공, 사용자:', username, 'Cognito 토큰 받음')
+    if (!kakaoUser.id) {
+      console.error('카카오 사용자 정보 요청 실패:', kakaoUser)
+      return res.redirect(`${FRONTEND_URL}/login?error=kakao_user_info_failed`)
+    }
+
+    const kakaoAccount = kakaoUser.kakao_account || {}
+    const profile = kakaoAccount.profile || {}
+
+    const userInfo = {
+      id: `kakao_${kakaoUser.id}`,
+      email: kakaoAccount.email || `${kakaoUser.id}@kakao.temp`,
+      name: profile.nickname || kakaoAccount.name || `카카오사용자${kakaoUser.id}`,
+      provider: 'kakao',
+      profileImage: profile.profile_image_url || null
+    }
+
+    // Cognito User Pool이 email을 username으로 사용하므로, email을 username으로 사용
+    const username = userInfo.email // email을 username으로 사용
+
+    // 3. Cognito에서 사용자 찾기 또는 생성
+    const { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminSetUserPasswordCommand, InitiateAuthCommand } = await import('@aws-sdk/client-cognito-identity-provider')
+    const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION || 'ap-northeast-2' })
+
+    let cognitoTokens = null
+    let isNewUser = false
+
+    try {
+      // Cognito 사용자 생성 시도 (email을 username으로 사용)
+      const createUserCommand = new AdminCreateUserCommand({
+        UserPoolId: USER_POOL_ID,
+        Username: userInfo.email, // email을 username으로 사용
+        UserAttributes: [
+          { Name: 'email', Value: userInfo.email },
+          { Name: 'name', Value: userInfo.name }
+          // custom:provider는 User Pool에 정의되어 있지 않으므로 제거
+        ],
+        MessageAction: 'SUPPRESS'
+      })
+      await cognitoClient.send(createUserCommand)
+      isNewUser = true
+      console.log(`Cognito 사용자 생성 완료: ${userInfo.email}`)
+
+      // 임시 비밀번호 생성 및 설정
+      const tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12).toUpperCase() + '!@#'
+      const setPasswordCommand = new AdminSetUserPasswordCommand({
+        UserPoolId: USER_POOL_ID,
+        Username: userInfo.email, // email을 username으로 사용
+        Password: tempPassword,
+        Permanent: true
+      })
+      await cognitoClient.send(setPasswordCommand)
+      console.log(`Cognito 비밀번호 설정 완료: ${userInfo.email}`)
+
+      // Cognito 로그인하여 토큰 획득
+      const authCommand = new InitiateAuthCommand({
+        AuthFlow: 'USER_PASSWORD_AUTH',
+        ClientId: CLIENT_ID,
+        AuthParameters: {
+          USERNAME: userInfo.email, // email을 username으로 사용
+          PASSWORD: tempPassword
+        }
+      })
+      const authResponse = await cognitoClient.send(authCommand)
+
+      if (authResponse.AuthenticationResult) {
+        cognitoTokens = {
+          idToken: authResponse.AuthenticationResult.IdToken,
+          accessToken: authResponse.AuthenticationResult.AccessToken,
+          refreshToken: authResponse.AuthenticationResult.RefreshToken
+        }
+        console.log(`Cognito 토큰 획득 완료: ${userInfo.email}`)
+      }
+    } catch (cognitoError) {
+      if (cognitoError.name === 'UsernameExistsException') {
+        // 사용자가 이미 존재함 - 기존 사용자 로그인 처리
+        console.log(`Cognito 사용자 이미 존재: ${userInfo.email}`)
+        // 기존 사용자의 경우 비밀번호를 알 수 없으므로, 사용자에게 직접 로그인하도록 안내하거나
+        // 다른 방법으로 처리해야 함. 일단 username만 전달
+      } else {
+        console.error('Cognito 사용자 생성 오류:', cognitoError)
+        // Cognito 오류가 발생해도 계속 진행 (MongoDB 사용자 정보는 반환)
+      }
+    }
+
+    // 4. MongoDB에서 사용자 정보 조회 또는 생성 (id는 소셜 ID 사용)
+    let user = await User.findOne({ id: userInfo.id })
+    if (!user) {
+      // MongoDB에 사용자 생성
+      user = new User({
+        id: userInfo.id, // 소셜 ID 사용
+        name: userInfo.name,
+        email: userInfo.email,
+        password: '', // 소셜 로그인은 비밀번호 없음
+        gender: '',
+        fitnessLevel: '',
+        profileImage: userInfo.profileImage,
+        role: 'user'
+      })
+      await user.save()
+      console.log(`MongoDB 사용자 생성 완료: ${userInfo.id}`)
+    }
+
+    // 5. Cognito 토큰이 있으면 반환, 없으면 username만 전달
+    if (cognitoTokens && cognitoTokens.idToken) {
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${encodeURIComponent(userInfo.email)}&idToken=${encodeURIComponent(cognitoTokens.idToken)}&accessToken=${encodeURIComponent(cognitoTokens.accessToken)}&refreshToken=${encodeURIComponent(cognitoTokens.refreshToken)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, name: user.name, email: user.email, profileImage: user.profileImage }))}`
+      console.log('카카오 로그인 성공, Cognito 토큰 포함하여 리다이렉트')
       res.redirect(redirectUrl)
     } else {
-      // 토큰이 없으면 username만 전달 (프론트엔드에서 Cognito SDK로 로그인 시도)
-      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${username}`
-      console.log('카카오 로그인 성공, 사용자:', username, 'Cognito 토큰 없음 (프론트엔드에서 처리 필요)')
+      // 토큰이 없으면 username만 전달
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=kakao&username=${encodeURIComponent(userInfo.email)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, name: user.name, email: user.email, profileImage: user.profileImage }))}`
+      console.log('카카오 로그인 성공, Cognito 토큰 없음, 사용자명만 전달')
       res.redirect(redirectUrl)
     }
   } catch (error) {
@@ -1871,49 +2139,152 @@ router.get('/naver/callback', async (req, res) => {
     }
 
     const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || `${FRONTEND_URL}/api/auth/naver/callback`
-    const LAMBDA_FUNCTION_URL = process.env.SOCIAL_LOGIN_LAMBDA_URL
+    const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID
+    const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET
+    const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID
+    const CLIENT_ID = process.env.COGNITO_CLIENT_ID
 
-    if (!LAMBDA_FUNCTION_URL) {
-      console.error('SOCIAL_LOGIN_LAMBDA_URL 환경 변수가 설정되지 않았습니다.')
+    if (!NAVER_CLIENT_ID || !NAVER_CLIENT_SECRET || !USER_POOL_ID || !CLIENT_ID) {
+      console.error('필수 환경 변수가 설정되지 않았습니다.')
       return res.redirect(`${FRONTEND_URL}/login?error=server_config_error`)
     }
 
-    // Lambda Function 호출
-    const lambdaResponse = await fetch(LAMBDA_FUNCTION_URL, {
+    // 1. 네이버 OAuth 토큰 요청
+    const tokenResponse = await fetch('https://nid.naver.com/oauth2.0/token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        provider: 'naver',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: NAVER_CLIENT_ID,
+        client_secret: NAVER_CLIENT_SECRET,
+        redirect_uri: REDIRECT_URI,
         code: code,
-        redirectUri: REDIRECT_URI,
         state: state
       })
     })
 
-    if (!lambdaResponse.ok) {
-      const errorData = await lambdaResponse.json()
-      console.error('Lambda Function 오류:', errorData)
-      return res.redirect(`${FRONTEND_URL}/login?error=naver_lambda_error`)
+    const tokenData = await tokenResponse.json()
+    
+    if (!tokenData.access_token) {
+      console.error('네이버 토큰 요청 실패:', tokenData)
+      return res.redirect(`${FRONTEND_URL}/login?error=naver_token_failed`)
     }
 
-    const lambdaResult = await lambdaResponse.json()
-    const username = lambdaResult.username
-    const tokens = lambdaResult.tokens
+    // 2. 네이버 사용자 정보 요청
+    const userInfoResponse = await fetch('https://openapi.naver.com/v1/nid/me', {
+      headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+    })
+    const naverUserData = await userInfoResponse.json()
 
-    // MongoDB에서 사용자 정보 조회
-    const user = await User.findOne({ id: username })
-    
-    // Lambda Function에서 Cognito 토큰을 받았으면 그대로 사용
-    if (tokens && tokens.idToken) {
-      // Cognito 토큰을 쿼리 파라미터로 전달 (보안상 좋지 않지만, 일단 동작 확인용)
-      // 실제로는 서버 세션이나 더 안전한 방법 사용 권장
-      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${username}&idToken=${encodeURIComponent(tokens.idToken)}&accessToken=${encodeURIComponent(tokens.accessToken)}&refreshToken=${encodeURIComponent(tokens.refreshToken)}`
-      console.log('네이버 로그인 성공, 사용자:', username, 'Cognito 토큰 받음')
+    if (!naverUserData.response || !naverUserData.response.id) {
+      console.error('네이버 사용자 정보 요청 실패:', naverUserData)
+      return res.redirect(`${FRONTEND_URL}/login?error=naver_user_info_failed`)
+    }
+
+    const naverUser = naverUserData.response
+    const userInfo = {
+      id: `naver_${naverUser.id}`,
+      email: naverUser.email || `${naverUser.id}@naver.temp`,
+      name: naverUser.nickname || naverUser.name || `네이버사용자${naverUser.id}`,
+      provider: 'naver',
+      profileImage: naverUser.profile_image || null
+    }
+
+    // Cognito User Pool이 email을 username으로 사용하므로, email을 username으로 사용
+    const username = userInfo.email // email을 username으로 사용
+
+    // 3. Cognito에서 사용자 찾기 또는 생성
+    const { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminSetUserPasswordCommand, InitiateAuthCommand } = await import('@aws-sdk/client-cognito-identity-provider')
+    const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION || 'ap-northeast-2' })
+
+    let cognitoTokens = null
+    let isNewUser = false
+
+    try {
+      // Cognito 사용자 생성 시도 (email을 username으로 사용)
+      const createUserCommand = new AdminCreateUserCommand({
+        UserPoolId: USER_POOL_ID,
+        Username: userInfo.email, // email을 username으로 사용
+        UserAttributes: [
+          { Name: 'email', Value: userInfo.email },
+          { Name: 'name', Value: userInfo.name }
+          // custom:provider는 User Pool에 정의되어 있지 않으므로 제거
+        ],
+        MessageAction: 'SUPPRESS'
+      })
+      await cognitoClient.send(createUserCommand)
+      isNewUser = true
+      console.log(`Cognito 사용자 생성 완료: ${userInfo.email}`)
+
+      // 임시 비밀번호 생성 및 설정
+      const tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12).toUpperCase() + '!@#'
+      const setPasswordCommand = new AdminSetUserPasswordCommand({
+        UserPoolId: USER_POOL_ID,
+        Username: userInfo.email, // email을 username으로 사용
+        Password: tempPassword,
+        Permanent: true
+      })
+      await cognitoClient.send(setPasswordCommand)
+      console.log(`Cognito 비밀번호 설정 완료: ${userInfo.email}`)
+
+      // Cognito 로그인하여 토큰 획득
+      const authCommand = new InitiateAuthCommand({
+        AuthFlow: 'USER_PASSWORD_AUTH',
+        ClientId: CLIENT_ID,
+        AuthParameters: {
+          USERNAME: userInfo.email, // email을 username으로 사용
+          PASSWORD: tempPassword
+        }
+      })
+      const authResponse = await cognitoClient.send(authCommand)
+
+      if (authResponse.AuthenticationResult) {
+        cognitoTokens = {
+          idToken: authResponse.AuthenticationResult.IdToken,
+          accessToken: authResponse.AuthenticationResult.AccessToken,
+          refreshToken: authResponse.AuthenticationResult.RefreshToken
+        }
+        console.log(`Cognito 토큰 획득 완료: ${userInfo.email}`)
+      }
+    } catch (cognitoError) {
+      if (cognitoError.name === 'UsernameExistsException') {
+        // 사용자가 이미 존재함 - 기존 사용자 로그인 처리
+        console.log(`Cognito 사용자 이미 존재: ${userInfo.email}`)
+        // 기존 사용자의 경우 비밀번호를 알 수 없으므로, 사용자에게 직접 로그인하도록 안내하거나
+        // 다른 방법으로 처리해야 함. 일단 username만 전달
+      } else {
+        console.error('Cognito 사용자 생성 오류:', cognitoError)
+        // Cognito 오류가 발생해도 계속 진행 (MongoDB 사용자 정보는 반환)
+      }
+    }
+
+    // 4. MongoDB에서 사용자 정보 조회 또는 생성 (id는 소셜 ID 사용)
+    let user = await User.findOne({ id: userInfo.id })
+    if (!user) {
+      // MongoDB에 사용자 생성
+      user = new User({
+        id: userInfo.id, // 소셜 ID 사용
+        name: userInfo.name,
+        email: userInfo.email,
+        password: '', // 소셜 로그인은 비밀번호 없음
+        gender: '',
+        fitnessLevel: '',
+        profileImage: userInfo.profileImage,
+        role: 'user'
+      })
+      await user.save()
+      console.log(`MongoDB 사용자 생성 완료: ${userInfo.id}`)
+    }
+
+    // 5. Cognito 토큰이 있으면 반환, 없으면 username만 전달
+    if (cognitoTokens && cognitoTokens.idToken) {
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${encodeURIComponent(userInfo.email)}&idToken=${encodeURIComponent(cognitoTokens.idToken)}&accessToken=${encodeURIComponent(cognitoTokens.accessToken)}&refreshToken=${encodeURIComponent(cognitoTokens.refreshToken)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, name: user.name, email: user.email, profileImage: user.profileImage }))}`
+      console.log('네이버 로그인 성공, Cognito 토큰 포함하여 리다이렉트')
       res.redirect(redirectUrl)
     } else {
-      // 토큰이 없으면 username만 전달 (프론트엔드에서 Cognito SDK로 로그인 시도)
-      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${username}`
-      console.log('네이버 로그인 성공, 사용자:', username, 'Cognito 토큰 없음 (프론트엔드에서 처리 필요)')
+      // 토큰이 없으면 username만 전달
+      const redirectUrl = `${FRONTEND_URL}/auth/success?provider=naver&username=${encodeURIComponent(userInfo.email)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, name: user.name, email: user.email, profileImage: user.profileImage }))}`
+      console.log('네이버 로그인 성공, Cognito 토큰 없음, 사용자명만 전달')
       res.redirect(redirectUrl)
     }
   } catch (error) {

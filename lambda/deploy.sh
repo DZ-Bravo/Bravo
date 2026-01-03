@@ -65,7 +65,6 @@ else
   if [ "$FUNCTION_NAME" == "social-login-handler" ]; then
     ENV_VARS='{
       "Variables": {
-        "AWS_REGION": "ap-northeast-2",
         "USER_POOL_ID": "",
         "CLIENT_ID": "",
         "KAKAO_REST_API_KEY": "",

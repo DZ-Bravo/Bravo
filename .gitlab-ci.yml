@@ -155,6 +155,8 @@ sonar-backend:
   image: sonarsource/sonar-scanner-cli:5
   parallel:
     matrix:
+      - SERVICE_NAME: ai-service
+        ECR_REPO: $AI_ECR_REPO
       - SERVICE_NAME: auth-service
       - SERVICE_NAME: chatbot-service
       - SERVICE_NAME: community-service
@@ -254,6 +256,7 @@ deploy-backend:
   needs:
     - job: build-backend
       artifacts: true
+      optional: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
@@ -267,6 +270,15 @@ deploy-backend:
 
     # EKS 인증
     - aws eks update-kubeconfig --region ap-northeast-2 --name bravo-eks
+    
+    - |
+        echo "▶ Checking image ${ECR_REPO}:${NEXT_VERSION}"
+        if ! aws ecr describe-images \
+          --repository-name "${ECR_REPO}" \
+          --image-ids imageTag="${NEXT_VERSION}" >/dev/null 2>&1; then
+          echo "⏭ No new image for ${SERVICE_NAME}, skipping deploy"
+          exit 0
+        fi
 
     # 배포
     - kubectl set image deployment/$SERVICE_NAME $SERVICE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} -n bravo-core-ns
