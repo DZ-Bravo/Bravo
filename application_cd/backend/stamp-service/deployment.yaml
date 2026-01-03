@@ -47,7 +47,7 @@ spec:
                 secretKeyRef:
                   key: JWT_SECRET
                   name: bravo-secrets
-          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-stamp-service:2.0
+          image: 192.168.0.244:30443/bravo/hiking-stamp-service:latest
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
