@@ -113,9 +113,6 @@ sonar-frontend:
         -Dsonar.qualitygate.wait=true
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        paths:
-          - services/frontend-service/**
   <<: *notify_slack_failure
 
 build-frontend:
@@ -135,9 +132,6 @@ build-frontend:
       dotenv: version.env
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        paths:
-          - services/frontend-service/**
   <<: *notify_slack_failure
 
 deploy-frontend:
@@ -172,14 +166,9 @@ deploy-frontend:
     - kubectl rollout status deployment/frontend -n bravo-front-ns
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
-      changes:
-        paths:
-          - services/frontend-service/**
   <<: *notify_slack_failure
 
-# ===============================
-# Backend (Multiple Services)
-# ===============================
+
 # ===============================
 # Backend (Multiple Services)
 # ===============================
