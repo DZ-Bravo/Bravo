@@ -119,7 +119,8 @@ const backendServices = [
   { path: '/api/courses', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
   { path: '/api/course', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
   { path: '/api/cctv', host: 'mountain-service.bravo-core-ns.svc.cluster.local', port: 3008 },
-  { path: '/api/stamp', host: 'stamp-service.bravo-core-ns.svc.cluster.local', port: 3007 },
+  { path: '/api/stamp', host: 'stamp-service.bravo-core-ns.svc.cluster.local', port: 3010 },
+  { path: '/api/stamps', host: 'stamp-service.bravo-core-ns.svc.cluster.local', port: 3010 },
   { path: '/api/notifications', host: 'notification-service.bravo-core-ns.svc.cluster.local', port: 3005 },
   { path: '/api/notification', host: 'notification-service.bravo-core-ns.svc.cluster.local', port: 3005 },
   { path: '/api/notices', host: 'notice-service.bravo-core-ns.svc.cluster.local', port: 3003 },
@@ -212,7 +213,7 @@ app.use((req, res, next) => {
   // - notification-service: 직접 라우트 정의 → 경로 그대로 전달
   // - notice-service: /api/notices prefix로 마운트 → 경로 그대로 전달
   // - 기타 서비스: path를 제거하고 나머지만 전달
-  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/utils', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/notices', '/api/schedules', '/api/chatbot', '/api/ai']
+  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/utils', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/notices', '/api/schedules', '/api/chatbot', '/api/ai', '/api/stamp', '/api/stamps']
   const backendPath = servicesWithFullPath.some(path => req.path.startsWith(path)) ? req.path : (req.path.replace(backend.path, '') || '/')
   const queryString = req.url.includes('?') ? '?' + req.url.split('?')[1] : ''
   

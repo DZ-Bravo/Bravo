@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import { API_URL } from '../utils/api'
@@ -12,6 +12,16 @@ function AICourse() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [mountainCodeMap, setMountainCodeMap] = useState({})
+
+  // 로그인 체크
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const idToken = localStorage.getItem('idToken')
+    if (!token && !idToken) {
+      alert('로그인이 필요합니다.')
+      navigate('/login', { replace: true })
+    }
+  }, [navigate])
 
 
   const formatPrice = (value) => {
@@ -221,11 +231,23 @@ function AICourse() {
         console.log('API 엔드포인트:', `${API_URL}/api/ai/recommend-course`)
         console.log('요청 데이터:', { userInput })
         
+        // 토큰 가져오기
+        const token = localStorage.getItem('token')
+        const idToken = localStorage.getItem('idToken')
+        const authToken = token || idToken
+        
+        if (!authToken) {
+          alert('로그인이 필요합니다.')
+          navigate('/login')
+          return
+        }
+
         // API 호출 (코스)
         const response = await fetch(`${API_URL}/api/ai/recommend-course`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
           },
           body: JSON.stringify({ userInput })
         })
@@ -267,10 +289,22 @@ function AICourse() {
         console.log('API 엔드포인트:', `${API_URL}/api/ai/recommend-equipment`)
         console.log('요청 데이터:', { userInput })
 
+        // 토큰 가져오기
+        const token = localStorage.getItem('token')
+        const idToken = localStorage.getItem('idToken')
+        const authToken = token || idToken
+        
+        if (!authToken) {
+          alert('로그인이 필요합니다.')
+          navigate('/login')
+          return
+        }
+
         const response = await fetch(`${API_URL}/api/ai/recommend-equipment`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
           },
           body: JSON.stringify({ userInput })
         })

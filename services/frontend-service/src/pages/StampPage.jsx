@@ -37,8 +37,8 @@ function StampPage() {
   }
 
   // 산 목록 가져오기
-  // stamp-service는 포트 3010에서 직접 실행되므로 기본값을 3010 포트로 설정
-  const STAMP_API_URL = import.meta.env.VITE_STAMP_API_URL || (typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:3010` : API_URL)
+  // 프론트엔드 서버의 프록시를 통해 접근
+  const STAMP_API_URL = API_URL
 
   useEffect(() => {
     const fetchMountains = async () => {

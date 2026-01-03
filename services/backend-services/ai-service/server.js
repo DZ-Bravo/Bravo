@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import connectDB from './shared/config/database.js'
 import { BedrockAgentRuntimeClient, InvokeAgentCommand } from '@aws-sdk/client-bedrock-agent-runtime'
 import mongoose from 'mongoose'
+import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 
 dotenv.config()
 
@@ -41,7 +42,7 @@ console.log('EQUIPMENT_AGENT_ALIAS_ID:', EQUIPMENT_AGENT_ALIAS_ID ? '설정됨' 
 console.log('===================')
 
 // AI 등산코스 추천
-app.post('/api/ai/recommend-course', async (req, res) => {
+app.post('/api/ai/recommend-course', authenticateCognitoToken, async (req, res) => {
   try {
     const { userInput, userPreferences, location, difficulty } = req.body
     
@@ -85,7 +86,7 @@ app.post('/api/ai/recommend-course', async (req, res) => {
 })
 
 // AI 등산장비 추천
-app.post('/api/ai/recommend-equipment', async (req, res) => {
+app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, res) => {
   try {
     const { userInput } = req.body
     
