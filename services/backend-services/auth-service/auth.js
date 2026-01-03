@@ -2066,14 +2066,17 @@ router.get('/kakao/callback', async (req, res) => {
     // 4. MongoDB에서 사용자 정보 조회 또는 생성 (id는 소셜 ID 사용)
     let user = await User.findOne({ id: userInfo.id })
     if (!user) {
-      // MongoDB에 사용자 생성
+      // MongoDB에 사용자 생성 (소셜 로그인은 필수 필드에 기본값 설정)
       user = new User({
         id: userInfo.id, // 소셜 ID 사용
         name: userInfo.name,
         email: userInfo.email,
-        password: '', // 소셜 로그인은 비밀번호 없음
-        gender: '',
-        fitnessLevel: '',
+        password: Math.random().toString(36).slice(-12), // 소셜 로그인은 랜덤 비밀번호 (required 필드)
+        socialId: userInfo.kakaoUserId ? `kakao_${userInfo.kakaoUserId}` : userInfo.id, // 소셜 ID 설정 (password required 조건 우회)
+        socialProvider: 'kakao',
+        gender: 'male', // 기본값 (enum: 'male' 또는 'female')
+        fitnessLevel: '초급', // 기본값
+        birthYear: 2000, // 기본값 (숫자)
         profileImage: userInfo.profileImage,
         role: 'user'
       })
@@ -2106,8 +2109,8 @@ router.get('/naver', (req, res) => {
   const REDIRECT_URI = process.env.NAVER_REDIRECT_URI || 'http://192.168.0.242/api/auth/naver/callback'
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
   
-  // 네이버 OAuth URL 생성
-  const naverAuthURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}`
+  // 네이버 OAuth URL 생성 (운영 환경 지원을 위해 추가 파라미터 포함)
+  const naverAuthURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&state=${state}&auth_type=reauthenticate`
   
   console.log('네이버 로그인 시작')
   console.log('- Client ID:', NAVER_CLIENT_ID)
@@ -2261,14 +2264,17 @@ router.get('/naver/callback', async (req, res) => {
     // 4. MongoDB에서 사용자 정보 조회 또는 생성 (id는 소셜 ID 사용)
     let user = await User.findOne({ id: userInfo.id })
     if (!user) {
-      // MongoDB에 사용자 생성
+      // MongoDB에 사용자 생성 (소셜 로그인은 필수 필드에 기본값 설정)
       user = new User({
         id: userInfo.id, // 소셜 ID 사용
         name: userInfo.name,
         email: userInfo.email,
-        password: '', // 소셜 로그인은 비밀번호 없음
-        gender: '',
-        fitnessLevel: '',
+        password: Math.random().toString(36).slice(-12), // 소셜 로그인은 랜덤 비밀번호 (required 필드)
+        socialId: userInfo.naverUserId ? `naver_${userInfo.naverUserId}` : userInfo.id, // 소셜 ID 설정 (password required 조건 우회)
+        socialProvider: 'naver',
+        gender: 'male', // 기본값 (enum: 'male' 또는 'female')
+        fitnessLevel: '초급', // 기본값
+        birthYear: 2000, // 기본값 (숫자)
         profileImage: userInfo.profileImage,
         role: 'user'
       })
