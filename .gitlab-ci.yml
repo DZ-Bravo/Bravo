@@ -283,26 +283,41 @@ deploy-backend:
     entrypoint: [""]
   parallel:
     matrix:
+      # AI 서비스
       - SERVICE_NAME: ai-service
         ECR_REPO: $AI_ECR_REPO
-      - SERVICE_NAME: auth-service
-        ECR_REPO: $AUTH_ECR_REPO
+        K8S_NS: bravo-ai-integration-ns
+
       - SERVICE_NAME: chatbot-service
         ECR_REPO: $CHATBOT_ECR_REPO
+        K8S_NS: bravo-ai-integration-ns
+        
+      # Core backend 서비스
+      - SERVICE_NAME: auth-service
+        ECR_REPO: $AUTH_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: community-service
         ECR_REPO: $COMMUNITY_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: mountain-service
         ECR_REPO: $MOUNTAIN_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: notice-service
         ECR_REPO: $NOTICE_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: notification-service
         ECR_REPO: $NOTIFICATION_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: schedule-service
         ECR_REPO: $SCHEDULE_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: stamp-service
         ECR_REPO: $STAMP_ECR_REPO
+        K8S_NS: bravo-core-ns
       - SERVICE_NAME: store-service
         ECR_REPO: $STORE_ECR_REPO
+        K8S_NS: bravo-core-ns
+        
   needs:
     - job: build-backend
       optional: true
@@ -321,11 +336,23 @@ deploy-backend:
         echo "⏭ Image not found: ${ECR_REPO}:${IMAGE_TAG}"
         exit 0
       fi
+    
+    - |
+      CONTAINER_NAME=$(kubectl get deploy ${SERVICE_NAME} -n ${K8S_NS} \
+        -o jsonpath='{.spec.template.spec.containers[0].name}')
+      echo "confirmed container: ${CONTAINER_NAME}"
     - |
       kubectl set image deployment/${SERVICE_NAME} \
-        ${SERVICE_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} \
-        -n bravo-core-ns
-    - kubectl rollout status deployment/${SERVICE_NAME} -n bravo-core-ns
+        ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} \
+        -n ${K8S_NS}    
+    - |
+      kubectl rollout status deployment/${SERVICE_NAME} \
+        -n ${K8S_NS} \
+        --timeout=120s || {
+          echo "❌ Rollout failed. Rolling back..."
+          kubectl rollout undo deployment/${SERVICE_NAME} -n ${K8S_NS}
+          exit 1
+        }
   <<: *notify_slack_failure
 
 # ===============================
