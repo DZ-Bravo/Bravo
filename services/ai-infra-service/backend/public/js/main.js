@@ -96,11 +96,14 @@ function setupNavigation() {
   })
 }
 
+// 차트 초기화
 function initializeCharts() {
-  // 존재하는 차트만 초기화 (제거된 차트들은 초기화하지 않음)
-  // 모든 차트는 제거되었으므로 빈 함수로 유지
-  // 존재하는 차트만 초기화 (제거된 차트들은 초기화하지 않음)
-  // 모든 차트는 제거되었으므로 빈 함수로 유지
+  // 존재하는 차트만 초기화
+  // CPU 차트 (리소스 사용률) - 제거됨
+  const cpuChartEl = document.getElementById('cpuChart')
+  if (cpuChartEl) {
+    const cpuCtx = cpuChartEl.getContext('2d')
+    cpuChart = new Chart(cpuCtx, {
       type: 'line',
       data: {
         labels: [],
