@@ -17,11 +17,9 @@ spec:
         prometheus.io/port: "3009"
         prometheus.io/path: "/metrics"
     spec:
-      imagePullSecrets:
-      - name: harbor-registry-secret
       containers:
       - name: ai-service
-        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-service:2.1767513579
         ports:
         - containerPort: 3009
           name: http
@@ -58,28 +56,11 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
-        - name: BEDROCK_COURSE_AGENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: BEDROCK_COURSE_AGENT_ID
-        - name: BEDROCK_COURSE_AGENT_ALIAS_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: BEDROCK_COURSE_AGENT_ALIAS_ID
-        - name: VITE_EQUIPMENT_AGENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: VITE_EQUIPMENT_AGENT_ID
-        - name: VITE_EQUIPMENT_ALIAS_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: VITE_EQUIPMENT_ALIAS_ID
+        envFrom:
+        - secretRef:
+            name: bedrock-secret
         resources:
           requests:
             memory: "256Mi"

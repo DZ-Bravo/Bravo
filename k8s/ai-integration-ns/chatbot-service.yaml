@@ -17,12 +17,9 @@ spec:
         prometheus.io/port: "3007"
         prometheus.io/path: "/metrics"
     spec:
-      imagePullSecrets:
-      - name: harbor-registry-secret
       containers:
       - name: chatbot-service
-        image: bravo/hiking-chatbot-service:latest
-        imagePullPolicy: Never
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-chatbot-service:2.0
         ports:
         - containerPort: 3007
           name: http
@@ -56,21 +53,14 @@ spec:
             configMapKeyRef:
               name: bravo-config
               key: AWS_REGION
-        - name: BEDROCK_AGENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: BEDROCK_AGENT_ID
-        - name: BEDROCK_AGENT_ALIAS_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: BEDROCK_AGENT_ALIAS_ID
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
+        envFrom:
+        - secretRef:
+            name: bedrock-secret
         resources:
           requests:
             memory: "256Mi"

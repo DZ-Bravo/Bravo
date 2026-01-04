@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: notice-service
-        image: 192.168.0.244:30305/bravo/hiking-notice-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-notice-service:latest
         ports:
         - containerPort: 3003
           name: http
@@ -41,7 +41,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
         resources:
           requests:

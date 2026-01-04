@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: store-service
-        image: 192.168.0.244:30305/bravo/hiking-store-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-store-service:latest
         ports:
         - containerPort: 3006
           name: http
@@ -45,7 +45,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
         - name: ELASTICSEARCH_URL
           value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"

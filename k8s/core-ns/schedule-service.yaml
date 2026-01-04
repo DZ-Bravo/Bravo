@@ -17,11 +17,9 @@ spec:
         prometheus.io/port: "3004"
         prometheus.io/path: "/metrics"
     spec:
-      imagePullSecrets:
-      - name: harbor-registry-secret
       containers:
       - name: schedule-service
-        image: 192.168.0.244:30305/bravo/hiking-schedule-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-schedule-service:latest
         ports:
         - containerPort: 3004
           name: http
@@ -43,7 +41,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
         resources:
           requests:
