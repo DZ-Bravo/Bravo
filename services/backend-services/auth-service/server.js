@@ -4,15 +4,20 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDB from './shared/config/database.js'
 import authRoutes from './auth.js'
+import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3001
+const SERVICE_NAME = 'auth-service'
 
 // ALB/프록시를 통한 요청을 신뢰하도록 설정
 // X-Forwarded-* 헤더를 신뢰하여 req.protocol, req.hostname 등을 올바르게 설정
 app.set('trust proxy', true)
+
+// Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
+app.use(prometheusMiddleware(SERVICE_NAME))
 
 // 미들웨어6
 app.use(cors())
@@ -77,6 +82,9 @@ connectDB()
 
 // 라우트
 app.use('/api/auth', authRoutes)
+
+// Prometheus 메트릭 엔드포인트
+app.get('/metrics', metricsHandler)
 
 // 헬스체크
 app.get('/health', (req, res) => {

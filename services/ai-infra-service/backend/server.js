@@ -2,14 +2,19 @@ import express from 'express'
 import cors from 'cors'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { prometheusMiddleware, metricsHandler } from '../../shared/utils/prometheus-metrics.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // 환경 변수는 ConfigMap/Secret에서 자동으로 주입됨
 const PORT = process.env.PORT || 3011
+const SERVICE_NAME = 'ai-infra-service'
 
 const app = express()
+
+// Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
+app.use(prometheusMiddleware(SERVICE_NAME))
 
 // 미들웨어
 app.use(cors())
@@ -263,6 +268,9 @@ app.get('/api/grafana/links', (req, res) => {
     explore: `${GRAFANA_URL}/explore`
   })
 })
+
+// Prometheus 메트릭 엔드포인트
+app.get('/metrics', metricsHandler)
 
 // 헬스체크
 app.get('/health', (req, res) => {

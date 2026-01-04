@@ -10,6 +10,7 @@ import { existsSync, readFileSync, statSync } from 'fs'
 import { promisify } from 'util'
 // MongoDB 연결 함수 (인라인 구현)
 import mongoose from 'mongoose'
+import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
 const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI || 'mongodb://mongodb:27017/hiking'
@@ -69,6 +70,10 @@ console.log('[Mountain Service] Mountain 폴더 경로:', MOUNTAIN_BASE_PATH)
 
 const app = express()
 const PORT = process.env.PORT || 3008
+const SERVICE_NAME = 'mountain-service'
+
+// Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
+app.use(prometheusMiddleware(SERVICE_NAME))
 
 // 미들웨어6
 app.use(cors())
@@ -3109,6 +3114,9 @@ app.post('/api/mountains/index/init', async (req, res) => {
     })
   }
 })
+
+// Prometheus 메트릭 엔드포인트
+app.get('/metrics', metricsHandler)
 
 // 헬스체크
 app.get('/health', (req, res) => {

@@ -19,7 +19,8 @@
     "redis": "^4.7.1",
     "@aws-sdk/client-ses": "^3.490.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.490.0",
-    "jwks-rsa": "^3.1.0"
+    "jwks-rsa": "^3.1.0",
+    "prom-client": "^15.1.0"
   }
 }
 

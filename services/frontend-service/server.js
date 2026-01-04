@@ -4,12 +4,17 @@ import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { existsSync, readFileSync } from 'fs'
 import http from 'http'
+import { prometheusMiddleware, metricsHandler } from '../shared/utils/prometheus-metrics.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const app = express()
 const PORT = process.env.PORT || 80
+const SERVICE_NAME = 'frontend-service'
+
+// Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
+app.use(prometheusMiddleware(SERVICE_NAME))
 
 const distPath = join(__dirname, 'dist')
 const indexHtmlPath = join(distPath, 'index.html')
@@ -319,6 +324,9 @@ app.get('*', (req, res, next) => {
     res.status(500).send('Frontend build files not found. Please build the frontend.')
   }
 })
+
+// Prometheus 메트릭 엔드포인트
+app.get('/metrics', metricsHandler)
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Frontend server running on port ${PORT}`)

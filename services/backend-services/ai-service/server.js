@@ -6,15 +6,23 @@ import connectDB from './shared/config/database.js'
 import { BedrockAgentRuntimeClient, InvokeAgentCommand } from '@aws-sdk/client-bedrock-agent-runtime'
 import mongoose from 'mongoose'
 import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
+import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3009
+const SERVICE_NAME = 'ai-service'
+
+// Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
+app.use(prometheusMiddleware(SERVICE_NAME))
 
 // 미들웨어
 app.use(cors())
 app.use(express.json())
+
+// Prometheus 메트릭 엔드포인트
+app.get('/metrics', metricsHandler)
 
 // DB 연결4
 connectDB()

@@ -74,78 +74,36 @@ async function getRealtimeMetrics(nodeName) {
   }
 }
 
-// 5xx 에러율
+// 5xx 에러율 (애플리케이션 메트릭 사용)
 async function get5xxErrorRate() {
-  const query = `sum(rate(istio_requests_total{response_code=~"5.."}[5m]))`
-  const result = await queryPrometheus(query)
+  const query = `sum(rate(http_requests_total{status_code=~"5..",kubernetes_namespace=~"bravo-.*"}[5m]))`
+  const result = await queryPrometheus(query).catch(() => [{ value: [0, '0'] }])
   return result[0]?.value[1] || '0'
 }
 
-// 5xx 에러 단계별 분류
+// 5xx 에러 단계별 분류 (애플리케이션 메트릭 사용)
 async function get5xxErrorBreakdown(startTime, endTime) {
   // Prometheus rate() 함수는 고정된 duration을 사용 (5분 또는 1시간)
   // ISO 문자열이 전달되면 Date 객체로 변환, 그렇지 않으면 기본값 사용
   const timeRange = '[5m]' // rate() 함수의 기본 duration
   
   try {
-    // 1. HAProxy 레벨 (메트릭이 존재하지 않을 수 있으므로 기본값 반환)
-    let haproxyErrors = []
-    try {
-      const haproxyQuery = `sum(rate(haproxy_backend_http_responses_total{code=~"5.."}${timeRange}))`
-      haproxyErrors = await queryPrometheus(haproxyQuery)
-    } catch (e) {
-      console.warn('HAProxy metrics not available:', e.message)
-    }
-    
-    // 2. Istio Gateway 레벨
-    let gatewayErrors = []
-    try {
-      const gatewayQuery = `sum(rate(istio_requests_total{source_workload="istio-ingressgateway",response_code=~"5.."}${timeRange}))`
-      gatewayErrors = await queryPrometheus(gatewayQuery)
-    } catch (e) {
-      console.warn('Gateway metrics not available:', e.message)
-    }
-    
-    // 3. Application 레벨
+    // 애플리케이션 레벨 5xx 에러 수집 (bravo-* namespace)
     let appErrors = []
     try {
-      const appQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*",response_code=~"5.."}${timeRange}))`
+      const appQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*",status_code=~"5.."}${timeRange}))`
       appErrors = await queryPrometheus(appQuery)
     } catch (e) {
       console.warn('Application metrics not available:', e.message)
     }
     
-    // 4. Downstream 레벨
-    let downstreamErrors = []
-    try {
-      const downstreamQuery = `sum(rate(istio_requests_total{response_code=~"5..",response_flags=~"UF|UO|DC|NR|UH"}${timeRange}))`
-      downstreamErrors = await queryPrometheus(downstreamQuery)
-    } catch (e) {
-      console.warn('Downstream metrics not available:', e.message)
-    }
-    
-    const totalHAProxy = parseFloat(haproxyErrors[0]?.value[1] || 0)
-    const totalGateway = parseFloat(gatewayErrors[0]?.value[1] || 0)
     const totalApp = parseFloat(appErrors[0]?.value[1] || 0)
-    const totalDownstream = parseFloat(downstreamErrors[0]?.value[1] || 0)
-    const total = totalHAProxy + totalGateway + totalApp + totalDownstream
+    const total = totalApp
     
     return {
-      haproxy: {
-        count: totalHAProxy,
-        percentage: total > 0 ? (totalHAProxy / total * 100).toFixed(1) : '0'
-      },
-      gateway: {
-        count: totalGateway,
-        percentage: total > 0 ? (totalGateway / total * 100).toFixed(1) : '0'
-      },
       application: {
         count: totalApp,
         percentage: total > 0 ? (totalApp / total * 100).toFixed(1) : '0'
-      },
-      downstream: {
-        count: totalDownstream,
-        percentage: total > 0 ? (totalDownstream / total * 100).toFixed(1) : '0'
       },
       total
     }
@@ -153,10 +111,7 @@ async function get5xxErrorBreakdown(startTime, endTime) {
     console.error('Error in get5xxErrorBreakdown:', error)
     // 에러 발생 시 기본값 반환
     return {
-      haproxy: { count: 0, percentage: '0' },
-      gateway: { count: 0, percentage: '0' },
       application: { count: 0, percentage: '0' },
-      downstream: { count: 0, percentage: '0' },
       total: 0
     }
   }
@@ -200,14 +155,14 @@ async function getHistoryMetrics(nodeName, start, end, step = '15s') {
   return getNodeMetrics(nodeName, start, end)
 }
 
-// 서비스별 에러 통계
+// 서비스별 에러 통계 (애플리케이션 메트릭 사용)
 async function getServiceErrorStats(startTime, endTime) {
   const timeRange = endTime && startTime ? `[${Math.floor((endTime - startTime) / 1000)}s]` : '[1h]'
-  const query = `sum(rate(istio_requests_total{response_code=~"5.."}${timeRange})) by (destination_service_name)`
-  const result = await queryPrometheus(query)
+  const query = `sum(rate(http_requests_total{status_code=~"5..",kubernetes_namespace=~"bravo-.*"}${timeRange})) by (service)`
+  const result = await queryPrometheus(query).catch(() => [])
   
   return result.map(r => ({
-    service: r.metric.destination_service_name,
+    service: r.metric.service || 'unknown',
     count: parseFloat(r.value[1])
   }))
 }
@@ -217,10 +172,11 @@ async function getContainerCPUMetrics(nodeName, start, end, step = '15s') {
   try {
     // Prometheus에서 container_cpu_usage_seconds_total 메트릭 쿼리
     // rate()를 사용하여 CPU 사용률 계산 (초당 사용량, cores 단위)
-    let query = 'sum(rate(container_cpu_usage_seconds_total{container!="POD",container!=""}[5m])) by (namespace,pod,container)'
+    // namespace와 pod label이 있는 메트릭만 사용
+    let query = 'sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",pod!=""}[5m])) by (namespace,pod,container_name)'
     
     if (nodeName) {
-      query = `sum(rate(container_cpu_usage_seconds_total{container!="POD",container!="",kubernetes_node="${nodeName}"}[5m])) by (namespace,pod,container)`
+      query = `sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",pod!="",instance=~"${nodeName}"}[5m])) by (namespace,pod,container_name)`
     }
     
     const results = await queryRange(query, start, end, step)
@@ -261,14 +217,15 @@ async function getContainerCPUMetrics(nodeName, start, end, step = '15s') {
 async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
   try {
     // 사용량과 limit을 함께 가져오기
+    // namespace와 pod label이 있는 메트릭만 사용
     const usageQuery = nodeName
-      ? 'sum(container_memory_working_set_bytes{container!="POD",name!=""}) by (namespace,pod,container)'
-      : 'sum(container_memory_working_set_bytes{container!="POD",name!=""}) by (namespace,pod,container)'
+      ? 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
+      : 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
     
-    // limit 정보 가져오기 (kube_pod_container_resource_limits 사용)
+    // limit 정보 가져오기
     const limitQuery = nodeName
-      ? 'sum(container_spec_memory_limit_bytes{container!="POD",container!=""}) by (namespace,pod,container)'
-      : 'sum(container_spec_memory_limit_bytes{container!="POD",container!=""}) by (namespace,pod,container)'
+      ? 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
+      : 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
     
     const [usageResults, limitResults] = await Promise.all([
       queryRange(usageQuery, start, end, step).catch(err => {
@@ -286,7 +243,7 @@ async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
     limitResults.forEach(result => {
       const namespace = result.metric.namespace || 'default'
       const pod = result.metric.pod || ''
-      const container = result.metric.container || ''
+      const container = result.metric.container_name || result.metric.container || ''
       const key = `${namespace}/${pod}/${container}`
       const limitBytes = parseFloat(result.value[1])
       if (limitBytes > 0) {
@@ -300,12 +257,12 @@ async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
     usageResults.forEach(result => {
       const namespace = result.metric.namespace || 'default'
       const pod = result.metric.pod || ''
-      const container = result.metric.container || ''
+      const container = result.metric.container_name || result.metric.container || ''
       const key = `${namespace}/${pod}/${container}`
       
       if (!containerMap[key]) {
         containerMap[key] = {
-          name: container,
+          name: container || 'unknown',
           namespace: namespace,
           pod: pod,
           data: []
@@ -339,10 +296,12 @@ async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
 async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
   try {
     // Prometheus에서 container_cpu_usage_seconds_total 메트릭을 Pod별로 집계
-    let query = 'sum(rate(container_cpu_usage_seconds_total{container!="POD",name!=""}[5m])) by (namespace,pod)'
+    // pod label만 사용 (namespace label이 없는 경우가 많음)
+    // bravo-* namespace의 Pod 이름 패턴으로 필터링
+    let query = 'sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}[5m])) by (pod)'
     
     if (nodeName) {
-      query = `sum(rate(container_cpu_usage_seconds_total{container!="POD",name!="",instance=~"${nodeName}"}[5m])) by (namespace,pod)`
+      query = `sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}"}[5m])) by (pod)`
     }
     
     const results = await queryRange(query, start, end, step)
@@ -351,21 +310,22 @@ async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
     const podMap = {}
     
     results.forEach(result => {
-      const namespace = result.metric.namespace || 'default'
       const pod = result.metric.pod || ''
-      const key = `${namespace}/${pod}`
+      if (!pod) return
       
-      if (!podMap[key]) {
-        podMap[key] = {
+      // Pod 이름에서 namespace 추론 (또는 Kubernetes API에서 가져온 정보 사용)
+      // 일단 pod 이름만 사용
+      if (!podMap[pod]) {
+        podMap[pod] = {
           name: pod,
-          namespace: namespace,
+          namespace: 'unknown', // 나중에 Kubernetes API로 채움
           data: []
         }
       }
       
       // CPU 사용률 (cores 단위)
       if (result.values && result.values.length > 0) {
-        podMap[key].data = result.values.map(v => [v[0], parseFloat(v[1])])
+        podMap[pod].data = result.values.map(v => [v[0], parseFloat(v[1])])
       }
     })
     
@@ -380,14 +340,15 @@ async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
 async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
   try {
     // 사용량과 limit을 함께 가져오기
+    // pod label만 사용 (namespace label이 없는 경우가 많음)
     const usageQuery = nodeName
-      ? 'sum(container_memory_working_set_bytes{container!="POD",name!=""}) by (namespace,pod)'
-      : 'sum(container_memory_working_set_bytes{container!="POD",name!=""}) by (namespace,pod)'
+      ? 'sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
+      : 'sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
     
     // Pod의 모든 컨테이너 limit 합계
     const limitQuery = nodeName
-      ? 'sum(container_spec_memory_limit_bytes{container!="POD",container!=""}) by (namespace,pod)'
-      : 'sum(container_spec_memory_limit_bytes{container!="POD",container!=""}) by (namespace,pod)'
+      ? 'sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
+      : 'sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
     
     const [usageResults, limitResults] = await Promise.all([
       queryRange(usageQuery, start, end, step).catch(err => {
@@ -400,15 +361,14 @@ async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
       })
     ])
     
-    // limit 정보를 Map으로 변환 (namespace/pod를 키로)
+    // limit 정보를 Map으로 변환 (pod를 키로)
     const limitMap = new Map()
     limitResults.forEach(result => {
-      const namespace = result.metric.namespace || 'default'
       const pod = result.metric.pod || ''
-      const key = `${namespace}/${pod}`
+      if (!pod) return
       const limitBytes = parseFloat(result.value[1])
       if (limitBytes > 0) {
-        limitMap.set(key, limitBytes)
+        limitMap.set(pod, limitBytes)
       }
     })
     
@@ -416,31 +376,30 @@ async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
     const podMap = {}
     
     usageResults.forEach(result => {
-      const namespace = result.metric.namespace || 'default'
       const pod = result.metric.pod || ''
-      const key = `${namespace}/${pod}`
+      if (!pod) return
       
-      if (!podMap[key]) {
-        podMap[key] = {
+      if (!podMap[pod]) {
+        podMap[pod] = {
           name: pod,
-          namespace: namespace,
+          namespace: 'unknown', // 나중에 Kubernetes API로 채움
           data: []
         }
       }
       
-      const limitBytes = limitMap.get(key) || 0
+      const limitBytes = limitMap.get(pod) || 0
       
       // Memory 사용률(%) 계산: (사용량 / limit) * 100
       // limit이 없으면 0 반환 (표시 안 함)
       if (result.values && result.values.length > 0) {
-        podMap[key].data = result.values.map(v => {
+        podMap[pod].data = result.values.map(v => {
           const usageBytes = parseFloat(v[1])
           const usagePercent = limitBytes > 0 ? (usageBytes / limitBytes * 100) : 0
           return [v[0], usagePercent]
         })
         // 원본 bytes 값도 저장 (리스트/Top 5에서 MB 표시용)
-        podMap[key].usageBytesData = result.values.map(v => [v[0], parseFloat(v[1])])
-        podMap[key].limitBytes = limitBytes
+        podMap[pod].usageBytesData = result.values.map(v => [v[0], parseFloat(v[1])])
+        podMap[pod].limitBytes = limitBytes
       }
     })
     
@@ -591,29 +550,29 @@ async function getAlertHistory(start, end) {
   }
 }
 
-// 서비스별 RPS, Latency (p95, p99), Error Rate 수집
+// 서비스별 RPS, Latency (p95, p99), Error Rate 수집 (애플리케이션 메트릭 사용)
 async function getServiceMetrics(serviceName, namespace, start, end) {
   try {
     const timeRange = '[5m]'
     
-    // RPS (Requests Per Second)
-    const rpsQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange}))`
-    const rpsResult = await queryPrometheus(rpsQuery)
+    // RPS (Requests Per Second) - http_requests_total 사용
+    const rpsQuery = `sum(rate(http_requests_total{service="${serviceName}",kubernetes_namespace="${namespace}"}${timeRange}))`
+    const rpsResult = await queryPrometheus(rpsQuery).catch(() => [{ value: [0, '0'] }])
     const rps = parseFloat(rpsResult[0]?.value[1] || 0)
     
-    // p95 Latency (milliseconds)
-    const p95Query = `histogram_quantile(0.95, sum(rate(istio_request_duration_milliseconds_bucket{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange})) by (le))`
-    const p95Result = await queryPrometheus(p95Query)
-    const p95 = parseFloat(p95Result[0]?.value[1] || 0)
+    // p95 Latency (seconds -> milliseconds 변환)
+    const p95Query = `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="${serviceName}",kubernetes_namespace="${namespace}"}${timeRange})) by (le))`
+    const p95Result = await queryPrometheus(p95Query).catch(() => [{ value: [0, '0'] }])
+    const p95 = parseFloat(p95Result[0]?.value[1] || 0) * 1000 // 초를 밀리초로 변환
     
-    // p99 Latency (milliseconds)
-    const p99Query = `histogram_quantile(0.99, sum(rate(istio_request_duration_milliseconds_bucket{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange})) by (le))`
-    const p99Result = await queryPrometheus(p99Query)
-    const p99 = parseFloat(p99Result[0]?.value[1] || 0)
+    // p99 Latency (seconds -> milliseconds 변환)
+    const p99Query = `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{service="${serviceName}",kubernetes_namespace="${namespace}"}${timeRange})) by (le))`
+    const p99Result = await queryPrometheus(p99Query).catch(() => [{ value: [0, '0'] }])
+    const p99 = parseFloat(p99Result[0]?.value[1] || 0) * 1000 // 초를 밀리초로 변환
     
     // 5xx Error Rate (%)
-    const error5xxQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}",response_code=~"5.."}${timeRange}))`
-    const totalQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange}))`
+    const error5xxQuery = `sum(rate(http_requests_total{service="${serviceName}",kubernetes_namespace="${namespace}",status_code=~"5.."}${timeRange}))`
+    const totalQuery = `sum(rate(http_requests_total{service="${serviceName}",kubernetes_namespace="${namespace}"}${timeRange}))`
     const [error5xxResult, totalResult] = await Promise.all([
       queryPrometheus(error5xxQuery).catch(() => [{ value: [0, '0'] }]),
       queryPrometheus(totalQuery).catch(() => [{ value: [0, '0'] }])
@@ -623,7 +582,7 @@ async function getServiceMetrics(serviceName, namespace, start, end) {
     const error5xxRate = total > 0 ? (error5xx / total * 100) : 0
     
     // 4xx Error Rate (%)
-    const error4xxQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}",response_code=~"4.."}${timeRange}))`
+    const error4xxQuery = `sum(rate(http_requests_total{service="${serviceName}",kubernetes_namespace="${namespace}",status_code=~"4.."}${timeRange}))`
     const error4xxResult = await queryPrometheus(error4xxQuery).catch(() => [{ value: [0, '0'] }])
     const error4xx = parseFloat(error4xxResult[0]?.value[1] || 0)
     const error4xxRate = total > 0 ? (error4xx / total * 100) : 0
@@ -666,13 +625,13 @@ async function getServiceResourceMetrics(serviceName, namespace, start, end) {
       prometheusService.getPodMemoryMetrics(null, start, end, '15s').catch(() => [])
     ])
     
-    // 서비스의 Pod들만 필터링
+    // 서비스의 Pod들만 필터링 (pod 이름으로만 매칭)
     const servicePodNames = new Set(pods.map(p => p.name))
     const serviceCpuMetrics = cpuMetrics.filter(m => 
-      m.namespace === namespace && servicePodNames.has(m.name)
+      servicePodNames.has(m.name)
     )
     const serviceMemMetrics = memMetrics.filter(m => 
-      m.namespace === namespace && servicePodNames.has(m.name)
+      servicePodNames.has(m.name)
     )
     
     // CPU 평균 계산
@@ -709,29 +668,29 @@ async function getServiceResourceMetrics(serviceName, namespace, start, end) {
   }
 }
 
-// 전체 RPS, p95, p99 수집 (Overview용)
+// 전체 RPS, p95, p99 수집 (Overview용) - 애플리케이션 메트릭 사용
 async function getOverallMetrics(start, end) {
   try {
     const timeRange = '[5m]'
     
-    // 전체 RPS
-    const rpsQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*"}${timeRange}))`
+    // 전체 RPS - 모든 bravo-* namespace의 서비스
+    const rpsQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*"}${timeRange}))`
     const rpsResult = await queryPrometheus(rpsQuery).catch(() => [{ value: [0, '0'] }])
     const rps = parseFloat(rpsResult[0]?.value[1] || 0)
     
-    // 전체 p95
-    const p95Query = `histogram_quantile(0.95, sum(rate(istio_request_duration_milliseconds_bucket{destination_workload_namespace=~"bravo-.*"}${timeRange})) by (le))`
+    // 전체 p95 (seconds -> milliseconds 변환)
+    const p95Query = `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{kubernetes_namespace=~"bravo-.*"}${timeRange})) by (le))`
     const p95Result = await queryPrometheus(p95Query).catch(() => [{ value: [0, '0'] }])
-    const p95 = parseFloat(p95Result[0]?.value[1] || 0)
+    const p95 = parseFloat(p95Result[0]?.value[1] || 0) * 1000 // 초를 밀리초로 변환
     
-    // 전체 p99
-    const p99Query = `histogram_quantile(0.99, sum(rate(istio_request_duration_milliseconds_bucket{destination_workload_namespace=~"bravo-.*"}${timeRange})) by (le))`
+    // 전체 p99 (seconds -> milliseconds 변환)
+    const p99Query = `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{kubernetes_namespace=~"bravo-.*"}${timeRange})) by (le))`
     const p99Result = await queryPrometheus(p99Query).catch(() => [{ value: [0, '0'] }])
-    const p99 = parseFloat(p99Result[0]?.value[1] || 0)
+    const p99 = parseFloat(p99Result[0]?.value[1] || 0) * 1000 // 초를 밀리초로 변환
     
     // 전체 4xx Error Rate
-    const error4xxQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*",response_code=~"4.."}${timeRange}))`
-    const totalQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*"}${timeRange}))`
+    const error4xxQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*",status_code=~"4.."}${timeRange}))`
+    const totalQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*"}${timeRange}))`
     const [error4xxResult, totalResult] = await Promise.all([
       queryPrometheus(error4xxQuery).catch(() => [{ value: [0, '0'] }]),
       queryPrometheus(totalQuery).catch(() => [{ value: [0, '0'] }])

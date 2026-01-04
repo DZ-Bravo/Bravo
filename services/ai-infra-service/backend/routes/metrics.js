@@ -78,26 +78,27 @@ router.get('/pods', async (req, res) => {
       prometheusService.getPodMemoryMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch(() => [])
     ])
     
-    // 메트릭을 Map으로 변환 (namespace/pod를 키로)
+    // 메트릭을 Map으로 변환 (pod 이름을 키로)
     const cpuMap = new Map()
     cpuMetrics.forEach(metric => {
-      const key = `${metric.namespace}/${metric.name}`
+      const podName = metric.name
       const lastValue = metric.data && metric.data.length > 0 ? parseFloat(metric.data[metric.data.length - 1][1]) : 0
-      cpuMap.set(key, lastValue * 100) // cores를 %로 변환 (간단히 * 100, 실제로는 limit 대비 계산 필요)
+      // CPU는 cores 단위이므로, limit 대비 % 계산 필요 (일단 cores * 100으로 표시)
+      cpuMap.set(podName, lastValue * 100)
     })
     
     const memMap = new Map()
     memMetrics.forEach(metric => {
-      const key = `${metric.namespace}/${metric.name}`
+      const podName = metric.name
       const lastValue = metric.data && metric.data.length > 0 ? parseFloat(metric.data[metric.data.length - 1][1]) : 0
-      memMap.set(key, lastValue)
+      // Memory는 이미 %로 계산되어 있음 (limit 대비)
+      memMap.set(podName, lastValue)
     })
     
     // Pod 데이터에 메트릭 추가
     const podsWithMetrics = pods.map(pod => {
-      const key = `${pod.namespace}/${pod.name}`
-      const cpu = cpuMap.get(key) || 0
-      const mem = memMap.get(key) || 0
+      const cpu = cpuMap.get(pod.name) || 0
+      const mem = memMap.get(pod.name) || 0
       const oomKilled = pod.status === 'Failed' && pod.restartCount > 0 // 간단한 추정
       
       return {
