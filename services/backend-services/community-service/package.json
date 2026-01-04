@@ -16,7 +16,9 @@
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "axios": "^1.6.0",
-    "@elastic/elasticsearch": "^8.11.0"
+    "@elastic/elasticsearch": "^8.11.0",
+    "prom-client": "^15.1.0",
+    "jwks-rsa": "^3.1.0"
   }
 }
 

@@ -17,6 +17,7 @@
     "puppeteer": "^21.0.0",
     "@kubernetes/client-node": "^0.20.0",
     "@aws-sdk/client-bedrock-runtime": "^3.490.0",
-    "@aws-sdk/client-bedrock-agent-runtime": "^3.490.0"
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.490.0",
+    "prom-client": "^15.1.0"
   }
 }

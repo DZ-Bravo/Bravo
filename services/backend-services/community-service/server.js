@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import connectDB from './shared/config/database.js'
 import postsRoutes from './posts.js'
+import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
 
 dotenv.config()
 
@@ -14,6 +15,10 @@ const __dirname = dirname(__filename)
 
 const app = express()
 const PORT = process.env.PORT || 3002
+const SERVICE_NAME = 'community-service'
+
+// Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
+app.use(prometheusMiddleware(SERVICE_NAME))
 
 // 미들웨어6
 app.use(cors())
@@ -31,6 +36,9 @@ connectDB()
 
 // 라우트
 app.use('/api/posts', postsRoutes)
+
+// Prometheus 메트릭 엔드포인트
+app.get('/metrics', metricsHandler)
 
 // 헬스체크
 app.get('/health', (req, res) => {
