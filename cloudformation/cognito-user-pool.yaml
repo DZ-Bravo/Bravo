@@ -133,7 +133,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: pre-token-generation
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Handler: index.handler
       Role: !GetAtt PreTokenGenerationRole.Arn
       Code:
@@ -156,7 +156,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: social-login-handler
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Handler: index.handler
       Role: !GetAtt SocialLoginHandlerRole.Arn
       Code:

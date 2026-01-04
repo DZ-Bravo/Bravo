@@ -70,3 +70,4 @@ kubectl run mongo-test --image=mongo:7 --rm -it --restart=Never -n bravo-core-ns
 3. 호스트명을 IP 주소로 변경
 4. EKS에서 연결 테스트
 
+

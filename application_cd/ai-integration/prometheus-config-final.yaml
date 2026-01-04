@@ -66,3 +66,4 @@ scrape_configs:
       - target_label: node
         replacement: 'ip-10-0-24-98.ap-northeast-2.compute.internal'
 
+

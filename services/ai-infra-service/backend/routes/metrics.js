@@ -242,5 +242,284 @@ router.get('/resource-usage', async (req, res) => {
   }
 })
 
+// Overview 메인 요약 데이터
+router.get('/overview', async (req, res) => {
+  try {
+    const { start, end } = req.query
+    const startTime = start ? new Date(start) : new Date(Date.now() - 3600000) // 기본 1시간 전
+    const endTime = end ? new Date(end) : new Date()
+
+    // 가용성, 지연, 에러율, 트래픽 데이터 수집
+    const [clusterOverview, resourceUsage] = await Promise.all([
+      kubernetesService.getClusterOverview(),
+      prometheusService.getResourceUsageTimeline(null, startTime.toISOString(), endTime.toISOString())
+    ])
+
+    // 가용성 계산 (성공률)
+    let errorBreakdownData = null
+    try {
+      errorBreakdownData = await prometheusService.get5xxErrorBreakdown(startTime.toISOString(), endTime.toISOString())
+    } catch (error) {
+      console.warn('Error getting error breakdown:', error)
+    }
+    
+    const totalRequests = errorBreakdownData?.total || 0
+    const error5xx = errorBreakdownData?.application?.count || 0
+    const successRate = totalRequests > 0 ? ((totalRequests - error5xx) / totalRequests * 100).toFixed(2) : 100
+
+    // 지연 데이터 (p95, p99) - 임시로 0, 실제로는 Prometheus에서 수집 필요
+    const latencyP95 = 0 // TODO: Prometheus에서 수집
+    const latencyP99 = 0 // TODO: Prometheus에서 수집
+
+    // 에러율
+    const errorRate5xx = totalRequests > 0 ? (error5xx / totalRequests * 100).toFixed(2) : 0
+    const errorRate4xx = 0 // TODO: Prometheus에서 수집
+
+    // 트래픽 (RPS) - 임시로 0, 실제로는 Prometheus에서 수집 필요
+    const rps = 0 // TODO: Prometheus에서 수집
+
+    // 포화도 (CPU/Mem 평균)
+    const cpuAvg = resourceUsage?.cpu?.average || 0
+    const memAvg = resourceUsage?.memory?.average || 0
+
+    // Top 3 서비스 - 임시로 빈 배열
+    const top3Services = [] // TODO: 서비스별 리소스 사용량 계산
+
+    // Replica 상태
+    const deployments = await kubernetesService.getDeployments()
+    let replicaHealthy = 0
+    let replicaUnhealthy = 0
+    const replicaUnhealthyServices = []
+
+    for (const dep of deployments) {
+      if (dep.available === dep.desired) {
+        replicaHealthy++
+      } else {
+        replicaUnhealthy++
+        replicaUnhealthyServices.push(dep.name)
+      }
+    }
+
+    res.json({
+      availability: {
+        successRate: parseFloat(successRate),
+        error5xxRate: parseFloat(errorRate5xx)
+      },
+      latency: {
+        p95: latencyP95,
+        p99: latencyP99
+      },
+      errorRate: {
+        error5xx: parseFloat(errorRate5xx),
+        error4xx: parseFloat(errorRate4xx)
+      },
+      traffic: {
+        rps: rps,
+        note: '내부만'
+      },
+      saturation: {
+        cpuAvg: parseFloat(cpuAvg.toFixed(2)),
+        memAvg: parseFloat(memAvg.toFixed(2)),
+        top3Services: top3Services
+      },
+      replica: {
+        healthy: replicaHealthy,
+        unhealthy: replicaUnhealthy,
+        unhealthyServices: replicaUnhealthyServices
+      },
+      trends: {
+        // 추이 데이터는 별도 엔드포인트에서 제공
+        start: startTime.toISOString(),
+        end: endTime.toISOString()
+      }
+    })
+  } catch (error) {
+    console.error('Error getting overview:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Services 테이블 데이터
+router.get('/services', async (req, res) => {
+  try {
+    const { namespace, sort } = req.query
+    const startTime = new Date(Date.now() - 3600000) // 1시간 전
+    const endTime = new Date()
+
+    // 모든 서비스 가져오기
+    const services = await kubernetesService.getServices()
+    const deployments = await kubernetesService.getDeployments()
+
+    // 서비스별 메트릭 수집
+    const servicesData = await Promise.all(services.map(async (service) => {
+      if (namespace && service.namespace !== namespace) {
+        return null
+      }
+
+      const deployment = deployments.find(d => 
+        d.namespace === service.namespace && 
+        d.name === service.name
+      )
+
+      // Pod 메트릭 수집
+      const pods = await kubernetesService.getPods({ 
+        namespace: service.namespace,
+        labelSelector: `app=${service.name}`
+      })
+
+      // CPU/Mem 평균 계산
+      let cpuAvg = 0
+      let memAvg = 0
+      let restart1h = 0
+      let restart24h = 0
+
+      if (pods.length > 0) {
+        // TODO: Prometheus에서 실제 CPU/Mem 메트릭 수집
+        // 임시로 0으로 설정
+        cpuAvg = 0
+        memAvg = 0
+
+        // Restart 계산
+        const now = new Date()
+        const oneHourAgo = new Date(now.getTime() - 3600000)
+        const oneDayAgo = new Date(now.getTime() - 86400000)
+
+        pods.forEach(pod => {
+          const restartCount = pod.restartCount || 0
+          // TODO: 실제로는 Pod 이벤트에서 시간별 restart 계산 필요
+          restart24h += restartCount
+        })
+      }
+
+      return {
+        name: service.name,
+        namespace: service.namespace,
+        rps: 0, // TODO: Prometheus에서 수집
+        latencyP95: 0, // TODO: Prometheus에서 수집
+        errorRate5xx: 0, // TODO: Prometheus에서 수집
+        errorRate4xx: 0, // TODO: Prometheus에서 수집
+        replica: {
+          desired: deployment?.desired || 0,
+          available: deployment?.available || 0
+        },
+        restart: {
+          '1h': restart1h,
+          '24h': restart24h
+        },
+        cpu: parseFloat(cpuAvg.toFixed(2)),
+        mem: parseFloat(memAvg.toFixed(2))
+      }
+    }))
+
+    // null 제거 및 정렬
+    const filteredData = servicesData.filter(s => s !== null)
+    
+    if (sort) {
+      const [field, order] = sort.split('-')
+      filteredData.sort((a, b) => {
+        let aVal, bVal
+        if (field === 'p95') {
+          aVal = a.latencyP95
+          bVal = b.latencyP95
+        } else if (field === '5xx') {
+          aVal = a.errorRate5xx
+          bVal = b.errorRate5xx
+        } else if (field === 'cpu') {
+          aVal = a.cpu
+          bVal = b.cpu
+        } else if (field === 'mem') {
+          aVal = a.mem
+          bVal = b.mem
+        } else if (field === 'replica') {
+          aVal = a.replica.desired - a.replica.available
+          bVal = b.replica.desired - b.replica.available
+        }
+        return order === 'desc' ? bVal - aVal : aVal - bVal
+      })
+    }
+
+    res.json(filteredData)
+  } catch (error) {
+    console.error('Error getting services:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Service Detail 데이터
+router.get('/services/:namespace/:service', async (req, res) => {
+  try {
+    const { namespace, service } = req.params
+    const { start, end } = req.query
+    const startTime = start ? new Date(start) : new Date(Date.now() - 86400000) // 기본 24시간 전
+    const endTime = end ? new Date(end) : new Date()
+
+    // 서비스 정보
+    const services = await kubernetesService.getServices()
+    const serviceInfo = services.find(s => s.namespace === namespace && s.name === service)
+
+    if (!serviceInfo) {
+      return res.status(404).json({ error: 'Service not found' })
+    }
+
+    // Deployment 정보
+    const deployments = await kubernetesService.getDeployments()
+    const deployment = deployments.find(d => d.namespace === namespace && d.name === service)
+
+    // Pod 목록
+    const pods = await kubernetesService.getPods({ namespace, labelSelector: `app=${service}` })
+
+    // 골든 시그널 데이터 (임시)
+    const goldenSignals = {
+      rps: [],
+      latencyP95: [],
+      latencyP99: [],
+      errorRate4xx: [],
+      errorRate5xx: []
+    }
+
+    // Replica 상태
+    const replicaStatus = {
+      desired: deployment?.desired || 0,
+      available: deployment?.available || 0,
+      pending: pods.filter(p => p.status === 'Pending').length,
+      failed: pods.filter(p => p.status === 'Failed').length
+    }
+
+    // 리소스 사용량
+    const cpuAvg = 0 // TODO: Prometheus에서 수집
+    const memAvg = 0 // TODO: Prometheus에서 수집
+
+    // Top Pod 3
+    const topPods = pods.slice(0, 3).map(pod => ({
+      name: pod.name,
+      cpu: 0, // TODO: Prometheus에서 수집
+      mem: 0 // TODO: Prometheus에서 수집
+    }))
+
+    res.json({
+      service: {
+        name: service,
+        namespace: namespace
+      },
+      goldenSignals,
+      slowApis: [], // TODO: Prometheus에서 수집
+      errorApis: [], // TODO: Prometheus에서 수집
+      replicaStatus,
+      resources: {
+        cpuAvg,
+        memAvg,
+        topPods
+      },
+      errorLogCount: [], // TODO: Loki에서 수집
+      topExceptions: [], // TODO: Loki에서 수집
+      slowTraces: [], // TODO: Tempo에서 수집
+      errorTraces: [] // TODO: Tempo에서 수집
+    })
+  } catch (error) {
+    console.error('Error getting service detail:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 export default router
 

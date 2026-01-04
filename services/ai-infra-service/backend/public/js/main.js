@@ -96,102 +96,196 @@ function setupNavigation() {
   })
 }
 
-// 차트 초기화
 function initializeCharts() {
-  // CPU 차트 (리소스 사용률)
-  const cpuCtx = document.getElementById('cpuChart').getContext('2d')
-  cpuChart = new Chart(cpuCtx, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-        label: 'CPU 사용률 (%)',
-        data: [],
-        borderColor: 'rgb(52, 152, 219)',
-        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-        tension: 0.4
-      }, {
-        label: '경고 임계치',
-        data: [],
-        borderColor: 'rgb(255, 193, 7)',
-        borderDash: [5, 5],
-        fill: false,
-        pointRadius: 0
-      }, {
-        label: '위험 임계치',
-        data: [],
-        borderColor: 'rgb(220, 53, 69)',
-        borderDash: [5, 5],
-        fill: false,
-        pointRadius: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: function(value) {
-              return value + '%'
+  // 존재하는 차트만 초기화 (제거된 차트들은 초기화하지 않음)
+  // 모든 차트는 제거되었으므로 빈 함수로 유지
+  // 존재하는 차트만 초기화 (제거된 차트들은 초기화하지 않음)
+  // 모든 차트는 제거되었으므로 빈 함수로 유지
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'CPU 사용률 (%)',
+          data: [],
+          borderColor: 'rgb(52, 152, 219)',
+          backgroundColor: 'rgba(52, 152, 219, 0.1)',
+          tension: 0.4
+        }, {
+          label: '경고 임계치',
+          data: [],
+          borderColor: 'rgb(255, 193, 7)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }, {
+          label: '위험 임계치',
+          data: [],
+          borderColor: 'rgb(220, 53, 69)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
             }
           }
         }
       }
-    }
-  })
+    })
+  }
   
-  // 메모리 차트 (리소스 사용률)
-  const memoryCtx = document.getElementById('memoryChart').getContext('2d')
-  memoryChart = new Chart(memoryCtx, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-        label: '메모리 사용률 (%)',
-        data: [],
-        borderColor: 'rgb(155, 89, 182)',
-        backgroundColor: 'rgba(155, 89, 182, 0.1)',
-        tension: 0.4
-      }, {
-        label: '경고 임계치',
-        data: [],
-        borderColor: 'rgb(255, 193, 7)',
-        borderDash: [5, 5],
-        fill: false,
-        pointRadius: 0
-      }, {
-        label: '위험 임계치',
-        data: [],
-        borderColor: 'rgb(220, 53, 69)',
-        borderDash: [5, 5],
-        fill: false,
-        pointRadius: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: function(value) {
-              return value + '%'
+  // 메모리 차트 (리소스 사용률) - 제거됨
+  const memoryChartEl = document.getElementById('memoryChart')
+  if (memoryChartEl) {
+    const memoryCtx = memoryChartEl.getContext('2d')
+    memoryChart = new Chart(memoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: '메모리 사용률 (%)',
+          data: [],
+          borderColor: 'rgb(155, 89, 182)',
+          backgroundColor: 'rgba(155, 89, 182, 0.1)',
+          tension: 0.4
+        }, {
+          label: '경고 임계치',
+          data: [],
+          borderColor: 'rgb(255, 193, 7)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }, {
+          label: '위험 임계치',
+          data: [],
+          borderColor: 'rgb(220, 53, 69)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
             }
           }
         }
       }
-    }
-  })
+    })
+  }
   
-  // Container CPU 차트
-  const containerCpuCtx = document.getElementById('containerCpuChart').getContext('2d')
-  containerCpuChart = new Chart(containerCpuCtx, {
-    type: 'line',
+  // Container CPU 차트 - 제거됨
+  const containerCpuChartEl = document.getElementById('containerCpuChart')
+  if (containerCpuChartEl) {
+    const containerCpuCtx = containerCpuChartEl.getContext('2d')
+    containerCpuChart = new Chart(containerCpuCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: function(chart) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels
+                const labels = original.call(this, chart)
+                // 임계치만 범례에 표시
+                return labels.filter(label => 
+                  label.text === '경고 임계치' || label.text === '위험 임계치'
+                )
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // Container Memory 차트 - 제거됨
+  const containerMemoryChartEl = document.getElementById('containerMemoryChart')
+  if (containerMemoryChartEl) {
+    const containerMemoryCtx = containerMemoryChartEl.getContext('2d')
+    containerMemoryChart = new Chart(containerMemoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: function(chart) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels
+                const labels = original.call(this, chart)
+                // 임계치만 범례에 표시
+                return labels.filter(label => 
+                  label.text === '경고 임계치' || label.text === '위험 임계치'
+                )
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // Pod CPU 차트 - 제거됨
+  const podCpuChartEl = document.getElementById('podCpuChart')
+  if (podCpuChartEl) {
+    const podCpuCtx = podCpuChartEl.getContext('2d')
+    podCpuChart = new Chart(podCpuCtx, {
+      type: 'line',
     data: {
       labels: [],
       datasets: []
@@ -226,18 +320,20 @@ function initializeCharts() {
           }
         }
       }
-    }
-  })
+    })
+  }
   
-  // Container Memory 차트
-  const containerMemoryCtx = document.getElementById('containerMemoryChart').getContext('2d')
-  containerMemoryChart = new Chart(containerMemoryCtx, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: []
-    },
-    options: {
+  // Pod Memory 차트 - 제거됨
+  const podMemoryChartEl = document.getElementById('podMemoryChart')
+  if (podMemoryChartEl) {
+    const podMemoryCtx = podMemoryChartEl.getContext('2d')
+    podMemoryChart = new Chart(podMemoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -267,93 +363,13 @@ function initializeCharts() {
           }
         }
       }
-    }
-  })
+    })
+  }
   
-  // Pod CPU 차트
-  const podCpuCtx = document.getElementById('podCpuChart').getContext('2d')
-  podCpuChart = new Chart(podCpuCtx, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: []
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: function(value) {
-              return value + '%'
-            }
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            generateLabels: function(chart) {
-              const original = Chart.defaults.plugins.legend.labels.generateLabels
-              const labels = original.call(this, chart)
-              // 임계치만 범례에 표시
-              return labels.filter(label => 
-                label.text === '경고 임계치' || label.text === '위험 임계치'
-              )
-            }
-          }
-        }
-      }
-    }
-  })
-  
-  // Pod Memory 차트
-  const podMemoryCtx = document.getElementById('podMemoryChart').getContext('2d')
-  podMemoryChart = new Chart(podMemoryCtx, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: []
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: function(value) {
-              return value + '%'
-            }
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            generateLabels: function(chart) {
-              const original = Chart.defaults.plugins.legend.labels.generateLabels
-              const labels = original.call(this, chart)
-              // 임계치만 범례에 표시
-              return labels.filter(label => 
-                label.text === '경고 임계치' || label.text === '위험 임계치'
-              )
-            }
-          }
-        }
-      }
-    }
-  })
-  
-  // 에러 차트
-  const errorCtx = document.getElementById('errorChart').getContext('2d')
+  // 에러 차트 - 제거됨
+  const errorChartEl = document.getElementById('errorChart')
+  if (errorChartEl) {
+    const errorCtx = errorChartEl.getContext('2d')
   
   // 데이터가 모두 0일 때도 차트를 렌더링하기 위한 플러그인
   const emptyDataPlugin = {
@@ -405,11 +421,14 @@ function initializeCharts() {
       }
     },
     plugins: [emptyDataPlugin]
-  })
+    })
+  }
   
-  // 에러 로그 수 차트
-  const errorLogCountCtx = document.getElementById('errorLogCountChart').getContext('2d')
-  errorLogCountChart = new Chart(errorLogCountCtx, {
+  // 에러 로그 수 차트 - 제거됨
+  const errorLogCountChartEl = document.getElementById('errorLogCountChart')
+  if (errorLogCountChartEl) {
+    const errorLogCountCtx = errorLogCountChartEl.getContext('2d')
+    errorLogCountChart = new Chart(errorLogCountCtx, {
     type: 'line',
     data: {
       labels: [],
@@ -429,36 +448,40 @@ function initializeCharts() {
           beginAtZero: true
         }
       }
-    }
-  })
+    })
+  }
 }
 
 // 초기 데이터 로드
 async function loadInitialData() {
-  await Promise.all([
-    loadNodes(),
-    loadClusterOverview(),
-    loadErrorBreakdown(),
-    loadRecentErrors(),
-    loadExternalLinks()
-  ])
-  
-  updateAllMetrics()
+  try {
+    await Promise.all([
+      loadOverview(),
+      loadServices(),
+      loadPods(),
+      loadAlerts()
+    ])
+    
+    setupLinks()
+    setupPodsTopNTabs()
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  }
 }
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
-  document.getElementById('refreshBtn').addEventListener('click', () => {
+  document.getElementById('refreshBtn')?.addEventListener('click', () => {
     loadInitialData()
   })
   
-  document.getElementById('nodeSelect').addEventListener('change', (e) => {
+  document.getElementById('nodeSelect')?.addEventListener('change', (e) => {
     selectedNode = e.target.value
     updateAllMetrics()
   })
   
-  document.getElementById('analyzeBtn').addEventListener('click', runAIAnalysis)
-  document.getElementById('exportCSVBtn').addEventListener('click', exportMetricsToCSV)
+  document.getElementById('analyzeBtn')?.addEventListener('click', runAIAnalysis)
+  document.getElementById('exportCSVBtn')?.addEventListener('click', exportMetricsToCSV)
   
   // Top 5 토글 이벤트 리스너
   setupTop5Toggles()
@@ -473,6 +496,27 @@ function setupEventListeners() {
       })
     })
   }
+  
+  // Services 필터
+  document.getElementById('servicesNamespaceFilter')?.addEventListener('change', loadServices)
+  document.getElementById('servicesSortFilter')?.addEventListener('change', loadServices)
+  
+  // Pods 필터
+  document.getElementById('podsStatusFilter')?.addEventListener('change', loadPods)
+  document.getElementById('podsNamespaceFilter')?.addEventListener('change', loadPods)
+  
+  // Replica 상세 보기
+  document.getElementById('viewReplicaDetails')?.addEventListener('click', () => {
+    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
+  })
+  
+  // 모든 알람 보기
+  document.getElementById('viewAllAlerts')?.addEventListener('click', () => {
+    document.getElementById('alerts')?.scrollIntoView({ behavior: 'smooth' })
+  })
+  
+  // Pods Top N 탭
+  setupPodsTopNTabs()
 }
 
 // 노드 목록 로드
@@ -609,19 +653,16 @@ async function loadExternalLinks() {
 
 // 모든 메트릭 업데이트
 async function updateAllMetrics() {
-  const node = document.getElementById('nodeSelect').value
-  const end = new Date()
-  const start = new Date(end.getTime() - 1 * 60 * 60 * 1000) // 1시간 전
-  
-  await Promise.all([
-    updateResourceUsage(node, start, end),
-    updateContainerCPUMetrics(node, start, end),
-    updateContainerMemoryMetrics(node, start, end),
-    updatePodCPUMetrics(node, start, end),
-    updatePodMemoryMetrics(node, start, end),
-    updateErrorLogs(start, end),
-    updateHealthcheckStatus()
-  ])
+  try {
+    await Promise.all([
+      loadOverview(),
+      loadServices(),
+      loadPods(),
+      loadAlerts()
+    ])
+  } catch (error) {
+    console.error('Error updating metrics:', error)
+  }
 }
 
 // 리소스 사용률 업데이트
