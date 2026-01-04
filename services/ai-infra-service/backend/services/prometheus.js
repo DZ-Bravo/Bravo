@@ -1,4 +1,5 @@
 import axios from 'axios'
+import kubernetesService from './kubernetes.js'
 
 const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://prometheus.bravo-monitoring-ns:9090'
 
@@ -590,6 +591,172 @@ async function getAlertHistory(start, end) {
   }
 }
 
+// 서비스별 RPS, Latency (p95, p99), Error Rate 수집
+async function getServiceMetrics(serviceName, namespace, start, end) {
+  try {
+    const timeRange = '[5m]'
+    
+    // RPS (Requests Per Second)
+    const rpsQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange}))`
+    const rpsResult = await queryPrometheus(rpsQuery)
+    const rps = parseFloat(rpsResult[0]?.value[1] || 0)
+    
+    // p95 Latency (milliseconds)
+    const p95Query = `histogram_quantile(0.95, sum(rate(istio_request_duration_milliseconds_bucket{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange})) by (le))`
+    const p95Result = await queryPrometheus(p95Query)
+    const p95 = parseFloat(p95Result[0]?.value[1] || 0)
+    
+    // p99 Latency (milliseconds)
+    const p99Query = `histogram_quantile(0.99, sum(rate(istio_request_duration_milliseconds_bucket{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange})) by (le))`
+    const p99Result = await queryPrometheus(p99Query)
+    const p99 = parseFloat(p99Result[0]?.value[1] || 0)
+    
+    // 5xx Error Rate (%)
+    const error5xxQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}",response_code=~"5.."}${timeRange}))`
+    const totalQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}"}${timeRange}))`
+    const [error5xxResult, totalResult] = await Promise.all([
+      queryPrometheus(error5xxQuery).catch(() => [{ value: [0, '0'] }]),
+      queryPrometheus(totalQuery).catch(() => [{ value: [0, '0'] }])
+    ])
+    const error5xx = parseFloat(error5xxResult[0]?.value[1] || 0)
+    const total = parseFloat(totalResult[0]?.value[1] || 0)
+    const error5xxRate = total > 0 ? (error5xx / total * 100) : 0
+    
+    // 4xx Error Rate (%)
+    const error4xxQuery = `sum(rate(istio_requests_total{destination_service_name="${serviceName}",destination_workload_namespace="${namespace}",response_code=~"4.."}${timeRange}))`
+    const error4xxResult = await queryPrometheus(error4xxQuery).catch(() => [{ value: [0, '0'] }])
+    const error4xx = parseFloat(error4xxResult[0]?.value[1] || 0)
+    const error4xxRate = total > 0 ? (error4xx / total * 100) : 0
+    
+    return {
+      rps: parseFloat(rps.toFixed(2)),
+      latencyP95: parseFloat(p95.toFixed(2)),
+      latencyP99: parseFloat(p99.toFixed(2)),
+      errorRate5xx: parseFloat(error5xxRate.toFixed(2)),
+      errorRate4xx: parseFloat(error4xxRate.toFixed(2))
+    }
+  } catch (error) {
+    console.error(`Error getting service metrics for ${serviceName}:`, error)
+    return {
+      rps: 0,
+      latencyP95: 0,
+      latencyP99: 0,
+      errorRate5xx: 0,
+      errorRate4xx: 0
+    }
+  }
+}
+
+// 서비스별 Pod CPU/Mem 평균 계산
+async function getServiceResourceMetrics(serviceName, namespace, start, end) {
+  try {
+    // 서비스의 Pod들 가져오기
+    const pods = await kubernetesService.getPods({
+      namespace,
+      labelSelector: `app=${serviceName}`
+    })
+    
+    if (pods.length === 0) {
+      return { cpu: 0, mem: 0 }
+    }
+    
+    // Pod별 CPU/Mem 메트릭 수집
+    const [cpuMetrics, memMetrics] = await Promise.all([
+      prometheusService.getPodCPUMetrics(null, start, end, '15s').catch(() => []),
+      prometheusService.getPodMemoryMetrics(null, start, end, '15s').catch(() => [])
+    ])
+    
+    // 서비스의 Pod들만 필터링
+    const servicePodNames = new Set(pods.map(p => p.name))
+    const serviceCpuMetrics = cpuMetrics.filter(m => 
+      m.namespace === namespace && servicePodNames.has(m.name)
+    )
+    const serviceMemMetrics = memMetrics.filter(m => 
+      m.namespace === namespace && servicePodNames.has(m.name)
+    )
+    
+    // CPU 평균 계산
+    let cpuSum = 0
+    let cpuCount = 0
+    serviceCpuMetrics.forEach(metric => {
+      if (metric.data && metric.data.length > 0) {
+        const lastValue = parseFloat(metric.data[metric.data.length - 1][1])
+        cpuSum += lastValue * 100 // cores를 %로 변환 (간단히 * 100)
+        cpuCount++
+      }
+    })
+    const cpuAvg = cpuCount > 0 ? cpuSum / cpuCount : 0
+    
+    // Mem 평균 계산
+    let memSum = 0
+    let memCount = 0
+    serviceMemMetrics.forEach(metric => {
+      if (metric.data && metric.data.length > 0) {
+        const lastValue = parseFloat(metric.data[metric.data.length - 1][1])
+        memSum += lastValue
+        memCount++
+      }
+    })
+    const memAvg = memCount > 0 ? memSum / memCount : 0
+    
+    return {
+      cpu: parseFloat(cpuAvg.toFixed(2)),
+      mem: parseFloat(memAvg.toFixed(2))
+    }
+  } catch (error) {
+    console.error(`Error getting service resource metrics for ${serviceName}:`, error)
+    return { cpu: 0, mem: 0 }
+  }
+}
+
+// 전체 RPS, p95, p99 수집 (Overview용)
+async function getOverallMetrics(start, end) {
+  try {
+    const timeRange = '[5m]'
+    
+    // 전체 RPS
+    const rpsQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*"}${timeRange}))`
+    const rpsResult = await queryPrometheus(rpsQuery).catch(() => [{ value: [0, '0'] }])
+    const rps = parseFloat(rpsResult[0]?.value[1] || 0)
+    
+    // 전체 p95
+    const p95Query = `histogram_quantile(0.95, sum(rate(istio_request_duration_milliseconds_bucket{destination_workload_namespace=~"bravo-.*"}${timeRange})) by (le))`
+    const p95Result = await queryPrometheus(p95Query).catch(() => [{ value: [0, '0'] }])
+    const p95 = parseFloat(p95Result[0]?.value[1] || 0)
+    
+    // 전체 p99
+    const p99Query = `histogram_quantile(0.99, sum(rate(istio_request_duration_milliseconds_bucket{destination_workload_namespace=~"bravo-.*"}${timeRange})) by (le))`
+    const p99Result = await queryPrometheus(p99Query).catch(() => [{ value: [0, '0'] }])
+    const p99 = parseFloat(p99Result[0]?.value[1] || 0)
+    
+    // 전체 4xx Error Rate
+    const error4xxQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*",response_code=~"4.."}${timeRange}))`
+    const totalQuery = `sum(rate(istio_requests_total{destination_workload_namespace=~"bravo-.*"}${timeRange}))`
+    const [error4xxResult, totalResult] = await Promise.all([
+      queryPrometheus(error4xxQuery).catch(() => [{ value: [0, '0'] }]),
+      queryPrometheus(totalQuery).catch(() => [{ value: [0, '0'] }])
+    ])
+    const error4xx = parseFloat(error4xxResult[0]?.value[1] || 0)
+    const total = parseFloat(totalResult[0]?.value[1] || 0)
+    const error4xxRate = total > 0 ? (error4xx / total * 100) : 0
+    
+    return {
+      rps: parseFloat(rps.toFixed(2)),
+      latencyP95: parseFloat(p95.toFixed(2)),
+      latencyP99: parseFloat(p99.toFixed(2)),
+      errorRate4xx: parseFloat(error4xxRate.toFixed(2))
+    }
+  } catch (error) {
+    console.error('Error getting overall metrics:', error)
+    return {
+      rps: 0,
+      latencyP95: 0,
+      latencyP99: 0,
+      errorRate4xx: 0
+    }
+  }
+}
+
 export default {
   queryPrometheus,
   queryRange,
@@ -606,5 +773,8 @@ export default {
   getClusterMetrics,
   getResourceUsageTimeline,
   getFiringAlerts,
-  getAlertHistory
+  getAlertHistory,
+  getServiceMetrics,
+  getServiceResourceMetrics,
+  getOverallMetrics
 }
