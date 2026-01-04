@@ -348,7 +348,7 @@ deploy-backend:
     - |
       kubectl rollout status deployment/${SERVICE_NAME} \
         -n ${K8S_NS} \
-        --timeout=120s || {
+        --timeout=5m || {
           echo "❌ Rollout failed. Rolling back..."
           kubectl rollout undo deployment/${SERVICE_NAME} -n ${K8S_NS}
           exit 1
