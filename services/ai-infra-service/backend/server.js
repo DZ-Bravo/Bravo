@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import { prometheusMiddleware, metricsHandler } from '../../shared/utils/prometheus-metrics.js'
+import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

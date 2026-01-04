@@ -21,13 +21,16 @@ RUN apk add --no-cache \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
+# 공유 리소스 복사 (빌드 컨텍스트가 services/일 때)
+COPY shared ./shared
+
 # package.json 복사 및 의존성 설치
-COPY package*.json ./
+COPY ai-infra-service/backend/package*.json ./
 RUN npm install --omit=dev && \
     npm cache clean --force
 
 # 애플리케이션 코드 복사
-COPY . .
+COPY ai-infra-service/backend/ .
 
 # 리포트 및 임시 파일용 디렉토리 생성
 RUN mkdir -p /tmp/reports

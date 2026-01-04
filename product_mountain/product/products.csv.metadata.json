@@ -1,0 +1,41 @@
+{
+  "metadataAttributes": {},
+  "documentStructureConfiguration": {
+    "type": "RECORD_BASED_STRUCTURE_METADATA",
+    "recordBasedStructureMetadata": {
+      "contentFields": [
+        {
+          "fieldName": "embedding_description"
+        }
+      ],
+      "metadataFieldsSpecification": {
+        "fieldsToInclude": [
+          {
+            "fieldName": "category"
+          },
+          {
+            "fieldName": "brand"
+          },
+          {
+            "fieldName": "title"
+          },
+          {
+            "fieldName": "price"
+          },
+          {
+            "fieldName": "original_price"
+          },
+          {
+            "fieldName": "discount_rate"
+          },
+          {
+            "fieldName": "url"
+          },
+          {
+            "fieldName": "description"
+          }
+        ]
+      }
+    }
+  }
+}

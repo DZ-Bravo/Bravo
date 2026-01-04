@@ -1,0 +1,15 @@
+{
+  "contentFields": [
+    "embedding_description",
+    "description"
+  ],
+  "metadataFields": [
+    "category",
+    "brand",
+    "title",
+    "price",
+    "original_price",
+    "discount_rate",
+    "url"
+  ]
+}

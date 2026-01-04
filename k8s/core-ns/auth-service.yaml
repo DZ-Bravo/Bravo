@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: auth-service
-        image: 192.168.0.244:30305/bravo/hiking-auth-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-auth-service:2.99
         ports:
         - containerPort: 3001
           name: http
@@ -45,33 +45,48 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
+        - name: COGNITO_USER_POOL_ID
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: COGNITO_USER_POOL_ID
+        - name: COGNITO_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: COGNITO_CLIENT_ID
+        - name: SOCIAL_LOGIN_LAMBDA_URL
+          valueFrom:
+            configMapKeyRef:
+              name: bravo-config
+              key: SOCIAL_LOGIN_LAMBDA_URL
         - name: KAKAO_REST_API_KEY
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: kakao-oauth-secret
               key: KAKAO_REST_API_KEY
         - name: KAKAO_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: kakao-oauth-secret
               key: KAKAO_CLIENT_SECRET
+        - name: NAVER_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: naver-oauth-secret
+              key: NAVER_CLIENT_ID
+        - name: NAVER_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: naver-oauth-secret
+              key: NAVER_CLIENT_SECRET
         - name: KAKAO_REDIRECT_URI
           valueFrom:
             configMapKeyRef:
               name: bravo-config
               key: KAKAO_REDIRECT_URI
-        - name: NAVER_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: NAVER_CLIENT_ID
-        - name: NAVER_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: NAVER_CLIENT_SECRET
         - name: NAVER_REDIRECT_URI
           valueFrom:
             configMapKeyRef:
@@ -150,7 +165,7 @@ metadata:
   name: auth-uploads-pvc
   namespace: bravo-core-ns
 spec:
-  storageClassName: longhorn
+  storageClassName: gp2-immediate
   accessModes:
   - ReadWriteOnce
   resources:

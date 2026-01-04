@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: mountain-service
-        image: 192.168.0.244:30305/bravo/hiking-mountain-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-mountain-service:2.99
         ports:
         - containerPort: 3008
           name: http
@@ -40,8 +40,8 @@ spec:
           value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking?replicaSet=rs0&readPreference=secondaryPreferred"
         - name: OPENWEATHER_API_KEY
           valueFrom:
-            configMapKeyRef:
-              name: bravo-config
+            secretKeyRef:
+              name: mountain-openweather-secret
               key: OPENWEATHER_API_KEY
         - name: ELASTICSEARCH_URL
           value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
@@ -114,7 +114,7 @@ metadata:
   name: mountain-data-pvc
   namespace: bravo-core-ns
 spec:
-  storageClassName: longhorn
+  storageClassName: gp2-immediate
   accessModes:
   - ReadWriteOnce
   resources:

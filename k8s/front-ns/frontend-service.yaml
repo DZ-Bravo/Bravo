@@ -19,8 +19,6 @@ spec:
         prometheus.io/port: "80"
         prometheus.io/path: "/metrics"
     spec:
-      imagePullSecrets:
-      - name: harbor-registry-secret
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -28,7 +26,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: frontend
-        image: 192.168.0.244:30305/bravo/hiking-frontend:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-frontend:20260104-170127
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

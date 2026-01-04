@@ -423,7 +423,7 @@ function AICourse() {
                       if (selectedCategory === 'course' && item.mountainCode) {
                         navigate(`/mountain/${item.mountainCode}`)
                       }
-                      if (selectedCategory === 'equipment' && item.url) {
+                      if (selectedCategory === 'equipment' && item.url && !item.url.includes('example.com')) {
                         console.log('장비 카드 클릭 - 연결 URL:', item.url)
                         window.open(item.url, '_blank', 'noopener,noreferrer')
                       }
@@ -432,13 +432,13 @@ function AICourse() {
                       cursor:
                         selectedCategory === 'course'
                           ? (item.mountainCode ? 'pointer' : 'default')
-                          : (item.url ? 'pointer' : 'default'),
+                          : (item.url && !item.url.includes('example.com') ? 'pointer' : 'default'),
                       transition: 'all 0.3s ease'
                     }}
                     onMouseEnter={(e) => {
                       const isClickable =
                         (selectedCategory === 'course' && item.mountainCode) ||
-                        (selectedCategory === 'equipment' && item.url)
+                        (selectedCategory === 'equipment' && item.url && !item.url.includes('example.com'))
                       if (isClickable) {
                         e.currentTarget.style.transform = 'translateY(-2px)'
                         e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'

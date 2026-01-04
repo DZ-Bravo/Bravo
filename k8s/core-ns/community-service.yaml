@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: community-service
-        image: 192.168.0.244:30305/bravo/hiking-community-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-community-service:latest
         ports:
         - containerPort: 3002
           name: http
@@ -41,7 +41,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: jwt-secret
               key: JWT_SECRET
         - name: ELASTICSEARCH_URL
           value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
@@ -93,7 +93,7 @@ metadata:
   name: community-uploads-pvc
   namespace: bravo-core-ns
 spec:
-  storageClassName: longhorn
+  storageClassName: gp2-immediate
   accessModes:
   - ReadWriteOnce
   resources:
