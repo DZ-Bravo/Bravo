@@ -28,7 +28,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: frontend
-        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-frontend:2.37
+        image: 192.168.0.244:30305/bravo/hiking-frontend:latest
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -46,32 +46,20 @@ spec:
           mountPath: /app/server.js
           subPath: server.js
           readOnly: true
+
+        # 🔑 환경변수 주입
         env:
         - name: TZ
           valueFrom:
             configMapKeyRef:
               name: bravo-config
               key: TZ
-        - name: VITE_KAKAO_MAP_API_KEY
-          valueFrom:
-            configMapKeyRef:
-              name: bravo-config
-              key: VITE_KAKAO_MAP_API_KEY
-        - name: VITE_CESIUM_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: bravo-secrets
-              key: VITE_CESIUM_ACCESS_TOKEN
-        - name: VITE_COGNITO_USER_POOL_ID
-          valueFrom:
-            configMapKeyRef:
-              name: bravo-config
-              key: VITE_COGNITO_USER_POOL_ID
-        - name: VITE_COGNITO_CLIENT_ID
-          valueFrom:
-            configMapKeyRef:
-              name: bravo-config
-              key: VITE_COGNITO_CLIENT_ID
+
+        # 🔐 AWS Secrets Manager → ExternalSecret → Kubernetes Secret
+        envFrom:
+        - secretRef:
+            name: frontend-secret
+
         resources:
           requests:
             memory: "128Mi"
@@ -112,4 +100,3 @@ spec:
     name: http
   selector:
     app: frontend
-
