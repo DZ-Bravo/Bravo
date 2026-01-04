@@ -77,6 +77,21 @@ spec:
                 secretKeyRef:
                   key: VITE_EQUIPMENT_ALIAS_ID
                   name: bravo-secrets
+            - name: COGNITO_USER_POOL_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: bravo-config
+                  key: COGNITO_USER_POOL_ID
+            - name: COGNITO_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: bravo-config
+                  key: COGNITO_CLIENT_ID
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_SECRET
+                  name: bravo-secrets
           image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-service:2.0
           imagePullPolicy: Always
           livenessProbe:
