@@ -63,12 +63,52 @@ router.get('/nodes/:node/metrics', async (req, res) => {
   }
 })
 
-// Pod 목록
+// Pod 목록 (CPU/Mem 메트릭 포함)
 router.get('/pods', async (req, res) => {
   try {
     const { namespace, node, status } = req.query
     const pods = await kubernetesService.getPods({ namespace, node, status })
-    res.json(pods)
+    
+    // Prometheus에서 Pod별 CPU/Mem 메트릭 수집
+    const endTime = new Date()
+    const startTime = new Date(endTime.getTime() - 300000) // 5분 전
+    
+    const [cpuMetrics, memMetrics] = await Promise.all([
+      prometheusService.getPodCPUMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch(() => []),
+      prometheusService.getPodMemoryMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch(() => [])
+    ])
+    
+    // 메트릭을 Map으로 변환 (namespace/pod를 키로)
+    const cpuMap = new Map()
+    cpuMetrics.forEach(metric => {
+      const key = `${metric.namespace}/${metric.name}`
+      const lastValue = metric.data && metric.data.length > 0 ? parseFloat(metric.data[metric.data.length - 1][1]) : 0
+      cpuMap.set(key, lastValue * 100) // cores를 %로 변환 (간단히 * 100, 실제로는 limit 대비 계산 필요)
+    })
+    
+    const memMap = new Map()
+    memMetrics.forEach(metric => {
+      const key = `${metric.namespace}/${metric.name}`
+      const lastValue = metric.data && metric.data.length > 0 ? parseFloat(metric.data[metric.data.length - 1][1]) : 0
+      memMap.set(key, lastValue)
+    })
+    
+    // Pod 데이터에 메트릭 추가
+    const podsWithMetrics = pods.map(pod => {
+      const key = `${pod.namespace}/${pod.name}`
+      const cpu = cpuMap.get(key) || 0
+      const mem = memMap.get(key) || 0
+      const oomKilled = pod.status === 'Failed' && pod.restartCount > 0 // 간단한 추정
+      
+      return {
+        ...pod,
+        cpu: parseFloat(cpu.toFixed(2)),
+        mem: parseFloat(mem.toFixed(2)),
+        oomKilled
+      }
+    })
+    
+    res.json(podsWithMetrics)
   } catch (error) {
     console.error('Error getting pods:', error)
     res.status(500).json({ error: error.message })
@@ -267,23 +307,43 @@ router.get('/overview', async (req, res) => {
     const error5xx = errorBreakdownData?.application?.count || 0
     const successRate = totalRequests > 0 ? ((totalRequests - error5xx) / totalRequests * 100).toFixed(2) : 100
 
-    // 지연 데이터 (p95, p99) - 임시로 0, 실제로는 Prometheus에서 수집 필요
-    const latencyP95 = 0 // TODO: Prometheus에서 수집
-    const latencyP99 = 0 // TODO: Prometheus에서 수집
+    // 지연 데이터 (p95, p99), RPS, 4xx 에러율 수집
+    const overallMetrics = await prometheusService.getOverallMetrics(startTime.toISOString(), endTime.toISOString())
+    const latencyP95 = overallMetrics.latencyP95
+    const latencyP99 = overallMetrics.latencyP99
+    const rps = overallMetrics.rps
+    const errorRate4xx = overallMetrics.errorRate4xx
 
     // 에러율
     const errorRate5xx = totalRequests > 0 ? (error5xx / totalRequests * 100).toFixed(2) : 0
-    const errorRate4xx = 0 // TODO: Prometheus에서 수집
-
-    // 트래픽 (RPS) - 임시로 0, 실제로는 Prometheus에서 수집 필요
-    const rps = 0 // TODO: Prometheus에서 수집
 
     // 포화도 (CPU/Mem 평균)
     const cpuAvg = resourceUsage?.cpu?.average || 0
     const memAvg = resourceUsage?.memory?.average || 0
 
-    // Top 3 서비스 - 임시로 빈 배열
-    const top3Services = [] // TODO: 서비스별 리소스 사용량 계산
+    // Top 3 서비스 (CPU 기준)
+    const services = await kubernetesService.getServices()
+    const servicesWithCpu = await Promise.all(services.slice(0, 10).map(async (service) => {
+      try {
+        const resourceMetrics = await prometheusService.getServiceResourceMetrics(
+          service.name,
+          service.namespace,
+          startTime.toISOString(),
+          endTime.toISOString()
+        )
+        return {
+          name: service.name,
+          namespace: service.namespace,
+          cpu: resourceMetrics.cpu
+        }
+      } catch (error) {
+        return null
+      }
+    }))
+    const top3Services = servicesWithCpu
+      .filter(s => s !== null && s.cpu > 0)
+      .sort((a, b) => b.cpu - a.cpu)
+      .slice(0, 3)
 
     // Replica 상태
     const deployments = await kubernetesService.getDeployments()
@@ -367,23 +427,26 @@ router.get('/services', async (req, res) => {
         labelSelector: `app=${service.name}`
       })
 
-      // CPU/Mem 평균 계산
-      let cpuAvg = 0
-      let memAvg = 0
+      // Prometheus에서 서비스 메트릭 수집
+      const serviceMetrics = await prometheusService.getServiceMetrics(
+        service.name,
+        service.namespace,
+        startTime.toISOString(),
+        endTime.toISOString()
+      )
+      
+      // Prometheus에서 서비스 리소스 메트릭 수집
+      const resourceMetrics = await prometheusService.getServiceResourceMetrics(
+        service.name,
+        service.namespace,
+        startTime.toISOString(),
+        endTime.toISOString()
+      )
+
+      // Restart 계산
       let restart1h = 0
       let restart24h = 0
-
       if (pods.length > 0) {
-        // TODO: Prometheus에서 실제 CPU/Mem 메트릭 수집
-        // 임시로 0으로 설정
-        cpuAvg = 0
-        memAvg = 0
-
-        // Restart 계산
-        const now = new Date()
-        const oneHourAgo = new Date(now.getTime() - 3600000)
-        const oneDayAgo = new Date(now.getTime() - 86400000)
-
         pods.forEach(pod => {
           const restartCount = pod.restartCount || 0
           // TODO: 실제로는 Pod 이벤트에서 시간별 restart 계산 필요
@@ -394,10 +457,10 @@ router.get('/services', async (req, res) => {
       return {
         name: service.name,
         namespace: service.namespace,
-        rps: 0, // TODO: Prometheus에서 수집
-        latencyP95: 0, // TODO: Prometheus에서 수집
-        errorRate5xx: 0, // TODO: Prometheus에서 수집
-        errorRate4xx: 0, // TODO: Prometheus에서 수집
+        rps: serviceMetrics.rps,
+        latencyP95: serviceMetrics.latencyP95,
+        errorRate5xx: serviceMetrics.errorRate5xx,
+        errorRate4xx: serviceMetrics.errorRate4xx,
         replica: {
           desired: deployment?.desired || 0,
           available: deployment?.available || 0
@@ -406,8 +469,8 @@ router.get('/services', async (req, res) => {
           '1h': restart1h,
           '24h': restart24h
         },
-        cpu: parseFloat(cpuAvg.toFixed(2)),
-        mem: parseFloat(memAvg.toFixed(2))
+        cpu: resourceMetrics.cpu,
+        mem: resourceMetrics.mem
       }
     }))
 

@@ -98,8 +98,364 @@ function setupNavigation() {
 
 // 차트 초기화
 function initializeCharts() {
-  // 존재하는 차트만 초기화 (제거된 차트들은 초기화하지 않음)
-  // 모든 차트는 제거되었으므로 빈 함수로 유지
+  // 존재하는 차트만 초기화
+  // CPU 차트 (리소스 사용률) - 제거됨
+  const cpuChartEl = document.getElementById('cpuChart')
+  if (cpuChartEl) {
+    const cpuCtx = cpuChartEl.getContext('2d')
+    cpuChart = new Chart(cpuCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'CPU 사용률 (%)',
+          data: [],
+          borderColor: 'rgb(52, 152, 219)',
+          backgroundColor: 'rgba(52, 152, 219, 0.1)',
+          tension: 0.4
+        }, {
+          label: '경고 임계치',
+          data: [],
+          borderColor: 'rgb(255, 193, 7)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }, {
+          label: '위험 임계치',
+          data: [],
+          borderColor: 'rgb(220, 53, 69)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // 메모리 차트 (리소스 사용률) - 제거됨
+  const memoryChartEl = document.getElementById('memoryChart')
+  if (memoryChartEl) {
+    const memoryCtx = memoryChartEl.getContext('2d')
+    memoryChart = new Chart(memoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: '메모리 사용률 (%)',
+          data: [],
+          borderColor: 'rgb(155, 89, 182)',
+          backgroundColor: 'rgba(155, 89, 182, 0.1)',
+          tension: 0.4
+        }, {
+          label: '경고 임계치',
+          data: [],
+          borderColor: 'rgb(255, 193, 7)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }, {
+          label: '위험 임계치',
+          data: [],
+          borderColor: 'rgb(220, 53, 69)',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // Container CPU 차트 - 제거됨
+  const containerCpuChartEl = document.getElementById('containerCpuChart')
+  if (containerCpuChartEl) {
+    const containerCpuCtx = containerCpuChartEl.getContext('2d')
+    containerCpuChart = new Chart(containerCpuCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: function(chart) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels
+                const labels = original.call(this, chart)
+                // 임계치만 범례에 표시
+                return labels.filter(label => 
+                  label.text === '경고 임계치' || label.text === '위험 임계치'
+                )
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // Container Memory 차트 - 제거됨
+  const containerMemoryChartEl = document.getElementById('containerMemoryChart')
+  if (containerMemoryChartEl) {
+    const containerMemoryCtx = containerMemoryChartEl.getContext('2d')
+    containerMemoryChart = new Chart(containerMemoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: function(chart) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels
+                const labels = original.call(this, chart)
+                // 임계치만 범례에 표시
+                return labels.filter(label => 
+                  label.text === '경고 임계치' || label.text === '위험 임계치'
+                )
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // Pod CPU 차트 - 제거됨
+  const podCpuChartEl = document.getElementById('podCpuChart')
+  if (podCpuChartEl) {
+    const podCpuCtx = podCpuChartEl.getContext('2d')
+    podCpuChart = new Chart(podCpuCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: function(chart) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels
+                const labels = original.call(this, chart)
+                // 임계치만 범례에 표시
+                return labels.filter(label => 
+                  label.text === '경고 임계치' || label.text === '위험 임계치'
+                )
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // Pod Memory 차트 - 제거됨
+  const podMemoryChartEl = document.getElementById('podMemoryChart')
+  if (podMemoryChartEl) {
+    const podMemoryCtx = podMemoryChartEl.getContext('2d')
+    podMemoryChart = new Chart(podMemoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%'
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              generateLabels: function(chart) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels
+                const labels = original.call(this, chart)
+                // 임계치만 범례에 표시
+                return labels.filter(label => 
+                  label.text === '경고 임계치' || label.text === '위험 임계치'
+                )
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+  
+  // 에러 차트 - 제거됨
+  const errorChartEl = document.getElementById('errorChart')
+  if (errorChartEl) {
+    const errorCtx = errorChartEl.getContext('2d')
+  
+  // 데이터가 모두 0일 때도 차트를 렌더링하기 위한 플러그인
+  const emptyDataPlugin = {
+    id: 'emptyDataPlugin',
+    beforeDraw: (chart) => {
+      const dataset = chart.data.datasets[0]
+      if (dataset && dataset.data) {
+        const hasData = dataset.data.some(value => value > 0)
+        if (!hasData && chart.chartArea) {
+          const ctx = chart.ctx
+          ctx.save()
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.font = '14px Arial'
+          ctx.fillStyle = '#999'
+          const centerX = (chart.chartArea.left + chart.chartArea.right) / 2
+          const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2
+          ctx.fillText('에러 데이터 없음', centerX, centerY)
+          ctx.restore()
+        }
+      }
+    }
+  }
+  
+  errorChart = new Chart(errorCtx, {
+    type: 'pie',
+    data: {
+      labels: ['HAProxy', 'Istio Gateway', 'Application', 'Downstream'],
+      datasets: [{
+        data: [0, 0, 0, 0],
+        backgroundColor: ['#f0ad4e', '#5bc0de', '#d9534f', '#292b2c'],
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      animation: {
+        animateRotate: true,
+        animateScale: false
+      }
+    },
+    plugins: [emptyDataPlugin]
+    })
+  }
+  
+  // 에러 로그 수 차트 - 제거됨
+  const errorLogCountChartEl = document.getElementById('errorLogCountChart')
+  if (errorLogCountChartEl) {
+    const errorLogCountCtx = errorLogCountChartEl.getContext('2d')
+    errorLogCountChart = new Chart(errorLogCountCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: '에러 로그 수',
+          data: [],
+          borderColor: 'rgb(231, 76, 60)',
+          backgroundColor: 'rgba(231, 76, 60, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    })
+  }
 }
 
 // 초기 데이터 로드
@@ -1231,4 +1587,590 @@ function generateColors(count) {
     result.push(colors[i % colors.length])
   }
   return result
+}
+
+
+// ==================== 새로운 대시보드 기능 ====================
+
+// Overview 데이터 로드
+async function loadOverview() {
+  try {
+    const end = new Date()
+    const start = new Date(end.getTime() - 3600000) // 1시간 전
+    
+    const response = await fetch(`${API_BASE}/metrics/overview?start=${start.toISOString()}&end=${end.toISOString()}`)
+    if (!response.ok) {
+      console.error('Overview API error:', response.status)
+      return
+    }
+    
+    const data = await response.json()
+    
+    // 가용성
+    const availabilityEl = document.getElementById('availability')
+    const availability5xxEl = document.getElementById('availability5xx')
+    if (availabilityEl) availabilityEl.textContent = `${data.availability?.successRate?.toFixed(2) || 0}%`
+    if (availability5xxEl) availability5xxEl.textContent = `5xx: ${data.availability?.error5xxRate || 0}%`
+    
+    // 지연
+    const latencyP95El = document.getElementById('latencyP95')
+    const latencyP95ValueEl = document.getElementById('latencyP95Value')
+    const latencyP99ValueEl = document.getElementById('latencyP99Value')
+    if (latencyP95El) latencyP95El.textContent = `p95: ${data.latency?.p95 || 0}ms`
+    if (latencyP95ValueEl) latencyP95ValueEl.textContent = data.latency?.p95 || 0
+    if (latencyP99ValueEl) latencyP99ValueEl.textContent = data.latency?.p99 || 0
+    
+    // 에러율
+    const errorRate5xxEl = document.getElementById('errorRate5xx')
+    const errorRate5xxValueEl = document.getElementById('errorRate5xxValue')
+    const errorRate4xxValueEl = document.getElementById('errorRate4xxValue')
+    if (errorRate5xxEl) errorRate5xxEl.textContent = `5xx: ${data.errorRate?.error5xx || 0}%`
+    if (errorRate5xxValueEl) errorRate5xxValueEl.textContent = data.errorRate?.error5xx || 0
+    if (errorRate4xxValueEl) errorRate4xxValueEl.textContent = data.errorRate?.error4xx || 0
+    
+    // 트래픽
+    const rpsEl = document.getElementById('rps')
+    const rpsValueEl = document.getElementById('rpsValue')
+    if (rpsEl) rpsEl.textContent = `RPS: ${data.traffic?.rps || 0}`
+    if (rpsValueEl) rpsValueEl.textContent = data.traffic?.rps || 0
+    
+    // 포화도
+    const cpuAvgEl = document.getElementById('cpuAvg')
+    const memAvgEl = document.getElementById('memAvg')
+    const top3ServicesEl = document.getElementById('top3Services')
+    if (cpuAvgEl) cpuAvgEl.textContent = data.saturation?.cpuAvg || 0
+    if (memAvgEl) memAvgEl.textContent = data.saturation?.memAvg || 0
+    const top3Services = data.saturation?.top3Services || []
+    if (top3ServicesEl) {
+      top3ServicesEl.textContent = top3Services.length > 0 
+        ? top3Services.map(s => `${s.name}: ${s.cpu}%`).join(', ')
+        : '-'
+    }
+    
+    // Replica 상태
+    const replicaHealthyEl = document.getElementById('replicaHealthy')
+    const replicaUnhealthyEl = document.getElementById('replicaUnhealthy')
+    const replicaUnhealthyServicesEl = document.getElementById('replicaUnhealthyServices')
+    if (replicaHealthyEl) replicaHealthyEl.textContent = data.replica?.healthy || 0
+    if (replicaUnhealthyEl) replicaUnhealthyEl.textContent = data.replica?.unhealthy || 0
+    const unhealthyServices = data.replica?.unhealthyServices || []
+    if (replicaUnhealthyServicesEl) {
+      replicaUnhealthyServicesEl.textContent = unhealthyServices.length > 0
+        ? `(${unhealthyServices.join(', ')})`
+        : ''
+    }
+    
+    // FIRING 알람
+    await loadFiringAlerts()
+    
+    // 추이 차트
+    updateOverviewTrendsChart(data)
+  } catch (error) {
+    console.error('Error loading overview:', error)
+  }
+}
+
+// Overview 추이 차트 업데이트
+function updateOverviewTrendsChart(data) {
+  const ctx = document.getElementById('overviewTrendsChart')
+  if (!ctx) return
+  
+  // 차트가 없으면 생성
+  if (!window.overviewTrendsChart) {
+    window.overviewTrendsChart = new Chart(ctx.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: '가용성 (%)', data: [], borderColor: 'rgb(46, 204, 113)', yAxisID: 'y' },
+          { label: 'p95 지연 (ms)', data: [], borderColor: 'rgb(52, 152, 219)', yAxisID: 'y1' },
+          { label: '5xx 에러율 (%)', data: [], borderColor: 'rgb(231, 76, 60)', yAxisID: 'y' },
+          { label: 'RPS', data: [], borderColor: 'rgb(155, 89, 182)', yAxisID: 'y2' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: { 
+          y: { 
+            type: 'linear',
+            display: true,
+            position: 'left',
+            beginAtZero: true 
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            beginAtZero: true,
+            grid: {
+              drawOnChartArea: false
+            }
+          },
+          y2: {
+            type: 'linear',
+            display: false,
+            beginAtZero: true
+          }
+        }
+      }
+    })
+  }
+  
+  // 현재 값으로 단일 포인트 표시 (추이 데이터가 없을 경우)
+  const now = new Date().toLocaleTimeString()
+  const availability = data.availability?.successRate || 0
+  const latencyP95 = data.latency?.p95 || 0
+  const errorRate5xx = data.errorRate?.error5xx || 0
+  const rps = data.traffic?.rps || 0
+  
+  // 기존 데이터에 추가 (최근 20개만 유지)
+  const maxPoints = 20
+  // 차트가 존재하는지 확인
+  if (!window.overviewTrendsChart || !window.overviewTrendsChart.data || !window.overviewTrendsChart.data.labels) {
+    return
+  }
+  
+  if (window.overviewTrendsChart.data.labels.length >= maxPoints) {
+    window.overviewTrendsChart.data.labels.shift()
+    window.overviewTrendsChart.data.datasets.forEach(dataset => dataset.data.shift())
+  }
+  
+  window.overviewTrendsChart.data.labels.push(now)
+  window.overviewTrendsChart.data.datasets[0].data.push(availability)
+  window.overviewTrendsChart.data.datasets[1].data.push(latencyP95)
+  window.overviewTrendsChart.data.datasets[2].data.push(errorRate5xx)
+  window.overviewTrendsChart.data.datasets[3].data.push(rps)
+  window.overviewTrendsChart.update()
+}
+
+// FIRING 알람 로드
+async function loadFiringAlerts() {
+  try {
+    const response = await fetch(`${API_BASE}/alerts/firing`)
+    if (!response.ok) return
+    
+    const alerts = await response.json()
+    const alertsList = document.getElementById('firingAlertsList')
+    if (!alertsList) return
+    
+    if (alerts.length === 0) {
+      alertsList.innerHTML = '<p style="padding: 10px; color: #999;">현재 FIRING 알람이 없습니다.</p>'
+      return
+    }
+    
+    alertsList.innerHTML = alerts.slice(0, 5).map(alert => `
+      <div class="alert-item">
+        <strong>${alert.labels?.alertname || 'Unknown'}</strong>
+        <p>${alert.annotations?.description || alert.annotations?.summary || 'No description'}</p>
+        <small>${new Date(alert.startsAt).toLocaleString()}</small>
+      </div>
+    `).join('')
+  } catch (error) {
+    console.error('Error loading firing alerts:', error)
+  }
+}
+
+// Services 테이블 데이터 로드
+async function loadServices() {
+  try {
+    const namespace = document.getElementById('servicesNamespaceFilter')?.value || ''
+    const sort = document.getElementById('servicesSortFilter')?.value || 'p95-desc'
+    
+    const params = new URLSearchParams()
+    if (namespace) params.append('namespace', namespace)
+    if (sort) params.append('sort', sort)
+    
+    const response = await fetch(`${API_BASE}/metrics/services?${params}`)
+    if (!response.ok) {
+      console.error('Services API error:', response.status)
+      return
+    }
+    
+    const services = await response.json()
+    const tbody = document.getElementById('servicesTableBody')
+    if (!tbody) return
+    
+    if (services.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 20px;">서비스 데이터가 없습니다.</td></tr>'
+      return
+    }
+    
+    tbody.innerHTML = services.map(service => {
+      const replicaStatus = service.replica.available < service.replica.desired ? '❌' : '✅'
+      const restartStatus = service.restart['1h'] > 0 ? '⚠️' : '✅'
+      const cpuStatus = service.cpu > 70 ? (service.cpu > 90 ? '⚠️' : '') : ''
+      const memStatus = service.mem > 70 ? (service.mem > 90 ? '⚠️' : '') : ''
+      
+      return `
+        <tr class="service-row" data-namespace="${service.namespace}" data-service="${service.name}" style="cursor: pointer;">
+          <td><strong>${service.name}</strong><br/><small>${service.namespace}</small></td>
+          <td>${service.rps}</td>
+          <td>${service.latencyP95}ms ${service.latencyP95 > 200 ? '⚠️' : '✅'}</td>
+          <td>${service.errorRate5xx}% ${service.errorRate5xx > 0.5 ? '⚠️' : '✅'}</td>
+          <td>${service.errorRate4xx}%</td>
+          <td>${service.replica.available}/${service.replica.desired} ${replicaStatus}</td>
+          <td>${service.restart['1h']}/${service.restart['24h']} ${restartStatus}</td>
+          <td>${service.cpu}% ${cpuStatus}</td>
+          <td>${service.mem}% ${memStatus}</td>
+        </tr>
+      `
+    }).join('')
+    
+    // 서비스 클릭 이벤트
+    document.querySelectorAll('.service-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const namespace = row.dataset.namespace
+        const service = row.dataset.service
+        loadServiceDetail(namespace, service)
+      })
+    })
+  } catch (error) {
+    console.error('Error loading services:', error)
+  }
+}
+
+// Service Detail 데이터 로드
+async function loadServiceDetail(namespace, service) {
+  try {
+    const section = document.getElementById('service-detail')
+    if (section) section.style.display = 'block'
+    
+    const nameEl = document.getElementById('serviceDetailName')
+    const namespaceEl = document.getElementById('serviceDetailNamespace')
+    if (nameEl) nameEl.textContent = service
+    if (namespaceEl) namespaceEl.textContent = namespace
+    
+    const end = new Date()
+    const start = new Date(end.getTime() - 86400000) // 24시간 전
+    
+    const response = await fetch(`${API_BASE}/metrics/services/${namespace}/${service}?start=${start.toISOString()}&end=${end.toISOString()}`)
+    if (!response.ok) return
+    
+    const data = await response.json()
+    
+    // Replica 상태
+    const replicaDesiredEl = document.getElementById('replicaDesired')
+    const replicaAvailableEl = document.getElementById('replicaAvailable')
+    const replicaPendingEl = document.getElementById('replicaPending')
+    const replicaFailedEl = document.getElementById('replicaFailed')
+    if (replicaDesiredEl) replicaDesiredEl.textContent = data.replicaStatus?.desired || 0
+    if (replicaAvailableEl) replicaAvailableEl.textContent = data.replicaStatus?.available || 0
+    if (replicaPendingEl) replicaPendingEl.textContent = data.replicaStatus?.pending || 0
+    if (replicaFailedEl) replicaFailedEl.textContent = data.replicaStatus?.failed || 0
+    
+    // 리소스 사용량
+    const serviceCpuAvgEl = document.getElementById('serviceCpuAvg')
+    const serviceMemAvgEl = document.getElementById('serviceMemAvg')
+    if (serviceCpuAvgEl) serviceCpuAvgEl.textContent = data.resources?.cpuAvg || 0
+    if (serviceMemAvgEl) serviceMemAvgEl.textContent = data.resources?.memAvg || 0
+    
+    // Top Pod 3
+    const topPodsList = document.getElementById('topPodsList')
+    if (topPodsList && data.resources?.topPods) {
+      topPodsList.innerHTML = data.resources.topPods.map((pod, idx) => `
+        <div class="pod-item">
+          ${idx + 1}. ${pod.name} - CPU: ${pod.cpu}% | Mem: ${pod.mem}%
+        </div>
+      `).join('')
+    }
+    
+    // 느린 API Top 5
+    const slowApisList = document.getElementById('slowApisList')
+    if (slowApisList && data.slowApis) {
+      slowApisList.innerHTML = data.slowApis.length > 0
+        ? data.slowApis.map(api => `
+          <div class="api-item">
+            ${api.endpoint} - ${api.latency}ms
+          </div>
+        `).join('')
+        : '<p style="padding: 10px; color: #999;">데이터 없음</p>'
+    }
+    
+    // 에러 API Top 5
+    const errorApisList = document.getElementById('errorApisList')
+    if (errorApisList && data.errorApis) {
+      errorApisList.innerHTML = data.errorApis.length > 0
+        ? data.errorApis.map(api => `
+          <div class="api-item">
+            ${api.endpoint} - 5xx: ${api.error5xx}% / 4xx: ${api.error4xx}%
+          </div>
+        `).join('')
+        : '<p style="padding: 10px; color: #999;">데이터 없음</p>'
+    }
+    
+    // 골든 시그널 차트
+    updateServiceDetailGoldenSignalsChart(data.goldenSignals)
+    
+    // 스크롤
+    section?.scrollIntoView({ behavior: 'smooth' })
+  } catch (error) {
+    console.error('Error loading service detail:', error)
+  }
+}
+
+// Service Detail 골든 시그널 차트
+function updateServiceDetailGoldenSignalsChart(signals) {
+  const ctx = document.getElementById('serviceDetailGoldenSignalsChart')
+  if (!ctx) return
+  
+  if (!window.serviceDetailGoldenSignalsChart) {
+    window.serviceDetailGoldenSignalsChart = new Chart(ctx.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'RPS', data: [], borderColor: 'rgb(52, 152, 219)' },
+          { label: 'p95', data: [], borderColor: 'rgb(46, 204, 113)' },
+          { label: 'p99', data: [], borderColor: 'rgb(241, 196, 15)' },
+          { label: '4xx', data: [], borderColor: 'rgb(230, 126, 34)' },
+          { label: '5xx', data: [], borderColor: 'rgb(231, 76, 60)' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true } }
+      }
+    })
+  }
+}
+
+// Pods 데이터 로드
+async function loadPods() {
+  try {
+    const status = document.getElementById('podsStatusFilter')?.value || ''
+    const namespace = document.getElementById('podsNamespaceFilter')?.value || ''
+    
+    const params = new URLSearchParams()
+    if (status) params.append('status', status)
+    if (namespace) params.append('namespace', namespace)
+    
+    const response = await fetch(`${API_BASE}/metrics/pods?${params}`)
+    if (!response.ok) {
+      console.error('Pods API error:', response.status)
+      return
+    }
+    
+    const pods = await response.json()
+    const tbody = document.getElementById('podsTableBody')
+    if (!tbody) return
+    
+    if (pods.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Pod 데이터가 없습니다.</td></tr>'
+      return
+    }
+    
+    // CPU/Mem 기준으로 정렬하여 Top N 계산
+    const sortedByCpu = [...pods].sort((a, b) => (b.cpu || 0) - (a.cpu || 0))
+    const sortedByMem = [...pods].sort((a, b) => (b.mem || 0) - (a.mem || 0))
+    const sortedByRestart = [...pods].sort((a, b) => (b.restartCount || 0) - (a.restartCount || 0))
+    
+    // Top N 표시
+    updatePodsTopN('cpu', sortedByCpu.slice(0, 5))
+    updatePodsTopN('mem', sortedByMem.slice(0, 5))
+    updatePodsTopN('restart', sortedByRestart.slice(0, 5))
+    
+    // 테이블 업데이트
+    tbody.innerHTML = pods.map(pod => {
+      const readyStatus = pod.status === 'Running' ? '✅' : '❌'
+      const oomStatus = pod.oomKilled ? '❌' : '✅'
+      const cpuValue = pod.cpu || 0
+      const memValue = pod.mem || 0
+      const cpuStatus = cpuValue > 70 ? (cpuValue > 90 ? '⚠️' : '') : ''
+      const memStatus = memValue > 70 ? (memValue > 90 ? '⚠️' : '') : ''
+      
+      return `
+        <tr>
+          <td><strong>${pod.name}</strong><br/><small>${pod.namespace}</small></td>
+          <td>${readyStatus}</td>
+          <td>${pod.restartCount || 0}</td>
+          <td>${oomStatus}</td>
+          <td>${cpuValue.toFixed(2)}% ${cpuStatus}</td>
+          <td>${memValue.toFixed(2)}% ${memStatus}</td>
+        </tr>
+      `
+    }).join('')
+  } catch (error) {
+    console.error('Error loading pods:', error)
+  }
+}
+
+// Pods Top N 업데이트
+function updatePodsTopN(type, pods) {
+  const content = document.getElementById('podsTopNContent')
+  if (!content) return
+  
+  const activeTab = document.querySelector('.top-n-tab.active')?.dataset.tab
+  if (activeTab !== type) return
+  
+  if (pods.length === 0) {
+    content.innerHTML = '<p style="padding: 10px; color: #999;">데이터 없음</p>'
+    return
+  }
+  
+  const headers = {
+    cpu: ['순위', 'Pod 이름', 'Namespace', 'CPU%'],
+    mem: ['순위', 'Pod 이름', 'Namespace', 'Mem%'],
+    restart: ['순위', 'Pod 이름', 'Namespace', 'Restart']
+  }
+  
+  content.innerHTML = `
+    <table class="top5-table">
+      <thead>
+        <tr>${headers[type].map(h => `<th>${h}</th>`).join('')}</tr>
+      </thead>
+      <tbody>
+        ${pods.map((pod, idx) => `
+          <tr>
+            <td class="rank-cell">${idx + 1}</td>
+            <td class="name-cell">${pod.name}</td>
+            <td class="namespace-cell">${pod.namespace}</td>
+            <td class="value-cell">${type === 'cpu' ? `${pod.cpu?.toFixed(2) || 0}%` : type === 'mem' ? `${pod.mem?.toFixed(2) || 0}%` : pod.restartCount || 0}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `
+}
+
+// Pods Top N 탭 전환
+function setupPodsTopNTabs() {
+  document.querySelectorAll('.top-n-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.top-n-tab').forEach(t => t.classList.remove('active'))
+      tab.classList.add('active')
+      
+      const type = tab.dataset.tab
+      loadPods()
+    })
+  })
+  
+  // 초기 탭 활성화
+  const firstTab = document.querySelector('.top-n-tab')
+  if (firstTab) {
+    firstTab.classList.add('active')
+  }
+}
+
+// Alerts 데이터 로드
+async function loadAlerts() {
+  try {
+    // FIRING 알람
+    const firingResponse = await fetch(`${API_BASE}/alerts/firing`)
+    if (firingResponse.ok) {
+      const firingAlerts = await firingResponse.json()
+      const tbody = document.getElementById('firingAlertsTableBody')
+      if (tbody) {
+        if (firingAlerts.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">현재 FIRING 알람이 없습니다.</td></tr>'
+        } else {
+          tbody.innerHTML = firingAlerts.map(alert => `
+            <tr>
+              <td>${new Date(alert.startsAt).toLocaleString()}</td>
+              <td>${alert.labels?.service || alert.labels?.alertname || 'Unknown'}</td>
+              <td><span class="status-badge danger">P1</span></td>
+              <td>${alert.annotations?.description || alert.annotations?.summary || 'No message'}</td>
+            </tr>
+          `).join('')
+        }
+      }
+    }
+    
+    // 알람 히스토리
+    const end = new Date()
+    const start = new Date(end.getTime() - 86400000) // 24시간 전
+    const historyResponse = await fetch(`${API_BASE}/alerts/history?start=${start.toISOString()}&end=${end.toISOString()}`)
+    if (historyResponse.ok) {
+      const history = await historyResponse.json()
+      const alertsFiredEl = document.getElementById('alertsFired')
+      const alertsResolvedEl = document.getElementById('alertsResolved')
+      const alertsCurrentFiringEl = document.getElementById('alertsCurrentFiring')
+      if (alertsFiredEl) alertsFiredEl.textContent = history.fired || 0
+      if (alertsResolvedEl) alertsResolvedEl.textContent = history.resolved || 0
+      if (alertsCurrentFiringEl) alertsCurrentFiringEl.textContent = history.currentFiring || 0
+      
+      // 히스토리 차트
+      updateAlertsHistoryChart(history.timeline)
+    }
+  } catch (error) {
+    console.error('Error loading alerts:', error)
+  }
+}
+
+// Alerts 히스토리 차트
+function updateAlertsHistoryChart(timeline) {
+  const ctx = document.getElementById('alertsHistoryChart')
+  if (!ctx) return
+  
+  if (!window.alertsHistoryChart) {
+    window.alertsHistoryChart = new Chart(ctx.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: '발생', data: [], borderColor: 'rgb(231, 76, 60)' },
+          { label: '해소', data: [], borderColor: 'rgb(46, 204, 113)' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true } }
+      }
+    })
+  }
+}
+
+// Links 설정
+function setupLinks() {
+  // Grafana
+  const grafanaLink = document.getElementById('grafanaLink')
+  if (grafanaLink) grafanaLink.setAttribute('href', 'http://192.168.0.244:32000')
+  // Kiali
+  const kialiLink = document.getElementById('kialiLink')
+  if (kialiLink) kialiLink.setAttribute('href', 'http://192.168.0.244:32755/kiali')
+  // HAProxy Stats
+  const haproxyStatsLink = document.getElementById('haproxyStatsLink')
+  if (haproxyStatsLink) haproxyStatsLink.setAttribute('href', 'http://192.168.0.244:8404/stats')
+  // Prometheus
+  const prometheusLink = document.getElementById('prometheusLink')
+  if (prometheusLink) prometheusLink.setAttribute('href', 'http://10.0.0.40:9090')
+  // Loki
+  const lokiLink = document.getElementById('lokiLink')
+  if (lokiLink) lokiLink.setAttribute('href', 'http://10.0.0.40:3100')
+  // Tempo
+  const tempoLink = document.getElementById('tempoLink')
+  if (tempoLink) tempoLink.setAttribute('href', 'http://10.0.0.40:3200')
+  // CloudWatch
+  const cloudwatchLink = document.getElementById('cloudwatchLink')
+  if (cloudwatchLink) cloudwatchLink.setAttribute('href', 'https://console.aws.amazon.com/cloudwatch/')
+  // ALB 타겟 그룹
+  const albTargetGroupLink = document.getElementById('albTargetGroupLink')
+  if (albTargetGroupLink) albTargetGroupLink.setAttribute('href', 'https://console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#TargetGroups:')
+  // RDS Performance Insights
+  const rdsPerformanceLink = document.getElementById('rdsPerformanceLink')
+  if (rdsPerformanceLink) rdsPerformanceLink.setAttribute('href', 'https://console.aws.amazon.com/rds/home?region=ap-northeast-2#performance-insights:')
+  // CloudTrail
+  const cloudtrailLink = document.getElementById('cloudtrailLink')
+  if (cloudtrailLink) cloudtrailLink.setAttribute('href', 'https://console.aws.amazon.com/cloudtrail/home?region=ap-northeast-2')
+  // GitLab
+  const gitlabLink = document.getElementById('gitlabLink')
+  if (gitlabLink) gitlabLink.setAttribute('href', '#')
+  // ECR
+  const ecrLink = document.getElementById('ecrLink')
+  if (ecrLink) ecrLink.setAttribute('href', 'https://console.aws.amazon.com/ecr/repositories?region=ap-northeast-2')
+  // 런북
+  const runbookLink = document.getElementById('runbookLink')
+  if (runbookLink) runbookLink.setAttribute('href', '#')
+  // 운영 가이드
+  const opsGuideLink = document.getElementById('opsGuideLink')
+  if (opsGuideLink) opsGuideLink.setAttribute('href', '#')
+  // 모니터링 EC2
+  const monitoringEc2Link = document.getElementById('monitoringEc2Link')
+  if (monitoringEc2Link) monitoringEc2Link.setAttribute('href', '#')
 }
