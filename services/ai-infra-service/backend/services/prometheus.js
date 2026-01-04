@@ -518,6 +518,78 @@ async function getResourceUsageTimeline(nodeName, start, end, step = '15s') {
   }
 }
 
+// FIRING 알람 가져오기
+async function getFiringAlerts() {
+  try {
+    // Prometheus Alertmanager API 호출
+    // 실제로는 Alertmanager가 별도로 실행 중이어야 함
+    // 임시로 빈 배열 반환
+    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://alertmanager.bravo-monitoring-ns:9093'
+    try {
+      const response = await axios.get(`${alertmanagerUrl}/api/v2/alerts?active=true`)
+      return response.data || []
+    } catch (error) {
+      // Alertmanager가 없으면 빈 배열 반환
+      console.warn('Alertmanager not available, returning empty alerts')
+      return []
+    }
+  } catch (error) {
+    console.error('Error getting firing alerts:', error)
+    return []
+  }
+}
+
+// 알람 히스토리 가져오기
+async function getAlertHistory(start, end) {
+  try {
+    // Prometheus Alertmanager API 호출
+    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://alertmanager.bravo-monitoring-ns:9093'
+    try {
+      const response = await axios.get(`${alertmanagerUrl}/api/v2/alerts`, {
+        params: {
+          active: true,
+          silenced: false,
+          inhibited: false
+        }
+      })
+      
+      const alerts = response.data || []
+      const now = new Date()
+      const startTime = new Date(start)
+      const endTime = new Date(end)
+      
+      // 시간 범위 내 알람 필터링
+      const filteredAlerts = alerts.filter(alert => {
+        const alertTime = new Date(alert.startsAt)
+        return alertTime >= startTime && alertTime <= endTime
+      })
+      
+      return {
+        fired: filteredAlerts.length,
+        resolved: 0, // TODO: 해소된 알람 계산
+        currentFiring: alerts.filter(a => a.status?.state === 'active').length,
+        timeline: [] // TODO: 타임라인 데이터 생성
+      }
+    } catch (error) {
+      console.warn('Alertmanager not available, returning empty history')
+      return {
+        fired: 0,
+        resolved: 0,
+        currentFiring: 0,
+        timeline: []
+      }
+    }
+  } catch (error) {
+    console.error('Error getting alert history:', error)
+    return {
+      fired: 0,
+      resolved: 0,
+      currentFiring: 0,
+      timeline: []
+    }
+  }
+}
+
 export default {
   queryPrometheus,
   queryRange,
@@ -532,6 +604,7 @@ export default {
   getPodCPUMetrics,
   getPodMemoryMetrics,
   getClusterMetrics,
-  getResourceUsageTimeline
+  getResourceUsageTimeline,
+  getFiringAlerts,
+  getAlertHistory
 }
-

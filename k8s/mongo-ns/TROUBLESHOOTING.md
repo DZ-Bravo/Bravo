@@ -127,3 +127,4 @@ kubectl run mongo-test --image=mongo:7 --rm -it --restart=Never -n bravo-core-ns
 3. 연결 테스트 재실행
 4. 서비스 Pod 재시작 (이미 완료됨)
 
+

@@ -58,3 +58,4 @@ echo "1. Prometheus 웹 UI 확인: http://10.0.0.40:9090/targets"
 echo "2. 스크랩 대상이 'UP' 상태인지 확인"
 echo "3. 메트릭 쿼리 테스트: http://10.0.0.40:9090/graph?g0.expr=container_cpu_usage_seconds_total"
 
+

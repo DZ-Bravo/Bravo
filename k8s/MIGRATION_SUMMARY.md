@@ -392,3 +392,4 @@ kubectl exec -n bravo-core-ns <mountain-service-pod> -- \
 **작업자:** AI Assistant
 **검증 상태:** ✅ MongoDB 연결 성공, ✅ API 프록시 작동, ✅ S3 데이터 동기화 완료
 
+

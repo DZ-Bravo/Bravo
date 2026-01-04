@@ -184,3 +184,4 @@ rs.conf().members
 - `/home/bravo/LABs/k8s-aws/networkpolicy/ai-integration/ai-egress-db.yaml` - AI Integration 네임스페이스 NetworkPolicy
 - `/home/bravo/LABs/k8s-aws/networkpolicy/efk/efk-egress-db.yaml` - EFK 네임스페이스 NetworkPolicy
 
+

@@ -237,6 +237,31 @@ async function getServices() {
   }
 }
 
+// Deployment 목록
+async function getDeployments() {
+  try {
+    if (!kc) {
+      kc = new k8s.KubeConfig()
+      kc.loadFromDefault()
+    }
+    const appsApi = kc.makeApiClient(k8s.AppsV1Api)
+    const response = await appsApi.listDeploymentForAllNamespaces()
+    return response.body.items
+      .filter(dep => dep.metadata.namespace?.startsWith('bravo-'))
+      .map(dep => ({
+        name: dep.metadata.name,
+        namespace: dep.metadata.namespace,
+        desired: dep.spec.replicas || 0,
+        available: dep.status.availableReplicas || 0,
+        ready: dep.status.readyReplicas || 0,
+        updated: dep.status.updatedReplicas || 0
+      }))
+  } catch (error) {
+    console.error('Error getting deployments:', error)
+    throw error
+  }
+}
+
 export default {
   getK8sApi,
   getMetricsApi,
@@ -246,5 +271,7 @@ export default {
   getNodePods,
   getPods,
   getPodDetails,
-  getServices
+  getServices,
+  getDeployments,
+  k8sApi: getK8sApi()
 }

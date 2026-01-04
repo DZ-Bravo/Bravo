@@ -38,7 +38,7 @@ rules:
   resources: ["nodes", "nodes/metrics", "nodes/stats"]
   verbs: ["get", "list", "watch"]
 - apiGroups: [""]
-  resources: ["namespaces", "events", "pods", "pods/log"]
+  resources: ["namespaces", "events", "pods", "pods/log", "services"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["apps"]
   resources: ["deployments", "replicasets"]

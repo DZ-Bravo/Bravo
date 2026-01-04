@@ -202,3 +202,4 @@ sudo tail -f /var/log/prometheus/prometheus.log
 - `container_cpu_usage_seconds_total` 메트릭 쿼리 가능
 - 모니터링 페이지에서 컨테이너/파드 메트릭 표시
 
+
