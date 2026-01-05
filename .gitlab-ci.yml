@@ -1,3 +1,8 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/Infrastructure-As-Code.gitlab-ci.yml
+
 image: docker:27
 
 services:
@@ -10,10 +15,27 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
   SONAR_HOST_URL: http://43.200.134.128:9000
+  # 1. 스캔 제외 대상 정밀화 (백업 파일 및 로그 폴더 제외)
+  # .bak 파일과 node_modules(이미 빌드된거라 제외)를 빼서 속도를 높입니다.
+  SAST_EXCLUDED_PATHS: "spec, test, tests, tmp, **/node_modules, **/*.bak*, efk, mongodb-replica"
+
+  # 2. Secret Detection 최적화
+  # 문서 파일(.md)이나 백업 파일에서 비밀번호를 찾는 불필요한 연산을 줄입니다.
+  SECRET_DETECTION_EXCLUDED_PATHS: "**/node_modules, **/*.md, **/*.png"
+
+  # 3. IaC Scanning 깊이 조절
+  # backend-services/ai-infra-service/k8s/healthcheck/... 처럼 
+  # 깊은 곳의 yaml 파일까지 찾도록 깊이를 10으로 늘립니다.
+  SEARCH_MAX_DEPTH: 10
+
+  # 4. 분석기 성능 향상
+  # 모노레포 특성상 분석기가 프로젝트 유형을 잘 못 찾을 때를 대비해 강제 지정할 수 있습니다.
+  SAST_EXPERIMENTAL_FEATURES: "true"
 
 stages:
   - analyze
   - build
+  - test
   - deploy
 
 # ===============================
@@ -350,7 +372,8 @@ deploy-backend:
         -n ${K8S_NS} \
         --timeout=5m || {
           echo "❌ Rollout failed. Rolling back..."
-          kubectl rollout undo deployment/${SERVICE_NAME} -n ${K8S_NS}
+          kubectl 
+          undo deployment/${SERVICE_NAME} -n ${K8S_NS}
           exit 1
         }
   <<: *notify_slack_failure
