@@ -156,6 +156,8 @@ deploy-frontend:
   allow_failure: false
   variables:
     ECR_REPO: "bravo/hiking-frontend"
+    K8S_NS: "bravo-front-ns"
+    DEPLOY_NAME: "frontend"
   environment:
     name: production/frontend
     url: https://hiker-cloud.site  # 👈 실제 주소 연결
@@ -169,6 +171,7 @@ deploy-frontend:
     - job: semgrep-sast
       optional: true         # SAST는 보안 템플릿 상황에 따라 유동적일 수 있어 optional 권장
   script:
+    - echo "Deploying version $NEXT_VERSION"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
     - chmod +x kubectl
     - mv kubectl /usr/local/bin/kubectl
@@ -178,8 +181,8 @@ deploy-frontend:
         --region ap-northeast-2 \
         --name bravo-eks
 
-    - source version.env  # 환경변수에서 NEXT_VERSION 로드
     - |
+      CONTAINER_NAME=$(kubectl get deploy ${DEPLOY_NAME} -n ${K8S_NS} -o jsonpath='{.spec.template.spec.containers[0].name}')
       kubectl set image deployment/frontend \
         frontend=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${NEXT_VERSION} \
         -n bravo-front-ns
