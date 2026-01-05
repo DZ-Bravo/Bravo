@@ -441,7 +441,9 @@
       <!-- 최근 24시간 알람 히스토리 -->
       <div class="alerts-history">
         <h3>📊 최근 24시간 알람 히스토리</h3>
-        <canvas id="alertsHistoryChart"></canvas>
+        <div class="alerts-chart-container" style="height: 300px; max-height: 300px; overflow: hidden;">
+          <canvas id="alertsHistoryChart"></canvas>
+        </div>
         <div class="alerts-history-summary">
           <span>발생: <strong id="alertsFired">-</strong>건</span>
           <span>해소: <strong id="alertsResolved">-</strong>건</span>
