@@ -8,12 +8,135 @@ import mongoose from 'mongoose'
 import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
 import axios from 'axios'
+import AWS from 'aws-sdk'
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3009
 const SERVICE_NAME = 'ai-service'
+
+// S3 클라이언트 설정
+const s3 = new AWS.S3({
+  region: process.env.AWS_REGION || 'ap-northeast-2',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
+})
+
+const S3_BUCKET = process.env.AWS_S3_BUCKET || process.env.S3_BUCKET || 'bravo-hiking-data'
+const S3_PRODUCT_PREFIX = 'product/'
+
+// S3에서 상품 데이터 검색 함수
+async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
+  try {
+    console.log(`[S3 검색] 제품명: "${searchTitle}", 브랜드: "${searchBrand}", 카테고리: ${category || '전체'}`)
+    
+    // S3에서 product/ 폴더의 모든 파일 목록 가져오기
+    const listParams = {
+      Bucket: S3_BUCKET,
+      Prefix: S3_PRODUCT_PREFIX
+    }
+    
+    const objects = await s3.listObjectsV2(listParams).promise()
+    
+    if (!objects.Contents || objects.Contents.length === 0) {
+      console.log('[S3 검색] product/ 폴더에 파일이 없습니다.')
+      return []
+    }
+    
+    console.log(`[S3 검색] ${objects.Contents.length}개 파일 발견`)
+    
+    // 각 파일에서 상품 데이터 읽기
+    const products = []
+    const categories = category ? [category] : ['shoes', 'top', 'bottom', 'goods']
+    
+    for (const obj of objects.Contents) {
+      const key = obj.Key
+      
+      // 카테고리 필터링
+      if (category) {
+        const categoryInPath = categories.find(cat => key.includes(`/${cat}/`) || key.includes(`_${cat}_`))
+        if (!categoryInPath) continue
+      }
+      
+      // JSON 파일만 처리
+      if (!key.endsWith('.json')) continue
+      
+      try {
+        const getObjectParams = {
+          Bucket: S3_BUCKET,
+          Key: key
+        }
+        
+        const data = await s3.getObject(getObjectParams).promise()
+        const content = JSON.parse(data.Body.toString('utf-8'))
+        
+        // 배열인 경우와 객체인 경우 처리
+        const items = Array.isArray(content) ? content : [content]
+        
+        for (const item of items) {
+          const title = (item.title || item.name || '').toLowerCase()
+          const brand = (item.brand || item.brandName || item.manufacturer || '').toLowerCase()
+          const searchTitleLower = searchTitle.toLowerCase()
+          const searchBrandLower = searchBrand.toLowerCase()
+          
+          // 제품명과 브랜드 매칭 확인 (더 유연한 매칭)
+          let score = 0
+          
+          // 제품명 매칭: 키워드 기반 매칭
+          if (title && searchTitleLower) {
+            const titleWords = searchTitleLower.split(/\s+/).filter(w => w.length > 1)
+            const matchedWords = titleWords.filter(word => title.includes(word))
+            if (matchedWords.length > 0) {
+              score += (matchedWords.length / titleWords.length) * 10 // 매칭된 단어 비율에 따라 점수
+            }
+            // 전체 포함 여부도 확인
+            if (title.includes(searchTitleLower) || searchTitleLower.includes(title)) {
+              score = Math.max(score, 10)
+            }
+          }
+          
+          // 브랜드 매칭
+          if (brand && searchBrandLower) {
+            if (brand.includes(searchBrandLower) || searchBrandLower.includes(brand)) {
+              score += 5
+            }
+          }
+          
+          // 최소 점수 3점 이상이면 포함 (더 관대한 매칭)
+          if (score >= 3) {
+            const productUrl = item.url || item.link || item.productUrl || item.product_link || item.productLink || ''
+            console.log(`[S3 검색] 매칭 상품 발견: "${item.title || item.name}" (점수: ${score.toFixed(1)}), URL: ${productUrl ? '있음' : '없음'}`)
+            
+            products.push({
+              ...item,
+              title: item.title || item.name || '',
+              brand: item.brand || item.brandName || item.manufacturer || '',
+              url: productUrl,
+              price: item.price || item.cost || item.priceValue || 0,
+              category: item.category || item.type || '',
+              _score: score
+            })
+          }
+        }
+      } catch (error) {
+        console.warn(`[S3 검색] 파일 ${key} 읽기 실패:`, error.message)
+      }
+    }
+    
+    // 점수 순으로 정렬
+    products.sort((a, b) => (b._score || 0) - (a._score || 0))
+    
+    console.log(`[S3 검색] ${products.length}개 매칭 상품 발견`)
+    return products.slice(0, 10) // 최대 10개만 반환
+    
+  } catch (error) {
+    console.error('[S3 검색] 오류:', error.message)
+    return []
+  }
+}
 
 // Prometheus 메트릭 미들웨어 (모든 라우트 앞에)
 app.use(prometheusMiddleware(SERVICE_NAME))
@@ -296,32 +419,63 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
         // JSON이 아닌 경우 텍스트 파싱
         console.log('JSON 형식이 아님, 텍스트 파싱 시도')
         
-        // 여러 줄로 나뉜 추천 항목 파싱
-        const lines = assistantResponse.split('\n').filter(line => line.trim())
+        // 텍스트를 "브랜드:" 또는 빈 줄로 구분하여 항목 추출
+        const sections = assistantResponse.split(/\n\s*\n|\n(?=브랜드:)/i)
         
-        // 각 줄을 추천 항목으로 변환
-        recommendations = lines
-          .filter(line => {
-            // 빈 줄이나 특수 문자만 있는 줄 제외
-            const trimmed = line.trim()
-            return trimmed.length > 0 && !trimmed.match(/^[-\d\.\s]+$/)
+        recommendations = sections
+          .filter(section => {
+            const trimmed = section.trim()
+            return trimmed.length > 0 && trimmed.includes('브랜드:')
           })
-          .map((line, index) => {
-            const trimmed = line.trim()
+          .map((section, index) => {
+            const trimmed = section.trim()
             
-            // 제품명 추출 (예: "블랙야크 여성 히마 부츠 GTX#2 BK 추천해요.")
+            // 브랜드 추출: "브랜드: 블랙야크" 형식
+            const brandMatch = trimmed.match(/브랜드:\s*([^\n]+)/i)
+            const brand = brandMatch ? brandMatch[1].trim() : ''
+            
+            // 카테고리 추출: "카테고리: 용품" 형식
+            const categoryMatch = trimmed.match(/카테고리:\s*([^\n]+)/i)
+            const category = categoryMatch ? categoryMatch[1].trim() : ''
+            
+            // 제품명 추출: 브랜드와 카테고리 정보를 제거한 후 첫 번째 문장을 제품명으로
             let title = trimmed
-            // "추천해요", "추천" 같은 단어 제거
-            title = title.replace(/\s*추천(해요|합니다|드립니다)?\.?\s*$/i, '').trim()
+            // "브랜드: ...", "카테고리: ...", "성별: ..." 제거
+            title = title.replace(/브랜드:\s*[^\n]+\n?/gi, '')
+            title = title.replace(/카테고리:\s*[^\n]+\n?/gi, '')
+            title = title.replace(/성별:\s*[^\n]+\n?/gi, '')
+            title = title.trim()
+            
+            // 첫 번째 문장을 제품명으로 (예: "심플하고 실용적인 아웃도어 백팩 25L")
+            // 문장 끝(마침표, 줄바꿈)까지 추출
+            const firstSentenceMatch = title.match(/^([^\.\n]+(?:\.|$))/)
+            if (firstSentenceMatch) {
+              title = firstSentenceMatch[1].trim()
+              // "용량의", "롤탑형" 같은 설명 제거하고 핵심 제품명만 추출
+              // 예: "심플하고 실용적인 아웃도어 백팩 25L" -> "아웃도어 백팩 25L" 또는 "백팩 25L"
+              const titleWords = title.split(/\s+/)
+              // "백팩", "배낭" 같은 핵심 키워드 찾기
+              const backpackIndex = titleWords.findIndex(w => /백팩|배낭|가방/i.test(w))
+              if (backpackIndex >= 0) {
+                // 핵심 키워드부터 끝까지 또는 용량 정보까지
+                title = titleWords.slice(Math.max(0, backpackIndex - 2), backpackIndex + 3).join(' ')
+              }
+            } else {
+              // 문장 구분이 없으면 처음 50자만
+              title = title.substring(0, 50).trim()
+            }
+            
+            // reason은 전체 설명 (브랜드, 카테고리 정보 포함)
+            const reason = trimmed
             
             return {
               id: index + 1,
-              title: title || trimmed,
-              brand: '', // Bedrock Agent가 브랜드를 별도로 제공하지 않으면 비어있음
-              category: '',
+              title: title || '제품명 없음',
+              brand: brand,
+              category: category,
               price: '',
               url: '',
-              reason: trimmed
+              reason: reason
             }
           })
       }
@@ -358,8 +512,12 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
         }
       })
       
-      // DB에서 브랜드와 제품명으로 URL 검색
-      if (mongoose.connection.readyState === 1) {
+      // Store Service API를 사용하여 상품 URL 및 정보 검색 (Elasticsearch 사용)
+      console.log('=== Store Service API로 상품 URL 검색 시작 ===')
+      const STORE_API_URL = process.env.STORE_API_URL || 'http://store-service.bravo-core-ns.svc.cluster.local:3006'
+      
+      // MongoDB 검색 대신 Store Service API 사용
+      if (false && mongoose.connection.readyState === 1) {
         console.log('=== DB에서 상품 URL 검색 시작 ===')
         const db = mongoose.connection.db
         const categories = ['shoes', 'top', 'bottom', 'goods']
@@ -509,6 +667,67 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
       } else {
         console.warn('MongoDB 연결되지 않음 - DB 검색 건너뜀')
       }
+      
+      // S3에서 직접 상품 데이터 검색
+      for (let i = 0; i < recommendations.length; i++) {
+        const item = recommendations[i]
+        const searchTitle = item.title || ''
+        const searchBrand = item.brand || ''
+        
+        if (!searchTitle) continue
+        
+        console.log(`[${i + 1}] S3에서 상품 검색 중: 제품명="${searchTitle}", 브랜드="${searchBrand}"`)
+        
+        try {
+          const foundProducts = await searchProductsFromS3(searchTitle, searchBrand, item.category || null)
+          
+          if (foundProducts && foundProducts.length > 0) {
+            const bestMatch = foundProducts[0] // 가장 높은 점수의 제품
+            console.log(`[${i + 1}] ✅ S3에서 제품 찾음: "${bestMatch.title || 'N/A'}" (점수: ${bestMatch._score})`)
+            
+            // URL 업데이트
+            const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || ''
+            console.log(`[${i + 1}] URL 필드 확인:`, {
+              url: bestMatch.url || '없음',
+              link: bestMatch.link || '없음',
+              productUrl: bestMatch.productUrl || '없음',
+              product_link: bestMatch.product_link || '없음',
+              최종URL: productUrl || '없음'
+            })
+            
+            if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
+              recommendations[i].url = productUrl
+              console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
+            } else {
+              console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않음:`, productUrl || '빈 문자열')
+            }
+            
+            // 브랜드, 가격, 카테고리 정보 업데이트
+            if (!recommendations[i].brand && bestMatch.brand) {
+              recommendations[i].brand = bestMatch.brand
+            }
+            
+            if (!recommendations[i].price && bestMatch.price) {
+              recommendations[i].price = bestMatch.price.toString()
+            }
+            
+            if (!recommendations[i].category && bestMatch.category) {
+              recommendations[i].category = bestMatch.category
+            }
+            
+            // 제품명도 정확한 것으로 업데이트
+            if (bestMatch.title) {
+              recommendations[i].title = bestMatch.title
+            }
+          } else {
+            console.log(`[${i + 1}] ⚠️  S3에서 유사한 제품을 찾지 못함`)
+          }
+        } catch (error) {
+          console.error(`[${i + 1}] S3 검색 오류:`, error.message)
+        }
+      }
+      
+      console.log('=== Store Service 검색 완료 ===')
       
     } catch (parseError) {
       console.error('장비 추천 파싱 오류:', parseError)
@@ -676,9 +895,8 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
       }
     })
     
-    // Store Service API를 사용하여 상품 URL 및 정보 검색 (Elasticsearch 사용)
-    console.log('=== Store Service API로 상품 검색 시작 ===')
-    const STORE_API_URL = process.env.STORE_API_URL || 'http://store-service.bravo-core-ns.svc.cluster.local:3006'
+    // S3에서 직접 상품 데이터 검색
+    console.log('=== S3에서 상품 URL 검색 시작 ===')
     
     for (let i = 0; i < products.length; i++) {
       const product = products[i]
@@ -687,114 +905,58 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
       
       if (!searchTitle || searchTitle === '상품명 없음') continue
       
-      // 검색 쿼리 구성 (제품명 + 브랜드)
-      let searchQuery = searchTitle
-      if (searchBrand) {
-        searchQuery = `${searchBrand} ${searchTitle}`
-      }
-      
-      console.log(`[${i + 1}] Store Service 검색 중: "${searchQuery}"`)
+      console.log(`[${i + 1}] S3에서 상품 검색 중: 제품명="${searchTitle}", 브랜드="${searchBrand}"`)
       
       try {
-        // Store Service API 호출
-        const searchResponse = await axios.get(`${STORE_API_URL}/api/store/search`, {
-          params: {
-            q: searchQuery,
-            limit: 10,
-            category: product.category || null
-          },
-          timeout: 5000
-        })
+        const foundProducts = await searchProductsFromS3(searchTitle, searchBrand, product.category || null)
         
-        console.log(`[${i + 1}] Store Service 응답:`, {
-          status: searchResponse.status,
-          productsCount: searchResponse.data?.products?.length || 0
-        })
-        
-        if (searchResponse.status === 200 && searchResponse.data && searchResponse.data.products) {
-          const foundProducts = searchResponse.data.products
-          console.log(`[${i + 1}] 검색 결과 ${foundProducts.length}개 상품 발견`)
+        if (foundProducts && foundProducts.length > 0) {
+          const bestMatch = foundProducts[0] // 가장 높은 점수의 제품
+          console.log(`[${i + 1}] ✅ S3에서 제품 찾음: "${bestMatch.title || 'N/A'}" (점수: ${bestMatch._score})`)
+          console.log(`[${i + 1}] S3 제품 전체 데이터:`, JSON.stringify(bestMatch).substring(0, 500))
           
-          // 가장 유사한 제품 찾기 (제품명과 브랜드 매칭)
-          let bestMatch = null
-          let bestScore = 0
+          // URL 업데이트 (모든 가능한 필드명 확인)
+          const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || bestMatch.productLink || bestMatch.product_url || ''
+          console.log(`[${i + 1}] URL 필드 확인:`, {
+            url: bestMatch.url || '없음',
+            link: bestMatch.link || '없음',
+            productUrl: bestMatch.productUrl || '없음',
+            product_link: bestMatch.product_link || '없음',
+            productLink: bestMatch.productLink || '없음',
+            product_url: bestMatch.product_url || '없음',
+            최종URL: productUrl || '없음'
+          })
           
-          for (const foundProduct of foundProducts) {
-            let score = 0
-            
-            // 제품명 매칭 점수
-            const foundTitle = (foundProduct.title || '').toLowerCase()
-            const searchTitleLower = searchTitle.toLowerCase()
-            if (foundTitle.includes(searchTitleLower) || searchTitleLower.includes(foundTitle)) {
-              score += 10
-            }
-            
-            // 브랜드 매칭 점수
-            if (searchBrand) {
-              const foundBrand = (foundProduct.brand || '').toLowerCase()
-              const searchBrandLower = searchBrand.toLowerCase()
-              if (foundBrand.includes(searchBrandLower) || searchBrandLower.includes(foundBrand)) {
-                score += 5
-              }
-            }
-            
-            if (score > bestScore) {
-              bestScore = score
-              bestMatch = foundProduct
-            }
-          }
-          
-          console.log(`[${i + 1}] 최고 매칭 점수: ${bestScore}`, bestMatch ? `(제품: ${bestMatch.title})` : '(매칭 없음)')
-          
-          if (bestMatch && bestScore >= 5) {
-            console.log(`[${i + 1}] ✅ 제품 찾음: "${bestMatch.title || 'N/A'}" (점수: ${bestScore})`)
-            
-            // URL 업데이트
-            const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || ''
-            console.log(`[${i + 1}] URL 필드 확인:`, {
-              url: bestMatch.url || '없음',
-              link: bestMatch.link || '없음',
-              productUrl: bestMatch.productUrl || '없음',
-              product_link: bestMatch.product_link || '없음',
-              최종URL: productUrl || '없음'
-            })
-            
-            if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
-              products[i].url = productUrl
-              console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
-            } else {
-              console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않음:`, productUrl || '빈 문자열')
-            }
-            
-            // 브랜드, 가격, 카테고리 정보 업데이트
-            if (!products[i].brand && bestMatch.brand) {
-              products[i].brand = bestMatch.brand
-            }
-            
-            if (!products[i].price && bestMatch.price) {
-              products[i].price = bestMatch.price.toString()
-            }
-            
-            if (!products[i].category && bestMatch.category) {
-              products[i].category = bestMatch.category
-            }
-            
-            // 제품명도 정확한 것으로 업데이트
-            if (bestMatch.title) {
-              products[i].title = bestMatch.title
-            }
+          if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
+            products[i].url = productUrl
+            console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
           } else {
-            console.log(`[${i + 1}] ⚠️  유사한 제품을 찾지 못함 (최고 점수: ${bestScore})`)
+            console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않음:`, productUrl || '빈 문자열')
+            // URL이 없어도 다른 정보는 업데이트
           }
+          
+          // 브랜드, 가격, 카테고리 정보 업데이트
+          if (!products[i].brand && bestMatch.brand) {
+            products[i].brand = bestMatch.brand
+          }
+          
+          if (!products[i].price && bestMatch.price) {
+            products[i].price = bestMatch.price.toString()
+          }
+          
+          if (!products[i].category && bestMatch.category) {
+            products[i].category = bestMatch.category
+          }
+          
+          // 제품명도 정확한 것으로 업데이트
+          if (bestMatch.title) {
+            products[i].title = bestMatch.title
+          }
+        } else {
+          console.log(`[${i + 1}] ⚠️  S3에서 유사한 제품을 찾지 못함`)
         }
       } catch (error) {
-        console.error(`[${i + 1}] Store Service 검색 오류:`, error.message)
-        if (error.response) {
-          console.error(`[${i + 1}] 응답 상태:`, error.response.status, '데이터:', error.response.data)
-        }
-        if (error.code) {
-          console.error(`[${i + 1}] 에러 코드:`, error.code)
-        }
+        console.error(`[${i + 1}] S3 검색 오류:`, error.message)
       }
     }
     
