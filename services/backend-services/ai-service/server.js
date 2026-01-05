@@ -71,15 +71,48 @@ function parsePriceRange(userInput) {
     return { minPrice, maxPrice }
   }
   
+  // 단일 가격 패턴을 먼저 처리 (범위 패턴보다 우선)
+  // "10만원 이하", "10만 이하" 같은 패턴
+  const singlePriceBelowMatch = input.match(/(\d+)\s*(만원|만)\s*이하/i)
+  if (singlePriceBelowMatch) {
+    const num = parseInt(singlePriceBelowMatch[1])
+    const maxPrice = num * 10000
+    console.log(`[가격 범위 파싱] "${userInput}" -> max: ${maxPrice} (단일 가격 이하)`)
+    return { minPrice: null, maxPrice }
+  }
+  
+  // "10만원 이상", "10만 이상" 같은 패턴
+  const singlePriceAboveMatch = input.match(/(\d+)\s*(만원|만)\s*이상/i)
+  if (singlePriceAboveMatch) {
+    const num = parseInt(singlePriceAboveMatch[1])
+    const minPrice = num * 10000
+    console.log(`[가격 범위 파싱] "${userInput}" -> min: ${minPrice} (단일 가격 이상)`)
+    return { minPrice, maxPrice: null }
+  }
+  
+  // "500000원 이하" 같은 패턴
+  const singlePriceBelowWonMatch = input.match(/(\d+)\s*원\s*이하/i)
+  if (singlePriceBelowWonMatch) {
+    const num = parseInt(singlePriceBelowWonMatch[1].replace(/,/g, ''))
+    const maxPrice = num
+    console.log(`[가격 범위 파싱] "${userInput}" -> max: ${maxPrice} (단일 가격 이하, 원 단위)`)
+    return { minPrice: null, maxPrice }
+  }
+  
+  // "100000원 이상" 같은 패턴
+  const singlePriceAboveWonMatch = input.match(/(\d+)\s*원\s*이상/i)
+  if (singlePriceAboveWonMatch) {
+    const num = parseInt(singlePriceAboveWonMatch[1].replace(/,/g, ''))
+    const minPrice = num
+    console.log(`[가격 범위 파싱] "${userInput}" -> min: ${minPrice} (단일 가격 이상, 원 단위)`)
+    return { minPrice, maxPrice: null }
+  }
+  
   const pricePatterns = [
     // 범위 패턴
     /(\d+)\s*[~-]\s*(\d+)\s*(만원|만)/i,  // 21~50만원, 21-50만원
     /(\d+)\s*[~-]\s*(\d+)\s*원/i,  // 210000~500000원
-    // 단일 가격 패턴
-    /(\d+)\s*(만원|만)\s*이하/i,  // 50만원 이하, 50만 이하
-    /(\d+)\s*(만원|만)\s*이상/i,  // 10만원 이상
-    /(\d+)\s*원\s*이하/i,  // 500000원 이하
-    /(\d+)\s*원\s*이상/i,  // 100000원 이상
+    // 단일 가격 패턴 (이하/이상이 없는 경우)
     /(\d+)\s*(만원|만)/i,  // 50만원
     /(\d+)\s*원/i  // 500000원
   ]
@@ -407,8 +440,11 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
         }
         
         // 스틱 검색어 감지 (카테고리 필터링 완화를 위해)
-        const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking', '등산스틱', '등산 스틱']
-        const hasStickSearch = stickKeywords.some(k => searchTitleLower.includes(k) || originalInputLower.includes(k))
+        const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking', '등산스틱', '등산 스틱', '등산스틱', 'trekking pole', 'trekkingpole', '트레킹 폴', 'trekking pole']
+        const hasStickSearch = stickKeywords.some(k => {
+          const kLower = k.toLowerCase()
+          return searchTitleLower.includes(kLower) || originalInputLower.includes(kLower)
+        })
         
         // 모자 검색어 감지 (카테고리 필터링 완화를 위해)
         const hatKeywords = ['모자', 'hat', 'cap', '캡', '등산모자', '등산 모자', 'baseball cap', 'baseballcap', '볼캡', '볼 캡', '버킷햇', '버킷 햇', 'bucket hat', 'buckethat']
@@ -454,18 +490,19 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
               console.log(`[S3 검색] CSV 카테고리 매칭: "${itemCategory}" == "${mappedCategory}"`)
             }
           } else if (hasStickSearch) {
-            // 스틱 검색 시 카테고리 필터링 완화 (용품 카테고리 우선, 하지만 다른 카테고리도 허용)
-            const itemCategory = (item.category || item.type || item.category_name || '').toLowerCase()
-            if (itemCategory && !itemCategory.includes('goods') && !itemCategory.includes('용품')) {
-              // 용품이 아니어도 스틱 키워드가 있으면 통과
-              const itemTitle = (item.title || item.name || '').toLowerCase()
-              const itemDesc = (item.description || item.desc || '').toLowerCase()
-              const itemHasStick = stickKeywords.some(k => itemTitle.includes(k) || itemDesc.includes(k))
-              if (!itemHasStick) {
-                console.log(`[S3 검색] 스틱 검색: 용품이 아니고 스틱 키워드도 없음, 스킵: "${item.title || item.name}"`)
-                continue
-              }
+            // 스틱 검색 시 카테고리 필터링 완전히 제거 (모든 카테고리에서 스틱 검색)
+            const itemTitle = (item.title || item.name || '').toLowerCase()
+            const itemDesc = (item.description || item.desc || '').toLowerCase()
+            const itemHasStick = stickKeywords.some(k => {
+              const kLower = k.toLowerCase()
+              return itemTitle.includes(kLower) || itemDesc.includes(kLower)
+            })
+            // 스틱 키워드가 없으면 스킵 (스틱 검색이므로)
+            if (!itemHasStick) {
+              console.log(`[S3 검색] 스틱 검색: 스틱 키워드 없음, 스킵: "${item.title || item.name}"`)
+              continue
             }
+            console.log(`[S3 검색] 스틱 검색: 스틱 키워드 발견, 포함: "${item.title || item.name}"`)
           } else if (hasHatSearch) {
             // 모자 검색 시 카테고리 필터링 완화 (용품 카테고리 우선, 하지만 다른 카테고리도 허용)
             const itemCategory = (item.category || item.type || item.category_name || '').toLowerCase()
@@ -503,8 +540,11 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
             
             // "등산 스틱" 같은 복합 키워드 처리
             // "등산 스틱" -> "등산스틱", "스틱", "트레킹폴", "폴" 등으로도 매칭
-            const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking', '등산스틱', '등산 스틱', '등산스틱', 'trekking pole', 'trekkingpole']
-            const hasStickKeyword = stickKeywords.some(k => searchTitleLower.includes(k) || originalInputLower.includes(k))
+            const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking', '등산스틱', '등산 스틱', '등산스틱', 'trekking pole', 'trekkingpole', '트레킹 폴', 'trekking pole']
+            const hasStickKeyword = stickKeywords.some(k => {
+              const kLower = k.toLowerCase()
+              return searchTitleLower.includes(kLower) || originalInputLower.includes(kLower)
+            })
             if (hasStickKeyword) {
               const itemHasStick = stickKeywords.some(k => {
                 const kLower = k.toLowerCase()
@@ -513,11 +553,11 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
                        (item.name && item.name.toLowerCase().includes(kLower))
               })
               if (itemHasStick) {
-                score += 15 // 스틱 관련 키워드 매칭 보너스 (점수 증가)
+                score += 20 // 스틱 관련 키워드 매칭 보너스 (점수 증가)
                 console.log(`[S3 검색] 스틱 키워드 매칭 보너스: "${item.title || item.name}"`)
               } else {
                 // 스틱 검색어가 있지만 제품에 스틱 키워드가 없는 경우에도 기본 점수 부여
-                score += 3
+                score += 5
                 console.log(`[S3 검색] 스틱 검색어 감지, 기본 점수 부여: "${item.title || item.name}"`)
               }
             }
@@ -615,16 +655,25 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
             
             if (cleanPrice > 0) {
               // 가격 범위 체크
-              if (priceRange.maxPrice !== null && cleanPrice > priceRange.maxPrice) {
+              let pricePassed = true
+              
+              if (priceRange.maxPrice !== null && priceRange.maxPrice !== undefined && cleanPrice > priceRange.maxPrice) {
                 console.log(`[S3 검색] 가격 범위 초과: ${cleanPrice}원 > ${priceRange.maxPrice}원, 제외: "${item.title || item.name}"`)
-                continue // 최대 가격 초과
-              }
-              if (priceRange.minPrice !== null && cleanPrice < priceRange.minPrice) {
-                console.log(`[S3 검색] 가격 범위 미만: ${cleanPrice}원 < ${priceRange.minPrice}원, 제외: "${item.title || item.name}"`)
-                continue // 최소 가격 미만
+                pricePassed = false
               }
               
-              console.log(`[S3 검색] 가격 범위 통과: ${cleanPrice}원 (범위: ${priceRange.minPrice || 0}~${priceRange.maxPrice || '무제한'}), 제품: "${item.title || item.name}"`)
+              if (priceRange.minPrice !== null && priceRange.minPrice !== undefined && cleanPrice < priceRange.minPrice) {
+                console.log(`[S3 검색] 가격 범위 미만: ${cleanPrice}원 < ${priceRange.minPrice}원, 제외: "${item.title || item.name}"`)
+                pricePassed = false
+              }
+              
+              if (!pricePassed) {
+                continue // 가격 범위를 벗어나면 제외
+              }
+              
+              const minPriceStr = priceRange.minPrice !== null && priceRange.minPrice !== undefined ? priceRange.minPrice : 0
+              const maxPriceStr = priceRange.maxPrice !== null && priceRange.maxPrice !== undefined ? priceRange.maxPrice : '무제한'
+              console.log(`[S3 검색] 가격 범위 통과: ${cleanPrice}원 (범위: ${minPriceStr}~${maxPriceStr}), 제품: "${item.title || item.name}"`)
             } else {
               // 가격을 파싱할 수 없으면 필터링에서 제외
               console.log(`[S3 검색] 가격 파싱 실패: "${priceStr}", 제외: "${item.title || item.name}"`)
@@ -633,8 +682,9 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
           }
           
           // "초보자" 요청이 있으면 최소 점수 기준을 낮춤 (0점 이상, 즉 모든 제품 포함)
+          // 스틱 검색어가 있으면 최소 점수 기준을 낮춤 (1점 이상)
           // 일반 요청은 최소 3점 이상
-          const minScore = hasBeginnerRequest ? 0 : 3
+          const minScore = hasBeginnerRequest ? 0 : (hasStickSearch ? 1 : 3)
           
           // "초보자" 요청이고 제품명 매칭이 없어도, 초보자 관련 키워드가 있으면 포함
           if (hasBeginnerRequest && score === 0) {
