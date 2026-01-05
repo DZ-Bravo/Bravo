@@ -1860,6 +1860,7 @@ async function loadOverview() {
         replica: data.replica
       }
     })
+    console.log('🔍 Detailed Overview Data:', JSON.stringify(data, null, 2))
     
     // 가용성 업데이트
     const availabilityEl = document.getElementById('availability')
@@ -1872,7 +1873,6 @@ async function loadOverview() {
     // 지연 업데이트
     const latencyP95El = document.getElementById('latencyP95')
     const latencyP95ValueEl = document.getElementById('latencyP95Value')
-    const latencyP99El = document.getElementById('latencyP99')
     const latencyP99ValueEl = document.getElementById('latencyP99Value')
     
     const latencyP95Value = data.latency?.p95 ?? 0
@@ -1885,18 +1885,14 @@ async function loadOverview() {
     if (latencyP95ValueEl) {
       latencyP95ValueEl.textContent = `${latencyP95Value}`
     }
-    if (latencyP99El) {
-      latencyP99El.textContent = `${latencyP99Value}ms`
-      console.log('✅ Latency P99 updated:', latencyP99Value)
-    }
     if (latencyP99ValueEl) {
       latencyP99ValueEl.textContent = `${latencyP99Value}`
+      console.log('✅ Latency P99 updated:', latencyP99Value)
     }
     
     // 에러율 업데이트
-    const error5xxEl = document.getElementById('error5xx')
+    const error5xxEl = document.getElementById('errorRate5xx')
     const error5xxValueEl = document.getElementById('errorRate5xxValue')
-    const error4xxEl = document.getElementById('error4xx')
     const error4xxValueEl = document.getElementById('errorRate4xxValue')
     
     const error5xxValue = data.errorRate?.error5xx ?? 0
@@ -1909,12 +1905,9 @@ async function loadOverview() {
     if (error5xxValueEl) {
       error5xxValueEl.textContent = `${error5xxValue}`
     }
-    if (error4xxEl) {
-      error4xxEl.textContent = `${error4xxValue}%`
-      console.log('✅ Error 4xx updated:', error4xxValue)
-    }
     if (error4xxValueEl) {
       error4xxValueEl.textContent = `${error4xxValue}`
+      console.log('✅ Error 4xx updated:', error4xxValue)
     }
     
     // 트래픽 업데이트
