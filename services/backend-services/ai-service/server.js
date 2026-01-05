@@ -7,6 +7,7 @@ import { BedrockAgentRuntimeClient, InvokeAgentCommand } from '@aws-sdk/client-b
 import mongoose from 'mongoose'
 import { authenticateCognitoToken } from './shared/utils/cognito-auth.js'
 import { prometheusMiddleware, metricsHandler } from './shared/utils/prometheus-metrics.js'
+import axios from 'axios'
 
 dotenv.config()
 
@@ -49,6 +50,8 @@ const COURSE_AGENT_ID = process.env.BEDROCK_COURSE_AGENT_ID
 const COURSE_AGENT_ALIAS_ID = process.env.BEDROCK_COURSE_AGENT_ALIAS_ID
 const EQUIPMENT_AGENT_ID = process.env.VITE_EQUIPMENT_AGENT_ID
 const EQUIPMENT_AGENT_ALIAS_ID = process.env.VITE_EQUIPMENT_ALIAS_ID
+const PRODUCT_AGENT_ID = process.env.BEDROCK_PRODUCT_AGENT_ID
+const PRODUCT_AGENT_ALIAS_ID = process.env.BEDROCK_PRODUCT_AGENT_ALIAS_ID
 
 // 디버깅: 환경 변수 확인
 console.log('=== 환경 변수 확인 ===')
@@ -56,6 +59,8 @@ console.log('COURSE_AGENT_ID:', COURSE_AGENT_ID ? '설정됨' : '없음')
 console.log('COURSE_AGENT_ALIAS_ID:', COURSE_AGENT_ALIAS_ID ? '설정됨' : '없음')
 console.log('EQUIPMENT_AGENT_ID:', EQUIPMENT_AGENT_ID ? '설정됨' : '없음')
 console.log('EQUIPMENT_AGENT_ALIAS_ID:', EQUIPMENT_AGENT_ALIAS_ID ? '설정됨' : '없음')
+console.log('PRODUCT_AGENT_ID:', PRODUCT_AGENT_ID ? '설정됨' : '없음')
+console.log('PRODUCT_AGENT_ALIAS_ID:', PRODUCT_AGENT_ALIAS_ID ? '설정됨' : '없음')
 console.log('===================')
 
 // AI 등산코스 추천
@@ -543,6 +548,258 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
     
     // 사용자 친화적인 에러 메시지
     let errorMessage = 'AI 장비 추천 중 오류가 발생했습니다.'
+    if (error.message && error.message.includes('security token')) {
+      errorMessage = 'AWS 인증 오류가 발생했습니다. 관리자에게 문의해주세요.'
+    } else if (error.message) {
+      errorMessage = error.message
+    }
+    
+    res.status(500).json({ error: errorMessage })
+  }
+})
+
+// AI 상품 추천 (Hiker_product_recommendation Agent)
+app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res) => {
+  try {
+    const { userInput } = req.body
+    
+    if (!PRODUCT_AGENT_ID || !PRODUCT_AGENT_ALIAS_ID) {
+      return res.status(500).json({ error: 'AI 상품 추천 서비스가 설정되지 않았습니다.' })
+    }
+    
+    if (!userInput || !userInput.trim()) {
+      return res.status(400).json({ error: '조건을 입력해주세요.' })
+    }
+
+    console.log('[상품 추천] Bedrock Agent 호출 시작:', { 
+      agentId: PRODUCT_AGENT_ID, 
+      agentAliasId: PRODUCT_AGENT_ALIAS_ID,
+      prompt: userInput.substring(0, 100)
+    })
+    
+    const command = new InvokeAgentCommand({
+      agentId: PRODUCT_AGENT_ID,
+      agentAliasId: PRODUCT_AGENT_ALIAS_ID,
+      sessionId: `product-recommend-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      inputText: userInput,
+      enableTrace: false
+    })
+    
+    let response
+    try {
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Bedrock Agent 호출 타임아웃 (60초 초과)')), 60000)
+      })
+      
+      response = await Promise.race([
+        bedrockClient.send(command),
+        timeoutPromise
+      ])
+      console.log('[상품 추천] Bedrock Agent 응답 받음:', { hasCompletion: !!response.completion })
+    } catch (bedrockError) {
+      console.error('[상품 추천] Bedrock Agent 호출 오류:', {
+        message: bedrockError.message,
+        name: bedrockError.name,
+        httpStatusCode: bedrockError.$metadata?.httpStatusCode,
+        requestId: bedrockError.$metadata?.requestId
+      })
+      throw bedrockError
+    }
+    
+    // 스트리밍 응답 처리
+    let assistantResponse = ''
+    if (response.completion) {
+      for await (const chunk of response.completion) {
+        if (chunk.chunk?.bytes) {
+          const chunkText = new TextDecoder().decode(chunk.chunk.bytes)
+          assistantResponse += chunkText
+        }
+      }
+    }
+    
+    // 디버깅: 원본 응답 로그
+    console.log('=== 상품 추천 Bedrock 원본 응답 ===')
+    console.log('응답 길이:', assistantResponse.length)
+    console.log('응답 앞 500자:', assistantResponse.substring(0, 500))
+    console.log('================================')
+    
+    // JSON 파싱
+    let productData = null
+    try {
+      // JSON 코드 블록 추출 (```json ... ``` 또는 ``` ... ```)
+      let jsonText = assistantResponse.trim()
+      const jsonBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+      if (jsonBlockMatch) {
+        jsonText = jsonBlockMatch[1].trim()
+      }
+      
+      // JSON 객체 찾기
+      const jsonMatch = jsonText.match(/(\{[\s\S]*\})/)
+      if (jsonMatch) {
+        productData = JSON.parse(jsonMatch[0])
+        console.log('[상품 추천] JSON 파싱 성공')
+      } else {
+        throw new Error('JSON 형식을 찾을 수 없습니다.')
+      }
+    } catch (parseError) {
+      console.error('[상품 추천] JSON 파싱 실패:', parseError.message)
+      console.error('원본 응답:', assistantResponse)
+      return res.status(500).json({ 
+        error: 'AI 응답 형식 오류가 발생했습니다.',
+        message: '응답을 JSON 형식으로 파싱할 수 없습니다.'
+      })
+    }
+    
+    // 응답 형식 검증 및 변환
+    if (!productData || !productData.products || !Array.isArray(productData.products)) {
+      console.error('[상품 추천] 응답 형식 오류:', productData)
+      return res.status(500).json({ 
+        error: 'AI 응답 형식이 올바르지 않습니다.',
+        message: 'products 배열이 없습니다.'
+      })
+    }
+    
+    // products 배열 검증 및 정리
+    const products = productData.products.map((product, index) => {
+      // 필수 필드 검증
+      if (!product.title || !product.brand || !product.category || !product.price) {
+        console.warn(`[상품 추천] 필수 필드 누락 (인덱스 ${index}):`, product)
+      }
+      
+      return {
+        title: product.title || '상품명 없음',
+        brand: product.brand || '',
+        category: product.category || '',
+        price: product.price || '',
+        url: product.url || '',
+        reason: product.reason || ''
+      }
+    })
+    
+    // Store Service API를 사용하여 상품 URL 및 정보 검색 (Elasticsearch 사용)
+    console.log('=== Store Service API로 상품 검색 시작 ===')
+    const STORE_API_URL = process.env.STORE_API_URL || 'http://store-service.bravo-core-ns.svc.cluster.local:3006'
+    
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i]
+      const searchTitle = product.title || ''
+      const searchBrand = product.brand || ''
+      
+      if (!searchTitle || searchTitle === '상품명 없음') continue
+      
+      // 검색 쿼리 구성 (제품명 + 브랜드)
+      let searchQuery = searchTitle
+      if (searchBrand) {
+        searchQuery = `${searchBrand} ${searchTitle}`
+      }
+      
+      console.log(`[${i + 1}] Store Service 검색 중: "${searchQuery}"`)
+      
+      try {
+        // Store Service API 호출
+        const searchResponse = await axios.get(`${STORE_API_URL}/api/store/search`, {
+          params: {
+            q: searchQuery,
+            limit: 10,
+            category: product.category || null
+          },
+          timeout: 5000
+        })
+        
+        console.log(`[${i + 1}] Store Service 응답:`, {
+          status: searchResponse.status,
+          productsCount: searchResponse.data?.products?.length || 0
+        })
+        
+        if (searchResponse.status === 200 && searchResponse.data && searchResponse.data.products) {
+          const foundProducts = searchResponse.data.products
+          console.log(`[${i + 1}] 검색 결과 ${foundProducts.length}개 상품 발견`)
+          
+          // 가장 유사한 제품 찾기 (제품명과 브랜드 매칭)
+          let bestMatch = null
+          let bestScore = 0
+          
+          for (const foundProduct of foundProducts) {
+            let score = 0
+            
+            // 제품명 매칭 점수
+            const foundTitle = (foundProduct.title || '').toLowerCase()
+            const searchTitleLower = searchTitle.toLowerCase()
+            if (foundTitle.includes(searchTitleLower) || searchTitleLower.includes(foundTitle)) {
+              score += 10
+            }
+            
+            // 브랜드 매칭 점수
+            if (searchBrand) {
+              const foundBrand = (foundProduct.brand || '').toLowerCase()
+              const searchBrandLower = searchBrand.toLowerCase()
+              if (foundBrand.includes(searchBrandLower) || searchBrandLower.includes(foundBrand)) {
+                score += 5
+              }
+            }
+            
+            if (score > bestScore) {
+              bestScore = score
+              bestMatch = foundProduct
+            }
+          }
+          
+          console.log(`[${i + 1}] 최고 매칭 점수: ${bestScore}`, bestMatch ? `(제품: ${bestMatch.title})` : '(매칭 없음)')
+          
+          if (bestMatch && bestScore >= 5) {
+            console.log(`[${i + 1}] ✅ 제품 찾음: "${bestMatch.title || 'N/A'}" (점수: ${bestScore})`)
+            
+            // URL 업데이트
+            const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || ''
+            if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
+              products[i].url = productUrl
+              console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
+            }
+            
+            // 브랜드, 가격, 카테고리 정보 업데이트
+            if (!products[i].brand && bestMatch.brand) {
+              products[i].brand = bestMatch.brand
+            }
+            
+            if (!products[i].price && bestMatch.price) {
+              products[i].price = bestMatch.price.toString()
+            }
+            
+            if (!products[i].category && bestMatch.category) {
+              products[i].category = bestMatch.category
+            }
+            
+            // 제품명도 정확한 것으로 업데이트
+            if (bestMatch.title) {
+              products[i].title = bestMatch.title
+            }
+          } else {
+            console.log(`[${i + 1}] ⚠️  유사한 제품을 찾지 못함 (최고 점수: ${bestScore})`)
+          }
+        }
+      } catch (error) {
+        console.error(`[${i + 1}] Store Service 검색 오류:`, error.message)
+        if (error.response) {
+          console.error(`[${i + 1}] 응답 상태:`, error.response.status, '데이터:', error.response.data)
+        }
+        if (error.code) {
+          console.error(`[${i + 1}] 에러 코드:`, error.code)
+        }
+      }
+    }
+    
+    console.log('=== Store Service 검색 완료 ===')
+    
+    // 최종 응답
+    res.json({
+      query_summary: productData.query_summary || '',
+      products: products
+    })
+    
+  } catch (error) {
+    console.error('[상품 추천] 오류:', error)
+    
+    let errorMessage = 'AI 상품 추천 중 오류가 발생했습니다.'
     if (error.message && error.message.includes('security token')) {
       errorMessage = 'AWS 인증 오류가 발생했습니다. 관리자에게 문의해주세요.'
     } else if (error.message) {

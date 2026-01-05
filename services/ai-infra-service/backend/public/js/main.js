@@ -1769,6 +1769,16 @@ async function loadOverview() {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
     
     const data = await response.json()
+    console.log('📊 Overview API Response:', {
+      url: `${API_BASE}/metrics/overview`,
+      status: response.status,
+      data: {
+        latency: data.latency,
+        traffic: data.traffic,
+        errorRate: data.errorRate,
+        availability: data.availability
+      }
+    })
     
     // 가용성 업데이트
     const availabilityEl = document.getElementById('availability')
@@ -1778,19 +1788,34 @@ async function loadOverview() {
     
     // 지연 업데이트
     const latencyP95El = document.getElementById('latencyP95')
+    const latencyP95ValueEl = document.getElementById('latencyP95Value')
     const latencyP99El = document.getElementById('latencyP99')
-    if (latencyP95El) latencyP95El.textContent = `${data.latency?.p95 || 0}ms`
-    if (latencyP99El) latencyP99El.textContent = `${data.latency?.p99 || 0}ms`
+    const latencyP99ValueEl = document.getElementById('latencyP99Value')
+    const latencyValue = data.latency?.p95 || 0
+    if (latencyP95El) latencyP95El.textContent = `${latencyValue}ms`
+    if (latencyP95ValueEl) latencyP95ValueEl.textContent = `${latencyValue}`
+    if (latencyP99ValueEl) {
+      const p99Value = data.latency?.p99 || 0
+      latencyP99ValueEl.textContent = `${p99Value}`
+    }
     
     // 에러율 업데이트
     const error5xxEl = document.getElementById('error5xx')
+    const error5xxValueEl = document.getElementById('errorRate5xxValue')
     const error4xxEl = document.getElementById('error4xx')
-    if (error5xxEl) error5xxEl.textContent = `${data.errorRate?.error5xx || 0}%`
-    if (error4xxEl) error4xxEl.textContent = `${data.errorRate?.error4xx || 0}%`
+    const error4xxValueEl = document.getElementById('errorRate4xxValue')
+    const error5xxValue = data.errorRate?.error5xx || 0
+    const error4xxValue = data.errorRate?.error4xx || 0
+    if (error5xxEl) error5xxEl.textContent = `${error5xxValue}%`
+    if (error5xxValueEl) error5xxValueEl.textContent = `${error5xxValue}`
+    if (error4xxValueEl) error4xxValueEl.textContent = `${error4xxValue}`
     
     // 트래픽 업데이트
     const rpsEl = document.getElementById('rps')
-    if (rpsEl) rpsEl.textContent = `${data.traffic?.rps || 0}`
+    const rpsValueEl = document.getElementById('rpsValue')
+    const rpsValue = data.traffic?.rps || 0
+    if (rpsEl) rpsEl.textContent = `${rpsValue}`
+    if (rpsValueEl) rpsValueEl.textContent = `${rpsValue}`
     
     // 포화도 업데이트
     const cpuAvgEl = document.getElementById('cpuAvg')
@@ -1835,7 +1860,7 @@ async function loadServices() {
     tbody.innerHTML = ''
     
     if (services.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">서비스가 없습니다.</td></tr>'
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 20px;">서비스가 없습니다.</td></tr>'
       return
     }
     
@@ -1849,7 +1874,8 @@ async function loadServices() {
         <td>${service.errorRate5xx || 0}% / ${service.errorRate4xx || 0}%</td>
         <td>${service.replica?.available || 0} / ${service.replica?.desired || 0}</td>
         <td>${service.restart?.['1h'] || 0} / ${service.restart?.['24h'] || 0}</td>
-        <td>${service.cpu || 0}% / ${service.mem || 0}%</td>
+        <td>${service.cpu || 0}%</td>
+        <td>${service.mem || 0}%</td>
       `
       tbody.appendChild(row)
     })
@@ -1932,6 +1958,12 @@ async function loadLogs() {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
     
     const logs = await response.json()
+    console.log('📋 Logs API Response:', {
+      url,
+      status: response.status,
+      count: logs?.length || 0,
+      sample: logs?.slice(0, 3) || []
+    })
     
     // 최근 에러 로그 테이블 업데이트
     const tbody = document.getElementById('logsTableBody')
@@ -2004,6 +2036,12 @@ async function loadTraces() {
         const slowResponse = await fetch(slowUrl)
         if (slowResponse.ok) {
           const slowTraces = await slowResponse.json()
+          console.log('🐌 Slow Traces API Response:', {
+            url: slowUrl,
+            status: slowResponse.status,
+            count: slowTraces?.length || 0,
+            sample: slowTraces?.slice(0, 2) || []
+          })
           if (slowTraces && slowTraces.length > 0) {
             updateTracesList(slowTracesList, slowTraces, 'slow')
           } else {
@@ -2029,6 +2067,12 @@ async function loadTraces() {
         const errorResponse = await fetch(errorUrl)
         if (errorResponse.ok) {
           const errorTraces = await errorResponse.json()
+          console.log('❌ Error Traces API Response:', {
+            url: errorUrl,
+            status: errorResponse.status,
+            count: errorTraces?.length || 0,
+            sample: errorTraces?.slice(0, 2) || []
+          })
           if (errorTraces && errorTraces.length > 0) {
             updateTracesList(errorTracesList, errorTraces, 'error')
           } else {
