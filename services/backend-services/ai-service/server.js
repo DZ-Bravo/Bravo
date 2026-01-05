@@ -884,6 +884,10 @@ app.post('/api/ai/recommend-course', authenticateCognitoToken, async (req, res) 
       })
     } catch (bedrockError) {
       console.error('[AI 코스 추천] Bedrock Agent 호출 오류:', bedrockError)
+      console.error('[AI 코스 추천] 에러 메시지:', bedrockError.message)
+      console.error('[AI 코스 추천] 에러 이름:', bedrockError.name)
+      console.error('[AI 코스 추천] 에러 스택:', bedrockError.stack?.substring(0, 500))
+      
       // 에러 객체에서 원본 응답 확인 (순환 참조 방지)
       if (bedrockError.$response) {
         try {
@@ -894,24 +898,136 @@ app.post('/api/ai/recommend-course', authenticateCognitoToken, async (req, res) 
           }
           console.error('[AI 코스 추천] Bedrock 응답 정보:', JSON.stringify(responseInfo, null, 2))
           
-          // 원본 응답 본문 확인 시도
+          // 원본 응답 본문 확인 시도 (다양한 방법)
           if (bedrockError.$response.body) {
             try {
-              const bodyText = await bedrockError.$response.body.text()
-              console.error('[AI 코스 추천] Bedrock 원본 응답 본문:', bodyText.substring(0, 1000))
+              // body가 ReadableStream인 경우
+              if (typeof bedrockError.$response.body.getReader === 'function') {
+                const reader = bedrockError.$response.body.getReader()
+                const chunks = []
+                let done = false
+                while (!done) {
+                  const { value, done: readerDone } = await reader.read()
+                  done = readerDone
+                  if (value) chunks.push(value)
+                }
+                const bodyText = new TextDecoder().decode(Buffer.concat(chunks))
+                console.error('[AI 코스 추천] Bedrock 원본 응답 본문 (ReadableStream):', bodyText.substring(0, 3000))
+              } else if (typeof bedrockError.$response.body.text === 'function') {
+                const bodyText = await bedrockError.$response.body.text()
+                console.error('[AI 코스 추천] Bedrock 원본 응답 본문 (text()):', bodyText.substring(0, 3000))
+              } else {
+                console.error('[AI 코스 추천] body 타입:', typeof bedrockError.$response.body)
+                console.error('[AI 코스 추천] body:', bedrockError.$response.body)
+              }
             } catch (e) {
               console.error('[AI 코스 추천] 응답 본문 읽기 실패:', e.message)
+              console.error('[AI 코스 추천] body 타입:', typeof bedrockError.$response.body)
             }
           }
+          
+          // $response의 다른 속성 확인
+          console.error('[AI 코스 추천] $response 속성:', Object.keys(bedrockError.$response))
         } catch (e) {
-          console.error('[AI 코스 추천] Bedrock 에러 메시지:', bedrockError.message || bedrockError.toString())
+          console.error('[AI 코스 추천] Bedrock 에러 정보 추출 실패:', e.message)
         }
       }
       
-      // 파싱 오류인 경우 응답이 실제로 왔을 수 있으므로 재시도하지 않고 에러 반환
-      if (bedrockError.message && bedrockError.message.includes('parse')) {
-        console.error('[AI 코스 추천] 파싱 오류 - Bedrock Agent 응답 형식 문제 가능성')
-        throw new Error('AI 응답 형식 오류가 발생했습니다. Bedrock Agent 설정을 확인해주세요.')
+      // 에러 객체의 모든 속성 확인
+      const errorKeys = Object.keys(bedrockError)
+      const allProps = Object.getOwnPropertyNames(bedrockError)
+      console.error('[AI 코스 추천] 에러 객체 속성 (keys):', errorKeys)
+      console.error('[AI 코스 추천] 에러 객체 속성 (all props):', allProps)
+      if (bedrockError.$metadata) {
+        console.error('[AI 코스 추천] $metadata:', JSON.stringify(bedrockError.$metadata, null, 2))
+      }
+      
+      // $response 속성 확인 (숨겨진 속성일 수 있음)
+      console.error('[AI 코스 추천] $response 직접 접근:', typeof bedrockError.$response, bedrockError.$response)
+      console.error('[AI 코스 추천] $response in 객체:', '$response' in bedrockError)
+      console.error('[AI 코스 추천] hasOwnProperty $response:', Object.prototype.hasOwnProperty.call(bedrockError, '$response'))
+      
+      // 파싱 오류인 경우 - 더 상세한 정보 로깅
+      const errorMessage = bedrockError.message || bedrockError.toString() || ''
+      if (errorMessage.includes('parse') || errorMessage.includes('Parse') || errorMessage.includes('parser')) {
+        console.error('[AI 코스 추천] 파싱 오류 감지')
+        console.error('[AI 코스 추천] 파싱 오류 상세:', errorMessage)
+        console.error('[AI 코스 추천] 전체 에러 객체 키:', Object.keys(bedrockError))
+        
+        // 파싱 오류: AWS SDK의 기본 파서가 Nova 모델 응답을 파싱하지 못함
+        // Nova 모델만 사용 가능하므로, 에러 본문에서 실제 응답 데이터 추출 시도
+        console.error('[AI 코스 추천] AWS SDK 파싱 오류 - Nova 모델과 호환성 문제')
+        console.error('[AI 코스 추천] 에러 본문에서 응답 데이터 추출 시도...')
+        
+        // 에러 본문에서 실제 응답 데이터 추출 시도
+        let extractedResponse = null
+        try {
+          // $response가 있으면 시도
+          if (bedrockError.$response?.body) {
+            let bodyText = ''
+            if (typeof bedrockError.$response.body.getReader === 'function') {
+              const reader = bedrockError.$response.body.getReader()
+              const chunks = []
+              let done = false
+              while (!done) {
+                const { value, done: readerDone } = await reader.read()
+                done = readerDone
+                if (value) chunks.push(value)
+              }
+              bodyText = new TextDecoder().decode(Buffer.concat(chunks))
+            } else if (typeof bedrockError.$response.body.text === 'function') {
+              bodyText = await bedrockError.$response.body.text()
+            } else if (typeof bedrockError.$response.body === 'string') {
+              bodyText = bedrockError.$response.body
+            }
+            
+            if (bodyText) {
+              console.error('[AI 코스 추천] 에러 본문 텍스트 길이:', bodyText.length)
+              console.error('[AI 코스 추천] 에러 본문 앞 1000자:', bodyText.substring(0, 1000))
+              
+              // JSON 형식인지 확인
+              try {
+                const jsonData = JSON.parse(bodyText)
+                console.error('[AI 코스 추천] 에러 본문은 JSON 형식입니다')
+                
+                // 응답 데이터가 있는지 확인 (구조는 Bedrock 응답 형식에 따라 다를 수 있음)
+                if (jsonData.completion || jsonData.message || jsonData.response) {
+                  extractedResponse = jsonData.completion || jsonData.message || jsonData.response
+                  console.error('[AI 코스 추천] 에러 본문에서 응답 데이터 추출 성공')
+                }
+              } catch (jsonError) {
+                // JSON이 아니면 텍스트에서 직접 추출 시도
+                console.error('[AI 코스 추천] 에러 본문은 JSON 형식이 아닙니다, 텍스트 파싱 시도')
+                
+                // 일반 텍스트 응답인 경우 (충분한 길이면 사용)
+                if (bodyText.length > 50) {
+                  extractedResponse = bodyText
+                  console.error('[AI 코스 추천] 에러 본문에서 텍스트 응답 추출 성공 (길이:', bodyText.length, ')')
+                }
+              }
+            }
+          }
+        } catch (extractError) {
+          console.error('[AI 코스 추천] 에러 본문에서 데이터 추출 실패:', extractError.message)
+        }
+        
+        // 추출한 응답이 있으면 사용, 없으면 에러 throw
+        if (extractedResponse) {
+          console.error('[AI 코스 추천] 추출한 응답 데이터 사용 (파싱 에러 우회)')
+          // 추출한 응답을 정상 응답으로 처리하기 위해 임시로 response 객체 생성
+          response = {
+            completion: (async function* () {
+              const text = typeof extractedResponse === 'string' ? extractedResponse : JSON.stringify(extractedResponse)
+              yield { chunk: { bytes: new TextEncoder().encode(text) } }
+            })()
+          }
+          // 정상 처리 흐름으로 진행하기 위해 에러를 throw하지 않음
+        } else {
+          console.error('[AI 코스 추천] 에러 본문에서 응답 데이터를 추출하지 못했습니다')
+          console.error('[AI 코스 추천] 결론: AWS SDK가 Nova 모델 응답을 파싱하지 못하며, $response 속성도 제공하지 않습니다.')
+          console.error('[AI 코스 추천] 해결 방법: Lambda Parser 설정 또는 AWS 지원팀에 Nova 모델 파서 지원 요청')
+          throw new Error('Nova 모델 응답 파싱 오류: AWS SDK가 Nova 모델 응답을 처리할 수 없습니다. Lambda Parser 설정이 필요합니다.')
+        }
       }
       
       throw bedrockError

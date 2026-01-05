@@ -27,12 +27,12 @@ def lambda_handler(event, context):
         if not original_text:
             print("[Parser Lambda] Empty input")
             return {
-                'statusCode': 200,
-                'response': {
-                    'text': '',
-                    'thought': '',
-                    'actionGroups': [],
-                    'knowledgeBases': []
+                'orchestrationParsedResponse': {
+                    'responseDetails': {
+                        'completion': {
+                            'text': ''
+                        }
+                    }
                 }
             }
         
@@ -54,14 +54,14 @@ def lambda_handler(event, context):
             # <answer> 태그가 없으면 <thinking> 태그만 제거
             parsed_text = re.sub(r'<thinking>.*?</thinking>', '', original_text, flags=re.DOTALL).strip()
         
-        # 결과 반환
+        # 결과 반환 - orchestrationParsedResponse 형식
         result = {
-            'statusCode': 200,
-            'response': {
-                'text': parsed_text,
-                'thought': thought,
-                'actionGroups': [],
-                'knowledgeBases': []
+            'orchestrationParsedResponse': {
+                'responseDetails': {
+                    'completion': {
+                        'text': parsed_text
+                    }
+                }
             }
         }
         
@@ -80,11 +80,11 @@ def lambda_handler(event, context):
             original = str(event)
             
         return {
-            'statusCode': 200,
-            'response': {
-                'text': original,
-                'thought': '',
-                'actionGroups': [],
-                'knowledgeBases': []
+            'orchestrationParsedResponse': {
+                'responseDetails': {
+                    'completion': {
+                        'text': original
+                    }
+                }
             }
         }
