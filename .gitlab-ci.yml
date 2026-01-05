@@ -1,7 +1,7 @@
 include:
   - template: Jobs/SAST.gitlab-ci.yml
   - template: Jobs/Secret-Detection.gitlab-ci.yml
-  - template: Jobs/Infrastructure-As-Code.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml  # 인프라(IaC) 대신 컨테이너 취약점 점검 추천
 
 image: docker:27
 
