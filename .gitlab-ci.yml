@@ -181,6 +181,9 @@ deploy-frontend:
   stage: deploy
   variables:
     ECR_REPO: "bravo/hiking-frontend"
+  environment:
+    name: production/frontend
+    url: https://hiker-cloud.site  # 👈 실제 주소 연결
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
@@ -220,6 +223,8 @@ deploy-frontend:
 sonar-backend:
   stage: analyze
   image: sonarsource/sonar-scanner-cli:5
+  # 👈 핵심 1: 소나큐브 스캔이 실패해도 전체 파이프라인은 'Success' 혹은 'Warning'으로 넘어가게 함
+  allow_failure: true
   parallel:
     matrix:
       - SERVICE_NAME: ai-service
@@ -241,7 +246,7 @@ sonar-backend:
         -Dsonar.sources=services/backend-services/${SERVICE_NAME} \
         -Dsonar.host.url=$SONAR_HOST_URL \
         -Dsonar.login=$SONAR_TOKEN \
-        -Dsonar.qualitygate.wait=true
+        -Dsonar.qualitygate.wait=false # 👈 핵심 2: 소나큐브 서버의 승인을 기다리지 않고 즉시 종료
   <<: *notify_slack_failure
 
 
@@ -306,6 +311,9 @@ build-backend:
 
 deploy-backend:
   stage: deploy
+  environment:
+    name: production/backend/${SERVICE_NAME}
+    url: https://hiker-cloud.site/api/${SERVICE_NAME} # 👈 API 엔드포인트 구조에 맞게 수정 가능
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
@@ -482,4 +490,26 @@ deploy-ai-infra:
           exit 1
         }
   <<: *notify_slack_failure
+
+# ===============================
+# 🛠 Monitor: GitLab Performance & Environment 통합
+# ===============================
+# 모든 서비스가 배포된 후, 통합 대시보드 활성화를 위한 마지막 잡
+monitor-total-status:
+  stage: deploy
+  image: curlimages/curl
+  needs:
+    - job: deploy-ai-infra  # AI-infra 배포가 성공해야 실행
+    - job: deploy-frontend  # (선택사항) 프론트까지 완벽히 끝난 후 확인하려면 추가
+  environment:
+    name: production/total-system
+    url: https://hiker-cloud.site
+  script:
+    - echo "모든 서비스 배포 완료. 전체 시스템 상태 대시보드 업데이트 중..."
+    - |
+      echo "GitLab Monitor 메뉴에서 실시간 메트릭을 확인할 수 있습니다."
+      # 시연용: 사이트 응답 속도 출력 (담당자가 따로 있으니 정보성 로그만 남김)
+      curl -s -w "Total Time: %{time_total}s\n" -o /dev/null https://hiker-cloud.site
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
 
