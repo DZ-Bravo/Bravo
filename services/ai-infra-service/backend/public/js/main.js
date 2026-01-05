@@ -2419,9 +2419,9 @@ async function updateLogsErrorTrendChart(start, end) {
 // Alerts 데이터 로드
 async function loadAlerts() {
   try {
-    // 타임아웃 설정 (10초)
+    // 타임아웃 설정 (5초로 단축)
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 10000)
+    const timeoutId = setTimeout(() => controller.abort(), 5000)
     
     const response = await fetch(`${API_BASE}/alerts/firing`, {
       signal: controller.signal
@@ -2430,46 +2430,95 @@ async function loadAlerts() {
     clearTimeout(timeoutId)
     
     if (!response.ok) {
-      if (response.status === 504) {
-        throw new Error('Gateway timeout - Alertmanager가 응답하지 않습니다')
+      // 에러가 발생해도 빈 배열로 처리 (Alertmanager가 없을 수 있음)
+      const firingAlertsList = document.getElementById('firingAlertsList')
+      const alertsTableBody = document.getElementById('firingAlertsTableBody')
+      if (firingAlertsList) {
+        firingAlertsList.innerHTML = '<p style="padding: 10px; text-align: center; color: #999;">현재 FIRING 알람이 없습니다.</p>'
       }
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const alerts = await response.json()
-    
-    // Alerts 리스트 업데이트
-    const alertsList = document.getElementById('alertsList')
-    if (!alertsList) return
-    
-    alertsList.innerHTML = ''
-    
-    if (!alerts || alerts.length === 0) {
-      alertsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">현재 FIRING 알람이 없습니다.</p>'
+      if (alertsTableBody) {
+        alertsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #999;">현재 FIRING 알람이 없습니다.</td></tr>'
+      }
       return
     }
     
-    alerts.forEach(alert => {
-      const item = document.createElement('div')
-      item.className = 'alert-item'
-      item.innerHTML = `
-        <div class="alert-header">
-          <span class="alert-severity severity-${alert.severity || 'warning'}">${alert.severity || 'WARNING'}</span>
-          <span class="alert-name">${alert.name || 'Unknown'}</span>
-        </div>
-        <div class="alert-message">${alert.message || 'No message'}</div>
-        <div class="alert-time">${new Date(alert.startsAt || Date.now()).toLocaleString()}</div>
-      `
-      alertsList.appendChild(item)
+    const alerts = await response.json()
+    console.log('📢 Alerts API Response:', {
+      url: `${API_BASE}/alerts/firing`,
+      status: response.status,
+      count: alerts?.length || 0,
+      sample: alerts?.slice(0, 2) || []
     })
+    
+    // Overview의 Alerts 리스트 업데이트
+    const firingAlertsList = document.getElementById('firingAlertsList')
+    if (firingAlertsList) {
+      firingAlertsList.innerHTML = ''
+      if (!alerts || alerts.length === 0) {
+        firingAlertsList.innerHTML = '<p style="padding: 10px; text-align: center; color: #999;">현재 FIRING 알람이 없습니다.</p>'
+      } else {
+        alerts.slice(0, 5).forEach(alert => {
+          const item = document.createElement('div')
+          item.className = 'alert-item'
+          const severity = alert.labels?.severity || alert.severity || 'warning'
+          const name = alert.labels?.alertname || alert.name || 'Unknown'
+          const message = alert.annotations?.description || alert.annotations?.summary || alert.message || 'No message'
+          item.innerHTML = `
+            <div class="alert-header">
+              <span class="alert-severity severity-${severity}">${severity.toUpperCase()}</span>
+              <span class="alert-name">${name}</span>
+            </div>
+            <div class="alert-message">${message}</div>
+          `
+          firingAlertsList.appendChild(item)
+        })
+      }
+    }
+    
+    // Alerts 섹션의 테이블 업데이트
+    const alertsTableBody = document.getElementById('firingAlertsTableBody')
+    if (alertsTableBody) {
+      alertsTableBody.innerHTML = ''
+      if (!alerts || alerts.length === 0) {
+        alertsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #999;">현재 FIRING 알람이 없습니다.</td></tr>'
+      } else {
+        alerts.forEach(alert => {
+          const row = document.createElement('tr')
+          const severity = alert.labels?.severity || alert.severity || 'warning'
+          const name = alert.labels?.alertname || alert.name || 'Unknown'
+          const service = alert.labels?.service || alert.labels?.instance || '-'
+          const message = alert.annotations?.description || alert.annotations?.summary || alert.message || 'No message'
+          const startsAt = alert.startsAt || alert.activeAt || new Date().toISOString()
+          row.innerHTML = `
+            <td>${new Date(startsAt).toLocaleString()}</td>
+            <td>${service}</td>
+            <td><span class="alert-severity severity-${severity}">${severity.toUpperCase()}</span></td>
+            <td>${message}</td>
+          `
+          alertsTableBody.appendChild(row)
+        })
+      }
+    }
   } catch (error) {
     console.error('Error loading alerts:', error)
-    const alertsList = document.getElementById('alertsList')
-    if (alertsList) {
-      if (error.name === 'AbortError' || error.message.includes('timeout')) {
-        alertsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #e74c3c;">알람을 불러오는 중 타임아웃이 발생했습니다. Alertmanager가 응답하지 않습니다.</p>'
-      } else {
-        alertsList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">알람을 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+    // 타임아웃이나 네트워크 에러는 조용히 처리 (Alertmanager가 없을 수 있음)
+    if (error.name === 'AbortError' || error.message.includes('timeout') || error.message.includes('Failed to fetch')) {
+      const firingAlertsList = document.getElementById('firingAlertsList')
+      const alertsTableBody = document.getElementById('firingAlertsTableBody')
+      if (firingAlertsList) {
+        firingAlertsList.innerHTML = '<p style="padding: 10px; text-align: center; color: #999;">현재 FIRING 알람이 없습니다.</p>'
+      }
+      if (alertsTableBody) {
+        alertsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #999;">현재 FIRING 알람이 없습니다.</td></tr>'
+      }
+    } else {
+      const firingAlertsList = document.getElementById('firingAlertsList')
+      const alertsTableBody = document.getElementById('firingAlertsTableBody')
+      if (firingAlertsList) {
+        firingAlertsList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">알람을 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+      }
+      if (alertsTableBody) {
+        alertsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #e74c3c;">알람을 불러오는 중 오류가 발생했습니다: ${error.message}</td></tr>`
       }
     }
   }

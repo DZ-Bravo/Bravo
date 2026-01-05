@@ -25,8 +25,10 @@ const s3 = new AWS.S3({
   }
 })
 
-const S3_BUCKET = process.env.AWS_S3_BUCKET || process.env.S3_BUCKET || 'bravo-hiking-data'
-const S3_PRODUCT_PREFIX = 'product/'
+const S3_BUCKET = process.env.AWS_S3_BUCKET || process.env.S3_BUCKET || 'bravo-ai-data-bucket'
+const S3_PRODUCT_PREFIX = 'data/product/'
+
+console.log(`[S3 초기화] 버킷: ${S3_BUCKET}, 경로: ${S3_PRODUCT_PREFIX}`)
 
 // S3에서 상품 데이터 검색 함수
 async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
@@ -39,14 +41,21 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
       Prefix: S3_PRODUCT_PREFIX
     }
     
+    console.log(`[S3 검색] listObjectsV2 호출:`, listParams)
     const objects = await s3.listObjectsV2(listParams).promise()
+    console.log(`[S3 검색] listObjectsV2 응답:`, {
+      KeyCount: objects.KeyCount,
+      IsTruncated: objects.IsTruncated,
+      ContentsCount: objects.Contents ? objects.Contents.length : 0
+    })
     
     if (!objects.Contents || objects.Contents.length === 0) {
-      console.log('[S3 검색] product/ 폴더에 파일이 없습니다.')
+      console.log(`[S3 검색] ${S3_PRODUCT_PREFIX} 폴더에 파일이 없습니다.`)
       return []
     }
     
     console.log(`[S3 검색] ${objects.Contents.length}개 파일 발견`)
+    console.log(`[S3 검색] 첫 5개 파일:`, objects.Contents.slice(0, 5).map(obj => obj.Key))
     
     // 각 파일에서 상품 데이터 읽기
     const products = []
@@ -55,14 +64,45 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
     for (const obj of objects.Contents) {
       const key = obj.Key
       
-      // 카테고리 필터링
-      if (category) {
-        const categoryInPath = categories.find(cat => key.includes(`/${cat}/`) || key.includes(`_${cat}_`))
-        if (!categoryInPath) continue
+      // CSV 파일은 카테고리 필터링 스킵 (파일 내부에서 필터링)
+      const isCsv = key.endsWith('.csv')
+      if (category && !isCsv) {
+        // 카테고리 매핑: '용품' -> 'goods'
+        const categoryMap = {
+          '용품': 'goods',
+          'goods': 'goods',
+          '등산화': 'shoes',
+          'shoes': 'shoes',
+          '상의': 'top',
+          'top': 'top',
+          '하의': 'bottom',
+          'bottom': 'bottom'
+        }
+        const mappedCategory = categoryMap[category] || category
+        
+        const categoryInPath = categories.find(cat => {
+          const catMatch = key.includes(`/${cat}/`) || key.includes(`_${cat}_`) || key.includes(`/${cat}.`) || key.includes(`_${cat}.`)
+          return catMatch
+        })
+        
+        // 카테고리 매칭이 안 되어도 일단 확인 (로깅용)
+        if (!categoryInPath) {
+          console.log(`[S3 검색] 카테고리 필터링: ${key}는 ${category}(${mappedCategory})와 매칭 안 됨, 스킵`)
+          continue
+        } else {
+          console.log(`[S3 검색] 카테고리 매칭: ${key}는 ${category}(${mappedCategory})와 매칭됨`)
+        }
+      } else if (isCsv) {
+        console.log(`[S3 검색] CSV 파일 발견: ${key}, 카테고리 필터링은 파일 내부에서 수행`)
       }
       
-      // JSON 파일만 처리
-      if (!key.endsWith('.json')) continue
+      // JSON 파일과 CSV 파일 처리
+      const isJson = key.endsWith('.json')
+      const isCsv = key.endsWith('.csv')
+      if (!isJson && !isCsv) continue
+      
+      // 메타데이터 파일은 스킵
+      if (key.includes('.metadata.')) continue
       
       try {
         const getObjectParams = {
@@ -71,14 +111,97 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
         }
         
         const data = await s3.getObject(getObjectParams).promise()
-        const content = JSON.parse(data.Body.toString('utf-8'))
+        const fileContent = data.Body.toString('utf-8')
         
-        // 배열인 경우와 객체인 경우 처리
-        const items = Array.isArray(content) ? content : [content]
+        let items = []
+        
+        if (isCsv) {
+          // CSV 파일 파싱
+          console.log(`[S3 검색] CSV 파일 ${key} 읽기 성공, 크기: ${fileContent.length} bytes`)
+          const lines = fileContent.split('\n').filter(line => line.trim())
+          if (lines.length === 0) {
+            console.log(`[S3 검색] CSV 파일이 비어있습니다.`)
+            continue
+          }
+          
+          // 헤더 파싱 (쉼표로 분리, 따옴표 제거)
+          const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''))
+          console.log(`[S3 검색] CSV 헤더 (${headers.length}개):`, headers.slice(0, 15))
+          
+          // 데이터 행 파싱
+          for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim()
+            if (!line) continue
+            
+            // CSV 파싱 (쉼표로 분리, 따옴표 처리)
+            const values = []
+            let current = ''
+            let inQuotes = false
+            for (let j = 0; j < line.length; j++) {
+              const char = line[j]
+              if (char === '"') {
+                inQuotes = !inQuotes
+              } else if (char === ',' && !inQuotes) {
+                values.push(current.trim())
+                current = ''
+              } else {
+                current += char
+              }
+            }
+            values.push(current.trim()) // 마지막 값
+            
+            if (values.length !== headers.length) {
+              console.warn(`[S3 검색] CSV 행 ${i}의 컬럼 수가 헤더와 다름: ${values.length} vs ${headers.length}`)
+              continue
+            }
+            
+            const item = {}
+            headers.forEach((header, idx) => {
+              item[header] = values[idx] || ''
+            })
+            items.push(item)
+          }
+          
+          console.log(`[S3 검색] CSV에서 ${items.length}개 항목 파싱 완료`)
+          if (items.length > 0) {
+            console.log(`[S3 검색] 첫 번째 항목 키:`, Object.keys(items[0]).slice(0, 20))
+          }
+        } else {
+          // JSON 파일 파싱
+          const content = JSON.parse(fileContent)
+          console.log(`[S3 검색] JSON 파일 ${key} 읽기 성공, 타입: ${Array.isArray(content) ? '배열' : '객체'}, 항목 수: ${Array.isArray(content) ? content.length : 1}`)
+          
+          // 배열인 경우와 객체인 경우 처리
+          items = Array.isArray(content) ? content : [content]
+          
+          // 첫 번째 항목의 키 확인 (디버깅)
+          if (items.length > 0) {
+            console.log(`[S3 검색] 첫 번째 항목 키:`, Object.keys(items[0]).slice(0, 20))
+          }
+        }
         
         for (const item of items) {
-          const title = (item.title || item.name || '').toLowerCase()
-          const brand = (item.brand || item.brandName || item.manufacturer || '').toLowerCase()
+          // CSV의 경우 카테고리 필터링
+          if (category && isCsv) {
+            const categoryMap = {
+              '용품': 'goods',
+              'goods': 'goods',
+              '등산화': 'shoes',
+              'shoes': 'shoes',
+              '상의': 'top',
+              'top': 'top',
+              '하의': 'bottom',
+              'bottom': 'bottom'
+            }
+            const mappedCategory = categoryMap[category] || category
+            const itemCategory = (item.category || item.type || item.category_name || '').toLowerCase()
+            if (itemCategory && itemCategory !== mappedCategory && !itemCategory.includes(mappedCategory) && mappedCategory !== itemCategory) {
+              continue // 카테고리가 맞지 않으면 스킵
+            }
+          }
+          
+          const title = (item.title || item.name || item.product_name || item.productName || '').toLowerCase()
+          const brand = (item.brand || item.brandName || item.manufacturer || item.brand_name || '').toLowerCase()
           const searchTitleLower = searchTitle.toLowerCase()
           const searchBrandLower = searchBrand.toLowerCase()
           
@@ -107,16 +230,34 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
           
           // 최소 점수 3점 이상이면 포함 (더 관대한 매칭)
           if (score >= 3) {
-            const productUrl = item.url || item.link || item.productUrl || item.product_link || item.productLink || ''
-            console.log(`[S3 검색] 매칭 상품 발견: "${item.title || item.name}" (점수: ${score.toFixed(1)}), URL: ${productUrl ? '있음' : '없음'}`)
+            // 모든 가능한 URL 필드명 확인
+            const productUrl = item.url || item.link || item.productUrl || item.product_link || item.productLink || item.product_url || item.href || item.hyperlink || item.webUrl || item.web_url || item.purchaseUrl || item.purchase_url || ''
+            
+            console.log(`[S3 검색] 매칭 상품 발견: "${item.title || item.name}" (점수: ${score.toFixed(1)})`)
+            console.log(`[S3 검색] URL 필드 확인:`, {
+              url: item.url || '없음',
+              link: item.link || '없음',
+              productUrl: item.productUrl || '없음',
+              product_link: item.product_link || '없음',
+              productLink: item.productLink || '없음',
+              product_url: item.product_url || '없음',
+              href: item.href || '없음',
+              hyperlink: item.hyperlink || '없음',
+              webUrl: item.webUrl || '없음',
+              web_url: item.web_url || '없음',
+              purchaseUrl: item.purchaseUrl || '없음',
+              purchase_url: item.purchase_url || '없음',
+              최종URL: productUrl || '없음',
+              전체키: Object.keys(item).filter(k => k.toLowerCase().includes('url') || k.toLowerCase().includes('link') || k.toLowerCase().includes('href'))
+            })
             
             products.push({
               ...item,
-              title: item.title || item.name || '',
-              brand: item.brand || item.brandName || item.manufacturer || '',
+              title: item.title || item.name || item.product_name || item.productName || '',
+              brand: item.brand || item.brandName || item.manufacturer || item.brand_name || '',
               url: productUrl,
-              price: item.price || item.cost || item.priceValue || 0,
-              category: item.category || item.type || '',
+              price: item.price || item.cost || item.priceValue || item.price_value || 0,
+              category: item.category || item.type || item.category_name || '',
               _score: score
             })
           }
@@ -134,6 +275,13 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
     
   } catch (error) {
     console.error('[S3 검색] 오류:', error.message)
+    console.error('[S3 검색] 오류 스택:', error.stack)
+    if (error.code) {
+      console.error('[S3 검색] 오류 코드:', error.code)
+    }
+    if (error.statusCode) {
+      console.error('[S3 검색] HTTP 상태 코드:', error.statusCode)
+    }
     return []
   }
 }

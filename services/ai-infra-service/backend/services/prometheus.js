@@ -584,20 +584,54 @@ async function getResourceUsageTimeline(nodeName, start, end, step = '15s') {
 // FIRING 알람 가져오기
 async function getFiringAlerts() {
   try {
-    // Prometheus Alertmanager API 호출
-    // 실제로는 Alertmanager가 별도로 실행 중이어야 함
-    // 임시로 빈 배열 반환
-    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://43.200.143.174:9093'
-    try {
-      const response = await axios.get(`${alertmanagerUrl}/api/v2/alerts?active=true`)
-      return response.data || []
-    } catch (error) {
-      // Alertmanager가 없으면 빈 배열 반환
-      console.warn('Alertmanager not available, returning empty alerts')
+    // Prometheus 알람 규칙 API 사용 (Alertmanager 대신)
+    // Prometheus는 알람 규칙을 평가하고 상태를 제공함
+    const response = await axios.get(`${PROMETHEUS_URL}/api/v1/rules?type=alert`, {
+      timeout: 5000
+    })
+    
+    if (response.data.status !== 'success') {
+      console.warn('Prometheus rules API returned non-success status')
       return []
     }
+    
+    const rules = response.data.data.groups || []
+    const firingAlerts = []
+    
+    // 각 알람 규칙 그룹에서 FIRING 상태인 알람 추출
+    rules.forEach(group => {
+      if (group.rules) {
+        group.rules.forEach(rule => {
+          // 알람 규칙이고 상태가 firing인 경우
+          if (rule.type === 'alerting' && rule.state === 'firing') {
+            // 알람 정보 구성
+            const alert = {
+              labels: rule.labels || {},
+              annotations: rule.annotations || {},
+              state: rule.state,
+              activeAt: rule.activeAt,
+              value: rule.value,
+              // Alertmanager 형식과 호환되도록 변환
+              name: rule.labels?.alertname || rule.name || 'Unknown',
+              severity: rule.labels?.severity || 'warning',
+              message: rule.annotations?.description || rule.annotations?.summary || rule.annotations?.message || 'No message',
+              startsAt: rule.activeAt || new Date().toISOString()
+            }
+            firingAlerts.push(alert)
+          }
+        })
+      }
+    })
+    
+    console.log(`Found ${firingAlerts.length} firing alerts from Prometheus rules`)
+    return firingAlerts
   } catch (error) {
-    console.error('Error getting firing alerts:', error)
+    // Prometheus API 실패 시 빈 배열 반환
+    if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT' || error.code === 'ECONNREFUSED') {
+      console.warn('Prometheus alerts API not available, returning empty alerts:', error.message)
+      return []
+    }
+    console.error('Error getting firing alerts from Prometheus:', error.message)
     return []
   }
 }
@@ -605,36 +639,12 @@ async function getFiringAlerts() {
 // 알람 히스토리 가져오기
 async function getAlertHistory(start, end) {
   try {
-    // Prometheus Alertmanager API 호출
-    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://43.200.143.174:9093'
-    try {
-      const response = await axios.get(`${alertmanagerUrl}/api/v2/alerts`, {
-        params: {
-          active: true,
-          silenced: false,
-          inhibited: false
-        }
-      })
-      
-      const alerts = response.data || []
-      const now = new Date()
-      const startTime = new Date(start)
-      const endTime = new Date(end)
-      
-      // 시간 범위 내 알람 필터링
-      const filteredAlerts = alerts.filter(alert => {
-        const alertTime = new Date(alert.startsAt)
-        return alertTime >= startTime && alertTime <= endTime
-      })
-      
-      return {
-        fired: filteredAlerts.length,
-        resolved: 0, // TODO: 해소된 알람 계산
-        currentFiring: alerts.filter(a => a.status?.state === 'active').length,
-        timeline: [] // TODO: 타임라인 데이터 생성
-      }
-    } catch (error) {
-      console.warn('Alertmanager not available, returning empty history')
+    // Prometheus 알람 규칙에서 현재 상태 확인
+    const response = await axios.get(`${PROMETHEUS_URL}/api/v1/rules?type=alert`, {
+      timeout: 5000
+    })
+    
+    if (response.data.status !== 'success') {
       return {
         fired: 0,
         resolved: 0,
@@ -642,8 +652,43 @@ async function getAlertHistory(start, end) {
         timeline: []
       }
     }
+    
+    const rules = response.data.data.groups || []
+    const startTime = new Date(start)
+    const endTime = new Date(end)
+    
+    let fired = 0
+    let currentFiring = 0
+    
+    rules.forEach(group => {
+      if (group.rules) {
+        group.rules.forEach(rule => {
+          if (rule.type === 'alerting') {
+            const activeAt = rule.activeAt ? new Date(rule.activeAt) : null
+            
+            if (rule.state === 'firing') {
+              currentFiring++
+              if (activeAt && activeAt >= startTime && activeAt <= endTime) {
+                fired++
+              }
+            }
+          }
+        })
+      }
+    })
+    
+    return {
+      fired,
+      resolved: 0, // Prometheus API에서는 해소 정보를 제공하지 않음
+      currentFiring,
+      timeline: [] // 타임라인은 별도로 구현 필요
+    }
   } catch (error) {
-    console.error('Error getting alert history:', error)
+    if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT' || error.code === 'ECONNREFUSED') {
+      console.warn('Prometheus alerts API not available, returning empty history:', error.message)
+    } else {
+      console.error('Error getting alert history from Prometheus:', error.message)
+    }
     return {
       fired: 0,
       resolved: 0,
