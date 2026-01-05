@@ -333,7 +333,7 @@ function Home() {
             ))}
             <div className="search-overlay">
               <h1>이번 주엔 어느 산으로 갈까요??</h1>
-              <h2>어느 산을 찾으시나요test010531??</h2>
+              <h2>어느 산을 찾으시나요??</h2>
               <form onSubmit={handleSearch} className="search-form">
                 <input
                   type="text"
