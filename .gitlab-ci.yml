@@ -58,30 +58,27 @@ code_quality:
     - name: docker:27-dind
       alias: docker
       command: ["--tls=false"]
-  variables:
-    # 핵심: 분석 범위를 백엔드 서비스 폴더로 한정하여 디스크 부족 해결 시도
-    SOURCE_CODE: "services/backend-services"
-    REPORT_FORMAT: json
   needs: [] # 다른 잡 기다리지 않고 바로 실행해서 시간 단축
   script:
     - |
-      echo "▶ Backend Code Quality 분석 시작..."
-      # 1. 이미지 미리 당겨오기
+      echo "▶ 분석기 실행을 위한 환경 정비..."
+      # 1. 분석기 이미지를 가져옵니다.
       docker pull --quiet registry.gitlab.com/gitlab-org/ci-cd/codequality:0.96.0-gitlab.1
       
-      # 2. 분석 실행 (절대 경로 $CI_PROJECT_DIR를 사용하여 경로 오류 원천 차단)
+      # 2. [핵심 수정] SOURCE_CODE 변수를 제거하고, 분석기가 전체 /code 폴더를 보게 하되
+      # 분석 결과가 현재 폴더($CI_PROJECT_DIR)에 파일로 남도록 볼륨 위치를 고정합니다.
       docker run \
-        --env SOURCE_CODE="services/backend-services" \
         --env REPORT_FORMAT=json \
         --volume "$CI_PROJECT_DIR":/code \
         --volume /var/run/docker.sock:/var/run/docker.sock \
         registry.gitlab.com/gitlab-org/ci-cd/codequality:0.96.0-gitlab.1 /code
       
-      # 3. 결과 파일 존재 여부 로그로 확인
+      # 3. 파일 생성 여부 확인
       if [ -f "gl-code-quality-report.json" ]; then
-        echo "✅ 성공: 분석 리포트가 생성되었습니다."
+        echo "✅ 드디어 성공: 분석 리포트가 생성되었습니다."
       else
-        echo "❌ 실패: 분석 리포트 파일이 없습니다."
+        echo "❌ 리포트 생성 실패 (용량 부족일 가능성이 매우 높습니다)."
+        df -h
         exit 1
       fi
   artifacts:
