@@ -1381,9 +1381,13 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
         // "초보자" 요청이고 제품명이 있으면, 카테고리 제한 없이 검색
         const searchCategory = hasBeginnerRequest ? null : (item.category || null)
         
-        if (!searchTitle && !hasBeginnerRequest) continue
+        // 제품명이 없어도 검색 시도 (카테고리나 브랜드로 검색 가능)
+        if (!searchTitle && !searchBrand && !hasBeginnerRequest) {
+          console.log(`[${i + 1}] 제품명과 브랜드가 모두 없어서 검색 건너뜀`)
+          continue
+        }
         
-        console.log(`[${i + 1}] S3에서 상품 검색 중: 제품명="${searchTitle}", 브랜드="${searchBrand}"`)
+        console.log(`[${i + 1}] S3에서 상품 검색 중: 제품명="${searchTitle}", 브랜드="${searchBrand}", 카테고리="${searchCategory || '전체'}"`)
         
         try {
           // 원본 검색어(userInput)를 함께 전달하여 "초보자" 키워드 감지
@@ -1395,7 +1399,7 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
             console.log(`[${i + 1}] ✅ S3에서 제품 찾음: "${bestMatch.title || 'N/A'}" (점수: ${bestMatch._score})`)
             
             // URL 업데이트
-            const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || ''
+            const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || bestMatch.productLink || bestMatch.product_url || ''
             console.log(`[${i + 1}] URL 필드 확인:`, {
               url: bestMatch.url || '없음',
               link: bestMatch.link || '없음',
@@ -1404,14 +1408,22 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
               최종URL: productUrl || '없음'
             })
             
-            if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
+            // URL 유효성 검증
+            const isValidUrl = productUrl && 
+                              !productUrl.includes('example.com') && 
+                              !productUrl.includes('localhost') &&
+                              !productUrl.includes('127.0.0.1') &&
+                              (productUrl.startsWith('http://') || productUrl.startsWith('https://'))
+            
+            if (isValidUrl) {
               recommendations[i].url = productUrl
               console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
             } else {
               console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않음:`, productUrl || '빈 문자열')
+              // URL이 없어도 제품 정보는 유지 (프론트엔드에서 표시 가능)
             }
             
-            // 브랜드, 가격, 카테고리 정보 업데이트
+            // 브랜드, 가격, 카테고리 정보 업데이트 (기존 값이 없을 때만)
             if (!recommendations[i].brand && bestMatch.brand) {
               recommendations[i].brand = bestMatch.brand
             }
@@ -1424,15 +1436,17 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
               recommendations[i].category = bestMatch.category
             }
             
-            // 제품명도 정확한 것으로 업데이트
-            if (bestMatch.title) {
+            // 제품명도 정확한 것으로 업데이트 (Bedrock 응답보다 S3 데이터가 더 정확할 수 있음)
+            if (bestMatch.title && bestMatch.title.trim()) {
               recommendations[i].title = bestMatch.title
             }
           } else {
-            console.log(`[${i + 1}] ⚠️  S3에서 유사한 제품을 찾지 못함`)
+            console.log(`[${i + 1}] ⚠️  S3에서 유사한 제품을 찾지 못함 - Bedrock Agent 응답 정보 유지`)
+            // S3에서 찾지 못해도 Bedrock Agent 응답의 제품 정보는 유지
           }
         } catch (error) {
           console.error(`[${i + 1}] S3 검색 오류:`, error.message)
+          // 에러가 발생해도 Bedrock Agent 응답의 제품 정보는 유지
         }
       }
       
@@ -1454,16 +1468,39 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
       }]
     }
     
+    // 최종 추천 결과 검증 및 정리
+    const finalRecommendations = recommendations
+      .filter(rec => rec && rec.title && rec.title.trim() && rec.title !== '제품명 없음')
+      .map((rec, index) => ({
+        id: rec.id || index + 1,
+        title: rec.title || '제품명 없음',
+        brand: rec.brand || '',
+        category: rec.category || '',
+        price: rec.price || '',
+        url: rec.url || '',
+        reason: rec.reason || rec.description || rec.explanation || ''
+      }))
+    
+    console.log(`[장비 추천] 최종 추천 개수: ${finalRecommendations.length}개 (원본: ${recommendations.length}개)`)
+    
+    // 추천 결과가 비어있으면 원본 응답을 포함한 기본 응답 반환
+    if (finalRecommendations.length === 0) {
+      console.warn('[장비 추천] 추천 결과가 비어있음, 기본 응답 반환')
+      return res.json({
+        recommendations: [{
+          id: 1,
+          title: 'AI 추천 결과',
+          brand: '',
+          category: '',
+          price: '',
+          url: '',
+          reason: assistantResponse || '추천을 생성할 수 없습니다. 다른 조건으로 다시 시도해주세요.'
+        }]
+      })
+    }
+    
     res.json({
-      recommendations: recommendations.length > 0 ? recommendations : [{
-        id: 1,
-        title: 'AI 추천 결과',
-        brand: '',
-        category: '',
-        price: '',
-        url: '',
-        reason: assistantResponse || '추천을 생성할 수 없습니다.'
-      }]
+      recommendations: finalRecommendations
     })
   } catch (error) {
     // 순환 참조 방지를 위해 에러 정보만 추출
