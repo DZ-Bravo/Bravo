@@ -101,11 +101,11 @@ router.get('/app', async (req, res) => {
 // 시간별 에러 로그 수 (그래프용)
 router.get('/log-count', async (req, res) => {
   try {
-    const { start, end, source = 'app' } = req.query
+    const { start, end, source = 'app', service } = req.query
     if (!start || !end) {
       return res.status(400).json({ error: 'start and end parameters are required' })
     }
-    const counts = await lokiService.getErrorLogCountOverTime(start, end, source)
+    const counts = await lokiService.getErrorLogCountOverTime(start, end, source, service || null)
     res.json(counts)
   } catch (error) {
     console.error('Error getting error log count:', error)

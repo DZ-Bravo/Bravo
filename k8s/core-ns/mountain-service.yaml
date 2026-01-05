@@ -4,7 +4,7 @@ metadata:
   name: mountain-service
   namespace: bravo-core-ns
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: mountain-service
@@ -58,12 +58,12 @@ spec:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: aws-credentials-secret
               key: AWS_ACCESS_KEY_ID
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: bravo-secrets
+              name: aws-credentials-secret
               key: AWS_SECRET_ACCESS_KEY
         volumeMounts:
         - name: mountain-data

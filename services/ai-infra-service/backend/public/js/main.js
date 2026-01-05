@@ -76,24 +76,33 @@ function setupNavigation() {
     })
   })
   
-  // 스크롤 시 활성 섹션 하이라이트
+  // 스크롤 시 활성 섹션 하이라이트 (throttling으로 성능 개선)
+  let scrollTimeout = null
   window.addEventListener('scroll', () => {
-    let current = ''
+    if (scrollTimeout) {
+      return
+    }
     
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 100
-      const sectionHeight = section.clientHeight
-      if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
-        current = section.getAttribute('id')
-      }
-    })
-    
-    navLinks.forEach(link => {
-      link.classList.remove('active')
-      if (link.getAttribute('href').substring(1) === current) {
-        link.classList.add('active')
-      }
-    })
+    scrollTimeout = setTimeout(() => {
+      let current = ''
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100
+        const sectionHeight = section.clientHeight
+        if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+          current = section.getAttribute('id')
+        }
+      })
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active')
+        if (link.getAttribute('href').substring(1) === current) {
+          link.classList.add('active')
+        }
+      })
+      
+      scrollTimeout = null
+    }, 100) // 100ms마다 한 번만 실행
   })
 }
 
@@ -457,11 +466,121 @@ function initializeCharts() {
       }
     })
   }
+  
+  // Logs Error Trend 차트 초기화
+  const logsErrorTrendChartEl = document.getElementById('logsErrorTrendChart')
+  if (logsErrorTrendChartEl) {
+    const logsErrorTrendCtx = logsErrorTrendChartEl.getContext('2d')
+    window.logsErrorTrendChart = new Chart(logsErrorTrendCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: []
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Error Log Count'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Time'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          title: {
+            display: true,
+            text: '서비스별 Error Log Count 추이'
+          }
+        }
+      }
+    })
+  }
+  
+  // Overview 추이 차트 초기화
+  const overviewTrendsChartEl = document.getElementById('overviewTrendsChart')
+  if (overviewTrendsChartEl) {
+    const overviewTrendsCtx = overviewTrendsChartEl.getContext('2d')
+    window.overviewTrendsChart = new Chart(overviewTrendsCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'RPS',
+          data: [],
+          borderColor: 'rgb(52, 152, 219)',
+          backgroundColor: 'rgba(52, 152, 219, 0.1)',
+          tension: 0.4,
+          yAxisID: 'y'
+        }, {
+          label: 'p95 Latency (ms)',
+          data: [],
+          borderColor: 'rgb(231, 76, 60)',
+          backgroundColor: 'rgba(231, 76, 60, 0.1)',
+          tension: 0.4,
+          yAxisID: 'y1'
+        }, {
+          label: '5xx Error Rate (%)',
+          data: [],
+          borderColor: 'rgb(155, 89, 182)',
+          backgroundColor: 'rgba(155, 89, 182, 0.1)',
+          tension: 0.4,
+          yAxisID: 'y1'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'RPS'
+            }
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Latency (ms) / Error Rate (%)'
+            },
+            grid: {
+              drawOnChartArea: false
+            }
+          }
+        }
+      }
+    })
+  }
 }
 
 // 초기 데이터 로드
 async function loadInitialData() {
   try {
+    // 핵심 데이터 먼저 로드
     await Promise.all([
       loadOverview(),
       loadServices(),
@@ -470,6 +589,15 @@ async function loadInitialData() {
     ])
     
     setupPodsTopNTabs()
+    
+    // 무거운 작업은 별도로 비동기 처리 (UI 블로킹 방지)
+    setTimeout(() => {
+      loadLogs().catch(err => console.error('Error loading logs:', err))
+    }, 500)
+    
+    setTimeout(() => {
+      loadTraces().catch(err => console.error('Error loading traces:', err))
+    }, 1000)
   } catch (error) {
     console.error('Error loading initial data:', error)
   }
@@ -510,6 +638,17 @@ function setupEventListeners() {
   // Pods 필터
   document.getElementById('podsStatusFilter')?.addEventListener('change', loadPods)
   document.getElementById('podsNamespaceFilter')?.addEventListener('change', loadPods)
+  
+  // Logs 검색 및 필터
+  document.getElementById('logsSearchBtn')?.addEventListener('click', loadLogs)
+  document.getElementById('logsTimeFilter')?.addEventListener('change', loadLogs)
+  document.getElementById('logsServiceFilter')?.addEventListener('change', loadLogs)
+  document.getElementById('logsLevelFilter')?.addEventListener('change', loadLogs)
+  
+  // Traces 검색 및 필터
+  document.getElementById('tracesSearchBtn')?.addEventListener('click', loadTraces)
+  document.getElementById('tracesTimeFilter')?.addEventListener('change', loadTraces)
+  document.getElementById('tracesServiceFilter')?.addEventListener('change', loadTraces)
   
   // Replica 상세 보기
   document.getElementById('viewReplicaDetails')?.addEventListener('click', () => {
@@ -652,12 +791,16 @@ async function loadExternalLinks() {
 // 모든 메트릭 업데이트
 async function updateAllMetrics() {
   try {
+    // 성능 개선: 차트 업데이트는 제외하고 핵심 데이터만 업데이트
     await Promise.all([
       loadOverview(),
       loadServices(),
       loadPods(),
       loadAlerts()
     ])
+    // Logs와 Traces는 별도로 처리 (차트 업데이트가 무거움)
+    loadLogs().catch(err => console.error('Error loading logs:', err))
+    loadTraces().catch(err => console.error('Error loading traces:', err))
   } catch (error) {
     console.error('Error updating metrics:', error)
   }
@@ -1617,4 +1760,768 @@ function setupLinks() {
   // ECR
   const ecrLink = document.getElementById('ecrLink')
   if (ecrLink) ecrLink.setAttribute('href', 'https://console.aws.amazon.com/ecr/repositories?region=ap-northeast-2')
+}
+
+// Overview 데이터 로드
+async function loadOverview() {
+  try {
+    const response = await fetch(`${API_BASE}/metrics/overview`)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    
+    const data = await response.json()
+    
+    // 가용성 업데이트
+    const availabilityEl = document.getElementById('availability')
+    if (availabilityEl) {
+      availabilityEl.textContent = `${data.availability?.successRate || 0}%`
+    }
+    
+    // 지연 업데이트
+    const latencyP95El = document.getElementById('latencyP95')
+    const latencyP99El = document.getElementById('latencyP99')
+    if (latencyP95El) latencyP95El.textContent = `${data.latency?.p95 || 0}ms`
+    if (latencyP99El) latencyP99El.textContent = `${data.latency?.p99 || 0}ms`
+    
+    // 에러율 업데이트
+    const error5xxEl = document.getElementById('error5xx')
+    const error4xxEl = document.getElementById('error4xx')
+    if (error5xxEl) error5xxEl.textContent = `${data.errorRate?.error5xx || 0}%`
+    if (error4xxEl) error4xxEl.textContent = `${data.errorRate?.error4xx || 0}%`
+    
+    // 트래픽 업데이트
+    const rpsEl = document.getElementById('rps')
+    if (rpsEl) rpsEl.textContent = `${data.traffic?.rps || 0}`
+    
+    // 포화도 업데이트
+    const cpuAvgEl = document.getElementById('cpuAvg')
+    const memAvgEl = document.getElementById('memAvg')
+    if (cpuAvgEl) cpuAvgEl.textContent = `${data.saturation?.cpuAvg || 0}%`
+    if (memAvgEl) memAvgEl.textContent = `${data.saturation?.memAvg || 0}%`
+    
+    // Replica 상태 업데이트
+    const replicaHealthyEl = document.getElementById('replicaHealthy')
+    const replicaUnhealthyEl = document.getElementById('replicaUnhealthy')
+    if (replicaHealthyEl) replicaHealthyEl.textContent = `${data.replica?.healthy || 0}`
+    if (replicaUnhealthyEl) replicaUnhealthyEl.textContent = `${data.replica?.unhealthy || 0}`
+    
+    // 추이 차트 업데이트
+    updateOverviewTrendsChart(data)
+  } catch (error) {
+    console.error('Error loading overview:', error)
+  }
+}
+
+// Services 데이터 로드
+async function loadServices() {
+  try {
+    const namespaceFilter = document.getElementById('servicesNamespaceFilter')?.value || ''
+    const sortFilter = document.getElementById('servicesSortFilter')?.value || 'name'
+    
+    let url = `${API_BASE}/metrics/services`
+    const params = []
+    if (namespaceFilter) params.push(`namespace=${namespaceFilter}`)
+    if (sortFilter) params.push(`sort=${sortFilter}`)
+    if (params.length > 0) url += '?' + params.join('&')
+    
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    
+    const services = await response.json()
+    
+    // Services 테이블 업데이트
+    const tbody = document.querySelector('#servicesTable tbody')
+    if (!tbody) return
+    
+    tbody.innerHTML = ''
+    
+    if (services.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">서비스가 없습니다.</td></tr>'
+      return
+    }
+    
+    services.forEach(service => {
+      const row = document.createElement('tr')
+      row.innerHTML = `
+        <td>${service.namespace || '-'}</td>
+        <td><a href="#" onclick="loadServiceDetail('${service.namespace}', '${service.name}'); return false;">${service.name}</a></td>
+        <td>${service.rps || 0}</td>
+        <td>${service.latencyP95 || 0}ms</td>
+        <td>${service.errorRate5xx || 0}% / ${service.errorRate4xx || 0}%</td>
+        <td>${service.replica?.available || 0} / ${service.replica?.desired || 0}</td>
+        <td>${service.restart?.['1h'] || 0} / ${service.restart?.['24h'] || 0}</td>
+        <td>${service.cpu || 0}% / ${service.mem || 0}%</td>
+      `
+      tbody.appendChild(row)
+    })
+  } catch (error) {
+    console.error('Error loading services:', error)
+  }
+}
+
+// Pods 데이터 로드
+async function loadPods() {
+  try {
+    const statusFilter = document.getElementById('podsStatusFilter')?.value || ''
+    const namespaceFilter = document.getElementById('podsNamespaceFilter')?.value || ''
+    
+    let url = `${API_BASE}/metrics/pods`
+    const params = []
+    if (statusFilter) params.push(`status=${statusFilter}`)
+    if (namespaceFilter) params.push(`namespace=${namespaceFilter}`)
+    if (params.length > 0) url += '?' + params.join('&')
+    
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    
+    const pods = await response.json()
+    
+    // Pods 테이블 업데이트
+    const tbody = document.querySelector('#podsTable tbody')
+    if (!tbody) return
+    
+    tbody.innerHTML = ''
+    
+    if (pods.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Pod가 없습니다.</td></tr>'
+      return
+    }
+    
+    pods.forEach(pod => {
+      const row = document.createElement('tr')
+      row.innerHTML = `
+        <td>${pod.namespace || '-'}</td>
+        <td>${pod.name || '-'}</td>
+        <td>${pod.status || '-'}</td>
+        <td>${pod.restarts || 0}</td>
+        <td>${pod.cpu || 0}%</td>
+        <td>${pod.mem || 0}%</td>
+        <td>${pod.node || '-'}</td>
+      `
+      tbody.appendChild(row)
+    })
+    
+    // Top N 업데이트
+    updatePodsTopN(pods)
+  } catch (error) {
+    console.error('Error loading pods:', error)
+  }
+}
+
+// Logs 데이터 로드
+async function loadLogs() {
+  try {
+    const timeFilter = document.getElementById('logsTimeFilter')?.value || '24h'
+    const serviceFilter = document.getElementById('logsServiceFilter')?.value || ''
+    const levelFilter = document.getElementById('logsLevelFilter')?.value || ''
+    
+    // 시간 범위 계산
+    const end = new Date()
+    let start = new Date()
+    if (timeFilter === '1h') {
+      start = new Date(end.getTime() - 60 * 60 * 1000)
+    } else if (timeFilter === '6h') {
+      start = new Date(end.getTime() - 6 * 60 * 60 * 1000)
+    } else {
+      start = new Date(end.getTime() - 24 * 60 * 60 * 1000)
+    }
+    
+    let url = `${API_BASE}/errors/app?start=${start.toISOString()}&end=${end.toISOString()}&limit=50`
+    if (serviceFilter) url += `&namespace=${serviceFilter}`
+    
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    
+    const logs = await response.json()
+    
+    // 최근 에러 로그 테이블 업데이트
+    const tbody = document.getElementById('logsTableBody')
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">로딩 중...</td></tr>'
+      
+      if (!logs || logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">에러 로그가 없습니다.</td></tr>'
+      } else {
+        logs.forEach(log => {
+          // 레벨 필터 적용
+          if (levelFilter && log.level !== levelFilter) return
+          
+          const row = document.createElement('tr')
+          row.innerHTML = `
+            <td>${new Date(log.timestamp).toLocaleString()}</td>
+            <td>${log.service || log.namespace || '-'}</td>
+            <td><span class="log-level level-${(log.level || 'error').toLowerCase()}">${log.level || 'ERROR'}</span></td>
+            <td>${escapeHtml(log.message || 'No message')}</td>
+          `
+          tbody.appendChild(row)
+        })
+      }
+    }
+    
+    // Top Exception 업데이트
+    const topExceptionsUrl = `${API_BASE}/errors/app?start=${start.toISOString()}&end=${end.toISOString()}&limit=50`
+    const topExceptionsResponse = await fetch(topExceptionsUrl)
+    if (topExceptionsResponse.ok) {
+      const allLogs = await topExceptionsResponse.json()
+      updateTopExceptionsList(allLogs)
+    }
+    
+    // 서비스별 Error Log Count 추이 차트 업데이트 (비동기로 처리하여 성능 개선)
+    setTimeout(() => {
+      updateLogsErrorTrendChart(start, end)
+    }, 100)
+  } catch (error) {
+    console.error('Error loading logs:', error)
+    const tbody = document.getElementById('logsTableBody')
+    if (tbody) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #e74c3c;">로그를 불러오는 중 오류가 발생했습니다: ${error.message}</td></tr>`
+    }
+  }
+}
+
+// Traces 데이터 로드
+async function loadTraces() {
+  try {
+    const timeFilter = document.getElementById('tracesTimeFilter')?.value || '1h'
+    const serviceFilter = document.getElementById('tracesServiceFilter')?.value || ''
+    
+    // 시간 범위 계산
+    const end = new Date()
+    let start = new Date()
+    if (timeFilter === '1h') {
+      start = new Date(end.getTime() - 60 * 60 * 1000)
+    } else if (timeFilter === '6h') {
+      start = new Date(end.getTime() - 6 * 60 * 60 * 1000)
+    } else {
+      start = new Date(end.getTime() - 24 * 60 * 60 * 1000)
+    }
+    
+    // Slow Traces Top 10
+    const slowTracesList = document.getElementById('slowTracesTop10List')
+    if (slowTracesList) {
+      slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+      try {
+        const slowUrl = `${API_BASE}/traces/slow?start=${start.toISOString()}&end=${end.toISOString()}&limit=10`
+        const slowResponse = await fetch(slowUrl)
+        if (slowResponse.ok) {
+          const slowTraces = await slowResponse.json()
+          if (slowTraces && slowTraces.length > 0) {
+            updateTracesList(slowTracesList, slowTraces, 'slow')
+          } else {
+            slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
+          }
+        } else {
+          const errorText = await slowResponse.text()
+          console.error('Slow traces API error:', slowResponse.status, errorText)
+          slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
+        }
+      } catch (error) {
+        console.error('Error loading slow traces:', error)
+        slowTracesList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">느린 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+      }
+    }
+    
+    // Error Traces Top 10
+    const errorTracesList = document.getElementById('errorTracesTop10List')
+    if (errorTracesList) {
+      errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+      try {
+        const errorUrl = `${API_BASE}/traces/error?start=${start.toISOString()}&end=${end.toISOString()}&limit=10`
+        const errorResponse = await fetch(errorUrl)
+        if (errorResponse.ok) {
+          const errorTraces = await errorResponse.json()
+          if (errorTraces && errorTraces.length > 0) {
+            updateTracesList(errorTracesList, errorTraces, 'error')
+          } else {
+            errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
+          }
+        } else {
+          const errorText = await errorResponse.text()
+          console.error('Error traces API error:', errorResponse.status, errorText)
+          errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
+        }
+      } catch (error) {
+        console.error('Error loading error traces:', error)
+        errorTracesList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">에러 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+      }
+    }
+    
+  } catch (error) {
+    console.error('Error loading traces:', error)
+  }
+}
+
+// Traces 리스트 업데이트
+function updateTracesList(listElement, traces, type) {
+  if (!listElement) return
+  
+  listElement.innerHTML = ''
+  
+  if (!traces || traces.length === 0) {
+    listElement.innerHTML = `<p style="padding: 20px; text-align: center; color: #999;">${type === 'slow' ? '느린' : '에러'} 트레이스가 없습니다.</p>`
+    return
+  }
+  
+  traces.forEach((trace, index) => {
+    const item = document.createElement('div')
+    item.className = 'trace-item'
+    const duration = trace.duration ? `${(trace.duration / 1000000).toFixed(2)}ms` : '-'
+    const traceId = trace.traceID || trace.traceId || 'unknown'
+    item.innerHTML = `
+      <div class="trace-header">
+        <span class="trace-rank">#${index + 1}</span>
+        <span class="trace-id">${traceId.substring(0, 16)}...</span>
+        <span class="trace-duration">${duration}</span>
+      </div>
+      <div class="trace-service">${trace.serviceName || trace.service || 'unknown'}</div>
+      <div class="trace-time">${trace.startTimeUnixNano ? new Date(trace.startTimeUnixNano / 1000000).toLocaleString() : '-'}</div>
+    `
+    item.addEventListener('click', () => {
+      loadTraceDetail(traceId)
+    })
+    listElement.appendChild(item)
+  })
+}
+
+// Trace 상세 조회
+async function loadTraceDetail(traceId) {
+  try {
+    const response = await fetch(`${API_BASE}/traces/${traceId}`)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    
+    const trace = await response.json()
+    
+    // Trace Detail 섹션 표시
+    const detailSection = document.getElementById('tracesDetail')
+    if (detailSection) {
+      detailSection.style.display = 'block'
+      detailSection.scrollIntoView({ behavior: 'smooth' })
+      
+      const detailContent = document.getElementById('tracesDetailContent')
+      if (detailContent) {
+        detailContent.innerHTML = `<pre>${JSON.stringify(trace, null, 2)}</pre>`
+      }
+    }
+  } catch (error) {
+    console.error('Error loading trace detail:', error)
+    alert(`트레이스 상세 정보를 불러오는 중 오류가 발생했습니다: ${error.message}`)
+  }
+}
+
+// Top Exceptions 리스트 업데이트
+function updateTopExceptionsList(logs) {
+  const topExceptionsList = document.getElementById('topExceptionsList')
+  if (!topExceptionsList) return
+  
+  // 에러 메시지별 그룹핑 및 카운트
+  const messageCounts = {}
+  logs.forEach(log => {
+    const message = log.message || 'No message'
+    if (!messageCounts[message]) {
+      messageCounts[message] = {
+        message: message,
+        count: 0,
+        level: log.level || 'error',
+        lastOccurred: log.timestamp
+      }
+    }
+    messageCounts[message].count++
+    if (log.timestamp > messageCounts[message].lastOccurred) {
+      messageCounts[message].lastOccurred = log.timestamp
+    }
+  })
+  
+  // 빈도순 정렬 후 Top 10
+  const topExceptions = Object.values(messageCounts)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10)
+  
+  topExceptionsList.innerHTML = ''
+  
+  if (topExceptions.length === 0) {
+    topExceptionsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">Exception이 없습니다.</p>'
+    return
+  }
+  
+  topExceptions.forEach((exception, index) => {
+    const item = document.createElement('div')
+    item.className = 'exception-item'
+    item.innerHTML = `
+      <div class="exception-rank">#${index + 1}</div>
+      <div class="exception-content">
+        <div class="exception-header">
+          <span class="exception-count">${exception.count}회 발생</span>
+          <span class="exception-level level-${exception.level.toLowerCase()}">${exception.level}</span>
+          <span class="exception-time">최근: ${new Date(exception.lastOccurred).toLocaleString()}</span>
+        </div>
+        <div class="exception-message">${escapeHtml(exception.message)}</div>
+      </div>
+    `
+    topExceptionsList.appendChild(item)
+  })
+}
+
+// Logs Error Trend 차트 업데이트
+async function updateLogsErrorTrendChart(start, end) {
+  if (!window.logsErrorTrendChart) {
+    return
+  }
+  
+  try {
+    // 서비스 목록 가져오기
+    const servicesResponse = await fetch(`${API_BASE}/metrics/services`)
+    if (!servicesResponse.ok) return
+    
+    const services = await servicesResponse.json()
+    
+    // 각 서비스별 에러 로그 수 가져오기
+    const datasets = []
+    const colors = [
+      'rgb(231, 76, 60)',   // 빨강
+      'rgb(52, 152, 219)',  // 파랑
+      'rgb(46, 204, 113)',  // 초록
+      'rgb(241, 196, 15)',  // 노랑
+      'rgb(155, 89, 182)',  // 보라
+      'rgb(230, 126, 34)',  // 주황
+      'rgb(26, 188, 156)',  // 청록
+      'rgb(149, 165, 166)', // 회색
+      'rgb(52, 73, 94)',    // 진한 회색
+      'rgb(192, 57, 43)'    // 진한 빨강
+    ]
+    
+    // 모든 서비스 가져오기 (frontend, core, ai-integration 네임스페이스)
+    const allServices = services.filter(s => 
+      s.namespace === 'bravo-frontend-ns' || 
+      s.namespace === 'bravo-core-ns' || 
+      s.namespace === 'bravo-ai-integration-ns'
+    )
+    
+    if (allServices.length === 0) {
+      console.warn('No services found in target namespaces')
+      return
+    }
+    
+    // 에러 로그 수 기준으로 서비스 정렬 (상위 5개 선택)
+    console.log('Checking error log counts for all services to determine top 5...')
+    
+    // 재시도 함수
+    const fetchWithRetry = async (url, retries = 2, delay = 500) => {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url)
+          if (response.ok) {
+            return await response.json()
+          } else if (response.status === 429 && i < retries - 1) {
+            const waitTime = delay * Math.pow(2, i)
+            await new Promise(resolve => setTimeout(resolve, waitTime))
+            continue
+          } else {
+            return [] // 에러 발생 시 빈 배열 반환
+          }
+        } catch (error) {
+          if (i === retries - 1) return []
+          const waitTime = delay * Math.pow(2, i)
+          await new Promise(resolve => setTimeout(resolve, waitTime))
+        }
+      }
+      return []
+    }
+    
+    // 각 서비스의 에러 로그 총합 확인 (빠른 카운트만)
+    const serviceErrorCounts = []
+    for (let i = 0; i < allServices.length; i++) {
+      const service = allServices[i]
+      try {
+        const quickCountUrl = `${API_BASE}/errors/log-count?start=${start.toISOString()}&end=${end.toISOString()}&source=app&service=${encodeURIComponent(service.name)}`
+        const counts = await fetchWithRetry(quickCountUrl)
+        
+        // 총 에러 로그 수 계산
+        const totalErrors = counts.reduce((sum, [time, count]) => sum + (count || 0), 0)
+        
+        serviceErrorCounts.push({
+          name: service.name,
+          namespace: service.namespace,
+          errorCount: totalErrors
+        })
+        
+        // 다음 요청 전 딜레이 (rate limit 방지)
+        if (i < allServices.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 300))
+        }
+      } catch (error) {
+        console.warn(`Error checking log count for ${service.name}:`, error.message)
+        serviceErrorCounts.push({
+          name: service.name,
+          namespace: service.namespace,
+          errorCount: 0
+        })
+      }
+    }
+    
+    // 에러 로그 수 기준으로 내림차순 정렬
+    serviceErrorCounts.sort((a, b) => b.errorCount - a.errorCount)
+    
+    // 상위 5개 서비스 선택
+    const topServices = serviceErrorCounts.slice(0, 5)
+    const serviceNames = topServices.map(s => s.name)
+    
+    console.log('Top 5 services by error count:', topServices.map(s => `${s.name} (${s.errorCount} errors)`))
+    console.log('Loading detailed logs for services:', serviceNames)
+    
+    // 모든 서비스의 시간 범위를 맞추기 위해 먼저 시간 범위 생성 (5분 단위로 샘플링하여 성능 개선)
+    const timeRange = []
+    const interval = (end.getTime() - start.getTime()) / (5 * 60 * 1000) // 5분 단위
+    for (let i = 0; i <= interval; i++) {
+      const time = start.getTime() + i * 5 * 60000
+      timeRange.push(time)
+    }
+    
+    // 각 서비스별 에러 로그 수 가져오기 (순차 처리로 rate limit 방지)
+    const serviceDataMap = new Map()
+    
+    // 상세 데이터 로드를 위한 재시도 함수 (더 많은 재시도)
+    const fetchDetailedWithRetry = async (url, retries = 3, delay = 1000) => {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url)
+          if (response.ok) {
+            return await response.json()
+          } else if (response.status === 429 && i < retries - 1) {
+            // Rate limit 에러인 경우 대기 후 재시도
+            const waitTime = delay * Math.pow(2, i) // Exponential backoff
+            console.log(`Rate limit hit, waiting ${waitTime}ms before retry ${i + 1}/${retries}`)
+            await new Promise(resolve => setTimeout(resolve, waitTime))
+            continue
+          } else {
+            const errorText = await response.text()
+            throw new Error(`HTTP ${response.status}: ${errorText}`)
+          }
+        } catch (error) {
+          if (i === retries - 1) throw error
+          const waitTime = delay * Math.pow(2, i)
+          await new Promise(resolve => setTimeout(resolve, waitTime))
+        }
+      }
+    }
+    
+    // 순차적으로 요청 (각 요청 사이에 500ms 딜레이)
+    for (let i = 0; i < serviceNames.length; i++) {
+      const serviceName = serviceNames[i]
+      try {
+        const logCountUrl = `${API_BASE}/errors/log-count?start=${start.toISOString()}&end=${end.toISOString()}&source=app&service=${encodeURIComponent(serviceName)}`
+        
+        const counts = await fetchDetailedWithRetry(logCountUrl)
+        
+        // 시간별 데이터를 맵으로 변환
+        const countMap = new Map()
+        counts.forEach(([time, count]) => {
+          countMap.set(time, count)
+        })
+        
+        // 시간 범위에 맞춰 데이터 배열 생성 (없는 시간은 0)
+        const data = timeRange.map(time => countMap.get(time) || 0)
+        
+        // 데이터가 있는 경우에만 추가 (모든 값이 0이 아닌 경우)
+        const hasData = data.some(count => count > 0)
+        if (hasData || counts.length > 0) {
+          serviceDataMap.set(serviceName, data)
+          console.log(`Loaded logs for ${serviceName}: ${counts.length} data points`)
+        } else {
+          console.log(`No log data found for ${serviceName}`)
+        }
+        
+        // 다음 요청 전 딜레이 (rate limit 방지)
+        if (i < serviceNames.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 500))
+        }
+      } catch (error) {
+        console.error(`Error loading log count for ${serviceName}:`, error.message)
+      }
+    }
+    
+    // 차트 데이터셋 생성
+    serviceDataMap.forEach((data, serviceName) => {
+      const index = serviceNames.indexOf(serviceName)
+      if (index >= 0) {
+        datasets.push({
+          label: serviceName,
+          data: data,
+          borderColor: colors[index % colors.length],
+          backgroundColor: colors[index % colors.length].replace('rgb', 'rgba').replace(')', ', 0.1)'),
+          tension: 0.4
+        })
+      }
+    })
+    
+    // 라벨 설정 (시간 범위)
+    if (timeRange.length > 0) {
+      window.logsErrorTrendChart.data.labels = timeRange.map(time => new Date(time).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }))
+    }
+    
+    // 차트 데이터셋 업데이트
+    window.logsErrorTrendChart.data.datasets = datasets
+    
+    // 데이터가 없을 때도 차트 업데이트 (빈 차트 표시)
+    if (datasets.length === 0) {
+      console.warn('No log data available for any service')
+      // 빈 데이터셋이라도 차트를 업데이트하여 "데이터 없음" 상태 표시
+    }
+    
+    window.logsErrorTrendChart.update('none') // 애니메이션 없이 업데이트하여 성능 개선
+  } catch (error) {
+    console.error('Error updating logs error trend chart:', error)
+  }
+}
+
+// Alerts 데이터 로드
+async function loadAlerts() {
+  try {
+    // 타임아웃 설정 (10초)
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000)
+    
+    const response = await fetch(`${API_BASE}/alerts/firing`, {
+      signal: controller.signal
+    })
+    
+    clearTimeout(timeoutId)
+    
+    if (!response.ok) {
+      if (response.status === 504) {
+        throw new Error('Gateway timeout - Alertmanager가 응답하지 않습니다')
+      }
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const alerts = await response.json()
+    
+    // Alerts 리스트 업데이트
+    const alertsList = document.getElementById('alertsList')
+    if (!alertsList) return
+    
+    alertsList.innerHTML = ''
+    
+    if (!alerts || alerts.length === 0) {
+      alertsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">현재 FIRING 알람이 없습니다.</p>'
+      return
+    }
+    
+    alerts.forEach(alert => {
+      const item = document.createElement('div')
+      item.className = 'alert-item'
+      item.innerHTML = `
+        <div class="alert-header">
+          <span class="alert-severity severity-${alert.severity || 'warning'}">${alert.severity || 'WARNING'}</span>
+          <span class="alert-name">${alert.name || 'Unknown'}</span>
+        </div>
+        <div class="alert-message">${alert.message || 'No message'}</div>
+        <div class="alert-time">${new Date(alert.startsAt || Date.now()).toLocaleString()}</div>
+      `
+      alertsList.appendChild(item)
+    })
+  } catch (error) {
+    console.error('Error loading alerts:', error)
+    const alertsList = document.getElementById('alertsList')
+    if (alertsList) {
+      if (error.name === 'AbortError' || error.message.includes('timeout')) {
+        alertsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #e74c3c;">알람을 불러오는 중 타임아웃이 발생했습니다. Alertmanager가 응답하지 않습니다.</p>'
+      } else {
+        alertsList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">알람을 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+      }
+    }
+  }
+}
+
+// Service Detail 로드
+async function loadServiceDetail(namespace, serviceName) {
+  try {
+    const response = await fetch(`${API_BASE}/metrics/services/${namespace}/${serviceName}`)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    
+    const data = await response.json()
+    
+    // Service Detail 섹션 표시
+    document.getElementById('service-detail')?.scrollIntoView({ behavior: 'smooth' })
+    
+    // Service Detail 내용 업데이트
+    const detailContent = document.getElementById('serviceDetailContent')
+    if (detailContent) {
+      detailContent.innerHTML = `
+        <h3>${serviceName} (${namespace})</h3>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      `
+    }
+  } catch (error) {
+    console.error('Error loading service detail:', error)
+  }
+}
+
+// Pods Top N 업데이트
+function updatePodsTopN(pods) {
+  // CPU Top 5
+  const cpuTop5 = [...pods].sort((a, b) => (b.cpu || 0) - (a.cpu || 0)).slice(0, 5)
+  const cpuTop5List = document.getElementById('podsCpuTop5')
+  if (cpuTop5List) {
+    cpuTop5List.innerHTML = cpuTop5.map((pod, i) => 
+      `<div>${i + 1}. ${pod.name} - ${pod.cpu || 0}%</div>`
+    ).join('') || '<div>데이터 없음</div>'
+  }
+  
+  // Mem Top 5
+  const memTop5 = [...pods].sort((a, b) => (b.mem || 0) - (a.mem || 0)).slice(0, 5)
+  const memTop5List = document.getElementById('podsMemTop5')
+  if (memTop5List) {
+    memTop5List.innerHTML = memTop5.map((pod, i) => 
+      `<div>${i + 1}. ${pod.name} - ${pod.mem || 0}%</div>`
+    ).join('') || '<div>데이터 없음</div>'
+  }
+  
+  // Restart Top 5
+  const restartTop5 = [...pods].sort((a, b) => (b.restarts || 0) - (a.restarts || 0)).slice(0, 5)
+  const restartTop5List = document.getElementById('podsRestartTop5')
+  if (restartTop5List) {
+    restartTop5List.innerHTML = restartTop5.map((pod, i) => 
+      `<div>${i + 1}. ${pod.name} - ${pod.restarts || 0}회</div>`
+    ).join('') || '<div>데이터 없음</div>'
+  }
+}
+
+// Overview 추이 차트 업데이트
+function updateOverviewTrendsChart(data) {
+  if (!window.overviewTrendsChart || !window.overviewTrendsChart.data) {
+    return
+  }
+  
+  const chart = window.overviewTrendsChart
+  const labels = chart.data.labels || []
+  const now = new Date().toLocaleTimeString()
+  
+  // 데이터 추가
+  chart.data.labels.push(now)
+  chart.data.datasets[0].data.push(data.traffic?.rps || 0)
+  chart.data.datasets[1].data.push(data.latency?.p95 || 0)
+  chart.data.datasets[2].data.push(data.errorRate?.error5xx || 0)
+  
+  // 최대 20개 데이터만 유지
+  if (chart.data.labels.length > 20) {
+    chart.data.labels.shift()
+    chart.data.datasets.forEach(dataset => dataset.data.shift())
+  }
+  
+  chart.update()
+}
+
+// Pods Top N 탭 설정
+function setupPodsTopNTabs() {
+  const tabs = document.querySelectorAll('.pods-topn-tab')
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      tabs.forEach(t => t.classList.remove('active'))
+      this.classList.add('active')
+      
+      const targetId = this.dataset.target
+      const contents = document.querySelectorAll('.pods-topn-content')
+      contents.forEach(c => c.style.display = 'none')
+      document.getElementById(targetId)?.style.setProperty('display', 'block')
+    })
+  })
 }

@@ -22,7 +22,7 @@ spec:
       name: memory
       target:
         type: AverageValue
-        averageValue: 1Gi
+        averageValue: 400Mi
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 60

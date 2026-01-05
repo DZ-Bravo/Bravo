@@ -32,7 +32,7 @@ spec:
                 name: ai-integration-config
             - secretRef:
                 name: ai-integration-secrets
-          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-infra-service:2.10
+          image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-infra-service:2.12
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

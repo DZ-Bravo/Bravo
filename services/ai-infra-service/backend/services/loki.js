@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const LOKI_URL = process.env.LOKI_URL || 'http://loki.bravo-monitoring-ns:3100'
+const LOKI_URL = process.env.LOKI_URL || 'http://43.200.143.174:3100'
 
 // Loki 쿼리 실행
 async function queryLoki(query, start, end) {
@@ -157,16 +157,24 @@ async function getAppErrors(start, end, namespace, limit = 50) {
 }
 
 // 시간별 에러 로그 수 (그래프용)
-async function getErrorLogCountOverTime(start, end, source = 'app') {
+async function getErrorLogCountOverTime(start, end, source = 'app', serviceName = null) {
   // LogQL을 사용하여 시간별 카운트 집계
-  // 간단하게 최근 로그를 가져와서 시간별로 그룹화
   let query
   if (source === 'loki') {
     query = '{job="loki"} |= "error"'
   } else if (source === 'promtail') {
     query = '{job="promtail"} |= "error"'
   } else {
-    query = '{namespace=~"bravo-.*"} |= "error"'
+    // 서비스 이름이 있으면 해당 서비스의 pod만 필터링
+    if (serviceName) {
+      // pod 이름 패턴: serviceName으로 시작하거나 serviceName을 포함하는 경우
+      // Kubernetes pod 이름은 보통 service-name-deployment-xxx 또는 service-name-xxx 형식
+      // 더 유연한 매칭을 위해 여러 패턴 시도
+      const escapedServiceName = serviceName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // 특수문자 이스케이프
+      query = `{namespace=~"bravo-.*", pod=~"${escapedServiceName}.*"} |= "error"`
+    } else {
+      query = '{namespace=~"bravo-.*"} |= "error"'
+    }
   }
   
   const results = await queryLoki(query, start, end)

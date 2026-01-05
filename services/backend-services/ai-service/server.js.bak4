@@ -18,10 +18,7 @@ const SERVICE_NAME = 'ai-service'
 app.use(prometheusMiddleware(SERVICE_NAME))
 
 // 미들웨어
-app.use(cors({
-  origin: ['https://www.hiker-cloud.site', 'https://hiker-cloud.site', 'http://localhost:3000'],
-  credentials: true
-}))
+app.use(cors())
 app.use(express.json())
 
 // Prometheus 메트릭 엔드포인트
@@ -36,18 +33,12 @@ const bedrockClient = new BedrockAgentRuntimeClient({
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  },
-  requestHandler: {
-    requestTimeout: 60000, // 60초 타임아웃
-    httpsAgent: {
-      keepAlive: true
-    }
   }
 })
 
 const COURSE_AGENT_ID = process.env.BEDROCK_COURSE_AGENT_ID
 const COURSE_AGENT_ALIAS_ID = process.env.BEDROCK_COURSE_AGENT_ALIAS_ID
-const EQUIPMENT_AGENT_ID = process.env.VITE_EQUIPMENT_AGENT_ID
+const EQUIPMENT_AGENT_ID = process.env.BEDROCK_EQUIPMENT_AGENT_ID
 const EQUIPMENT_AGENT_ALIAS_ID = process.env.VITE_EQUIPMENT_ALIAS_ID
 
 // 디버깅: 환경 변수 확인
@@ -85,51 +76,14 @@ app.post('/api/ai/recommend-course', authenticateCognitoToken, async (req, res) 
     
     let response
     try {
-      // 타임아웃 설정 (60초)
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Bedrock Agent 호출 타임아웃 (60초 초과)')), 60000)
-      })
-      
-      response = await Promise.race([
-        bedrockClient.send(command),
-        timeoutPromise
-      ])
-      console.log('[AI 코스 추천] Bedrock Agent 응답 받음:', { 
-        hasCompletion: !!response.completion,
-        responseKeys: Object.keys(response || {})
-      })
+      response = await bedrockClient.send(command)
+      console.log('[AI 코스 추천] Bedrock Agent 응답 받음:', { hasCompletion: !!response.completion })
     } catch (bedrockError) {
       console.error('[AI 코스 추천] Bedrock Agent 호출 오류:', bedrockError)
-      // 에러 객체에서 원본 응답 확인 (순환 참조 방지)
+      // 에러 객체에서 원본 응답 확인
       if (bedrockError.$response) {
-        try {
-          const responseInfo = {
-            httpStatusCode: bedrockError.$response.httpStatusCode,
-            requestId: bedrockError.$response.requestId,
-            extendedRequestId: bedrockError.$response.extendedRequestId
-          }
-          console.error('[AI 코스 추천] Bedrock 응답 정보:', JSON.stringify(responseInfo, null, 2))
-          
-          // 원본 응답 본문 확인 시도
-          if (bedrockError.$response.body) {
-            try {
-              const bodyText = await bedrockError.$response.body.text()
-              console.error('[AI 코스 추천] Bedrock 원본 응답 본문:', bodyText.substring(0, 1000))
-            } catch (e) {
-              console.error('[AI 코스 추천] 응답 본문 읽기 실패:', e.message)
-            }
-          }
-        } catch (e) {
-          console.error('[AI 코스 추천] Bedrock 에러 메시지:', bedrockError.message || bedrockError.toString())
-        }
+        console.error('[AI 코스 추천] Bedrock 원본 응답:', JSON.stringify(bedrockError.$response, null, 2))
       }
-      
-      // 파싱 오류인 경우 응답이 실제로 왔을 수 있으므로 재시도하지 않고 에러 반환
-      if (bedrockError.message && bedrockError.message.includes('parse')) {
-        console.error('[AI 코스 추천] 파싱 오류 - Bedrock Agent 응답 형식 문제 가능성')
-        throw new Error('AI 응답 형식 오류가 발생했습니다. Bedrock Agent 설정을 확인해주세요.')
-      }
-      
       throw bedrockError
     }
     
@@ -168,20 +122,13 @@ app.post('/api/ai/recommend-course', authenticateCognitoToken, async (req, res) 
       recommendation: assistantResponse
     })
   } catch (error) {
-    // 순환 참조 방지를 위해 에러 정보만 추출
-    const errorInfo = {
-      message: error.message || error.toString(),
-      name: error.name,
-      stack: error.stack
-    }
-    console.error('[AI 코스 추천] 전체 오류:', errorInfo)
+    console.error('[AI 코스 추천] 전체 오류:', error)
+    console.error('[AI 코스 추천] 오류 스택:', error.stack)
     
     // 사용자 친화적인 에러 메시지
     let errorMessage = 'AI 코스 추천 중 오류가 발생했습니다.'
     if (error.message && error.message.includes('parse')) {
       errorMessage = 'AI 응답 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-    } else if (error.message && error.message.includes('security token')) {
-      errorMessage = 'AWS 인증 오류가 발생했습니다. 관리자에게 문의해주세요.'
     } else if (error.message) {
       errorMessage = error.message
     }
@@ -203,14 +150,6 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
       return res.status(400).json({ error: '조건을 입력해주세요.' })
     }
 
-    console.log('[장비 추천] Bedrock Agent 호출 시작:', { 
-      agentId: EQUIPMENT_AGENT_ID, 
-      agentAliasId: EQUIPMENT_AGENT_ALIAS_ID,
-      region: process.env.AWS_REGION,
-      hasCredentials: !!(process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY),
-      prompt: userInput.substring(0, 100)
-    })
-    
     const command = new InvokeAgentCommand({
       agentId: EQUIPMENT_AGENT_ID,
       agentAliasId: EQUIPMENT_AGENT_ALIAS_ID,
@@ -219,19 +158,7 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
       enableTrace: false
     })
     
-    let response
-    try {
-      response = await bedrockClient.send(command)
-      console.log('[장비 추천] Bedrock Agent 응답 받음:', { hasCompletion: !!response.completion })
-    } catch (bedrockError) {
-      console.error('[장비 추천] Bedrock Agent 호출 오류:', {
-        message: bedrockError.message,
-        name: bedrockError.name,
-        httpStatusCode: bedrockError.$metadata?.httpStatusCode,
-        requestId: bedrockError.$metadata?.requestId
-      })
-      throw bedrockError
-    }
+    const response = await bedrockClient.send(command)
     
     let assistantResponse = ''
     if (response.completion) {
@@ -533,23 +460,8 @@ app.post('/api/ai/recommend-equipment', authenticateCognitoToken, async (req, re
       }]
     })
   } catch (error) {
-    // 순환 참조 방지를 위해 에러 정보만 추출
-    const errorInfo = {
-      message: error.message || error.toString(),
-      name: error.name,
-      stack: error.stack
-    }
-    console.error('AI 장비 추천 오류:', errorInfo)
-    
-    // 사용자 친화적인 에러 메시지
-    let errorMessage = 'AI 장비 추천 중 오류가 발생했습니다.'
-    if (error.message && error.message.includes('security token')) {
-      errorMessage = 'AWS 인증 오류가 발생했습니다. 관리자에게 문의해주세요.'
-    } else if (error.message) {
-      errorMessage = error.message
-    }
-    
-    res.status(500).json({ error: errorMessage })
+    console.error('AI 장비 추천 오류:', error)
+    res.status(500).json({ error: error.message })
   }
 })
 
