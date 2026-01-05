@@ -1503,6 +1503,30 @@ section h2 {
   color: #2c3e50;
 }
 
+.alerts-history {
+  position: relative;
+}
+
+.alerts-chart-container {
+  height: 300px !important;
+  max-height: 300px !important;
+  width: 100%;
+  overflow: hidden !important;
+  position: relative;
+}
+
+.alerts-chart-container canvas {
+  max-height: 300px !important;
+  height: 300px !important;
+  width: 100% !important;
+}
+
+/* Chart.js가 생성하는 래퍼 div도 제한 */
+.alerts-chart-container > div {
+  height: 300px !important;
+  max-height: 300px !important;
+}
+
 .alerts-history-summary {
   display: flex;
   gap: 20px;

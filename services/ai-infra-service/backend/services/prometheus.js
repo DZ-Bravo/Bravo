@@ -7,11 +7,16 @@ const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://43.200.143.174:9090
 async function queryPrometheus(query) {
   try {
     const response = await axios.get(`${PROMETHEUS_URL}/api/v1/query`, {
-      params: { query }
+      params: { query },
+      timeout: 10000
     })
-    return response.data.data.result
+    if (response.data.status !== 'success') {
+      console.warn(`⚠️ Prometheus query returned non-success status: ${response.data.status}`, query)
+      return []
+    }
+    return response.data.data.result || []
   } catch (error) {
-    console.error('Prometheus query error:', error)
+    console.error('❌ Prometheus query error:', error.message, 'Query:', query)
     throw error
   }
 }
@@ -659,7 +664,9 @@ async function getAlertHistory(start, end) {
     
     let fired = 0
     let currentFiring = 0
+    const firingAlerts = []
     
+    // FIRING 알람 수집
     rules.forEach(group => {
       if (group.rules) {
         group.rules.forEach(rule => {
@@ -671,17 +678,52 @@ async function getAlertHistory(start, end) {
               if (activeAt && activeAt >= startTime && activeAt <= endTime) {
                 fired++
               }
+              // 타임라인 생성을 위해 알람 정보 저장
+              firingAlerts.push({
+                name: rule.labels?.alertname || 'Unknown',
+                activeAt: activeAt || new Date(),
+                state: rule.state
+              })
             }
           }
         })
       }
     })
     
+    // 타임라인 생성 (1시간 간격으로 24개 포인트)
+    const timeline = []
+    const intervalMs = 3600000 // 1시간
+    const now = new Date()
+    
+    // 시작 시간을 24시간 전으로 설정
+    const timelineStart = new Date(now.getTime() - (23 * intervalMs))
+    
+    for (let i = 0; i < 24; i++) {
+      const timePoint = new Date(timelineStart.getTime() + (i * intervalMs))
+      
+      // 해당 시간대에 활성화된 알람 수 계산
+      // 알람이 시작된 시간이 해당 시간대 이전이고, 아직 해소되지 않은 경우
+      const alertsAtTime = firingAlerts.filter(alert => {
+        const alertStart = new Date(alert.activeAt)
+        // 알람이 해당 시간대 이전에 시작되었고, 현재까지 활성화되어 있는 경우
+        return alertStart <= timePoint
+      })
+      
+      timeline.push({
+        time: timePoint.toISOString(),
+        fired: alertsAtTime.length,
+        resolved: 0, // Prometheus API에서는 해소 정보를 제공하지 않음
+        firing: alertsAtTime.length
+      })
+    }
+    
+    console.log(`📊 Alert History: fired=${fired}, currentFiring=${currentFiring}, timeline.length=${timeline.length}`)
+    
     return {
       fired,
       resolved: 0, // Prometheus API에서는 해소 정보를 제공하지 않음
       currentFiring,
-      timeline: [] // 타임라인은 별도로 구현 필요
+      timeline
     }
   } catch (error) {
     if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT' || error.code === 'ECONNREFUSED') {

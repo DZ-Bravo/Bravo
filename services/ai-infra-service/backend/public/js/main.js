@@ -3,6 +3,8 @@ let cpuChart, memoryChart, errorChart
 let containerCpuChart, containerMemoryChart
 let podCpuChart, podMemoryChart
 let errorLogCountChart
+let alertsHistoryChart
+let alertsHistoryChartInitialized = false // 차트 초기화 플래그
 
 let selectedNode = ''
 
@@ -575,6 +577,80 @@ function initializeCharts() {
       }
     })
   }
+  
+  // 알람 히스토리 차트 초기화 (초기화만 하고 데이터는 나중에)
+  const alertsHistoryChartEl = document.getElementById('alertsHistoryChart')
+  if (alertsHistoryChartEl) {
+    // 컨테이너 높이 강제 설정
+    const container = alertsHistoryChartEl.parentElement
+    if (container && container.classList.contains('alerts-chart-container')) {
+      container.style.height = '300px'
+      container.style.maxHeight = '300px'
+      container.style.overflow = 'hidden'
+    }
+    
+    // 차트 높이 강제 설정
+    alertsHistoryChartEl.style.height = '300px'
+    alertsHistoryChartEl.style.maxHeight = '300px'
+    alertsHistoryChartEl.style.width = '100%'
+    
+    // 빈 차트만 생성 (데이터는 loadAlerts에서 채움)
+    const alertsHistoryCtx = alertsHistoryChartEl.getContext('2d')
+    alertsHistoryChart = new Chart(alertsHistoryCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: '발생',
+          data: [],
+          borderColor: 'rgb(231, 76, 60)',
+          backgroundColor: 'rgba(231, 76, 60, 0.1)',
+          tension: 0.4
+        }, {
+          label: '해소',
+          data: [],
+          borderColor: 'rgb(46, 204, 113)',
+          backgroundColor: 'rgba(46, 204, 113, 0.1)',
+          tension: 0.4
+        }, {
+          label: '현재 FIRING',
+          data: [],
+          borderColor: 'rgb(241, 196, 15)',
+          backgroundColor: 'rgba(241, 196, 15, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: '알람 수'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: '시간'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          title: {
+            display: false
+          }
+        }
+      }
+    })
+  }
 }
 
 // 초기 데이터 로드
@@ -792,11 +868,11 @@ async function loadExternalLinks() {
 async function updateAllMetrics() {
   try {
     // 성능 개선: 차트 업데이트는 제외하고 핵심 데이터만 업데이트
+    // loadAlerts()는 초기 로드에서만 실행되므로 여기서 제거
     await Promise.all([
       loadOverview(),
       loadServices(),
-      loadPods(),
-      loadAlerts()
+      loadPods()
     ])
     // Logs와 Traces는 별도로 처리 (차트 업데이트가 무거움)
     loadLogs().catch(err => console.error('Error loading logs:', err))
@@ -1766,7 +1842,10 @@ function setupLinks() {
 async function loadOverview() {
   try {
     const response = await fetch(`${API_BASE}/metrics/overview`)
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) {
+      console.error(`❌ Overview API failed: ${response.status} ${response.statusText}`)
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
     
     const data = await response.json()
     console.log('📊 Overview API Response:', {
@@ -1776,14 +1855,18 @@ async function loadOverview() {
         latency: data.latency,
         traffic: data.traffic,
         errorRate: data.errorRate,
-        availability: data.availability
+        availability: data.availability,
+        saturation: data.saturation,
+        replica: data.replica
       }
     })
     
     // 가용성 업데이트
     const availabilityEl = document.getElementById('availability')
     if (availabilityEl) {
-      availabilityEl.textContent = `${data.availability?.successRate || 0}%`
+      const successRate = data.availability?.successRate ?? 0
+      availabilityEl.textContent = `${successRate}%`
+      console.log('✅ Availability updated:', successRate)
     }
     
     // 지연 업데이트
@@ -1791,12 +1874,23 @@ async function loadOverview() {
     const latencyP95ValueEl = document.getElementById('latencyP95Value')
     const latencyP99El = document.getElementById('latencyP99')
     const latencyP99ValueEl = document.getElementById('latencyP99Value')
-    const latencyValue = data.latency?.p95 || 0
-    if (latencyP95El) latencyP95El.textContent = `${latencyValue}ms`
-    if (latencyP95ValueEl) latencyP95ValueEl.textContent = `${latencyValue}`
+    
+    const latencyP95Value = data.latency?.p95 ?? 0
+    const latencyP99Value = data.latency?.p99 ?? 0
+    
+    if (latencyP95El) {
+      latencyP95El.textContent = `${latencyP95Value}ms`
+      console.log('✅ Latency P95 updated:', latencyP95Value)
+    }
+    if (latencyP95ValueEl) {
+      latencyP95ValueEl.textContent = `${latencyP95Value}`
+    }
+    if (latencyP99El) {
+      latencyP99El.textContent = `${latencyP99Value}ms`
+      console.log('✅ Latency P99 updated:', latencyP99Value)
+    }
     if (latencyP99ValueEl) {
-      const p99Value = data.latency?.p99 || 0
-      latencyP99ValueEl.textContent = `${p99Value}`
+      latencyP99ValueEl.textContent = `${latencyP99Value}`
     }
     
     // 에러율 업데이트
@@ -1804,35 +1898,90 @@ async function loadOverview() {
     const error5xxValueEl = document.getElementById('errorRate5xxValue')
     const error4xxEl = document.getElementById('error4xx')
     const error4xxValueEl = document.getElementById('errorRate4xxValue')
-    const error5xxValue = data.errorRate?.error5xx || 0
-    const error4xxValue = data.errorRate?.error4xx || 0
-    if (error5xxEl) error5xxEl.textContent = `${error5xxValue}%`
-    if (error5xxValueEl) error5xxValueEl.textContent = `${error5xxValue}`
-    if (error4xxValueEl) error4xxValueEl.textContent = `${error4xxValue}`
+    
+    const error5xxValue = data.errorRate?.error5xx ?? 0
+    const error4xxValue = data.errorRate?.error4xx ?? 0
+    
+    if (error5xxEl) {
+      error5xxEl.textContent = `${error5xxValue}%`
+      console.log('✅ Error 5xx updated:', error5xxValue)
+    }
+    if (error5xxValueEl) {
+      error5xxValueEl.textContent = `${error5xxValue}`
+    }
+    if (error4xxEl) {
+      error4xxEl.textContent = `${error4xxValue}%`
+      console.log('✅ Error 4xx updated:', error4xxValue)
+    }
+    if (error4xxValueEl) {
+      error4xxValueEl.textContent = `${error4xxValue}`
+    }
     
     // 트래픽 업데이트
     const rpsEl = document.getElementById('rps')
     const rpsValueEl = document.getElementById('rpsValue')
-    const rpsValue = data.traffic?.rps || 0
-    if (rpsEl) rpsEl.textContent = `${rpsValue}`
-    if (rpsValueEl) rpsValueEl.textContent = `${rpsValue}`
+    const rpsValue = data.traffic?.rps ?? 0
+    
+    if (rpsEl) {
+      rpsEl.textContent = `${rpsValue}`
+      console.log('✅ RPS updated:', rpsValue)
+    }
+    if (rpsValueEl) {
+      rpsValueEl.textContent = `${rpsValue}`
+    }
     
     // 포화도 업데이트
     const cpuAvgEl = document.getElementById('cpuAvg')
     const memAvgEl = document.getElementById('memAvg')
-    if (cpuAvgEl) cpuAvgEl.textContent = `${data.saturation?.cpuAvg || 0}%`
-    if (memAvgEl) memAvgEl.textContent = `${data.saturation?.memAvg || 0}%`
+    const cpuAvg = data.saturation?.cpuAvg ?? 0
+    const memAvg = data.saturation?.memAvg ?? 0
+    
+    if (cpuAvgEl) {
+      cpuAvgEl.textContent = `${cpuAvg}%`
+      console.log('✅ CPU Avg updated:', cpuAvg)
+    }
+    if (memAvgEl) {
+      memAvgEl.textContent = `${memAvg}%`
+      console.log('✅ Mem Avg updated:', memAvg)
+    }
     
     // Replica 상태 업데이트
     const replicaHealthyEl = document.getElementById('replicaHealthy')
     const replicaUnhealthyEl = document.getElementById('replicaUnhealthy')
-    if (replicaHealthyEl) replicaHealthyEl.textContent = `${data.replica?.healthy || 0}`
-    if (replicaUnhealthyEl) replicaUnhealthyEl.textContent = `${data.replica?.unhealthy || 0}`
+    const replicaHealthy = data.replica?.healthy ?? 0
+    const replicaUnhealthy = data.replica?.unhealthy ?? 0
+    
+    if (replicaHealthyEl) {
+      replicaHealthyEl.textContent = `${replicaHealthy}`
+      console.log('✅ Replica Healthy updated:', replicaHealthy)
+    }
+    if (replicaUnhealthyEl) {
+      replicaUnhealthyEl.textContent = `${replicaUnhealthy}`
+      console.log('✅ Replica Unhealthy updated:', replicaUnhealthy)
+    }
     
     // 추이 차트 업데이트
     updateOverviewTrendsChart(data)
   } catch (error) {
-    console.error('Error loading overview:', error)
+    console.error('❌ Error loading overview:', error)
+    // 에러 발생 시 기본값 표시
+    const elements = {
+      'availability': '0%',
+      'latencyP95': '0ms',
+      'latencyP99': '0ms',
+      'error5xx': '0%',
+      'error4xx': '0%',
+      'rps': '0',
+      'cpuAvg': '0%',
+      'memAvg': '0%',
+      'replicaHealthy': '0',
+      'replicaUnhealthy': '0'
+    }
+    
+    for (const [id, defaultValue] of Object.entries(elements)) {
+      const el = document.getElementById(id)
+      if (el) el.textContent = defaultValue
+    }
   }
 }
 
@@ -1849,13 +1998,31 @@ async function loadServices() {
     if (params.length > 0) url += '?' + params.join('&')
     
     const response = await fetch(url)
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) {
+      console.error(`❌ Services API failed: ${response.status} ${response.statusText}`)
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
     
     const services = await response.json()
+    console.log('📊 Services API Response:', {
+      url,
+      status: response.status,
+      count: services.length,
+      sample: services.slice(0, 3).map(s => ({
+        name: s.name,
+        cpu: s.cpu,
+        mem: s.mem,
+        rps: s.rps,
+        latencyP95: s.latencyP95
+      }))
+    })
     
     // Services 테이블 업데이트
     const tbody = document.querySelector('#servicesTable tbody')
-    if (!tbody) return
+    if (!tbody) {
+      console.warn('⚠️ Services table tbody not found')
+      return
+    }
     
     tbody.innerHTML = ''
     
@@ -1866,21 +2033,30 @@ async function loadServices() {
     
     services.forEach(service => {
       const row = document.createElement('tr')
+      const cpu = service.cpu ?? 0
+      const mem = service.mem ?? 0
+      const rps = service.rps ?? 0
+      const latencyP95 = service.latencyP95 ?? 0
+      const errorRate5xx = service.errorRate5xx ?? 0
+      const errorRate4xx = service.errorRate4xx ?? 0
+      
       row.innerHTML = `
         <td>${service.namespace || '-'}</td>
         <td><a href="#" onclick="loadServiceDetail('${service.namespace}', '${service.name}'); return false;">${service.name}</a></td>
-        <td>${service.rps || 0}</td>
-        <td>${service.latencyP95 || 0}ms</td>
-        <td>${service.errorRate5xx || 0}% / ${service.errorRate4xx || 0}%</td>
+        <td>${rps}</td>
+        <td>${latencyP95}ms</td>
+        <td>${errorRate5xx}% / ${errorRate4xx}%</td>
         <td>${service.replica?.available || 0} / ${service.replica?.desired || 0}</td>
         <td>${service.restart?.['1h'] || 0} / ${service.restart?.['24h'] || 0}</td>
-        <td>${service.cpu || 0}%</td>
-        <td>${service.mem || 0}%</td>
+        <td>${cpu}%</td>
+        <td>${mem}%</td>
       `
       tbody.appendChild(row)
     })
+    
+    console.log(`✅ Services table updated with ${services.length} services`)
   } catch (error) {
-    console.error('Error loading services:', error)
+    console.error('❌ Error loading services:', error)
   }
 }
 
@@ -1897,13 +2073,30 @@ async function loadPods() {
     if (params.length > 0) url += '?' + params.join('&')
     
     const response = await fetch(url)
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) {
+      console.error(`❌ Pods API failed: ${response.status} ${response.statusText}`)
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
     
     const pods = await response.json()
+    console.log('📊 Pods API Response:', {
+      url,
+      status: response.status,
+      count: pods.length,
+      sample: pods.slice(0, 3).map(p => ({
+        name: p.name,
+        cpu: p.cpu,
+        mem: p.mem,
+        status: p.status
+      }))
+    })
     
     // Pods 테이블 업데이트
     const tbody = document.querySelector('#podsTable tbody')
-    if (!tbody) return
+    if (!tbody) {
+      console.warn('⚠️ Pods table tbody not found')
+      return
+    }
     
     tbody.innerHTML = ''
     
@@ -1914,17 +2107,23 @@ async function loadPods() {
     
     pods.forEach(pod => {
       const row = document.createElement('tr')
+      const cpu = pod.cpu ?? 0
+      const mem = pod.mem ?? 0
+      const restarts = pod.restarts ?? 0
+      
       row.innerHTML = `
         <td>${pod.namespace || '-'}</td>
         <td>${pod.name || '-'}</td>
         <td>${pod.status || '-'}</td>
-        <td>${pod.restarts || 0}</td>
-        <td>${pod.cpu || 0}%</td>
-        <td>${pod.mem || 0}%</td>
+        <td>${restarts}</td>
+        <td>${cpu}%</td>
+        <td>${mem}%</td>
         <td>${pod.node || '-'}</td>
       `
       tbody.appendChild(row)
     })
+    
+    console.log(`✅ Pods table updated with ${pods.length} pods`)
     
     // Top N 업데이트
     updatePodsTopN(pods)
@@ -2522,6 +2721,142 @@ async function loadAlerts() {
       }
     }
   }
+  
+  // 알람 히스토리 로드
+  try {
+    const startTime = new Date(Date.now() - 86400000) // 24시간 전
+    const endTime = new Date()
+    const historyResponse = await fetch(`${API_BASE}/alerts/history?start=${startTime.toISOString()}&end=${endTime.toISOString()}`)
+    
+    if (historyResponse.ok) {
+      const history = await historyResponse.json()
+      console.log('📊 Alert History API Response:', {
+        url: `${API_BASE}/alerts/history`,
+        status: historyResponse.status,
+        data: history
+      })
+      
+      // 요약 정보 업데이트
+      const alertsFiredEl = document.getElementById('alertsFired')
+      const alertsResolvedEl = document.getElementById('alertsResolved')
+      const alertsCurrentFiringEl = document.getElementById('alertsCurrentFiring')
+      
+      if (alertsFiredEl) alertsFiredEl.textContent = history.fired || 0
+      if (alertsResolvedEl) alertsResolvedEl.textContent = history.resolved || 0
+      if (alertsCurrentFiringEl) alertsCurrentFiringEl.textContent = history.currentFiring || 0
+      
+      // 차트 업데이트 (초기화되지 않았을 때만)
+      if (!alertsHistoryChartInitialized) {
+        updateAlertsHistoryChart(history.timeline || [])
+        alertsHistoryChartInitialized = true
+      } else {
+        // 이미 초기화되었으면 차트 업데이트 완전 차단
+        console.log('⚠️ Alert chart already initialized, skipping all updates')
+      }
+    } else {
+      // 히스토리 로드 실패 시 기본값 표시
+      const alertsFiredEl = document.getElementById('alertsFired')
+      const alertsResolvedEl = document.getElementById('alertsResolved')
+      const alertsCurrentFiringEl = document.getElementById('alertsCurrentFiring')
+      
+      if (alertsFiredEl) alertsFiredEl.textContent = '-'
+      if (alertsResolvedEl) alertsResolvedEl.textContent = '-'
+      if (alertsCurrentFiringEl) alertsCurrentFiringEl.textContent = '-'
+    }
+  } catch (error) {
+    console.warn('Error loading alert history:', error)
+    // 히스토리 로드 실패는 조용히 처리
+    const alertsFiredEl = document.getElementById('alertsFired')
+    const alertsResolvedEl = document.getElementById('alertsResolved')
+    const alertsCurrentFiringEl = document.getElementById('alertsCurrentFiring')
+    
+    if (alertsFiredEl) alertsFiredEl.textContent = '-'
+    if (alertsResolvedEl) alertsResolvedEl.textContent = '-'
+    if (alertsCurrentFiringEl) alertsCurrentFiringEl.textContent = '-'
+  }
+}
+
+// 알람 히스토리 차트 업데이트 (한 번만 실행)
+function updateAlertsHistoryChart(timeline) {
+  // 이미 초기화되었으면 완전히 무시
+  if (alertsHistoryChartInitialized) {
+    console.log('⚠️ Alert chart already initialized, skipping update')
+    return
+  }
+  
+  const alertsHistoryChartEl = document.getElementById('alertsHistoryChart')
+  if (!alertsHistoryChartEl || !alertsHistoryChart) {
+    console.warn('⚠️ Alert chart element or chart instance not found')
+    return
+  }
+  
+  // 컨테이너와 canvas 높이 강제 설정
+  const container = alertsHistoryChartEl.parentElement
+  if (container && container.classList.contains('alerts-chart-container')) {
+    container.style.height = '300px'
+    container.style.maxHeight = '300px'
+    container.style.overflow = 'hidden'
+  }
+  
+  alertsHistoryChartEl.style.height = '300px'
+  alertsHistoryChartEl.style.maxHeight = '300px'
+  
+  // Chart.js 래퍼 div도 제한
+  const chartWrapper = container?.querySelector('div')
+  if (chartWrapper) {
+    chartWrapper.style.height = '300px'
+    chartWrapper.style.maxHeight = '300px'
+  }
+  
+  // 데이터 준비
+  let chartLabels = []
+  let chartFiredData = []
+  let chartResolvedData = []
+  let chartFiringData = []
+  
+  if (timeline && Array.isArray(timeline) && timeline.length > 0) {
+    // 타임라인 데이터 변환
+    const labels = timeline.map(item => {
+      try {
+        const date = new Date(item.time)
+        return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+      } catch (e) {
+        return ''
+      }
+    }).filter(l => l !== '')
+    
+    const firedData = timeline.map(item => Number(item.fired) || 0)
+    const resolvedData = timeline.map(item => Number(item.resolved) || 0)
+    const firingData = timeline.map(item => Number(item.firing) || 0)
+    
+    // 강제로 최대 24개만 유지
+    const maxDataPoints = 24
+    const startIndex = Math.max(0, labels.length - maxDataPoints)
+    
+    chartLabels = labels.slice(startIndex, startIndex + maxDataPoints)
+    chartFiredData = firedData.slice(startIndex, startIndex + maxDataPoints)
+    chartResolvedData = resolvedData.slice(startIndex, startIndex + maxDataPoints)
+    chartFiringData = firingData.slice(startIndex, startIndex + maxDataPoints)
+    
+    // 데이터 길이 강제 제한 (안전장치)
+    if (chartLabels.length > maxDataPoints) {
+      chartLabels = chartLabels.slice(-maxDataPoints)
+      chartFiredData = chartFiredData.slice(-maxDataPoints)
+      chartResolvedData = chartResolvedData.slice(-maxDataPoints)
+      chartFiringData = chartFiringData.slice(-maxDataPoints)
+    }
+  }
+  
+  // 기존 차트의 데이터만 업데이트 (차트 재생성 안 함)
+  alertsHistoryChart.data.labels = chartLabels
+  alertsHistoryChart.data.datasets[0].data = chartFiredData
+  alertsHistoryChart.data.datasets[1].data = chartResolvedData
+  alertsHistoryChart.data.datasets[2].data = chartFiringData
+  
+  alertsHistoryChart.update('none')
+  alertsHistoryChartInitialized = true
+  
+  console.log(`✅ Alert chart initialized with ${chartLabels.length} data points`)
 }
 
 // Service Detail 로드

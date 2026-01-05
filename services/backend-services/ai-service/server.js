@@ -64,9 +64,17 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
     for (const obj of objects.Contents) {
       const key = obj.Key
       
-      // CSV 파일은 카테고리 필터링 스킵 (파일 내부에서 필터링)
+      // JSON 파일과 CSV 파일 처리
+      const isJson = key.endsWith('.json')
       const isCsv = key.endsWith('.csv')
-      if (category && !isCsv) {
+      if (!isJson && !isCsv) continue
+      
+      // 메타데이터 파일은 스킵
+      if (key.includes('.metadata.')) continue
+      
+      // CSV 파일은 카테고리 필터링 스킵 (파일 내부에서 필터링)
+      // JSON 파일만 경로 기반 카테고리 필터링
+      if (category && isJson) {
         // 카테고리 매핑: '용품' -> 'goods'
         const categoryMap = {
           '용품': 'goods',
@@ -96,14 +104,6 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
         console.log(`[S3 검색] CSV 파일 발견: ${key}, 카테고리 필터링은 파일 내부에서 수행`)
       }
       
-      // JSON 파일과 CSV 파일 처리
-      const isJson = key.endsWith('.json')
-      const isCsv = key.endsWith('.csv')
-      if (!isJson && !isCsv) continue
-      
-      // 메타데이터 파일은 스킵
-      if (key.includes('.metadata.')) continue
-      
       try {
         const getObjectParams = {
           Bucket: S3_BUCKET,
@@ -116,50 +116,113 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null) {
         let items = []
         
         if (isCsv) {
-          // CSV 파일 파싱
+          // CSV 파일 파싱 (따옴표 내부 줄바꿈 처리)
           console.log(`[S3 검색] CSV 파일 ${key} 읽기 성공, 크기: ${fileContent.length} bytes`)
-          const lines = fileContent.split('\n').filter(line => line.trim())
-          if (lines.length === 0) {
+          
+          // CSV 파싱 함수 (따옴표 내부 줄바꿈 고려)
+          function parseCSV(csvText) {
+            const rows = []
+            let currentRow = []
+            let currentField = ''
+            let inQuotes = false
+            let i = 0
+            
+            while (i < csvText.length) {
+              const char = csvText[i]
+              const nextChar = csvText[i + 1]
+              
+              if (char === '"') {
+                if (inQuotes && nextChar === '"') {
+                  // 이스케이프된 따옴표 ("")
+                  currentField += '"'
+                  i += 2
+                  continue
+                } else {
+                  // 따옴표 시작/끝
+                  inQuotes = !inQuotes
+                  i++
+                  continue
+                }
+              }
+              
+              if (char === ',' && !inQuotes) {
+                // 필드 구분자
+                currentRow.push(currentField.trim())
+                currentField = ''
+                i++
+                continue
+              }
+              
+              if ((char === '\n' || char === '\r') && !inQuotes) {
+                // 행 구분자 (따옴표 밖에서만)
+                if (char === '\r' && nextChar === '\n') {
+                  i += 2 // \r\n 건너뛰기
+                } else {
+                  i++ // \n 건너뛰기
+                }
+                
+                // 현재 행이 비어있지 않으면 추가
+                if (currentField.trim() || currentRow.length > 0) {
+                  currentRow.push(currentField.trim())
+                  if (currentRow.some(f => f.length > 0)) {
+                    rows.push(currentRow)
+                  }
+                  currentRow = []
+                  currentField = ''
+                }
+                continue
+              }
+              
+              // 일반 문자
+              currentField += char
+              i++
+            }
+            
+            // 마지막 필드와 행 처리
+            if (currentField.trim() || currentRow.length > 0) {
+              currentRow.push(currentField.trim())
+              if (currentRow.some(f => f.length > 0)) {
+                rows.push(currentRow)
+              }
+            }
+            
+            return rows
+          }
+          
+          const rows = parseCSV(fileContent)
+          if (rows.length === 0) {
             console.log(`[S3 검색] CSV 파일이 비어있습니다.`)
             continue
           }
           
-          // 헤더 파싱 (쉼표로 분리, 따옴표 제거)
-          const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''))
+          // 헤더 파싱
+          const headers = rows[0].map(h => h.trim().replace(/^"|"$/g, ''))
           console.log(`[S3 검색] CSV 헤더 (${headers.length}개):`, headers.slice(0, 15))
           
           // 데이터 행 파싱
-          for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim()
-            if (!line) continue
+          let skipCount = 0
+          for (let i = 1; i < rows.length; i++) {
+            const values = rows[i]
             
-            // CSV 파싱 (쉼표로 분리, 따옴표 처리)
-            const values = []
-            let current = ''
-            let inQuotes = false
-            for (let j = 0; j < line.length; j++) {
-              const char = line[j]
-              if (char === '"') {
-                inQuotes = !inQuotes
-              } else if (char === ',' && !inQuotes) {
-                values.push(current.trim())
-                current = ''
-              } else {
-                current += char
-              }
-            }
-            values.push(current.trim()) // 마지막 값
-            
+            // 컬럼 수가 맞지 않으면 스킵
             if (values.length !== headers.length) {
-              console.warn(`[S3 검색] CSV 행 ${i}의 컬럼 수가 헤더와 다름: ${values.length} vs ${headers.length}`)
+              skipCount++
+              // 처음 3개만 로그
+              if (skipCount <= 3) {
+                console.warn(`[S3 검색] CSV 행 ${i}의 컬럼 수가 헤더와 다름: ${values.length} vs ${headers.length}, 스킵`)
+              }
               continue
             }
             
             const item = {}
             headers.forEach((header, idx) => {
-              item[header] = values[idx] || ''
+              item[header] = (values[idx] || '').trim()
             })
             items.push(item)
+          }
+          
+          if (skipCount > 3) {
+            console.log(`[S3 검색] 추가로 ${skipCount - 3}개 행이 컬럼 수 불일치로 스킵됨 (총 ${skipCount}개)`)
           }
           
           console.log(`[S3 검색] CSV에서 ${items.length}개 항목 파싱 완료`)
