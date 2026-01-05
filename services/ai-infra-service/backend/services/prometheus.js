@@ -1,7 +1,7 @@
 import axios from 'axios'
 import kubernetesService from './kubernetes.js'
 
-const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://prometheus.bravo-monitoring-ns:9090'
+const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://43.200.143.174:9090'
 
 // Prometheus 쿼리 실행
 async function queryPrometheus(query) {
@@ -296,36 +296,101 @@ async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
 async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
   try {
     // Prometheus에서 container_cpu_usage_seconds_total 메트릭을 Pod별로 집계
-    // pod label만 사용 (namespace label이 없는 경우가 많음)
-    // bravo-* namespace의 Pod 이름 패턴으로 필터링
-    let query = 'sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}[5m])) by (pod)'
+    // namespace label이 없을 수 있으므로 pod 이름 패턴으로 필터링
+    // 먼저 namespace로 시도, 없으면 pod 이름 패턴 사용
+    let usageQuery = 'sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",container!="POD",container!=""}[5m])) by (pod)'
+    let limitQuery = 'sum(container_spec_cpu_quota{namespace=~"bravo-.*",container!="POD",container!=""} / 100000) by (pod)'
+    
+    // Fallback: namespace label 없이 pod 이름 패턴으로 필터링
+    let usageQueryFallback = 'sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}[5m])) by (pod)'
+    let limitQueryFallback = 'sum(container_spec_cpu_quota{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""} / 100000) by (pod)'
+    
+    // 최종 fallback: 모든 컨테이너 (필터링 최소화)
+    let usageQueryFinalFallback = 'sum(rate(container_cpu_usage_seconds_total{container!="POD",container!=""}[5m])) by (pod)'
+    let limitQueryFinalFallback = 'sum(container_spec_cpu_quota{container!="POD",container!=""} / 100000) by (pod)'
     
     if (nodeName) {
-      query = `sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}"}[5m])) by (pod)`
+      usageQuery = `sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
+      limitQuery = `sum(container_spec_cpu_quota{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"} / 100000) by (pod)`
+      usageQueryFallback = `sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
+      limitQueryFallback = `sum(container_spec_cpu_quota{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"} / 100000) by (pod)`
+      usageQueryFinalFallback = `sum(rate(container_cpu_usage_seconds_total{container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
+      limitQueryFinalFallback = `sum(container_spec_cpu_quota{container!="POD",container!="",instance=~"${nodeName}.*"} / 100000) by (pod)`
     }
     
-    const results = await queryRange(query, start, end, step)
+    // 먼저 namespace 쿼리 시도
+    let [usageResults, limitResults] = await Promise.all([
+      queryRange(usageQuery, start, end, step).catch(async (err) => {
+        console.warn('Pod CPU usage query (namespace) failed, trying fallback:', err.message)
+        // Fallback 1: pod 이름 패턴
+        return queryRange(usageQueryFallback, start, end, step).catch(async (err2) => {
+          console.warn('Pod CPU usage query (pod pattern) failed, trying final fallback:', err2.message)
+          // Fallback 2: 모든 컨테이너
+          return queryRange(usageQueryFinalFallback, start, end, step).catch(() => [])
+        })
+      }),
+      queryPrometheus(limitQuery).catch(async (err) => {
+        console.warn('Pod CPU limit query (namespace) failed, trying fallback:', err.message)
+        // Fallback 1: pod 이름 패턴
+        return queryPrometheus(limitQueryFallback).catch(async (err2) => {
+          console.warn('Pod CPU limit query (pod pattern) failed, trying final fallback:', err2.message)
+          // Fallback 2: 모든 컨테이너
+          return queryPrometheus(limitQueryFinalFallback).catch(() => [])
+        })
+      })
+    ])
+    
+    // 결과가 없으면 fallback 쿼리 직접 시도
+    if (usageResults.length === 0) {
+      console.log('No results from namespace query, trying fallback pod name pattern')
+      usageResults = await queryRange(usageQueryFallback, start, end, step).catch(async () => {
+        console.log('Trying final fallback: all containers')
+        return queryRange(usageQueryFinalFallback, start, end, step).catch(() => [])
+      })
+    }
+    if (limitResults.length === 0) {
+      limitResults = await queryPrometheus(limitQueryFallback).catch(async () => {
+        return queryPrometheus(limitQueryFinalFallback).catch(() => [])
+      })
+    }
+    
+    console.log(`getPodCPUMetrics: Found ${usageResults.length} usage results and ${limitResults.length} limit results`)
+    
+    // limit 정보를 Map으로 변환 (pod를 키로)
+    const limitMap = new Map()
+    limitResults.forEach(result => {
+      const pod = result.metric.pod || ''
+      if (!pod) return
+      const limitCores = parseFloat(result.value[1])
+      if (limitCores > 0) {
+        limitMap.set(pod, limitCores)
+      }
+    })
     
     // 결과를 Pod별로 그룹화
     const podMap = {}
     
-    results.forEach(result => {
+    usageResults.forEach(result => {
       const pod = result.metric.pod || ''
       if (!pod) return
       
-      // Pod 이름에서 namespace 추론 (또는 Kubernetes API에서 가져온 정보 사용)
-      // 일단 pod 이름만 사용
       if (!podMap[pod]) {
         podMap[pod] = {
           name: pod,
-          namespace: 'unknown', // 나중에 Kubernetes API로 채움
+          namespace: result.metric.namespace || 'unknown',
           data: []
         }
       }
       
-      // CPU 사용률 (cores 단위)
+      const limitCores = limitMap.get(pod) || 1 // 기본값 1 core
+      
+      // CPU 사용률 (%) 계산: (사용량 cores / limit cores) * 100
       if (result.values && result.values.length > 0) {
-        podMap[pod].data = result.values.map(v => [v[0], parseFloat(v[1])])
+        podMap[pod].data = result.values.map(v => {
+          const usageCores = parseFloat(v[1])
+          const cpuPercent = limitCores > 0 ? (usageCores / limitCores) * 100 : 0
+          return [v[0], cpuPercent]
+        })
       }
     })
     
@@ -340,26 +405,64 @@ async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
 async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
   try {
     // 사용량과 limit을 함께 가져오기
-    // pod label만 사용 (namespace label이 없는 경우가 많음)
-    const usageQuery = nodeName
-      ? 'sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
-      : 'sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
+    // namespace label이 없을 수 있으므로 fallback 쿼리 준비
+    let usageQuery = 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*",container!="POD",container!=""}) by (pod)'
+    let limitQuery = 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",container!="POD",container!=""}) by (pod)'
     
-    // Pod의 모든 컨테이너 limit 합계
-    const limitQuery = nodeName
-      ? 'sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
-      : 'sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
+    // Fallback: namespace label 없이 pod 이름 패턴으로 필터링
+    let usageQueryFallback = 'sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
+    let limitQueryFallback = 'sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
     
-    const [usageResults, limitResults] = await Promise.all([
-      queryRange(usageQuery, start, end, step).catch(err => {
-        console.warn('Pod memory usage query failed:', err.message)
-        return []
+    // 최종 fallback: 모든 컨테이너
+    let usageQueryFinalFallback = 'sum(container_memory_working_set_bytes{container!="POD",container!=""}) by (pod)'
+    let limitQueryFinalFallback = 'sum(container_spec_memory_limit_bytes{container!="POD",container!=""}) by (pod)'
+    
+    if (nodeName) {
+      usageQuery = `sum(container_memory_working_set_bytes{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      limitQuery = `sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      usageQueryFallback = `sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      limitQueryFallback = `sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      usageQueryFinalFallback = `sum(container_memory_working_set_bytes{container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      limitQueryFinalFallback = `sum(container_spec_memory_limit_bytes{container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+    }
+    
+    // 먼저 namespace 쿼리 시도
+    let [usageResults, limitResults] = await Promise.all([
+      queryRange(usageQuery, start, end, step).catch(async (err) => {
+        console.warn('Pod memory usage query (namespace) failed, trying fallback:', err.message)
+        // Fallback 1: pod 이름 패턴
+        return queryRange(usageQueryFallback, start, end, step).catch(async (err2) => {
+          console.warn('Pod memory usage query (pod pattern) failed, trying final fallback:', err2.message)
+          // Fallback 2: 모든 컨테이너
+          return queryRange(usageQueryFinalFallback, start, end, step).catch(() => [])
+        })
       }),
-      queryPrometheus(limitQuery).catch(err => {
-        console.warn('Pod memory limit query failed:', err.message)
-        return []
+      queryPrometheus(limitQuery).catch(async (err) => {
+        console.warn('Pod memory limit query (namespace) failed, trying fallback:', err.message)
+        // Fallback 1: pod 이름 패턴
+        return queryPrometheus(limitQueryFallback).catch(async (err2) => {
+          console.warn('Pod memory limit query (pod pattern) failed, trying final fallback:', err2.message)
+          // Fallback 2: 모든 컨테이너
+          return queryPrometheus(limitQueryFinalFallback).catch(() => [])
+        })
       })
     ])
+    
+    // 결과가 없으면 fallback 쿼리 직접 시도
+    if (usageResults.length === 0) {
+      console.log('No results from namespace query, trying fallback pod name pattern')
+      usageResults = await queryRange(usageQueryFallback, start, end, step).catch(async () => {
+        console.log('Trying final fallback: all containers')
+        return queryRange(usageQueryFinalFallback, start, end, step).catch(() => [])
+      })
+    }
+    if (limitResults.length === 0) {
+      limitResults = await queryPrometheus(limitQueryFallback).catch(async () => {
+        return queryPrometheus(limitQueryFinalFallback).catch(() => [])
+      })
+    }
+    
+    console.log(`getPodMemoryMetrics: Found ${usageResults.length} usage results and ${limitResults.length} limit results`)
     
     // limit 정보를 Map으로 변환 (pod를 키로)
     const limitMap = new Map()
@@ -382,7 +485,7 @@ async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
       if (!podMap[pod]) {
         podMap[pod] = {
           name: pod,
-          namespace: 'unknown', // 나중에 Kubernetes API로 채움
+          namespace: result.metric.namespace || 'unknown',
           data: []
         }
       }
@@ -484,7 +587,7 @@ async function getFiringAlerts() {
     // Prometheus Alertmanager API 호출
     // 실제로는 Alertmanager가 별도로 실행 중이어야 함
     // 임시로 빈 배열 반환
-    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://alertmanager.bravo-monitoring-ns:9093'
+    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://43.200.143.174:9093'
     try {
       const response = await axios.get(`${alertmanagerUrl}/api/v2/alerts?active=true`)
       return response.data || []
@@ -503,7 +606,7 @@ async function getFiringAlerts() {
 async function getAlertHistory(start, end) {
   try {
     // Prometheus Alertmanager API 호출
-    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://alertmanager.bravo-monitoring-ns:9093'
+    const alertmanagerUrl = process.env.ALERTMANAGER_URL || 'http://43.200.143.174:9093'
     try {
       const response = await axios.get(`${alertmanagerUrl}/api/v2/alerts`, {
         params: {
@@ -616,43 +719,62 @@ async function getServiceResourceMetrics(serviceName, namespace, start, end) {
     })
     
     if (pods.length === 0) {
+      console.log(`No pods found for service ${serviceName} in namespace ${namespace}`)
       return { cpu: 0, mem: 0 }
     }
     
+    console.log(`Found ${pods.length} pods for service ${serviceName}:`, pods.map(p => p.name))
+    
     // Pod별 CPU/Mem 메트릭 수집
     const [cpuMetrics, memMetrics] = await Promise.all([
-      prometheusService.getPodCPUMetrics(null, start, end, '15s').catch(() => []),
-      prometheusService.getPodMemoryMetrics(null, start, end, '15s').catch(() => [])
+      getPodCPUMetrics(null, start, end, '15s').catch((err) => {
+        console.error(`Error getting CPU metrics for ${serviceName}:`, err.message)
+        return []
+      }),
+      getPodMemoryMetrics(null, start, end, '15s').catch((err) => {
+        console.error(`Error getting Memory metrics for ${serviceName}:`, err.message)
+        return []
+      })
     ])
     
-    // 서비스의 Pod들만 필터링 (pod 이름으로만 매칭)
-    const servicePodNames = new Set(pods.map(p => p.name))
-    const serviceCpuMetrics = cpuMetrics.filter(m => 
-      servicePodNames.has(m.name)
-    )
-    const serviceMemMetrics = memMetrics.filter(m => 
-      servicePodNames.has(m.name)
-    )
+    console.log(`Retrieved ${cpuMetrics.length} CPU metrics and ${memMetrics.length} Memory metrics`)
     
-    // CPU 평균 계산
+    // 서비스의 Pod들만 필터링 (pod 이름으로 매칭, 부분 매칭도 지원)
+    const servicePodNames = new Set(pods.map(p => p.name))
+    const serviceCpuMetrics = cpuMetrics.filter(m => {
+      // 정확한 매칭
+      if (servicePodNames.has(m.name)) return true
+      // 부분 매칭: pod 이름이 서비스 이름으로 시작하는지 확인
+      return pods.some(p => m.name.startsWith(p.name.split('-').slice(0, -1).join('-')))
+    })
+    const serviceMemMetrics = memMetrics.filter(m => {
+      // 정확한 매칭
+      if (servicePodNames.has(m.name)) return true
+      // 부분 매칭: pod 이름이 서비스 이름으로 시작하는지 확인
+      return pods.some(p => m.name.startsWith(p.name.split('-').slice(0, -1).join('-')))
+    })
+    
+    console.log(`Matched ${serviceCpuMetrics.length} CPU metrics and ${serviceMemMetrics.length} Memory metrics for service ${serviceName}`)
+    
+    // CPU 평균 계산 (이미 %로 계산되어 있음)
     let cpuSum = 0
     let cpuCount = 0
     serviceCpuMetrics.forEach(metric => {
       if (metric.data && metric.data.length > 0) {
         const lastValue = parseFloat(metric.data[metric.data.length - 1][1])
-        cpuSum += lastValue * 100 // cores를 %로 변환 (간단히 * 100)
+        cpuSum += lastValue // 이미 %로 계산되어 있음
         cpuCount++
       }
     })
     const cpuAvg = cpuCount > 0 ? cpuSum / cpuCount : 0
     
-    // Mem 평균 계산
+    // Mem 평균 계산 (이미 %로 계산되어 있음)
     let memSum = 0
     let memCount = 0
     serviceMemMetrics.forEach(metric => {
       if (metric.data && metric.data.length > 0) {
         const lastValue = parseFloat(metric.data[metric.data.length - 1][1])
-        memSum += lastValue
+        memSum += lastValue // 이미 %로 계산되어 있음
         memCount++
       }
     })

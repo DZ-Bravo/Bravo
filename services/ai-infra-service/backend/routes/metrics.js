@@ -74,17 +74,30 @@ router.get('/pods', async (req, res) => {
     const startTime = new Date(endTime.getTime() - 300000) // 5분 전
     
     const [cpuMetrics, memMetrics] = await Promise.all([
-      prometheusService.getPodCPUMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch(() => []),
-      prometheusService.getPodMemoryMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch(() => [])
+      prometheusService.getPodCPUMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch((err) => {
+        console.error('Error getting CPU metrics:', err.message)
+        return []
+      }),
+      prometheusService.getPodMemoryMetrics(node, startTime.toISOString(), endTime.toISOString(), '15s').catch((err) => {
+        console.error('Error getting Memory metrics:', err.message)
+        return []
+      })
     ])
     
-    // 메트릭을 Map으로 변환 (pod 이름을 키로)
+    console.log(`Found ${cpuMetrics.length} CPU metrics and ${memMetrics.length} Memory metrics for ${pods.length} pods`)
+    
+    // 메트릭을 Map으로 변환 (pod 이름을 키로, 부분 매칭도 지원)
     const cpuMap = new Map()
     cpuMetrics.forEach(metric => {
       const podName = metric.name
       const lastValue = metric.data && metric.data.length > 0 ? parseFloat(metric.data[metric.data.length - 1][1]) : 0
-      // CPU는 cores 단위이므로, limit 대비 % 계산 필요 (일단 cores * 100으로 표시)
-      cpuMap.set(podName, lastValue * 100)
+      // CPU는 이미 %로 계산되어 있음 (limit 대비)
+      cpuMap.set(podName, lastValue)
+      // 부분 매칭을 위해 짧은 이름도 추가 (예: auth-service-abc123 -> auth-service)
+      const shortName = podName.split('-').slice(0, -1).join('-')
+      if (shortName && !cpuMap.has(shortName)) {
+        cpuMap.set(shortName, lastValue)
+      }
     })
     
     const memMap = new Map()
@@ -93,12 +106,28 @@ router.get('/pods', async (req, res) => {
       const lastValue = metric.data && metric.data.length > 0 ? parseFloat(metric.data[metric.data.length - 1][1]) : 0
       // Memory는 이미 %로 계산되어 있음 (limit 대비)
       memMap.set(podName, lastValue)
+      // 부분 매칭을 위해 짧은 이름도 추가
+      const shortName = podName.split('-').slice(0, -1).join('-')
+      if (shortName && !memMap.has(shortName)) {
+        memMap.set(shortName, lastValue)
+      }
     })
     
-    // Pod 데이터에 메트릭 추가
+    // Pod 데이터에 메트릭 추가 (정확한 이름 매칭 우선, 없으면 부분 매칭 시도)
     const podsWithMetrics = pods.map(pod => {
-      const cpu = cpuMap.get(pod.name) || 0
-      const mem = memMap.get(pod.name) || 0
+      let cpu = cpuMap.get(pod.name) || 0
+      let mem = memMap.get(pod.name) || 0
+      
+      // 정확한 매칭이 없으면 부분 매칭 시도
+      if (cpu === 0 && pod.name) {
+        const podBaseName = pod.name.split('-').slice(0, -1).join('-')
+        cpu = cpuMap.get(podBaseName) || 0
+      }
+      if (mem === 0 && pod.name) {
+        const podBaseName = pod.name.split('-').slice(0, -1).join('-')
+        mem = memMap.get(podBaseName) || 0
+      }
+      
       const oomKilled = pod.status === 'Failed' && pod.restartCount > 0 // 간단한 추정
       
       return {

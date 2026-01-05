@@ -36,6 +36,7 @@ import csvRoutes from './routes/csv-export.js'
 import kialiRoutes from './routes/kiali-links.js'
 import healthcheckRoutes from './routes/healthcheck.js'
 import alertsRoutes from './routes/alerts.js'
+import tracesRoutes from './routes/traces.js'
 
 // /api/monitoring 경로 지원 (Istio Gateway에서 /api/monitoring으로 라우팅)
 app.use('/api/monitoring/metrics', metricsRoutes)
@@ -46,6 +47,7 @@ app.use('/api/monitoring/csv', csvRoutes)
 app.use('/api/monitoring/kiali', kialiRoutes)
 app.use('/api/monitoring/healthcheck', healthcheckRoutes)
 app.use('/api/monitoring/alerts', alertsRoutes)
+app.use('/api/monitoring/traces', tracesRoutes)
 
 // /monitoring/api/monitoring 경로도 지원 (ALB에서 /monitoring으로 라우팅할 때)
 app.use('/monitoring/api/monitoring/metrics', metricsRoutes)
@@ -56,6 +58,7 @@ app.use('/monitoring/api/monitoring/csv', csvRoutes)
 app.use('/monitoring/api/monitoring/kiali', kialiRoutes)
 app.use('/monitoring/api/monitoring/healthcheck', healthcheckRoutes)
 app.use('/monitoring/api/monitoring/alerts', alertsRoutes)
+app.use('/monitoring/api/monitoring/traces', tracesRoutes)
 
 // 기존 /api 경로도 지원 (내부 접근용)
 app.use('/api/metrics', metricsRoutes)
@@ -66,6 +69,7 @@ app.use('/api/csv', csvRoutes)
 app.use('/api/kiali', kialiRoutes)
 app.use('/api/healthcheck', healthcheckRoutes)
 app.use('/api/alerts', alertsRoutes)
+app.use('/api/traces', tracesRoutes)
 
 // 네임스페이스, 서비스, 이벤트 등 추가 라우트
 import kubernetesService from './services/kubernetes.js'

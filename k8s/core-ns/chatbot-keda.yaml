@@ -1,0 +1,20 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: chatbot-keda
+  namespace: bravo-ai-integration-ns
+spec:
+  scaleTargetRef:
+    name: chatbot-service
+
+  minReplicaCount: 2
+  maxReplicaCount: 5
+
+  pollingInterval: 15
+  cooldownPeriod: 300
+
+  triggers:
+  - type: cpu
+    metricType: Utilization
+    metadata:
+      value: "70"
