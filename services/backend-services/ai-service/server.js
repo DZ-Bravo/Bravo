@@ -751,9 +751,19 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
             
             // URL 업데이트
             const productUrl = bestMatch.url || bestMatch.link || bestMatch.productUrl || bestMatch.product_link || ''
+            console.log(`[${i + 1}] URL 필드 확인:`, {
+              url: bestMatch.url || '없음',
+              link: bestMatch.link || '없음',
+              productUrl: bestMatch.productUrl || '없음',
+              product_link: bestMatch.product_link || '없음',
+              최종URL: productUrl || '없음'
+            })
+            
             if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
               products[i].url = productUrl
               console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
+            } else {
+              console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않음:`, productUrl || '빈 문자열')
             }
             
             // 브랜드, 가격, 카테고리 정보 업데이트
