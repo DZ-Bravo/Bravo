@@ -795,8 +795,8 @@ async function getOverallMetrics(start, end) {
   try {
     const timeRange = '[5m]'
     
-    // 전체 RPS - 모든 bravo-* namespace의 서비스
-    const rpsQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*"}${timeRange}))`
+    // 전체 RPS - kubernetes_namespace 필터 제거 (실제 메트릭에 없음)
+    const rpsQuery = `sum(rate(http_requests_total${timeRange}))`
     const rpsResult = await queryPrometheus(rpsQuery).catch((err) => {
       console.warn('⚠️ RPS query failed:', err.message)
       return [{ value: [0, '0'] }]
@@ -804,8 +804,8 @@ async function getOverallMetrics(start, end) {
     const rps = parseFloat(rpsResult[0]?.value[1] || 0)
     console.log('📊 RPS Query Result:', { query: rpsQuery, result: rpsResult, rps })
     
-    // 전체 p95 (seconds -> milliseconds 변환)
-    const p95Query = `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{kubernetes_namespace=~"bravo-.*"}${timeRange})) by (le))`
+    // 전체 p95 (seconds -> milliseconds 변환) - kubernetes_namespace 필터 제거
+    const p95Query = `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket${timeRange})) by (le))`
     const p95Result = await queryPrometheus(p95Query).catch((err) => {
       console.warn('⚠️ P95 query failed:', err.message)
       return [{ value: [0, '0'] }]
@@ -813,8 +813,8 @@ async function getOverallMetrics(start, end) {
     const p95 = parseFloat(p95Result[0]?.value[1] || 0) * 1000 // 초를 밀리초로 변환
     console.log('📊 P95 Query Result:', { query: p95Query, result: p95Result, p95 })
     
-    // 전체 p99 (seconds -> milliseconds 변환)
-    const p99Query = `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{kubernetes_namespace=~"bravo-.*"}${timeRange})) by (le))`
+    // 전체 p99 (seconds -> milliseconds 변환) - kubernetes_namespace 필터 제거
+    const p99Query = `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket${timeRange})) by (le))`
     const p99Result = await queryPrometheus(p99Query).catch((err) => {
       console.warn('⚠️ P99 query failed:', err.message)
       return [{ value: [0, '0'] }]
@@ -822,9 +822,9 @@ async function getOverallMetrics(start, end) {
     const p99 = parseFloat(p99Result[0]?.value[1] || 0) * 1000 // 초를 밀리초로 변환
     console.log('📊 P99 Query Result:', { query: p99Query, result: p99Result, p99 })
     
-    // 전체 4xx Error Rate
-    const error4xxQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*",status_code=~"4.."}${timeRange}))`
-    const totalQuery = `sum(rate(http_requests_total{kubernetes_namespace=~"bravo-.*"}${timeRange}))`
+    // 전체 4xx Error Rate - kubernetes_namespace 필터 제거
+    const error4xxQuery = `sum(rate(http_requests_total{status_code=~"4.."}${timeRange}))`
+    const totalQuery = `sum(rate(http_requests_total${timeRange}))`
     const [error4xxResult, totalResult] = await Promise.all([
       queryPrometheus(error4xxQuery).catch((err) => {
         console.warn('⚠️ 4xx query failed:', err.message)

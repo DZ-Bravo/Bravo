@@ -31,6 +31,10 @@ variables:
   # 4. 분석기 성능 향상
   # 모노레포 특성상 분석기가 프로젝트 유형을 잘 못 찾을 때를 대비해 강제 지정할 수 있습니다.
   SAST_EXPERIMENTAL_FEATURES: "true"
+  
+  # 깃랩 스캐너에게 ECR 이미지를 검사하라고 명시적으로 알려줍니다.
+  # 빌드 시 사용하는 IMAGE_TAG 형식을 그대로 맞춥니다.
+  CS_IMAGE: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AI_ECR_REPO}:2.${CI_PIPELINE_IID}"
 
 stages:
   - analyze
@@ -372,8 +376,7 @@ deploy-backend:
         -n ${K8S_NS} \
         --timeout=5m || {
           echo "❌ Rollout failed. Rolling back..."
-          kubectl 
-          undo deployment/${SERVICE_NAME} -n ${K8S_NS}
+          kubectl rollout undo deployment/${SERVICE_NAME} -n ${K8S_NS}
           exit 1
         }
   <<: *notify_slack_failure
@@ -468,6 +471,15 @@ deploy-ai-infra:
         ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} \
         -n ${K8S_NS}
 
-    - kubectl rollout status deployment/${DEPLOYMENT_NAME} -n ${K8S_NS}
+    - |
+      kubectl rollout status deployment/${SERVICE_NAME} \
+        -n ${K8S_NS} \
+        --timeout=5m || {
+          echo "❌ Rollout failed. Rolling back..."
+          # 수정 전: kubectl undo ...
+          # 수정 후: 아래와 같이 rollout을 반드시 넣어주세요.
+          kubectl rollout undo deployment/${SERVICE_NAME} -n ${K8S_NS}
+          exit 1
+        }
   <<: *notify_slack_failure
 
