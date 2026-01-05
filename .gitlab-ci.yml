@@ -418,11 +418,7 @@ deploy-ai-infra:
   needs:
     - job: build-ai-infra
       artifacts: true
-      optional: true  # 👈 추가: 빌드 잡이 없어도 에러 내지 않음
     - job: sonar-ai-infra
-      optional: true  # 👈 추가: 분석 잡이 없어도 에러 내지 않음
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
   script:
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
