@@ -35,12 +35,53 @@ function parsePriceRange(userInput) {
   if (!userInput) return null
   
   const input = userInput.replace(/,/g, '') // 쉼표 제거
+  
+  // "1만원 ~ 50만원 이하" 형식 (양쪽 모두 단위가 있는 경우)
+  const rangeWithBothUnitsMatch = input.match(/(\d+)\s*(만원|만)\s*[~-]\s*(\d+)\s*(만원|만)\s*이하/i)
+  if (rangeWithBothUnitsMatch) {
+    const num1 = parseInt(rangeWithBothUnitsMatch[1])
+    const num2 = parseInt(rangeWithBothUnitsMatch[3])
+    const minPrice = num1 * 10000
+    const maxPrice = num2 * 10000
+    console.log(`[가격 범위 파싱] "${userInput}" -> min: ${minPrice}, max: ${maxPrice} (범위 이하, 양쪽 단위)`)
+    return { minPrice, maxPrice }
+  }
+  
+  // "26 ~ 50만원 이하" 또는 "21~50만원 이하" 같은 패턴 (첫 번째 숫자 뒤에 단위가 없거나, 두 번째 숫자 뒤에만 단위가 있는 경우)
+  // 이 경우 두 숫자 모두 만원 단위로 간주
+  const rangeWithBelowMatch = input.match(/(\d+)\s*[~-]\s*(\d+)\s*(만원|만)\s*이하/i)
+  if (rangeWithBelowMatch) {
+    const num1 = parseInt(rangeWithBelowMatch[1])
+    const num2 = parseInt(rangeWithBelowMatch[2])
+    // 두 숫자 모두 만원 단위로 간주 (첫 번째 숫자 뒤에 단위가 없어도 만원 단위로 처리)
+    const minPrice = num1 * 10000
+    const maxPrice = num2 * 10000
+    console.log(`[가격 범위 파싱] "${userInput}" -> min: ${minPrice}, max: ${maxPrice} (범위 이하)`)
+    return { minPrice, maxPrice }
+  }
+  
+  // "21~50만원 이상" 같은 패턴
+  const rangeWithAboveMatch = input.match(/(\d+)\s*[~-]\s*(\d+)\s*(만원|만)\s*이상/i)
+  if (rangeWithAboveMatch) {
+    const num1 = parseInt(rangeWithAboveMatch[1])
+    const num2 = parseInt(rangeWithAboveMatch[2])
+    const minPrice = num1 * 10000
+    const maxPrice = num2 * 10000
+    console.log(`[가격 범위 파싱] "${userInput}" -> min: ${minPrice}, max: ${maxPrice} (범위 이상)`)
+    return { minPrice, maxPrice }
+  }
+  
   const pricePatterns = [
-    /(\d+)\s*~\s*(\d+)\s*(만원|원|만|원 이하|만원 이하)/i,  // 1~50만원, 1~50만원 이하
-    /(\d+)\s*(만원|원|만)\s*이하/i,  // 50만원 이하, 50만 이하
-    /(\d+)\s*(만원|원|만)\s*이상/i,  // 10만원 이상
-    /(\d+)\s*~?\s*(\d+)\s*(만원|원|만)/i,  // 1~50만원, 1-50만원
-    /(\d+)\s*(만원|원|만)/i  // 50만원
+    // 범위 패턴
+    /(\d+)\s*[~-]\s*(\d+)\s*(만원|만)/i,  // 21~50만원, 21-50만원
+    /(\d+)\s*[~-]\s*(\d+)\s*원/i,  // 210000~500000원
+    // 단일 가격 패턴
+    /(\d+)\s*(만원|만)\s*이하/i,  // 50만원 이하, 50만 이하
+    /(\d+)\s*(만원|만)\s*이상/i,  // 10만원 이상
+    /(\d+)\s*원\s*이하/i,  // 500000원 이하
+    /(\d+)\s*원\s*이상/i,  // 100000원 이상
+    /(\d+)\s*(만원|만)/i,  // 50만원
+    /(\d+)\s*원/i  // 500000원
   ]
   
   for (const pattern of pricePatterns) {
@@ -49,11 +90,11 @@ function parsePriceRange(userInput) {
       let minPrice = null
       let maxPrice = null
       
-      if (match[2] && !match[2].includes('만')) {
-        // 두 번째 숫자가 있고 "만"이 없으면 범위
+      // 범위 패턴 (두 개의 숫자가 있는 경우)
+      if (match[2] && /^\d+$/.test(match[2])) {
         const num1 = parseInt(match[1])
         const num2 = parseInt(match[2])
-        const unit = match[3] || match[2]
+        const unit = match[3] || ''
         
         if (unit.includes('만')) {
           minPrice = num1 * 10000
@@ -65,7 +106,7 @@ function parsePriceRange(userInput) {
       } else {
         // 단일 가격
         const num = parseInt(match[1])
-        const unit = match[2] || match[3] || ''
+        const unit = match[2] || ''
         
         if (unit.includes('만')) {
           if (input.includes('이하')) {
@@ -110,13 +151,19 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
       if (!title) return title
       const lowerTitle = title.toLowerCase()
       
+      // "등산 스틱" -> "등산스틱" 정규화 (공백 제거)
+      let normalized = title
+      if (lowerTitle.includes('등산') && (lowerTitle.includes('스틱') || lowerTitle.includes('stick'))) {
+        normalized = normalized.replace(/\s+/g, '') // 공백 제거
+        console.log(`[S3 검색] 등산 스틱 정규화: "${title}" -> "${normalized}"`)
+      }
+      
       // "초보자" 관련 키워드 감지
       const beginnerKeywords = ['초보자', '초보', '입문', '입문자', '신규', 'beginner', 'novice']
-      const hasBeginnerKeyword = beginnerKeywords.some(keyword => lowerTitle.includes(keyword))
+      const hasBeginnerKeyword = beginnerKeywords.some(keyword => normalized.toLowerCase().includes(keyword))
       
       if (hasBeginnerKeyword) {
         // "초보자" 키워드 제거하고 제품명만 추출
-        let normalized = title
         beginnerKeywords.forEach(keyword => {
           normalized = normalized.replace(new RegExp(keyword, 'gi'), '').trim()
         })
@@ -128,7 +175,7 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
         return normalized
       }
       
-      return title
+      return normalized
     }
     
     const normalizedSearchTitle = normalizeSearchTitle(searchTitle)
@@ -359,9 +406,18 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
           }
         }
         
+        // 스틱 검색어 감지 (카테고리 필터링 완화를 위해)
+        const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking', '등산스틱', '등산 스틱']
+        const hasStickSearch = stickKeywords.some(k => searchTitleLower.includes(k) || originalInputLower.includes(k))
+        
+        // 모자 검색어 감지 (카테고리 필터링 완화를 위해)
+        const hatKeywords = ['모자', 'hat', 'cap', '캡', '등산모자', '등산 모자', 'baseball cap', 'baseballcap', '볼캡', '볼 캡', '버킷햇', '버킷 햇', 'bucket hat', 'buckethat']
+        const hasHatSearch = hatKeywords.some(k => searchTitleLower.includes(k) || originalInputLower.includes(k))
+        
         for (const item of items) {
           // CSV의 경우 카테고리 필터링 (더 유연하게)
-          if (category && isCsv) {
+          // 스틱 또는 모자 검색 시 카테고리 필터링 완화
+          if (category && isCsv && !hasStickSearch && !hasHatSearch) {
             const categoryMap = {
               '용품': 'goods',
               'goods': 'goods',
@@ -397,6 +453,32 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
             } else if (itemCategory) {
               console.log(`[S3 검색] CSV 카테고리 매칭: "${itemCategory}" == "${mappedCategory}"`)
             }
+          } else if (hasStickSearch) {
+            // 스틱 검색 시 카테고리 필터링 완화 (용품 카테고리 우선, 하지만 다른 카테고리도 허용)
+            const itemCategory = (item.category || item.type || item.category_name || '').toLowerCase()
+            if (itemCategory && !itemCategory.includes('goods') && !itemCategory.includes('용품')) {
+              // 용품이 아니어도 스틱 키워드가 있으면 통과
+              const itemTitle = (item.title || item.name || '').toLowerCase()
+              const itemDesc = (item.description || item.desc || '').toLowerCase()
+              const itemHasStick = stickKeywords.some(k => itemTitle.includes(k) || itemDesc.includes(k))
+              if (!itemHasStick) {
+                console.log(`[S3 검색] 스틱 검색: 용품이 아니고 스틱 키워드도 없음, 스킵: "${item.title || item.name}"`)
+                continue
+              }
+            }
+          } else if (hasHatSearch) {
+            // 모자 검색 시 카테고리 필터링 완화 (용품 카테고리 우선, 하지만 다른 카테고리도 허용)
+            const itemCategory = (item.category || item.type || item.category_name || '').toLowerCase()
+            if (itemCategory && !itemCategory.includes('goods') && !itemCategory.includes('용품')) {
+              // 용품이 아니어도 모자 키워드가 있으면 통과
+              const itemTitle = (item.title || item.name || '').toLowerCase()
+              const itemDesc = (item.description || item.desc || '').toLowerCase()
+              const itemHasHat = hatKeywords.some(k => itemTitle.includes(k) || itemDesc.includes(k))
+              if (!itemHasHat) {
+                console.log(`[S3 검색] 모자 검색: 용품이 아니고 모자 키워드도 없음, 스킵: "${item.title || item.name}"`)
+                continue
+              }
+            }
           }
           
           const title = (item.title || item.name || item.product_name || item.productName || '').toLowerCase()
@@ -421,13 +503,43 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
             
             // "등산 스틱" 같은 복합 키워드 처리
             // "등산 스틱" -> "등산스틱", "스틱", "트레킹폴", "폴" 등으로도 매칭
-            const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking']
-            const hasStickKeyword = stickKeywords.some(k => searchTitleLower.includes(k))
+            const stickKeywords = ['스틱', 'stick', '폴', 'pole', '트레킹폴', 'trekking', '등산스틱', '등산 스틱', '등산스틱', 'trekking pole', 'trekkingpole']
+            const hasStickKeyword = stickKeywords.some(k => searchTitleLower.includes(k) || originalInputLower.includes(k))
             if (hasStickKeyword) {
-              const itemHasStick = stickKeywords.some(k => title.includes(k) || description.includes(k))
+              const itemHasStick = stickKeywords.some(k => {
+                const kLower = k.toLowerCase()
+                return title.includes(kLower) || description.includes(kLower) || 
+                       (item.title && item.title.toLowerCase().includes(kLower)) ||
+                       (item.name && item.name.toLowerCase().includes(kLower))
+              })
               if (itemHasStick) {
-                score += 5 // 스틱 관련 키워드 매칭 보너스
+                score += 15 // 스틱 관련 키워드 매칭 보너스 (점수 증가)
                 console.log(`[S3 검색] 스틱 키워드 매칭 보너스: "${item.title || item.name}"`)
+              } else {
+                // 스틱 검색어가 있지만 제품에 스틱 키워드가 없는 경우에도 기본 점수 부여
+                score += 3
+                console.log(`[S3 검색] 스틱 검색어 감지, 기본 점수 부여: "${item.title || item.name}"`)
+              }
+            }
+            
+            // "모자" 관련 키워드 처리
+            // "모자", "hat", "cap", "캡", "등산모자" 등으로 매칭
+            const hatKeywords = ['모자', 'hat', 'cap', '캡', '등산모자', '등산 모자', 'baseball cap', 'baseballcap', '볼캡', '볼 캡', '버킷햇', '버킷 햇', 'bucket hat', 'buckethat']
+            const hasHatKeyword = hatKeywords.some(k => searchTitleLower.includes(k) || originalInputLower.includes(k))
+            if (hasHatKeyword) {
+              const itemHasHat = hatKeywords.some(k => {
+                const kLower = k.toLowerCase()
+                return title.includes(kLower) || description.includes(kLower) || 
+                       (item.title && item.title.toLowerCase().includes(kLower)) ||
+                       (item.name && item.name.toLowerCase().includes(kLower))
+              })
+              if (itemHasHat) {
+                score += 15 // 모자 관련 키워드 매칭 보너스
+                console.log(`[S3 검색] 모자 키워드 매칭 보너스: "${item.title || item.name}"`)
+              } else {
+                // 모자 검색어가 있지만 제품에 모자 키워드가 없는 경우에도 기본 점수 부여
+                score += 3
+                console.log(`[S3 검색] 모자 검색어 감지, 기본 점수 부여: "${item.title || item.name}"`)
               }
             }
             
@@ -474,23 +586,49 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
           
           // 가격 필터링
           if (priceRange) {
-            const itemPrice = parseFloat(item.price || item.cost || item.priceValue || item.price_value || 0)
-            if (itemPrice > 0) {
-              const priceStr = String(item.price || item.cost || item.priceValue || item.price_value || '0')
-              // 쉼표 제거하고 숫자만 추출
-              const cleanPrice = parseFloat(priceStr.replace(/[^0-9.]/g, ''))
-              
+            // 가격 필드에서 숫자 추출 (다양한 형식 지원)
+            const priceStr = String(item.price || item.cost || item.priceValue || item.price_value || item.price_value || '0').trim()
+            
+            if (!priceStr || priceStr === '0' || priceStr === '') {
+              // 가격 정보가 없으면 필터링에서 제외 (가격 범위가 지정된 경우)
+              console.log(`[S3 검색] 가격 정보 없음, 필터링 제외: "${item.title || item.name}"`)
+              continue
+            }
+            
+            // 가격 파싱: "50,000원", "50000", "50만원", "50만" 등 다양한 형식 지원
+            let cleanPrice = 0
+            
+            // "만원" 또는 "만" 포함 여부 확인
+            if (priceStr.includes('만') || priceStr.match(/\d+\s*만/)) {
+              const manMatch = priceStr.match(/(\d+(?:[,.]?\d+)?)\s*만/i)
+              if (manMatch) {
+                const manValue = parseFloat(manMatch[1].replace(/,/g, ''))
+                cleanPrice = manValue * 10000
+              }
+            } else {
+              // 숫자만 추출 (쉼표, 공백, "원" 등 제거)
+              const numMatch = priceStr.match(/(\d+(?:[,.]?\d+)?)/)
+              if (numMatch) {
+                cleanPrice = parseFloat(numMatch[1].replace(/,/g, ''))
+              }
+            }
+            
+            if (cleanPrice > 0) {
+              // 가격 범위 체크
               if (priceRange.maxPrice !== null && cleanPrice > priceRange.maxPrice) {
+                console.log(`[S3 검색] 가격 범위 초과: ${cleanPrice}원 > ${priceRange.maxPrice}원, 제외: "${item.title || item.name}"`)
                 continue // 최대 가격 초과
               }
               if (priceRange.minPrice !== null && cleanPrice < priceRange.minPrice) {
+                console.log(`[S3 검색] 가격 범위 미만: ${cleanPrice}원 < ${priceRange.minPrice}원, 제외: "${item.title || item.name}"`)
                 continue // 최소 가격 미만
               }
               
-              console.log(`[S3 검색] 가격 범위 통과: ${cleanPrice}원 (범위: ${priceRange.minPrice || 0}~${priceRange.maxPrice || '무제한'})`)
+              console.log(`[S3 검색] 가격 범위 통과: ${cleanPrice}원 (범위: ${priceRange.minPrice || 0}~${priceRange.maxPrice || '무제한'}), 제품: "${item.title || item.name}"`)
             } else {
-              // 가격 정보가 없으면 일단 포함 (가격 필터링은 선택적)
-              console.log(`[S3 검색] 가격 정보 없음, 포함: "${item.title || item.name}"`)
+              // 가격을 파싱할 수 없으면 필터링에서 제외
+              console.log(`[S3 검색] 가격 파싱 실패: "${priceStr}", 제외: "${item.title || item.name}"`)
+              continue
             }
           }
           
@@ -513,6 +651,35 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
             // 모든 가능한 URL 필드명 확인
             const productUrl = item.url || item.link || item.productUrl || item.product_link || item.productLink || item.product_url || item.href || item.hyperlink || item.webUrl || item.web_url || item.purchaseUrl || item.purchase_url || ''
             
+            // URL 유효성 검증
+            const isValidUrl = (url) => {
+              if (!url || typeof url !== 'string' || url.trim() === '') return false
+              const urlLower = url.toLowerCase().trim()
+              // example.com, localhost, 127.0.0.1, 잘못된 URL 제외
+              if (urlLower.includes('example.com') || 
+                  urlLower.includes('localhost') || 
+                  urlLower.includes('127.0.0.1') ||
+                  urlLower.includes('0.0.0.0') ||
+                  urlLower.startsWith('http://localhost') ||
+                  urlLower.startsWith('https://localhost') ||
+                  urlLower.startsWith('http://127.0.0.1') ||
+                  urlLower.startsWith('https://127.0.0.1') ||
+                  urlLower.startsWith('http://0.0.0.0') ||
+                  urlLower.startsWith('https://0.0.0.0') ||
+                  !urlLower.startsWith('http://') && !urlLower.startsWith('https://')) {
+                return false
+              }
+              // 기본적인 URL 형식 검증
+              try {
+                const urlObj = new URL(url)
+                return urlObj.protocol === 'http:' || urlObj.protocol === 'https:'
+              } catch (e) {
+                return false
+              }
+            }
+            
+            const validUrl = isValidUrl(productUrl) ? productUrl : ''
+            
             console.log(`[S3 검색] 매칭 상품 발견: "${item.title || item.name}" (점수: ${score.toFixed(1)})`)
             console.log(`[S3 검색] URL 필드 확인:`, {
               url: item.url || '없음',
@@ -528,14 +695,21 @@ async function searchProductsFromS3(searchTitle, searchBrand, category = null, o
               purchaseUrl: item.purchaseUrl || '없음',
               purchase_url: item.purchase_url || '없음',
               최종URL: productUrl || '없음',
+              유효한URL: validUrl || '없음',
               전체키: Object.keys(item).filter(k => k.toLowerCase().includes('url') || k.toLowerCase().includes('link') || k.toLowerCase().includes('href'))
             })
+            
+            // URL이 없거나 유효하지 않으면 제외 (가격 범위 검색이 아닌 경우에만)
+            if (!validUrl && priceRange) {
+              console.log(`[S3 검색] URL이 없거나 유효하지 않음, 제외: "${item.title || item.name}"`)
+              continue
+            }
             
             products.push({
               ...item,
               title: item.title || item.name || item.product_name || item.productName || '',
               brand: item.brand || item.brandName || item.manufacturer || item.brand_name || '',
-              url: productUrl,
+              url: validUrl,
               price: item.price || item.cost || item.priceValue || item.price_value || 0,
               category: item.category || item.type || item.category_name || '',
               _score: score
@@ -1380,8 +1554,37 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
       }
     })
     
+    // URL 유효성 검증 함수
+    const isValidUrl = (url) => {
+      if (!url || typeof url !== 'string' || url.trim() === '') return false
+      const urlLower = url.toLowerCase().trim()
+      // example.com, localhost, 127.0.0.1, 잘못된 URL 제외
+      if (urlLower.includes('example.com') || 
+          urlLower.includes('localhost') || 
+          urlLower.includes('127.0.0.1') ||
+          urlLower.includes('0.0.0.0') ||
+          urlLower.startsWith('http://localhost') ||
+          urlLower.startsWith('https://localhost') ||
+          urlLower.startsWith('http://127.0.0.1') ||
+          urlLower.startsWith('https://127.0.0.1') ||
+          urlLower.startsWith('http://0.0.0.0') ||
+          urlLower.startsWith('https://0.0.0.0') ||
+          !urlLower.startsWith('http://') && !urlLower.startsWith('https://')) {
+        return false
+      }
+      // 기본적인 URL 형식 검증
+      try {
+        const urlObj = new URL(url)
+        return urlObj.protocol === 'http:' || urlObj.protocol === 'https:'
+      } catch (e) {
+        return false
+      }
+    }
+    
     // S3에서 직접 상품 데이터 검색
     console.log('=== S3에서 상품 URL 검색 시작 ===')
+    
+    const validProducts = []
     
     for (let i = 0; i < products.length; i++) {
       const product = products[i]
@@ -1393,7 +1596,8 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
       console.log(`[${i + 1}] S3에서 상품 검색 중: 제품명="${searchTitle}", 브랜드="${searchBrand}"`)
       
       try {
-        const foundProducts = await searchProductsFromS3(searchTitle, searchBrand, product.category || null)
+        // originalUserInput을 전달하여 가격 범위 필터링 활성화
+        const foundProducts = await searchProductsFromS3(searchTitle, searchBrand, product.category || null, userInput)
         
         if (foundProducts && foundProducts.length > 0) {
           const bestMatch = foundProducts[0] // 가장 높은 점수의 제품
@@ -1412,12 +1616,27 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
             최종URL: productUrl || '없음'
           })
           
-          if (productUrl && !productUrl.includes('example.com') && productUrl.startsWith('http')) {
-            products[i].url = productUrl
-            console.log(`[${i + 1}] ✅ URL 업데이트: ${productUrl.substring(0, 100)}`)
+          // URL 유효성 검증
+          const validUrl = isValidUrl(productUrl) ? productUrl : ''
+          
+          // URL이 없거나 유효하지 않으면 제외 (가격 범위 검색인 경우)
+          const priceRange = parsePriceRange(userInput)
+          if (!validUrl && priceRange) {
+            console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않아 제외: "${bestMatch.title || 'N/A'}"`)
+            continue
+          }
+          
+          if (validUrl) {
+            products[i].url = validUrl
+            console.log(`[${i + 1}] ✅ URL 업데이트: ${validUrl.substring(0, 100)}`)
           } else {
             console.log(`[${i + 1}] ⚠️  URL이 없거나 유효하지 않음:`, productUrl || '빈 문자열')
-            // URL이 없어도 다른 정보는 업데이트
+            // 가격 범위 검색이 아니면 URL이 없어도 포함
+            if (!priceRange) {
+              products[i].url = ''
+            } else {
+              continue // 가격 범위 검색인 경우 URL이 없으면 제외
+            }
           }
           
           // 브랜드, 가격, 카테고리 정보 업데이트
@@ -1437,20 +1656,40 @@ app.post('/api/ai/recommend-product', authenticateCognitoToken, async (req, res)
           if (bestMatch.title) {
             products[i].title = bestMatch.title
           }
+          
+          // URL이 유효한 제품만 validProducts에 추가
+          if (validUrl) {
+            validProducts.push(products[i])
+          }
         } else {
-          console.log(`[${i + 1}] ⚠️  S3에서 유사한 제품을 찾지 못함`)
+          console.log(`[${i + 1}] ⚠️  S3에서 제품을 찾을 수 없음`)
+          // S3에서 찾지 못했지만 Bedrock Agent 응답에 URL이 있으면 포함
+          const priceRange = parsePriceRange(userInput)
+          if (!priceRange || isValidUrl(products[i].url)) {
+            validProducts.push(products[i])
+          }
         }
       } catch (error) {
         console.error(`[${i + 1}] S3 검색 오류:`, error.message)
+        // 오류가 발생해도 Bedrock Agent 응답에 URL이 있으면 포함
+        const priceRange = parsePriceRange(userInput)
+        if (!priceRange || isValidUrl(products[i].url)) {
+          validProducts.push(products[i])
+        }
       }
     }
     
-    console.log('=== Store Service 검색 완료 ===')
+    // 최종 응답: URL이 유효한 제품만 반환 (가격 범위 검색인 경우)
+    const priceRange = parsePriceRange(userInput)
+    const finalProducts = priceRange 
+      ? validProducts.filter(p => isValidUrl(p.url))
+      : validProducts.length > 0 ? validProducts : products.filter(p => isValidUrl(p.url) || !p.url)
     
-    // 최종 응답
+    console.log(`[상품 추천] 최종 제품 수: ${finalProducts.length}개 (원본: ${products.length}개)`)
+    
     res.json({
-      query_summary: productData.query_summary || '',
-      products: products
+      query_summary: productData.query_summary || userInput,
+      products: finalProducts
     })
     
   } catch (error) {
