@@ -262,11 +262,6 @@ Resources:
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-          Description: SSH
-        - IpProtocol: tcp
           FromPort: 3000
           ToPort: 3000
           CidrIp: 0.0.0.0/0
@@ -276,6 +271,16 @@ Resources:
           ToPort: 9090
           CidrIp: 10.0.0.0/16
           Description: Prometheus from VPC
+        - IpProtocol: tcp
+          FromPort: 3100
+          ToPort: 3100
+          CidrIp: 10.0.0.0/16
+          Description: Loki from VPC
+        - IpProtocol: tcp
+          FromPort: 3200
+          ToPort: 3200
+          CidrIp: 10.0.0.0/16
+          Description: Tempo from VPC
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
@@ -292,11 +297,6 @@ Resources:
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-          Description: SSH
-        - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
@@ -306,6 +306,11 @@ Resources:
           ToPort: 443
           CidrIp: 0.0.0.0/0
           Description: HTTPS
+        - IpProtocol: tcp
+          FromPort: 9000
+          ToPort: 9000
+          CidrIp: 0.0.0.0/0
+          Description: GitLab Container Registry
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
@@ -320,12 +325,7 @@ Resources:
       GroupName: bravo-mongodb-sg
       GroupDescription: Security group for MongoDB EC2
       VpcId: !Ref VPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 10.0.0.0/16
-          Description: SSH from VPC
+      SecurityGroupIngress: []
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
@@ -383,11 +383,6 @@ Resources:
           ToPort: 6379
           CidrIp: 10.0.0.0/16
           Description: Redis from VPC
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 10.0.0.0/16
-          Description: SSH from VPC
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
