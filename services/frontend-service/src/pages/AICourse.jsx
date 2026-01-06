@@ -424,8 +424,8 @@ function AICourse() {
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder={
                   selectedCategory === 'course' 
-                    ? '예: 초보자도 갈 수 있는 서울 근교 산, 2-3시간 코스, 가을 단풍이 아름다운 곳'
-                    : '예: 초보자용 등산화, 가벼운 백팩, 비용 10만원 이하'
+                    ? '예: 서울 근처 산 추천, 부산 근처 산 추천'
+                    : '예: 여자 용품 추천, 남자 등산화 추천'
                 }
                 className="ai-input"
                 rows="5"
@@ -446,7 +446,11 @@ function AICourse() {
 
           {loading && (
             <div className="loading-message" style={{ marginTop: '2rem', textAlign: 'center', padding: '2rem' }}>
-              <p>{selectedCategory === 'equipment' ? 'AI가 최적의 장비를 추천하고 있습니다...' : 'AI가 최적의 코스를 추천하고 있습니다...'}</p>
+              <img
+                src="/images/loading.gif"
+                alt="AI 추천을 준비 중입니다."
+                style={{ maxWidth: '120px', width: '100%' }}
+              />
             </div>
           )}
 

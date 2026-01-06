@@ -4,7 +4,7 @@ metadata:
   name: community-service-ca-test
   namespace: bravo-core-ns
 spec:
-  replicas: 1
+  replicas: 1   # 시작은 1, 테스트 시 scale로 늘릴 것
   selector:
     matchLabels:
       app: community-service-ca-test
@@ -15,56 +15,29 @@ spec:
     spec:
       containers:
       - name: community-service
-        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-community:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-community-service:2.135
         ports:
         - containerPort: 3002
-          name: http
-        env:
-        - name: TZ
-          valueFrom:
-            configMapKeyRef:
-              name: bravo-config
-              key: TZ
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              name: bravo-config
-              key: NODE_ENV
-        - name: PORT
-          value: "3002"
-        - name: MONGODB_URI
-          value: "mongodb://mongodb.bravo-mongo-ns.svc.cluster.local:27017/hiking"
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: jwt-secret
-              key: JWT_SECRET
-        - name: ELASTICSEARCH_URL
-          value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
+
+        # 🔥 CA 테스트 핵심 설정
         resources:
           requests:
-            cpu: "1500m"
+            cpu: "1500m"     # ★ 매우 중요 (노드 하나에 2개도 버거움)
             memory: "1Gi"
           limits:
-            cpu: "1500m"
-            memory: "1Gi"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3002
-          initialDelaySeconds: 30
-          periodSeconds: 10
+            cpu: "2000m"
+            memory: "1.5Gi"
+
         readinessProbe:
           httpGet:
             path: /health
             port: 3002
           initialDelaySeconds: 10
           periodSeconds: 5
-        volumeMounts:
-        - name: uploads
-          mountPath: /app/uploads
-      volumes:
-      - name: uploads
-        persistentVolumeClaim:
-          claimName: community-uploads-pvc
 
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 30
+          periodSeconds: 10
