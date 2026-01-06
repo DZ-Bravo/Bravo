@@ -287,6 +287,16 @@ function Header({ hideNav = false }) {
                   <span className="user-name-display">{user.role === 'admin' ? '관리자' : (user.name || user.id)}</span>
                   <span className="user-menu-arrow">▼</span>
                 </button>
+                {user.id === 'admin' && (
+                  <button
+                    className="ai-monitoring-btn"
+                    onClick={() => {
+                      window.location.href = 'https://hiker-cloud.site/monitoring/'
+                    }}
+                  >
+                    AI-Monitoring
+                  </button>
+                )}
                 {showUserMenu && (
                   <div className="user-menu-dropdown">
                     <Link 
