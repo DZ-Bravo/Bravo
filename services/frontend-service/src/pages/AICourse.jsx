@@ -262,26 +262,65 @@ function AICourse() {
         
         const data = await response.json()
         console.log('API 응답 데이터:', data)
-        const recommendationText = data.recommendation || ''
-        console.log('추천 텍스트:', recommendationText)
+        console.log('data.recommendations 존재:', !!data.recommendations)
+        console.log('data.recommendations 타입:', typeof data.recommendations)
+        console.log('Array.isArray(data.recommendations):', Array.isArray(data.recommendations))
         
-        // 응답 파싱
-        const parsedCourses = parseRecommendationResponse(recommendationText)
-        console.log('파싱된 코스:', parsedCourses)
+        // API 응답이 recommendations (복수) 배열인 경우 (우선 처리)
+        let recommendationsArray = null
         
-        // 각 코스의 mountain_code 조회
-        const coursesWithCode = await Promise.all(
-          parsedCourses.map(async (course) => {
-            const code = await getMountainCode(course.mountainFull || course.mountain)
-            return {
-              ...course,
-              mountainCode: code
-            }
-          })
-        )
+        if (data.recommendations && Array.isArray(data.recommendations) && data.recommendations.length > 0) {
+          recommendationsArray = data.recommendations
+          console.log('✅ 추천 배열 직접 사용:', recommendationsArray)
+        } else if (data.recommendation && typeof data.recommendation === 'string' && data.recommendation.trim()) {
+          // 하위 호환성: recommendation (단수) 텍스트 파싱
+          console.log('⚠️ recommendation 텍스트 파싱 모드')
+        } else {
+          console.warn('⚠️ recommendations와 recommendation 모두 없거나 유효하지 않음')
+        }
         
-        console.log('최종 코스 데이터:', coursesWithCode)
-        setRecommendations(coursesWithCode)
+        if (recommendationsArray) {
+          // 각 코스의 mountain_code 조회
+          const coursesWithCode = await Promise.all(
+            recommendationsArray.map(async (course, idx) => {
+              const code = await getMountainCode(course.mountain || course.mountainFull)
+              return {
+                id: course.id || idx + 1,
+                mountain: course.mountain || '',
+                course: course.course || '',
+                distance: course.distance || '',
+                duration: course.duration || '',
+                difficulty: course.difficulty || '',
+                weather: course.weather || {},
+                description: course.description || '',
+                mountainCode: code
+              }
+            })
+          )
+          
+          console.log('✅ 최종 코스 데이터:', coursesWithCode)
+          setRecommendations(coursesWithCode)
+        } else {
+          // 하위 호환성: recommendation (단수) 텍스트 파싱
+          const recommendationText = data.recommendation || ''
+          console.log('추천 텍스트:', recommendationText)
+          
+          const parsedCourses = parseRecommendationResponse(recommendationText)
+          console.log('파싱된 코스:', parsedCourses)
+          
+          const coursesWithCode = await Promise.all(
+            parsedCourses.map(async (course) => {
+              const code = await getMountainCode(course.mountainFull || course.mountain)
+              return {
+                ...course,
+                mountainCode: code
+              }
+            })
+          )
+          
+          console.log('최종 코스 데이터:', coursesWithCode)
+          setRecommendations(coursesWithCode)
+        }
       } else {
         // 장비 추천: Bedrock 호출 결과를 그대로 카드로 표시
         console.log('=== 장비 추천 API 호출 시작 ===')
@@ -476,7 +515,13 @@ function AICourse() {
                         </div>
                         {item.weather && (
                           <div className="course-weather" style={{ marginTop: '0.5rem', color: '#666', fontSize: '0.9rem' }}>
-                            날씨: {item.weather}
+                            {typeof item.weather === 'object' ? (
+                              <>
+                                날씨: {item.weather.description || ''} | 온도: {item.weather.temp || ''} | 구름: {item.weather.clouds || ''}
+                              </>
+                            ) : (
+                              <>날씨: {item.weather}</>
+                            )}
                           </div>
                         )}
                         {item.description && (
