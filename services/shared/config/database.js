@@ -4,6 +4,9 @@ const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI || 'mongodb://admin:admin123@mongodb:27017/hiking?authSource=admin'
     
+    console.log('MongoDB 연결 시도:', mongoURI ? mongoURI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@') : '없음')
+    console.log('MONGODB_URI 환경 변수:', process.env.MONGODB_URI ? '설정됨' : '없음 (기본값 사용)')
+    
     await mongoose.connect(mongoURI)
     
     console.log('MongoDB 연결 성공')
