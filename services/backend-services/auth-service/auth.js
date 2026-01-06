@@ -196,10 +196,12 @@ router.post('/send-email-verification', async (req, res) => {
       console.warn('Redis 클라이언트 가져오기 실패, 이메일 전송은 계속 진행')
     })
 
-    // AWS SES로 이메일 전송 (비동기로 처리하되, 응답은 즉시 반환)
+    // AWS SES로 이메일 전송
     console.log('SES 이메일 전송 시작:', email)
-    const sendEmailPromise = (async () => {
-      try {
+    let emailSent = false
+    let emailError = null
+    
+    try {
       const emailParams = {
         Source: `HIKER <${SES_FROM_EMAIL}>`,
         Destination: {
@@ -230,38 +232,48 @@ router.post('/send-email-verification', async (req, res) => {
         }
       }
 
-        const command = new SendEmailCommand(emailParams)
-        const result = await sesClient.send(command)
+      const command = new SendEmailCommand(emailParams)
+      const result = await sesClient.send(command)
 
-        console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
-      } catch (emailError) {
-        console.error('이메일 전송 오류:', emailError)
-        // 에러는 로그만 남기고, 응답은 이미 전송됨
+      console.log(`이메일 전송 성공: ${email}, Message ID: ${result.MessageId}`)
+      emailSent = true
+    } catch (err) {
+      console.error('이메일 전송 오류:', err)
+      emailError = err
+      
+      // DKIM 관련 오류 확인
+      if (err.message?.includes('DKIM') || err.message?.includes('dkim')) {
+        console.error('DKIM 설정 오류 감지:', err.message)
       }
-    })()
+    }
 
-    // 즉시 응답 반환 (이메일 전송은 백그라운드에서 진행)
+    // 이메일 전송 실패 시 오류 메시지 반환
+    if (!emailSent && emailError) {
+      let errorMessage = '이메일 전송에 실패했습니다.'
+      
+      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
+        errorMessage = '이메일 전송 서비스 설정 오류가 발생했습니다. 관리자에게 문의해주세요.'
+      } else if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        errorMessage = '이메일 전송에 실패했습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)'
+      } else if (emailError.message?.includes('DKIM') || emailError.message?.includes('dkim')) {
+        errorMessage = '이메일 전송에 실패했습니다. (DKIM 설정 문제로 인해 이메일 전송이 일시 중단되었습니다. 관리자에게 문의해주세요.)'
+      } else {
+        errorMessage = `이메일 전송에 실패했습니다: ${emailError.message || '알 수 없는 오류'}`
+      }
+      
+      // 개발 환경에서는 인증번호를 반환하되 경고 표시
+      return res.status(500).json({
+        error: errorMessage,
+        code: process.env.NODE_ENV === 'development' ? code : undefined,
+        warning: '이메일 전송에 실패했지만, 개발 모드에서는 인증번호를 확인할 수 있습니다.'
+      })
+    }
+
+    // 성공 응답 반환
     res.json({
       message: '인증번호가 전송되었습니다.',
       // 개발 환경에서만 인증번호 반환
       code: process.env.NODE_ENV === 'development' ? code : undefined
-    })
-    
-    // 이메일 전송은 백그라운드에서 계속 진행
-    sendEmailPromise.catch(emailError => {
-      console.error('이메일 전송 오류 (백그라운드):', emailError)
-      // AWS 자격 증명 오류인 경우
-      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
-        console.error('AWS 자격 증명 오류:', emailError.message)
-      }
-      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
-      else if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
-        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
-      }
-      // 다른 오류인 경우
-      else {
-        console.error('SES 전송 실패:', emailError.message)
-      }
     })
   } catch (error) {
     console.error('이메일 인증번호 전송 오류:', error)
@@ -992,71 +1004,83 @@ router.post('/send-email-verification-find-id', async (req, res) => {
       console.warn('Redis 클라이언트 가져오기 실패, 이메일 전송은 계속 진행')
     })
 
-    // AWS SES로 이메일 전송 (비동기로 처리하되, 응답은 즉시 반환)
+    // AWS SES로 이메일 전송
     console.log('SES 이메일 전송 시작 (아이디 찾기):', email)
-    const sendEmailPromise = (async () => {
-      try {
-        const emailParams = {
-          Source: `HIKER <${SES_FROM_EMAIL}>`,
-          Destination: {
-            ToAddresses: [email]
+    let emailSent = false
+    let emailError = null
+    
+    try {
+      const emailParams = {
+        Source: `HIKER <${SES_FROM_EMAIL}>`,
+        Destination: {
+          ToAddresses: [email]
+        },
+        Message: {
+          Subject: {
+            Data: '[HIKER] 아이디 찾기 인증번호',
+            Charset: 'UTF-8'
           },
-          Message: {
-            Subject: {
-              Data: '[HIKER] 아이디 찾기 인증번호',
-              Charset: 'UTF-8'
-            },
-            Body: {
-              Html: {
-                Data: `
-                  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #333;">아이디 찾기 인증번호</h2>
-                    <p>안녕하세요, HIKER입니다.</p>
-                    <p>아이디 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
-                    <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
-                      <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
-                    </div>
-                    <p>이 인증번호는 5분간 유효합니다.</p>
-                    <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
+          Body: {
+            Html: {
+              Data: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #333;">아이디 찾기 인증번호</h2>
+                  <p>안녕하세요, HIKER입니다.</p>
+                  <p>아이디 찾기를 위한 이메일 인증번호는 다음과 같습니다:</p>
+                  <div style="background-color: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+                    <h1 style="color: #000; margin: 0; font-size: 32px; letter-spacing: 5px;">${code}</h1>
                   </div>
-                `,
-                Charset: 'UTF-8'
-              }
+                  <p>이 인증번호는 5분간 유효합니다.</p>
+                  <p style="color: #999; font-size: 12px; margin-top: 30px;">본인이 요청하지 않은 경우 이 이메일을 무시하셔도 됩니다.</p>
+                </div>
+              `,
+              Charset: 'UTF-8'
             }
           }
         }
-
-        const command = new SendEmailCommand(emailParams)
-        const result = await sesClient.send(command)
-
-        console.log(`이메일 전송 성공 (아이디 찾기): ${email}, Message ID: ${result.MessageId}`)
-      } catch (emailError) {
-        console.error('이메일 전송 오류 (아이디 찾기):', emailError)
-        // 에러는 로그만 남기고, 응답은 이미 전송됨
       }
-    })()
 
-    // 즉시 응답 반환 (이메일 전송은 백그라운드에서 진행)
+      const command = new SendEmailCommand(emailParams)
+      const result = await sesClient.send(command)
+
+      console.log(`이메일 전송 성공 (아이디 찾기): ${email}, Message ID: ${result.MessageId}`)
+      emailSent = true
+    } catch (err) {
+      console.error('이메일 전송 오류 (아이디 찾기):', err)
+      emailError = err
+      
+      // DKIM 관련 오류 확인
+      if (err.message?.includes('DKIM') || err.message?.includes('dkim')) {
+        console.error('DKIM 설정 오류 감지:', err.message)
+      }
+    }
+
+    // 이메일 전송 실패 시 오류 메시지 반환
+    if (!emailSent && emailError) {
+      let errorMessage = '이메일 전송에 실패했습니다.'
+      
+      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
+        errorMessage = '이메일 전송 서비스 설정 오류가 발생했습니다. 관리자에게 문의해주세요.'
+      } else if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        errorMessage = '이메일 전송에 실패했습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)'
+      } else if (emailError.message?.includes('DKIM') || emailError.message?.includes('dkim')) {
+        errorMessage = '이메일 전송에 실패했습니다. (DKIM 설정 문제로 인해 이메일 전송이 일시 중단되었습니다. 관리자에게 문의해주세요.)'
+      } else {
+        errorMessage = `이메일 전송에 실패했습니다: ${emailError.message || '알 수 없는 오류'}`
+      }
+      
+      // 개발 환경에서는 인증번호를 반환하되 경고 표시
+      return res.status(500).json({
+        error: errorMessage,
+        code: process.env.NODE_ENV === 'development' ? code : undefined,
+        warning: '이메일 전송에 실패했지만, 개발 모드에서는 인증번호를 확인할 수 있습니다.'
+      })
+    }
+
+    // 성공 응답 반환
     res.json({
       message: '인증번호가 전송되었습니다.',
       code: process.env.NODE_ENV === 'development' ? code : undefined
-    })
-    
-    // 이메일 전송은 백그라운드에서 계속 진행
-    sendEmailPromise.catch(emailError => {
-      console.error('이메일 전송 오류 (백그라운드, 아이디 찾기):', emailError)
-      // AWS 자격 증명 오류인 경우
-      if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
-        console.error('AWS 자격 증명 오류:', emailError.message)
-      }
-      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
-      else if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
-        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
-      }
-      // 다른 오류인 경우
-      else {
-        console.error('SES 전송 실패:', emailError.message)
-      }
     })
   } catch (error) {
     console.error('이메일 인증번호 전송 오류:', error)
@@ -1240,28 +1264,48 @@ router.post('/send-email-verification-password', async (req, res) => {
       })
     } catch (emailError) {
       console.error('이메일 전송 오류:', emailError)
+      
+      let errorMessage = '이메일 전송에 실패했습니다.'
+      
       // AWS 자격 증명 오류인 경우
       if (emailError.name === 'InvalidClientTokenId' || emailError.name === 'UnrecognizedClientException') {
         console.error('AWS 자격 증명 오류:', emailError.message)
+        errorMessage = '이메일 전송 서비스 설정 오류가 발생했습니다. 관리자에게 문의해주세요.'
         return res.status(500).json({ 
-          error: '이메일 전송 서비스 설정 오류가 발생했습니다. 관리자에게 문의해주세요.',
-          details: 'AWS 자격 증명 오류'
-        })
-      }
-      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
-      if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
-        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
-        return res.status(400).json({
-          error: '이메일 전송에 실패했습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)',
+          error: errorMessage,
+          details: 'AWS 자격 증명 오류',
           code: process.env.NODE_ENV === 'development' ? code : undefined
         })
       }
+      // SES Sandbox 모드에서는 인증된 이메일로만 전송 가능
+      else if (emailError.name === 'MessageRejected' || emailError.message?.includes('Email address not verified')) {
+        console.log('SES Sandbox 모드: 인증되지 않은 이메일 주소')
+        errorMessage = '이메일 전송에 실패했습니다. (SES Sandbox 모드: 인증된 이메일로만 전송 가능)'
+        return res.status(400).json({
+          error: errorMessage,
+          code: process.env.NODE_ENV === 'development' ? code : undefined
+        })
+      }
+      // DKIM 관련 오류
+      else if (emailError.message?.includes('DKIM') || emailError.message?.includes('dkim')) {
+        console.error('DKIM 설정 오류 감지:', emailError.message)
+        errorMessage = '이메일 전송에 실패했습니다. (DKIM 설정 문제로 인해 이메일 전송이 일시 중단되었습니다. 관리자에게 문의해주세요.)'
+        return res.status(500).json({
+          error: errorMessage,
+          code: process.env.NODE_ENV === 'development' ? code : undefined,
+          warning: 'DKIM 설정 문제로 이메일 전송이 일시 중단되었습니다.'
+        })
+      }
       // 다른 오류인 경우
-      console.error('SES 전송 실패:', emailError.message)
-      return res.status(500).json({ 
-        error: '이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.',
-        details: process.env.NODE_ENV === 'development' ? emailError.message : undefined
-      })
+      else {
+        console.error('SES 전송 실패:', emailError.message)
+        errorMessage = `이메일 전송에 실패했습니다: ${emailError.message || '알 수 없는 오류'}`
+        return res.status(500).json({ 
+          error: errorMessage,
+          details: process.env.NODE_ENV === 'development' ? emailError.message : undefined,
+          code: process.env.NODE_ENV === 'development' ? code : undefined
+        })
+      }
     }
   } catch (error) {
     console.error('이메일 인증번호 전송 오류:', error)

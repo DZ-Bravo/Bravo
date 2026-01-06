@@ -25,6 +25,8 @@ function Signup() {
   const [isEmailVerified, setIsEmailVerified] = useState(false)
   const [emailVerificationCode, setEmailVerificationCode] = useState('')
   const [isSendingEmail, setIsSendingEmail] = useState(false)
+  const [isCodeSent, setIsCodeSent] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(300) // 5분 = 300초
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [nameErrorMessage, setNameErrorMessage] = useState('')
@@ -63,6 +65,8 @@ function Signup() {
       validateEmail(value)
       setIsEmailVerified(false)
       setEmailVerificationCode('')
+      setIsCodeSent(false)
+      setTimeLeft(300)
     }
   }
   
@@ -359,6 +363,8 @@ function Signup() {
       if (response.ok) {
         // 성공 메시지 표시
         const message = data.message || '인증번호가 전송되었습니다.'
+        setIsCodeSent(true)
+        setTimeLeft(300) // 5분 타이머 시작
         alert(message)
         
         // 개발 모드 또는 테스트 모드에서 인증번호가 반환된 경우
@@ -474,6 +480,32 @@ function Signup() {
     }
   }, [isFitnessDropdownOpen])
 
+  // 5분 타이머
+  useEffect(() => {
+    if (isCodeSent && timeLeft > 0 && !isEmailVerified) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setIsCodeSent(false)
+            setEmailVerificationCode('')
+            setEmailErrorMessage('인증번호가 만료되었습니다. 다시 요청해주세요.')
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+
+      return () => clearInterval(timer)
+    }
+  }, [isCodeSent, timeLeft, isEmailVerified])
+
+  // 시간 포맷팅 (MM:SS)
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
+
   return (
     <div className="signup-page">
       <Header hideNav={true} />
@@ -577,23 +609,44 @@ function Signup() {
               )}
               {!isEmailVerified && formData.email && (
                 <div style={{ marginTop: '8px' }}>
-                  <div className="id-input-wrapper" style={{ marginTop: '4px' }}>
-                    <input
-                      type="text"
-                      value={emailVerificationCode}
-                      onChange={(e) => setEmailVerificationCode(e.target.value)}
-                      className="form-input id-input"
-                      placeholder="인증번호를 입력해주세요."
-                      maxLength="6"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleVerifyEmailCode}
-                      className="duplicate-check-btn"
-                    >
-                      확인
-                    </button>
-                  </div>
+                  {isCodeSent && (
+                    <div className="id-input-wrapper" style={{ marginTop: '4px', position: 'relative' }}>
+                      <input
+                        type="text"
+                        value={emailVerificationCode}
+                        onChange={(e) => setEmailVerificationCode(e.target.value.replace(/[^0-9]/g, ''))}
+                        className="form-input id-input"
+                        placeholder="인증번호를 입력해주세요."
+                        maxLength="6"
+                      />
+                      {isCodeSent && timeLeft > 0 && (
+                        <div style={{
+                          position: 'absolute',
+                          right: '100px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          color: timeLeft < 60 ? '#ff4444' : '#666',
+                          fontWeight: 'bold',
+                          fontSize: '14px'
+                        }}>
+                          {formatTime(timeLeft)}
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={handleVerifyEmailCode}
+                        className="duplicate-check-btn"
+                        disabled={!emailVerificationCode}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  )}
+                  {!isCodeSent && (
+                    <div style={{ marginTop: '4px', color: '#666', fontSize: '14px' }}>
+                      인증번호 전송 버튼을 클릭해주세요.
+                    </div>
+                  )}
                 </div>
               )}
             </div>
