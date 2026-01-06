@@ -114,7 +114,7 @@ kubectl cluster-info
 Monitoring EC2는 자동으로 SNAT가 설정됩니다. 수동으로 확인하려면:
 
 ```bash
-# Monitoring EC2에 접속
+# Monitoring EC2에 접속1
 ssh -i ~/.ssh/hiking-key.pem ubuntu@<monitoring-public-ip>
 
 # SNAT 확인
