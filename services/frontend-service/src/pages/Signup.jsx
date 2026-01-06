@@ -610,36 +610,37 @@ function Signup() {
               {!isEmailVerified && formData.email && (
                 <div style={{ marginTop: '8px' }}>
                   {isCodeSent && (
-                    <div className="id-input-wrapper" style={{ marginTop: '4px', position: 'relative' }}>
-                      <input
-                        type="text"
-                        value={emailVerificationCode}
-                        onChange={(e) => setEmailVerificationCode(e.target.value.replace(/[^0-9]/g, ''))}
-                        className="form-input id-input"
-                        placeholder="인증번호를 입력해주세요."
-                        maxLength="6"
-                      />
+                    <div style={{ marginTop: '4px' }}>
+                      <div className="id-input-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input
+                          type="text"
+                          value={emailVerificationCode}
+                          onChange={(e) => setEmailVerificationCode(e.target.value.replace(/[^0-9]/g, ''))}
+                          className="form-input id-input"
+                          placeholder="인증번호를 입력해주세요."
+                          maxLength="6"
+                          style={{ flex: 1 }}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleVerifyEmailCode}
+                          className="duplicate-check-btn"
+                          disabled={!emailVerificationCode}
+                        >
+                          확인
+                        </button>
+                      </div>
                       {isCodeSent && timeLeft > 0 && (
                         <div style={{
-                          position: 'absolute',
-                          right: '100px',
-                          top: '50%',
-                          transform: 'translateY(-50%)',
+                          marginTop: '6px',
+                          textAlign: 'center',
                           color: timeLeft < 60 ? '#ff4444' : '#666',
                           fontWeight: 'bold',
                           fontSize: '14px'
                         }}>
-                          {formatTime(timeLeft)}
+                          남은 시간: {formatTime(timeLeft)}
                         </div>
                       )}
-                      <button
-                        type="button"
-                        onClick={handleVerifyEmailCode}
-                        className="duplicate-check-btn"
-                        disabled={!emailVerificationCode}
-                      >
-                        확인
-                      </button>
                     </div>
                   )}
                   {!isCodeSent && (

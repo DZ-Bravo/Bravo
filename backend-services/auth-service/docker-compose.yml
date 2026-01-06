@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hiking-auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=production
+      - PORT=3001
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/hiking?authSource=admin
+      - REDIS_HOST=${REDIS_HOST:-192.168.0.243}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+      - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
+      - KAKAO_REDIRECT_URI=${KAKAO_REDIRECT_URI}
+      - NAVER_CLIENT_ID=${NAVER_CLIENT_ID}
+      - NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
+      - NAVER_REDIRECT_URI=${NAVER_REDIRECT_URI}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - hiking-network
+    restart: unless-stopped
+
+networks:
+  hiking-network:
+    driver: bridge
+
