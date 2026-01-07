@@ -665,4 +665,4 @@ monitor-total-status:
       else
         echo "⚠️ 서비스 응답 확인 필요. (HTTP $STATUS_CODE)"
       fi
-    - echo "GitLab Monitor 메뉴에서 실시간 메트릭을 확인하세요."
+    - echo "GitLab Monitor 메뉴에서 실시간 메트릭을 확인하세요..."
