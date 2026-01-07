@@ -117,11 +117,83 @@ stages:
     - when: never
 
 # 2. Backend 규칙
+# .backend_rules:
+  # rules:
+    # - if: '$CI_COMMIT_BRANCH == "main"'
+      # changes:
+        # - "services/backend-services/**/*"
+      # when: always
+    # - when: never
+# 2. Backend 규칙 (백엔드 전체 변경 감지용)
 .backend_rules:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - "services/backend-services/**/*"
+      when: always
+    - when: never
+    
+# 백엔드 개별 규칙들
+.rule_auth:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/auth-service/**/*"]
+      when: always
+    - when: never
+
+.rule_chatbot:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/chatbot-service/**/*"]
+      when: always
+    - when: never
+
+.rule_community:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/community-service/**/*"]
+      when: always
+    - when: never
+
+.rule_mountain:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/mountain-service/**/*"]
+      when: always
+    - when: never
+
+.rule_notice:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/notice-service/**/*"]
+      when: always
+    - when: never
+
+.rule_notification:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/notification-service/**/*"]
+      when: always
+    - when: never
+
+.rule_schedule:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/schedule-service/**/*"]
+      when: always
+    - when: never
+
+.rule_stamp:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/stamp-service/**/*"]
+      when: always
+    - when: never
+
+.rule_store:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes: ["services/backend-services/store-service/**/*"]
       when: always
     - when: never
 
@@ -218,25 +290,24 @@ deploy-frontend:
 # Backend (Multiple Services)
 # ===============================
 
+# [1] 소나큐브는 matrix 유지 (전체 코드 품질 관리에 용이)
 sonar-backend:
   stage: analyze
   extends: .backend_rules
   image: sonarsource/sonar-scanner-cli:5
-  # 👈 핵심 1: 소나큐브 스캔이 실패해도 전체 파이프라인은 'Success' 혹은 'Warning'으로 넘어가게 함
   allow_failure: false
   parallel:
     matrix:
-      - SERVICE_NAME: ai-service
-      - SERVICE_NAME: auth-service
-      - SERVICE_NAME: chatbot-service
-      - SERVICE_NAME: community-service
-      - SERVICE_NAME: mountain-service
-      - SERVICE_NAME: notice-service
-      - SERVICE_NAME: notification-service
-      - SERVICE_NAME: schedule-service
-      - SERVICE_NAME: stamp-service
-      - SERVICE_NAME: store-service
-
+      - SERVICE_NAME: 
+        - auth-service
+        - chatbot-service
+        - community-service
+        - mountain-service
+        - notice-service
+        - notification-service
+        - schedule-service
+        - stamp-service
+        - store-service
   script:
     - |
       sonar-scanner \
@@ -248,43 +319,40 @@ sonar-backend:
   <<: *notify_slack_failure
 
 
-build-backend:
+# [2] 빌드 템플릿 (이름을 .build-backend 로 통일)
+.build-backend:
   stage: build
-  extends: .backend_rules
   allow_failure: false
   image: docker:27
   services:
     - docker:27-dind
-  parallel:
-    matrix:
-      - SERVICE_NAME: ai-service
-        ECR_REPO: $AI_ECR_REPO
-      - SERVICE_NAME: auth-service
-        ECR_REPO: $AUTH_ECR_REPO
-      - SERVICE_NAME: chatbot-service
-        ECR_REPO: $CHATBOT_ECR_REPO
-      - SERVICE_NAME: community-service
-        ECR_REPO: $COMMUNITY_ECR_REPO
-      - SERVICE_NAME: mountain-service
-        ECR_REPO: $MOUNTAIN_ECR_REPO
-      - SERVICE_NAME: notice-service
-        ECR_REPO: $NOTICE_ECR_REPO
-      - SERVICE_NAME: notification-service
-        ECR_REPO: $NOTIFICATION_ECR_REPO
-      - SERVICE_NAME: schedule-service
-        ECR_REPO: $SCHEDULE_ECR_REPO
-      - SERVICE_NAME: stamp-service
-        ECR_REPO: $STAMP_ECR_REPO
-      - SERVICE_NAME: store-service
-        ECR_REPO: $STORE_ECR_REPO
+  # parallel:
+    # matrix:
+      # #- SERVICE_NAME: ai-service
+        # #ECR_REPO: $AI_ECR_REPO
+      # - SERVICE_NAME: auth-service
+        # ECR_REPO: $AUTH_ECR_REPO
+      # - SERVICE_NAME: chatbot-service
+        # ECR_REPO: $CHATBOT_ECR_REPO
+      # - SERVICE_NAME: community-service
+        # ECR_REPO: $COMMUNITY_ECR_REPO
+      # - SERVICE_NAME: mountain-service
+        # ECR_REPO: $MOUNTAIN_ECR_REPO
+      # - SERVICE_NAME: notice-service
+        # ECR_REPO: $NOTICE_ECR_REPO
+      # - SERVICE_NAME: notification-service
+        # ECR_REPO: $NOTIFICATION_ECR_REPO
+      # - SERVICE_NAME: schedule-service
+        # ECR_REPO: $SCHEDULE_ECR_REPO
+      # - SERVICE_NAME: stamp-service
+        # ECR_REPO: $STAMP_ECR_REPO
+      # - SERVICE_NAME: store-service
+        # ECR_REPO: $STORE_ECR_REPO
   script:
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
-    # 👇 Dockerfile이 기대하는 구조를 CI에서 생성
     - rm -rf backend-services shared
     - mkdir -p backend-services
     - cp -r services/backend-services/${SERVICE_NAME} backend-services/${SERVICE_NAME}
-
-    # shared가 필요한 Dockerfile 대응 (없는 경우 대비)
     - |
       if [ -d services/shared ]; then
         cp -r services/shared ./shared
@@ -297,65 +365,97 @@ build-backend:
       aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | \
       docker login --username AWS --password-stdin \
         "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-
     - |
       docker build \
         -f services/backend-services/${SERVICE_NAME}/Dockerfile \
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}" \
         .
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
-  <<: *notify_build_success  # 👈 변경
+  <<: *notify_build_success
+
+# [3] 실제 서비스별 Job (이제 부모 이름 .build-backend 와 일치함)
+build-auth:
+  extends: [.build-backend, .rule_auth]
+  variables: { SERVICE_NAME: "auth-service", ECR_REPO: "$AUTH_ECR_REPO" }
+
+build-chatbot:
+  extends: [.build-backend, .rule_chatbot]
+  variables: { SERVICE_NAME: "chatbot-service", ECR_REPO: "$CHATBOT_ECR_REPO" }
+
+build-community:
+  extends: [.build-backend, .rule_community]
+  variables: { SERVICE_NAME: "community-service", ECR_REPO: "$COMMUNITY_ECR_REPO" }
+
+build-mountain:
+  extends: [.build-backend, .rule_mountain]
+  variables: { SERVICE_NAME: "mountain-service", ECR_REPO: "$MOUNTAIN_ECR_REPO" }
+
+build-notice:
+  extends: [.build-backend, .rule_notice]
+  variables: { SERVICE_NAME: "notice-service", ECR_REPO: "$NOTICE_ECR_REPO" }
+
+build-notification:
+  extends: [.build-backend, .rule_notification]
+  variables: { SERVICE_NAME: "notification-service", ECR_REPO: "$NOTIFICATION_ECR_REPO" }
+
+build-schedule:
+  extends: [.build-backend, .rule_schedule]
+  variables: { SERVICE_NAME: "schedule-service", ECR_REPO: "$SCHEDULE_ECR_REPO" }
+
+build-stamp:
+  extends: [.build-backend, .rule_stamp]
+  variables: { SERVICE_NAME: "stamp-service", ECR_REPO: "$STAMP_ECR_REPO" }
+
+build-store:
+  extends: [.build-backend, .rule_store]
+  variables: { SERVICE_NAME: "store-service", ECR_REPO: "$STORE_ECR_REPO" }
 
 
-deploy-backend:
+# [4] 배포 템플릿
+.deploy-backend:
   stage: deploy
-  extends: .backend_rules
-  when: manual           # 👈 수동 승인 버튼 활성화
-  allow_failure: false  # 👈 핵심: 이걸 false로 두어야 승인 전까지 파이프라인이 'Blocked' 상태로 유지됩니다.
+  when: manual
+  allow_failure: false
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
-  parallel:
-    matrix:
-      # AI 서비스
-      - SERVICE_NAME: ai-service
-        ECR_REPO: $AI_ECR_REPO
-        K8S_NS: bravo-ai-integration-ns
+  # parallel:
+    # matrix:
+      # # AI 서비스
+      # #- SERVICE_NAME: ai-service
+        # #ECR_REPO: $AI_ECR_REPO
+        # #K8S_NS: bravo-ai-integration-ns
 
-      - SERVICE_NAME: chatbot-service
-        ECR_REPO: $CHATBOT_ECR_REPO
-        K8S_NS: bravo-ai-integration-ns
+      # - SERVICE_NAME: chatbot-service
+        # ECR_REPO: $CHATBOT_ECR_REPO
+        # K8S_NS: bravo-ai-integration-ns
         
-      # Core backend 서비스
-      - SERVICE_NAME: auth-service
-        ECR_REPO: $AUTH_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: community-service
-        ECR_REPO: $COMMUNITY_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: mountain-service
-        ECR_REPO: $MOUNTAIN_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: notice-service
-        ECR_REPO: $NOTICE_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: notification-service
-        ECR_REPO: $NOTIFICATION_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: schedule-service
-        ECR_REPO: $SCHEDULE_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: stamp-service
-        ECR_REPO: $STAMP_ECR_REPO
-        K8S_NS: bravo-core-ns
-      - SERVICE_NAME: store-service
-        ECR_REPO: $STORE_ECR_REPO
-        K8S_NS: bravo-core-ns
+      # # Core backend 서비스
+      # - SERVICE_NAME: auth-service
+        # ECR_REPO: $AUTH_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: community-service
+        # ECR_REPO: $COMMUNITY_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: mountain-service
+        # ECR_REPO: $MOUNTAIN_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: notice-service
+        # ECR_REPO: $NOTICE_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: notification-service
+        # ECR_REPO: $NOTIFICATION_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: schedule-service
+        # ECR_REPO: $SCHEDULE_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: stamp-service
+        # ECR_REPO: $STAMP_ECR_REPO
+        # K8S_NS: bravo-core-ns
+      # - SERVICE_NAME: store-service
+        # ECR_REPO: $STORE_ECR_REPO
+        # K8S_NS: bravo-core-ns
         
-  needs:
-    - job: build-backend
-      artifacts: false
-    - job: sonar-backend
   script:
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
@@ -363,30 +463,63 @@ deploy-backend:
     - mv kubectl /usr/local/bin/kubectl
     - aws eks update-kubeconfig --region ap-northeast-2 --name bravo-eks
     - |
-      if ! aws ecr describe-images \
-        --repository-name "${ECR_REPO}" \
-        --image-ids imageTag="${IMAGE_TAG}" >/dev/null 2>&1; then
-        echo "⏭ Image not found: ${ECR_REPO}:${IMAGE_TAG}"
-        exit 0
-      fi
-    
-    - |
       CONTAINER_NAME=$(kubectl get deploy ${SERVICE_NAME} -n ${K8S_NS} \
         -o jsonpath='{.spec.template.spec.containers[0].name}')
-      echo "confirmed container: ${CONTAINER_NAME}"
+      echo "Target Container: ${CONTAINER_NAME}"
     - |
       kubectl set image deployment/${SERVICE_NAME} \
         ${CONTAINER_NAME}=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG} \
         -n ${K8S_NS}    
-    - |
-      kubectl rollout status deployment/${SERVICE_NAME} \
-        -n ${K8S_NS} \
-        --timeout=5m || {
-          echo "❌ Rollout failed. Rolling back..."
-          kubectl rollout undo deployment/${SERVICE_NAME} -n ${K8S_NS}
-          exit 1
-        }
+    - kubectl rollout status deployment/${SERVICE_NAME} -n ${K8S_NS} --timeout=5m
   <<: *notify_slack_failure
+  
+# [5] 실제 서비스별 Deploy Job
+# 각 서비스의 네임스페이스(K8S_NS)를 정확히 지정하세요.
+
+deploy-auth:
+  extends: [.deploy-backend, .rule_auth]
+  variables: { SERVICE_NAME: "auth-service", ECR_REPO: "$AUTH_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-auth", "sonar-backend"]
+
+deploy-chatbot:
+  extends: [.deploy-backend, .rule_chatbot]
+  variables: { SERVICE_NAME: "chatbot-service", ECR_REPO: "$CHATBOT_ECR_REPO", K8S_NS: "bravo-ai-integration-ns" }
+  needs: ["build-chatbot", "sonar-backend"]
+
+deploy-community:
+  extends: [.deploy-backend, .rule_community]
+  variables: { SERVICE_NAME: "community-service", ECR_REPO: "$COMMUNITY_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-community", "sonar-backend"]
+
+deploy-mountain:
+  extends: [.deploy-backend, .rule_mountain]
+  variables: { SERVICE_NAME: "mountain-service", ECR_REPO: "$MOUNTAIN_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-mountain", "sonar-backend"]
+
+deploy-notice:
+  extends: [.deploy-backend, .rule_notice]
+  variables: { SERVICE_NAME: "notice-service", ECR_REPO: "$NOTICE_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-notice", "sonar-backend"]
+
+deploy-notification:
+  extends: [.deploy-backend, .rule_notification]
+  variables: { SERVICE_NAME: "notification-service", ECR_REPO: "$NOTIFICATION_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-notification", "sonar-backend"]
+
+deploy-schedule:
+  extends: [.deploy-backend, .rule_schedule]
+  variables: { SERVICE_NAME: "schedule-service", ECR_REPO: "$SCHEDULE_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-schedule", "sonar-backend"]
+
+deploy-stamp:
+  extends: [.deploy-backend, .rule_stamp]
+  variables: { SERVICE_NAME: "stamp-service", ECR_REPO: "$STAMP_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-stamp", "sonar-backend"]
+
+deploy-store:
+  extends: [.deploy-backend, .rule_store]
+  variables: { SERVICE_NAME: "store-service", ECR_REPO: "$STORE_ECR_REPO", K8S_NS: "bravo-core-ns" }
+  needs: ["build-store", "sonar-backend"]
 
 # ===============================
 # AI Infra Service
@@ -498,7 +631,24 @@ monitor-total-status:
   needs: 
     - job: deploy-frontend
       optional: true
-    - job: deploy-backend
+    # 백엔드 전체 서비스 개별 참조
+    - job: deploy-auth
+      optional: true
+    - job: deploy-chatbot
+      optional: true
+    - job: deploy-community
+      optional: true
+    - job: deploy-mountain
+      optional: true
+    - job: deploy-notice
+      optional: true
+    - job: deploy-notification
+      optional: true
+    - job: deploy-schedule
+      optional: true
+    - job: deploy-stamp
+      optional: true
+    - job: deploy-store
       optional: true
     - job: deploy-ai-infra
       optional: true
@@ -506,6 +656,13 @@ monitor-total-status:
     name: production/total-system
     url: https://hiker-cloud.site
   script:
-    - echo "🏁 파이프라인 완주 시도. 서비스 상태를 최종 점검합니다."
-    - curl -s -I https://hiker-cloud.site | grep "HTTP/" || echo "사이트 응답 불가"
+    - echo "🏁 모든 서비스 배포 상태 확인 및 최종 점검을 시작합니다."
+    - echo "대상 도메인: https://hiker-cloud.site"
+    - |
+      STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://hiker-cloud.site)
+      if [ "$STATUS_CODE" -eq 200 ]; then
+        echo "✅ 서비스가 정상적으로 응답하고 있습니다. (HTTP 200)"
+      else
+        echo "⚠️ 서비스 응답 확인 필요. (HTTP $STATUS_CODE)"
+      fi
     - echo "GitLab Monitor 메뉴에서 실시간 메트릭을 확인하세요."
