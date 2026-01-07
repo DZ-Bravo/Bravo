@@ -264,8 +264,8 @@ deploy-frontend:
     - job: build-frontend
       artifacts: true
     - job: sonar-frontend    # 👈 품질 검사 성공 확인 추가
-    - job: semgrep-sast
-      optional: true         # SAST는 보안 템플릿 상황에 따라 유동적일 수 있어 optional 권장
+    - job: secret_detection # 👈 추가
+    - job: semgrep-sast     # 👈 추가
   script:
     - echo "Deploying version $NEXT_VERSION"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
@@ -419,6 +419,7 @@ build-store:
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
+  
   # parallel:
     # matrix:
       # # AI 서비스
@@ -473,53 +474,51 @@ build-store:
     - kubectl rollout status deployment/${SERVICE_NAME} -n ${K8S_NS} --timeout=5m
   <<: *notify_slack_failure
   
-# [5] 실제 서비스별 Deploy Job
-# 각 서비스의 네임스페이스(K8S_NS)를 정확히 지정하세요.
-
+# [5] 실제 서비스별 Deploy Job (교정 완료)
 deploy-auth:
   extends: [.deploy-backend, .rule_auth]
   variables: { SERVICE_NAME: "auth-service", ECR_REPO: "$AUTH_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-auth", "sonar-backend"]
+  needs: ["build-auth", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 deploy-chatbot:
   extends: [.deploy-backend, .rule_chatbot]
   variables: { SERVICE_NAME: "chatbot-service", ECR_REPO: "$CHATBOT_ECR_REPO", K8S_NS: "bravo-ai-integration-ns" }
-  needs: ["build-chatbot", "sonar-backend"]
+  needs: ["build-chatbot", "sonar-backend", "secret_detection", "semgrep-sast"] # 👈 build-chatbot으로 수정
 
 deploy-community:
   extends: [.deploy-backend, .rule_community]
   variables: { SERVICE_NAME: "community-service", ECR_REPO: "$COMMUNITY_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-community", "sonar-backend"]
+  needs: ["build-community", "sonar-backend", "secret_detection", "semgrep-sast"] # 👈 build-community로 수정
 
 deploy-mountain:
   extends: [.deploy-backend, .rule_mountain]
   variables: { SERVICE_NAME: "mountain-service", ECR_REPO: "$MOUNTAIN_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-mountain", "sonar-backend"]
+  needs: ["build-mountain", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 deploy-notice:
   extends: [.deploy-backend, .rule_notice]
   variables: { SERVICE_NAME: "notice-service", ECR_REPO: "$NOTICE_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-notice", "sonar-backend"]
+  needs: ["build-notice", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 deploy-notification:
   extends: [.deploy-backend, .rule_notification]
   variables: { SERVICE_NAME: "notification-service", ECR_REPO: "$NOTIFICATION_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-notification", "sonar-backend"]
+  needs: ["build-notification", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 deploy-schedule:
   extends: [.deploy-backend, .rule_schedule]
   variables: { SERVICE_NAME: "schedule-service", ECR_REPO: "$SCHEDULE_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-schedule", "sonar-backend"]
+  needs: ["build-schedule", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 deploy-stamp:
   extends: [.deploy-backend, .rule_stamp]
   variables: { SERVICE_NAME: "stamp-service", ECR_REPO: "$STAMP_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-stamp", "sonar-backend"]
+  needs: ["build-stamp", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 deploy-store:
   extends: [.deploy-backend, .rule_store]
   variables: { SERVICE_NAME: "store-service", ECR_REPO: "$STORE_ECR_REPO", K8S_NS: "bravo-core-ns" }
-  needs: ["build-store", "sonar-backend"]
+  needs: ["build-store", "sonar-backend", "secret_detection", "semgrep-sast"]
 
 # ===============================
 # AI Infra Service
@@ -581,6 +580,8 @@ deploy-ai-infra:
     - job: build-ai-infra
       artifacts: true
     - job: sonar-ai-infra
+    - job: secret_detection # 👈 추가
+    - job: semgrep-sast     # 👈 추가
   script:
     - export IMAGE_TAG="2.${CI_PIPELINE_IID}"
     - curl -LO https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl
