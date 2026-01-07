@@ -28,7 +28,7 @@ variables:
   # .bak 파일과 node_modules(이미 빌드된거라 제외)를 빼서 속도를 높입니다.
   SAST_EXCLUDED_PATHS: "spec, test, tests, tmp, **/node_modules, **/*.bak*, efk, mongodb-replica"
 
-  # 2. Secret Detection 최적화
+  # 2. Secret Detection 최적화 
   # 문서 파일(.md)이나 백업 파일에서 비밀번호를 찾는 불필요한 연산을 줄입니다.
   SECRET_DETECTION_EXCLUDED_PATHS: "**/node_modules, **/*.md, **/*.png"
 
@@ -55,6 +55,20 @@ stages:
   after_script:
     - |
       if [ "$CI_JOB_STATUS" != "success" ]; then
+        curl -s -X POST -H "Content-type: application/json" \
+          --data "{\"text\":\"❌ CI/CD FAILED | Project=$CI_PROJECT_NAME | Job=$CI_JOB_NAME | Branch=$CI_COMMIT_REF_NAME | Commit=$CI_COMMIT_SHORT_SHA | $CI_PIPELINE_URL\"}" \
+          "$SLACK_WEBHOOK_URL"
+      fi
+# 빌드 성공 알림 추가 (새로 추가되는 부분)
+.notify_build_success: &notify_build_success
+  after_script:
+    - |
+      if [ "$CI_JOB_STATUS" == "success" ]; then
+        curl -s -X POST -H "Content-type: application/json" \
+          --data "{\"text\":\"✅ BUILD SUCCESS | Service=$SERVICE_NAME | Version=$NEXT_VERSION | $CI_PROJECT_NAME 가 성공적으로 빌드되어 배포 준비가 완료되었습니다! 🚀\"}" \
+          "$SLACK_WEBHOOK_URL"
+      else
+        # 실패 시에도 기존처럼 알림이 가도록 통합
         curl -s -X POST -H "Content-type: application/json" \
           --data "{\"text\":\"❌ CI/CD FAILED | Project=$CI_PROJECT_NAME | Job=$CI_JOB_NAME | Branch=$CI_COMMIT_REF_NAME | Commit=$CI_COMMIT_SHORT_SHA | $CI_PIPELINE_URL\"}" \
           "$SLACK_WEBHOOK_URL"
@@ -157,7 +171,7 @@ build-frontend:
   artifacts:
     reports:
       dotenv: version.env
-  <<: *notify_slack_failure
+  <<: *notify_build_success  # 👈 변경
 
 deploy-frontend:
   stage: deploy
@@ -290,7 +304,7 @@ build-backend:
         -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}" \
         .
     - docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
-  <<: *notify_slack_failure
+  <<: *notify_build_success  # 👈 변경
 
 
 deploy-backend:
@@ -470,7 +484,7 @@ deploy-ai-infra:
           kubectl rollout undo deployment/${DEPLOYMENT_NAME} -n ${K8S_NS}
           exit 1
         }
-  <<: *notify_slack_failure
+  <<: *notify_build_success  # 👈 변경
 
 # ===============================
 # 🛠 Monitor: GitLab Performance & Environment 통합
