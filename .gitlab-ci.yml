@@ -1,7 +1,7 @@
 include:
   - template: Jobs/SAST.gitlab-ci.yml
   - template: Jobs/Secret-Detection.gitlab-ci.yml
-  - template: Security/Container-Scanning.gitlab-ci.yml  # 인프라(IaC) 대신 컨테이너 취약점 점검 추천
+ # - template: Security/Container-Scanning.gitlab-ci.yml  # 인프라(IaC) 대신 컨테이너 취약점 점검(오류 해결 불가)
 
 # 1. 여기에 추가하세요! (보안 스캔 설정 재정의)
 container_scanning:
@@ -177,7 +177,7 @@ deploy-frontend:
   stage: deploy
   extends: .frontend_rules
   when: manual           # 👈 수동 승인 버튼 활성화
-  allow_failure: true    # 👈 버튼을 누르기 전에도 파이프라인을 '성공' 상태로 유지
+  allow_failure: false  # 👈 핵심: 이걸 false로 두어야 승인 전까지 파이프라인이 'Blocked' 상태로 유지됩니다.
   variables:
     ECR_REPO: "bravo/hiking-frontend"
     K8S_NS: "bravo-front-ns"
@@ -311,7 +311,7 @@ deploy-backend:
   stage: deploy
   extends: .backend_rules
   when: manual           # 👈 수동 승인 버튼 활성화
-  allow_failure: true    # 👈 버튼을 누르기 전에도 파이프라인을 '성공' 상태로 유지
+  allow_failure: false  # 👈 핵심: 이걸 false로 두어야 승인 전까지 파이프라인이 'Blocked' 상태로 유지됩니다.
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
@@ -436,7 +436,7 @@ deploy-ai-infra:
   stage: deploy
   extends: .ai_infra_rules
   when: manual           # 👈 수동 승인 버튼 활성화
-  allow_failure: true    # 👈 버튼을 누르기 전에도 파이프라인을 '성공' 상태로 유지
+  allow_failure: false  # 👈 핵심: 이걸 false로 두어야 승인 전까지 파이프라인이 'Blocked' 상태로 유지됩니다.
   image:
     name: amazon/aws-cli:2.15.0
     entrypoint: [""]
@@ -493,7 +493,8 @@ deploy-ai-infra:
 monitor-total-status:
   stage: deploy
   image: curlimages/curl
-  when: on_success  # 👈 '항상'보다는 '앞 단계(빌드/분석) 성공 시'가 더 적절합니다.
+  when: manual        # 👈 'on_success'에서 'manual'로 변경하여 자동 실행을 완전히 차단합니다.
+  allow_failure: true # 모니터링은 실패해도 전체 공정에 지장이 없으므로 이건 true가 적절합니다.
   needs: 
     - job: deploy-frontend
       optional: true
