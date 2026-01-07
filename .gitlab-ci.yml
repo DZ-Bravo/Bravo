@@ -4,13 +4,13 @@ include:
  # - template: Security/Container-Scanning.gitlab-ci.yml  # 인프라(IaC) 대신 컨테이너 취약점 점검(오류 해결 불가)
 
 # 1. 여기에 추가하세요! (보안 스캔 설정 재정의)
-container_scanning:
-  stage: test
-  variables:
+#container_scanning:
+#  stage: test
+#  variables:
     # 스캔할 이미지를 빌드된 ECR 이미지로 명시 (프론트엔드 예시)
-    CS_IMAGE: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/bravo/hiking-frontend:2.${CI_PIPELINE_IID}"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+#    CS_IMAGE: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/bravo/hiking-frontend:2.${CI_PIPELINE_IID}"
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "main"'
 
 image: docker:27
 
