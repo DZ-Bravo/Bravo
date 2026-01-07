@@ -657,7 +657,7 @@ monitor-total-status:
     url: https://hiker-cloud.site
   script:
     - echo "🏁 모든 서비스 배포 상태 확인 및 최종 점검을 시작합니다."
-    - echo "대상 도메인: https://hiker-cloud.site"
+    - echo "대상 도메인:https://hiker-cloud.site"
     - |
       STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://hiker-cloud.site)
       if [ "$STATUS_CODE" -eq 200 ]; then
