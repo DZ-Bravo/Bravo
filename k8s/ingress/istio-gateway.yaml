@@ -158,6 +158,10 @@ spec:
         host: ai-infra-service.bravo-ai-integration-ns.svc.cluster.local
         port:
           number: 3011
+    timeout: 300s  # AI 분석은 최대 5분까지 허용
+    retries:
+      attempts: 1
+      perTryTimeout: 300s
   # AI Infra Service (Frontend)
   - match:
     - uri:

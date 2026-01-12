@@ -1,7 +1,7 @@
 import axios from 'axios'
 import kubernetesService from './kubernetes.js'
 
-const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://43.200.143.174:9090'
+const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://prometheus.bravo-monitoring-ns:9090'
 const ALERTMANAGER_URL = process.env.ALERTMANAGER_URL || 'http://10.0.28.33:9093'
 
 // Prometheus 쿼리 실행

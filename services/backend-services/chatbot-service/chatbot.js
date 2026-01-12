@@ -236,6 +236,10 @@ router.post('/message', authenticateCognitoToken, async (req, res) => {
       // 5. 연속된 공백 정리 (개행 제거 후 생긴 공백 정리)
       assistantResponse = assistantResponse.replace(/[ \t]{2,}/g, ' ').trim()
       
+      // 6. 번호 목록 포맷팅 (1., 2., 3., 4. 등 앞에 줄바꿈 추가)
+      // 첫 번째 번호는 제외하고, 각 번호 앞에 줄바꿈 추가
+      assistantResponse = assistantResponse.replace(/([^\n])(\d+\.\s)/g, '$1\n\n$2')
+      
       // 디버깅: 정리 후 응답 확인
       console.log('=== 정리 후 응답 ===')
       console.log('정리 후 길이:', assistantResponse.length)

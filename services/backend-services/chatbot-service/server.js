@@ -28,8 +28,13 @@ connectDB()
 // 라우트
 app.use('/api/chatbot', chatbotRoutes)
 
-// 헬스체크
+// 헬스체크 (루트)
 app.get('/health', (req, res) => {
+  res.json({ status: 'ok', service: 'chatbot-service' })
+})
+
+// 헬스체크 (API 경로에도 추가)
+app.get('/api/chatbot/health', (req, res) => {
   res.json({ status: 'ok', service: 'chatbot-service' })
 })
 
