@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: community-service
-        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-community-service:latest
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-community-service:otel-test
         ports:
         - containerPort: 3002
           name: http
@@ -45,6 +45,8 @@ spec:
               key: JWT_SECRET
         - name: ELASTICSEARCH_URL
           value: "http://elasticsearch.bravo-efk-ns.svc.cluster.local:9200"
+        - name: OTEL_COLLECTOR_URL
+          value: "http://otel-collector.bravo-monitoring-ns:4318"
         volumeMounts:
         - name: uploads
           mountPath: /app/uploads

@@ -1802,18 +1802,18 @@ function generateColors(count) {
 
 // Links 설정
 function setupLinks() {
-  // Grafana (EC2 Public IP)
+  // Grafana
   const grafanaLink = document.getElementById('grafanaLink')
   if (grafanaLink) {
-    grafanaLink.setAttribute('href', 'http://43.200.143.174:3000')
+    grafanaLink.setAttribute('href', 'https://grafana.hiker-cloud.site')
     console.log('Grafana link set to:', grafanaLink.href)
   } else {
     console.error('Grafana link element not found')
   }
-  // Prometheus (EC2 Public IP)
+  // Prometheus
   const prometheusLink = document.getElementById('prometheusLink')
   if (prometheusLink) {
-    prometheusLink.setAttribute('href', 'http://43.200.143.174:9090')
+    prometheusLink.setAttribute('href', 'https://prometheus.hiker-cloud.site')
     console.log('Prometheus link set to:', prometheusLink.href)
   } else {
     console.error('Prometheus link element not found')
@@ -1832,7 +1832,7 @@ function setupLinks() {
   if (cloudtrailLink) cloudtrailLink.setAttribute('href', 'https://console.aws.amazon.com/cloudtrail/home?region=ap-northeast-2')
   // GitLab
   const gitlabLink = document.getElementById('gitlabLink')
-  if (gitlabLink) gitlabLink.setAttribute('href', 'http://43.200.134.128/')
+  if (gitlabLink) gitlabLink.setAttribute('href', 'https://gitlab.hiker-cloud.site')
   // ECR
   const ecrLink = document.getElementById('ecrLink')
   if (ecrLink) ecrLink.setAttribute('href', 'https://console.aws.amazon.com/ecr/repositories?region=ap-northeast-2')
@@ -1930,12 +1930,16 @@ async function loadOverview() {
     const memAvg = data.saturation?.memAvg ?? 0
     
     if (cpuAvgEl) {
-      cpuAvgEl.textContent = `${cpuAvg}%`
-      console.log('✅ CPU Avg updated:', cpuAvg)
+      // %가 이미 포함되어 있을 수 있으므로 제거 후 다시 추가
+      const cpuAvgValue = String(cpuAvg).replace('%', '').trim()
+      cpuAvgEl.textContent = `${cpuAvgValue}%`
+      console.log('✅ CPU Avg updated:', cpuAvgValue)
     }
     if (memAvgEl) {
-      memAvgEl.textContent = `${memAvg}%`
-      console.log('✅ Mem Avg updated:', memAvg)
+      // %가 이미 포함되어 있을 수 있으므로 제거 후 다시 추가
+      const memAvgValue = String(memAvg).replace('%', '').trim()
+      memAvgEl.textContent = `${memAvgValue}%`
+      console.log('✅ Mem Avg updated:', memAvgValue)
     }
     
     // Replica 상태 업데이트
@@ -2038,7 +2042,8 @@ async function loadServices() {
         <td><a href="#" onclick="loadServiceDetail('${service.namespace}', '${service.name}'); return false;">${service.name}</a></td>
         <td>${rps}</td>
         <td>${latencyP95}ms</td>
-        <td>${errorRate5xx}% / ${errorRate4xx}%</td>
+        <td>${errorRate5xx}%</td>
+        <td>${errorRate4xx}%</td>
         <td>${service.replica?.available || 0} / ${service.replica?.desired || 0}</td>
         <td>${service.restart?.['1h'] || 0} / ${service.restart?.['24h'] || 0}</td>
         <td>${cpu}%</td>
@@ -2094,7 +2099,7 @@ async function loadPods() {
     tbody.innerHTML = ''
     
     if (pods.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Pod가 없습니다.</td></tr>'
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Pod가 없습니다.</td></tr>'
       return
     }
     
@@ -2102,16 +2107,17 @@ async function loadPods() {
       const row = document.createElement('tr')
       const cpu = pod.cpu ?? 0
       const mem = pod.mem ?? 0
-      const restarts = pod.restarts ?? 0
+      const restarts = pod.restarts ?? pod.restartCount ?? 0
+      // Pod 이름에서 서비스 이름 추출 (예: auth-service-abc123 -> auth-service)
+      const serviceName = pod.service || (pod.name ? pod.name.split('-').slice(0, -1).join('-') : '-')
       
       row.innerHTML = `
         <td>${pod.namespace || '-'}</td>
-        <td>${pod.name || '-'}</td>
+        <td>${serviceName}</td>
         <td>${pod.status || '-'}</td>
         <td>${restarts}</td>
         <td>${cpu}%</td>
         <td>${mem}%</td>
-        <td>${pod.node || '-'}</td>
       `
       tbody.appendChild(row)
     })
@@ -2131,6 +2137,7 @@ async function loadLogs() {
     const timeFilter = document.getElementById('logsTimeFilter')?.value || '24h'
     const serviceFilter = document.getElementById('logsServiceFilter')?.value || ''
     const levelFilter = document.getElementById('logsLevelFilter')?.value || ''
+    const transactionId = document.getElementById('logsTransactionIdSearch')?.value?.trim() || ''
     
     // 시간 범위 계산
     const end = new Date()
@@ -2145,6 +2152,7 @@ async function loadLogs() {
     
     let url = `${API_BASE}/errors/app?start=${start.toISOString()}&end=${end.toISOString()}&limit=50`
     if (serviceFilter) url += `&namespace=${serviceFilter}`
+    if (transactionId) url += `&transaction_id=${encodeURIComponent(transactionId)}`
     
     const response = await fetch(url)
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
@@ -2181,12 +2189,17 @@ async function loadLogs() {
       }
     }
     
-    // Top Exception 업데이트
-    const topExceptionsUrl = `${API_BASE}/errors/app?start=${start.toISOString()}&end=${end.toISOString()}&limit=50`
-    const topExceptionsResponse = await fetch(topExceptionsUrl)
-    if (topExceptionsResponse.ok) {
-      const allLogs = await topExceptionsResponse.json()
-      updateTopExceptionsList(allLogs)
+    // Top Exception 업데이트 (transaction_id 검색 시에는 제외)
+    if (!transactionId) {
+      const topExceptionsUrl = `${API_BASE}/errors/app?start=${start.toISOString()}&end=${end.toISOString()}&limit=50`
+      const topExceptionsResponse = await fetch(topExceptionsUrl)
+      if (topExceptionsResponse.ok) {
+        const allLogs = await topExceptionsResponse.json()
+        updateTopExceptionsList(allLogs)
+      }
+    } else {
+      // transaction_id 검색 시에는 검색 결과로 Top Exception 업데이트
+      updateTopExceptionsList(logs)
     }
     
     // 서비스별 Error Log Count 추이 차트 업데이트 (비동기로 처리하여 성능 개선)
@@ -2219,10 +2232,15 @@ async function loadTraces() {
       start = new Date(end.getTime() - 24 * 60 * 60 * 1000)
     }
     
-    // Slow Traces Top 10
-    const slowTracesList = document.getElementById('slowTracesTop10List')
-    if (slowTracesList) {
-      slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+    // Slow Traces Top 10 (Traces 섹션)
+    const slowTracesTop10List = document.getElementById('slowTracesTop10List')
+    // Slow Traces Top 5 (Service Detail 섹션)
+    const slowTracesList = document.getElementById('slowTracesList')
+    
+    if (slowTracesTop10List || slowTracesList) {
+      if (slowTracesTop10List) slowTracesTop10List.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+      if (slowTracesList) slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+      
       try {
         const slowUrl = `${API_BASE}/traces/slow?start=${start.toISOString()}&end=${end.toISOString()}&limit=10`
         const slowResponse = await fetch(slowUrl)
@@ -2235,25 +2253,40 @@ async function loadTraces() {
             sample: slowTraces?.slice(0, 2) || []
           })
           if (slowTraces && slowTraces.length > 0) {
-            updateTracesList(slowTracesList, slowTraces, 'slow')
+            // Traces 섹션 (Top 10)
+            if (slowTracesTop10List) {
+              updateTracesList(slowTracesTop10List, slowTraces, 'slow')
+            }
+            // Service Detail 섹션 (Top 5)
+            if (slowTracesList) {
+              updateTracesList(slowTracesList, slowTraces.slice(0, 5), 'slow')
+            }
           } else {
-            slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
+            if (slowTracesTop10List) slowTracesTop10List.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
+            if (slowTracesList) slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
           }
         } else {
           const errorText = await slowResponse.text()
           console.error('Slow traces API error:', slowResponse.status, errorText)
-          slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
+          if (slowTracesTop10List) slowTracesTop10List.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
+          if (slowTracesList) slowTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">느린 트레이스가 없습니다.</p>'
         }
       } catch (error) {
         console.error('Error loading slow traces:', error)
-        slowTracesList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">느린 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+        if (slowTracesTop10List) slowTracesTop10List.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">느린 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+        if (slowTracesList) slowTracesList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">느린 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
       }
     }
     
-    // Error Traces Top 10
-    const errorTracesList = document.getElementById('errorTracesTop10List')
-    if (errorTracesList) {
-      errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+    // Error Traces Top 10 (Traces 섹션)
+    const errorTracesTop10List = document.getElementById('errorTracesTop10List')
+    // Error Traces Top 5 (Service Detail 섹션)
+    const errorTracesList = document.getElementById('errorTracesList')
+    
+    if (errorTracesTop10List || errorTracesList) {
+      if (errorTracesTop10List) errorTracesTop10List.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+      if (errorTracesList) errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">로딩 중...</p>'
+      
       try {
         const errorUrl = `${API_BASE}/traces/error?start=${start.toISOString()}&end=${end.toISOString()}&limit=10`
         const errorResponse = await fetch(errorUrl)
@@ -2266,18 +2299,28 @@ async function loadTraces() {
             sample: errorTraces?.slice(0, 2) || []
           })
           if (errorTraces && errorTraces.length > 0) {
-            updateTracesList(errorTracesList, errorTraces, 'error')
+            // Traces 섹션 (Top 10)
+            if (errorTracesTop10List) {
+              updateTracesList(errorTracesTop10List, errorTraces, 'error')
+            }
+            // Service Detail 섹션 (Top 5)
+            if (errorTracesList) {
+              updateTracesList(errorTracesList, errorTraces.slice(0, 5), 'error')
+            }
           } else {
-            errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
+            if (errorTracesTop10List) errorTracesTop10List.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
+            if (errorTracesList) errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
           }
         } else {
           const errorText = await errorResponse.text()
           console.error('Error traces API error:', errorResponse.status, errorText)
-          errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
+          if (errorTracesTop10List) errorTracesTop10List.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
+          if (errorTracesList) errorTracesList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">에러 트레이스가 없습니다.</p>'
         }
       } catch (error) {
         console.error('Error loading error traces:', error)
-        errorTracesList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">에러 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+        if (errorTracesTop10List) errorTracesTop10List.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">에러 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+        if (errorTracesList) errorTracesList.innerHTML = `<p style="padding: 20px; text-align: center; color: #e74c3c;">에러 트레이스를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
       }
     }
     
@@ -2300,15 +2343,17 @@ function updateTracesList(listElement, traces, type) {
   traces.forEach((trace, index) => {
     const item = document.createElement('div')
     item.className = 'trace-item'
-    const duration = trace.duration ? `${(trace.duration / 1000000).toFixed(2)}ms` : '-'
+    // Tempo 응답 형식: { traceID, rootServiceName, rootTraceName, startTimeUnixNano, durationMs }
+    const duration = trace.durationMs ? `${trace.durationMs}ms` : (trace.duration ? `${(trace.duration / 1000000).toFixed(2)}ms` : '-')
     const traceId = trace.traceID || trace.traceId || 'unknown'
+    const serviceName = trace.rootServiceName || trace.serviceName || trace.service || 'unknown'
     item.innerHTML = `
       <div class="trace-header">
         <span class="trace-rank">#${index + 1}</span>
         <span class="trace-id">${traceId.substring(0, 16)}...</span>
         <span class="trace-duration">${duration}</span>
       </div>
-      <div class="trace-service">${trace.serviceName || trace.service || 'unknown'}</div>
+      <div class="trace-service">${serviceName}</div>
       <div class="trace-time">${trace.startTimeUnixNano ? new Date(trace.startTimeUnixNano / 1000000).toLocaleString() : '-'}</div>
     `
     item.addEventListener('click', () => {
@@ -2321,26 +2366,171 @@ function updateTracesList(listElement, traces, type) {
 // Trace 상세 조회
 async function loadTraceDetail(traceId) {
   try {
+    console.log('Loading trace detail for:', traceId)
     const response = await fetch(`${API_BASE}/traces/${traceId}`)
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Trace detail API error:', response.status, errorText)
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
     
-    const trace = await response.json()
+    const traceData = await response.json()
+    console.log('Trace data received:', { hasBatches: !!traceData.batches, batchesLength: traceData.batches?.length || 0 })
     
-    // Trace Detail 섹션 표시
     const detailSection = document.getElementById('tracesDetail')
-    if (detailSection) {
-      detailSection.style.display = 'block'
-      detailSection.scrollIntoView({ behavior: 'smooth' })
-      
-      const detailContent = document.getElementById('tracesDetailContent')
-      if (detailContent) {
-        detailContent.innerHTML = `<pre>${JSON.stringify(trace, null, 2)}</pre>`
-      }
+    if (!detailSection) {
+      console.error('tracesDetail element not found')
+      return
+    }
+    
+    detailSection.style.display = 'block'
+    detailSection.scrollIntoView({ behavior: 'smooth' })
+    
+    const detailContent = document.getElementById('traceDetailContent')
+    if (!detailContent) {
+      console.error('traceDetailContent element not found')
+      return
+    }
+    
+    try {
+      const formattedHtml = formatTraceDetail(traceData, traceId)
+      console.log('Formatted HTML length:', formattedHtml.length)
+      detailContent.innerHTML = formattedHtml
+    } catch (formatError) {
+      console.error('Error formatting trace detail:', formatError)
+      detailContent.innerHTML = `<p style="color: red; padding: 20px;">트레이스 상세 정보 포맷팅 중 오류: ${formatError.message}</p><pre style="background: #f5f5f5; padding: 15px; overflow: auto;">${JSON.stringify(traceData, null, 2)}</pre>`
     }
   } catch (error) {
     console.error('Error loading trace detail:', error)
-    alert(`트레이스 상세 정보를 불러오는 중 오류가 발생했습니다: ${error.message}`)
+    const detailContent = document.getElementById('traceDetailContent')
+    if (detailContent) {
+      detailContent.innerHTML = `<p style="color: red; padding: 20px;">트레이스 상세 정보를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`
+    }
   }
+}
+
+// Trace 상세 정보 포맷팅
+function formatTraceDetail(traceData, traceId) {
+  const batches = traceData.batches || []
+  let html = `<div class="trace-detail-container">`
+  
+  // Trace 정보 요약
+  let serviceName = 'unknown'
+  let totalDuration = 0
+  let startTime = null
+  let endTime = null
+  const allSpans = []
+  
+  batches.forEach(batch => {
+    // Resource에서 service.name 추출
+    if (batch.resource && batch.resource.attributes) {
+      const serviceAttr = batch.resource.attributes.find(attr => attr.key === 'service.name')
+      if (serviceAttr && serviceAttr.value && serviceAttr.value.stringValue) {
+        serviceName = serviceAttr.value.stringValue
+      }
+    }
+    
+    // Spans 추출
+    if (batch.scopeSpans) {
+      batch.scopeSpans.forEach(scopeSpan => {
+        if (scopeSpan.spans) {
+          scopeSpan.spans.forEach(span => {
+            const start = parseInt(span.startTimeUnixNano || 0)
+            const end = parseInt(span.endTimeUnixNano || 0)
+            const duration = (end - start) / 1000000 // ms
+            
+            if (!startTime || start < startTime) startTime = start
+            if (!endTime || end > endTime) endTime = end
+            
+            allSpans.push({
+              name: span.name || 'unknown',
+              startTime: start,
+              endTime: end,
+              duration: duration,
+              attributes: span.attributes || [],
+              status: span.status || {},
+              kind: span.kind || ''
+            })
+          })
+        }
+      })
+    }
+  })
+  
+  totalDuration = endTime && startTime ? (endTime - startTime) / 1000000 : 0
+  
+  // Trace 요약 정보
+  html += `
+    <div class="trace-summary" style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+      <h4 style="margin-top: 0;">Trace 정보</h4>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 5px; font-weight: bold; width: 150px;">Trace ID:</td>
+          <td style="padding: 5px;">${traceId}</td>
+        </tr>
+        <tr>
+          <td style="padding: 5px; font-weight: bold;">서비스:</td>
+          <td style="padding: 5px;">${serviceName}</td>
+        </tr>
+        <tr>
+          <td style="padding: 5px; font-weight: bold;">전체 Duration:</td>
+          <td style="padding: 5px;">${totalDuration.toFixed(2)} ms</td>
+        </tr>
+        <tr>
+          <td style="padding: 5px; font-weight: bold;">시작 시간:</td>
+          <td style="padding: 5px;">${startTime ? new Date(startTime / 1000000).toLocaleString() : '-'}</td>
+        </tr>
+        <tr>
+          <td style="padding: 5px; font-weight: bold;">Spans 개수:</td>
+          <td style="padding: 5px;">${allSpans.length}</td>
+        </tr>
+      </table>
+    </div>
+  `
+  
+  // Spans 목록
+  if (allSpans.length > 0) {
+    html += `<h4>Spans (${allSpans.length})</h4>`
+    html += `<table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">`
+    html += `
+      <thead>
+        <tr style="background: #f9f9f9;">
+          <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">#</th>
+          <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Span Name</th>
+          <th style="padding: 10px; text-align: right; border: 1px solid #ddd;">Duration (ms)</th>
+          <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">정보</th>
+        </tr>
+      </thead>
+      <tbody>
+    `
+    
+    // Duration 기준으로 정렬
+    allSpans.sort((a, b) => a.startTime - b.startTime)
+    
+    allSpans.forEach((span, index) => {
+      // Attributes에서 주요 정보 추출
+      const httpMethod = span.attributes.find(a => a.key === 'http.method')?.value?.stringValue || ''
+      const httpUrl = span.attributes.find(a => a.key === 'http.target' || a.key === 'http.url')?.value?.stringValue || ''
+      const httpStatus = span.attributes.find(a => a.key === 'http.status_code')?.value?.intValue || ''
+      const info = httpMethod && httpUrl ? `${httpMethod} ${httpUrl}${httpStatus ? ' (' + httpStatus + ')' : ''}` : span.name
+      
+      html += `
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ddd;">${index + 1}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;"><strong>${span.name}</strong></td>
+          <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${span.duration.toFixed(2)}</td>
+          <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace; font-size: 12px;">${info}</td>
+        </tr>
+      `
+    })
+    
+    html += `</tbody></table>`
+  } else {
+    html += `<p>Spans 정보가 없습니다.</p>`
+  }
+  
+  html += `</div>`
+  return html
 }
 
 // Top Exceptions 리스트 업데이트

@@ -2,6 +2,7 @@ import axios from 'axios'
 import kubernetesService from './kubernetes.js'
 
 const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://43.200.143.174:9090'
+const ALERTMANAGER_URL = process.env.ALERTMANAGER_URL || 'http://10.0.28.33:9093'
 
 // Prometheus 쿼리 실행
 async function queryPrometheus(query) {
@@ -190,11 +191,11 @@ async function getContainerCPUMetrics(nodeName, start, end, step = '15s') {
   try {
     // Prometheus에서 container_cpu_usage_seconds_total 메트릭 쿼리
     // rate()를 사용하여 CPU 사용률 계산 (초당 사용량, cores 단위)
-    // namespace와 pod label이 있는 메트릭만 사용
-    let query = 'sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",pod!=""}[5m])) by (namespace,pod,container_name)'
+    // 모든 네임스페이스 포함 (bravo-*, kube-system, external-dns, karpenter, keda, external-secrets, monitoring)
+    let query = 'sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",pod!=""}[5m])) by (namespace,pod,container_name)'
     
     if (nodeName) {
-      query = `sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",pod!="",instance=~"${nodeName}"}[5m])) by (namespace,pod,container_name)`
+      query = `sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",pod!="",instance=~"${nodeName}"}[5m])) by (namespace,pod,container_name)`
     }
     
     const results = await queryRange(query, start, end, step)
@@ -237,13 +238,13 @@ async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
     // 사용량과 limit을 함께 가져오기
     // namespace와 pod label이 있는 메트릭만 사용
     const usageQuery = nodeName
-      ? 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
-      : 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
+      ? 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",pod!=""}) by (namespace,pod,container_name)'
+      : 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",pod!=""}) by (namespace,pod,container_name)'
     
     // limit 정보 가져오기
     const limitQuery = nodeName
-      ? 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
-      : 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",pod!=""}) by (namespace,pod,container_name)'
+      ? 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",pod!=""}) by (namespace,pod,container_name)'
+      : 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",pod!=""}) by (namespace,pod,container_name)'
     
     const [usageResults, limitResults] = await Promise.all([
       queryRange(usageQuery, start, end, step).catch(err => {
@@ -314,10 +315,9 @@ async function getContainerMemoryMetrics(nodeName, start, end, step = '15s') {
 async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
   try {
     // Prometheus에서 container_cpu_usage_seconds_total 메트릭을 Pod별로 집계
-    // namespace label이 없을 수 있으므로 pod 이름 패턴으로 필터링
-    // 먼저 namespace로 시도, 없으면 pod 이름 패턴 사용
-    let usageQuery = 'sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",container!="POD",container!=""}[5m])) by (pod)'
-    let limitQuery = 'sum(container_spec_cpu_quota{namespace=~"bravo-.*",container!="POD",container!=""} / 100000) by (pod)'
+    // 모든 네임스페이스 포함 (bravo-*, kube-system, external-dns, karpenter, keda, external-secrets, monitoring)
+    let usageQuery = 'sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!=""}[5m])) by (pod)'
+    let limitQuery = 'sum(container_spec_cpu_quota{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!=""} / 100000) by (pod)'
     
     // Fallback: namespace label 없이 pod 이름 패턴으로 필터링
     let usageQueryFallback = 'sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}[5m])) by (pod)'
@@ -328,8 +328,8 @@ async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
     let limitQueryFinalFallback = 'sum(container_spec_cpu_quota{container!="POD",container!=""} / 100000) by (pod)'
     
     if (nodeName) {
-      usageQuery = `sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
-      limitQuery = `sum(container_spec_cpu_quota{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"} / 100000) by (pod)`
+      usageQuery = `sum(rate(container_cpu_usage_seconds_total{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
+      limitQuery = `sum(container_spec_cpu_quota{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!="",instance=~"${nodeName}.*"} / 100000) by (pod)`
       usageQueryFallback = `sum(rate(container_cpu_usage_seconds_total{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
       limitQueryFallback = `sum(container_spec_cpu_quota{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"} / 100000) by (pod)`
       usageQueryFinalFallback = `sum(rate(container_cpu_usage_seconds_total{container!="POD",container!="",instance=~"${nodeName}.*"}[5m])) by (pod)`
@@ -423,9 +423,9 @@ async function getPodCPUMetrics(nodeName, start, end, step = '15s') {
 async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
   try {
     // 사용량과 limit을 함께 가져오기
-    // namespace label이 없을 수 있으므로 fallback 쿼리 준비
-    let usageQuery = 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*",container!="POD",container!=""}) by (pod)'
-    let limitQuery = 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",container!="POD",container!=""}) by (pod)'
+    // 모든 네임스페이스 포함 (bravo-*, kube-system, external-dns, karpenter, keda, external-secrets, monitoring)
+    let usageQuery = 'sum(container_memory_working_set_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!=""}) by (pod)'
+    let limitQuery = 'sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!=""}) by (pod)'
     
     // Fallback: namespace label 없이 pod 이름 패턴으로 필터링
     let usageQueryFallback = 'sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!=""}) by (pod)'
@@ -436,8 +436,8 @@ async function getPodMemoryMetrics(nodeName, start, end, step = '15s') {
     let limitQueryFinalFallback = 'sum(container_spec_memory_limit_bytes{container!="POD",container!=""}) by (pod)'
     
     if (nodeName) {
-      usageQuery = `sum(container_memory_working_set_bytes{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
-      limitQuery = `sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      usageQuery = `sum(container_memory_working_set_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
+      limitQuery = `sum(container_spec_memory_limit_bytes{namespace=~"bravo-.*|kube-system|external-dns|karpenter|keda|external-secrets|monitoring",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
       usageQueryFallback = `sum(container_memory_working_set_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
       limitQueryFallback = `sum(container_spec_memory_limit_bytes{pod=~"auth-service-.*|community-service-.*|mountain-service-.*|notice-service-.*|notification-service-.*|schedule-service-.*|stamp-service-.*|store-service-.*|ai-service-.*|chatbot-service-.*|ai-infra-service-.*|frontend-.*",container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
       usageQueryFinalFallback = `sum(container_memory_working_set_bytes{container!="POD",container!="",instance=~"${nodeName}.*"}) by (pod)`
@@ -602,8 +602,36 @@ async function getResourceUsageTimeline(nodeName, start, end, step = '15s') {
 // FIRING 알람 가져오기
 async function getFiringAlerts() {
   try {
-    // Prometheus 알람 규칙 API 사용 (Alertmanager 대신)
-    // Prometheus는 알람 규칙을 평가하고 상태를 제공함
+    // 먼저 Alertmanager API 시도
+    try {
+      const alertmanagerResponse = await axios.get(`${ALERTMANAGER_URL}/api/v2/alerts`, {
+        params: { active: true },
+        timeout: 5000
+      })
+      
+      if (alertmanagerResponse.data && Array.isArray(alertmanagerResponse.data)) {
+        const firingAlerts = alertmanagerResponse.data
+          .filter(alert => alert.status?.state === 'active')
+          .map(alert => ({
+            labels: alert.labels || {},
+            annotations: alert.annotations || {},
+            state: alert.status?.state || 'active',
+            activeAt: alert.startsAt,
+            value: alert.value || '',
+            name: alert.labels?.alertname || 'Unknown',
+            severity: alert.labels?.severity || 'warning',
+            message: alert.annotations?.description || alert.annotations?.summary || alert.annotations?.message || 'No message',
+            startsAt: alert.startsAt || new Date().toISOString()
+          }))
+        
+        console.log(`Found ${firingAlerts.length} firing alerts from Alertmanager`)
+        return firingAlerts
+      }
+    } catch (alertmanagerError) {
+      console.warn('Alertmanager API not available, falling back to Prometheus rules:', alertmanagerError.message)
+    }
+    
+    // Alertmanager 실패 시 Prometheus Rules API 사용
     const response = await axios.get(`${PROMETHEUS_URL}/api/v1/rules?type=alert`, {
       timeout: 5000
     })
@@ -657,51 +685,101 @@ async function getFiringAlerts() {
 // 알람 히스토리 가져오기
 async function getAlertHistory(start, end) {
   try {
-    // Prometheus 알람 규칙에서 현재 상태 확인
-    const response = await axios.get(`${PROMETHEUS_URL}/api/v1/rules?type=alert`, {
-      timeout: 5000
-    })
-    
-    if (response.data.status !== 'success') {
-      return {
-        fired: 0,
-        resolved: 0,
-        currentFiring: 0,
-        timeline: []
-      }
-    }
-    
-    const rules = response.data.data.groups || []
     const startTime = new Date(start)
     const endTime = new Date(end)
     
     let fired = 0
+    let resolved = 0
     let currentFiring = 0
     const firingAlerts = []
+    const resolvedAlerts = []
     
-    // FIRING 알람 수집
-    rules.forEach(group => {
-      if (group.rules) {
-        group.rules.forEach(rule => {
-          if (rule.type === 'alerting') {
-            const activeAt = rule.activeAt ? new Date(rule.activeAt) : null
-            
-            if (rule.state === 'firing') {
-              currentFiring++
-              if (activeAt && activeAt >= startTime && activeAt <= endTime) {
-                fired++
-              }
-              // 타임라인 생성을 위해 알람 정보 저장
-              firingAlerts.push({
-                name: rule.labels?.alertname || 'Unknown',
-                activeAt: activeAt || new Date(),
-                state: rule.state
-              })
+    // 먼저 Alertmanager API 시도
+    try {
+      const alertmanagerResponse = await axios.get(`${ALERTMANAGER_URL}/api/v2/alerts`, {
+        params: { 
+          active: true,
+          silenced: false,
+          inhibited: false
+        },
+        timeout: 5000
+      })
+      
+      if (alertmanagerResponse.data && Array.isArray(alertmanagerResponse.data)) {
+        alertmanagerResponse.data.forEach(alert => {
+          const startsAt = alert.startsAt ? new Date(alert.startsAt) : null
+          const endsAt = alert.endsAt ? new Date(alert.endsAt) : null
+          
+          if (alert.status?.state === 'active') {
+            currentFiring++
+            if (startsAt && startsAt >= startTime && startsAt <= endTime) {
+              fired++
             }
+            firingAlerts.push({
+              name: alert.labels?.alertname || 'Unknown',
+              activeAt: startsAt || new Date(),
+              state: 'active'
+            })
+          } else if (alert.status?.state === 'resolved' || endsAt) {
+            if (endsAt && endsAt >= startTime && endsAt <= endTime) {
+              resolved++
+            }
+            resolvedAlerts.push({
+              name: alert.labels?.alertname || 'Unknown',
+              activeAt: startsAt || new Date(),
+              endsAt: endsAt || new Date(),
+              state: 'resolved'
+            })
           }
         })
+        
+        console.log(`Alertmanager: fired=${fired}, resolved=${resolved}, currentFiring=${currentFiring}`)
       }
-    })
+    } catch (alertmanagerError) {
+      console.warn('Alertmanager API not available, falling back to Prometheus rules:', alertmanagerError.message)
+    }
+    
+    // Alertmanager에서 데이터를 가져오지 못한 경우 Prometheus Rules API 사용
+    if (fired === 0 && resolved === 0 && currentFiring === 0) {
+      const response = await axios.get(`${PROMETHEUS_URL}/api/v1/rules?type=alert`, {
+        timeout: 5000
+      })
+      
+      if (response.data.status !== 'success') {
+        return {
+          fired: 0,
+          resolved: 0,
+          currentFiring: 0,
+          timeline: []
+        }
+      }
+      
+      const rules = response.data.data.groups || []
+      
+      // FIRING 알람 수집
+      rules.forEach(group => {
+        if (group.rules) {
+          group.rules.forEach(rule => {
+            if (rule.type === 'alerting') {
+              const activeAt = rule.activeAt ? new Date(rule.activeAt) : null
+              
+              if (rule.state === 'firing') {
+                currentFiring++
+                if (activeAt && activeAt >= startTime && activeAt <= endTime) {
+                  fired++
+                }
+                // 타임라인 생성을 위해 알람 정보 저장
+                firingAlerts.push({
+                  name: rule.labels?.alertname || 'Unknown',
+                  activeAt: activeAt || new Date(),
+                  state: rule.state
+                })
+              }
+            }
+          })
+        }
+      })
+    }
     
     // 타임라인 생성 (1시간 간격으로 24개 포인트)
     const timeline = []
@@ -716,25 +794,34 @@ async function getAlertHistory(start, end) {
       
       // 해당 시간대에 활성화된 알람 수 계산
       // 알람이 시작된 시간이 해당 시간대 이전이고, 아직 해소되지 않은 경우
+      // 해당 시간대에 활성화된 알람 수 계산
       const alertsAtTime = firingAlerts.filter(alert => {
         const alertStart = new Date(alert.activeAt)
         // 알람이 해당 시간대 이전에 시작되었고, 현재까지 활성화되어 있는 경우
         return alertStart <= timePoint
       })
       
+      // 해당 시간대에 해소된 알람 수 계산
+      const resolvedAtTime = resolvedAlerts.filter(alert => {
+        const alertEnd = new Date(alert.endsAt || alert.activeAt)
+        const alertStart = new Date(alert.activeAt)
+        // 알람이 해당 시간대에 해소된 경우
+        return alertStart <= timePoint && alertEnd >= timePoint && alertEnd <= new Date(timePoint.getTime() + intervalMs)
+      })
+      
       timeline.push({
         time: timePoint.toISOString(),
         fired: alertsAtTime.length,
-        resolved: 0, // Prometheus API에서는 해소 정보를 제공하지 않음
+        resolved: resolvedAtTime.length,
         firing: alertsAtTime.length
       })
     }
     
-    console.log(`📊 Alert History: fired=${fired}, currentFiring=${currentFiring}, timeline.length=${timeline.length}`)
+    console.log(`📊 Alert History: fired=${fired}, resolved=${resolved}, currentFiring=${currentFiring}, timeline.length=${timeline.length}`)
     
     return {
       fired,
-      resolved: 0, // Prometheus API에서는 해소 정보를 제공하지 않음
+      resolved,
       currentFiring,
       timeline
     }

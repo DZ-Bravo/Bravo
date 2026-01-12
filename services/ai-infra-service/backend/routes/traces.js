@@ -21,13 +21,14 @@ router.get('/slow', async (req, res) => {
       traces = []
     }
     
-    // duration 기준으로 정렬하여 상위 N개 반환 (duration이 있는 경우만)
+    // Tempo의 응답 형식: { traceID, rootServiceName, rootTraceName, startTimeUnixNano }
+    // duration 정보는 trace 상세 조회에서 얻어야 하므로, 일단 최신순으로 정렬
+    // 실제 duration을 얻기 위해 각 trace의 상세 정보를 조회할 수도 있지만, 성능상 최신순으로만 정렬
     const sortedTraces = traces
-      .filter(t => t.duration || t.durationMs)
       .sort((a, b) => {
-        const aDuration = a.duration || a.durationMs || 0
-        const bDuration = b.duration || b.durationMs || 0
-        return bDuration - aDuration
+        const aTime = a.startTimeUnixNano || a.startTime || 0
+        const bTime = b.startTimeUnixNano || b.startTime || 0
+        return bTime - aTime // 최신순
       })
       .slice(0, parseInt(limit))
     

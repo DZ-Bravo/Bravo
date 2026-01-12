@@ -132,6 +132,7 @@ router.get('/pods', async (req, res) => {
       
       return {
         ...pod,
+        restarts: pod.restartCount || 0, // restarts 필드로 통일
         cpu: parseFloat(cpu.toFixed(2)),
         mem: parseFloat(mem.toFixed(2)),
         oomKilled
@@ -450,6 +451,11 @@ router.get('/services', async (req, res) => {
         d.namespace === service.namespace && 
         d.name === service.name
       )
+      
+      // Deployment가 없는 Service는 제외 (잘못된 네임스페이스의 Service 제거)
+      if (!deployment) {
+        return null
+      }
 
       // Pod 메트릭 수집
       const pods = await kubernetesService.getPods({ 

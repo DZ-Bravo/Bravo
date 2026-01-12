@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HIKER 인프라 모니터링</title>
+  <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png" />
+  <link rel="manifest" href="/favicon_io/site.webmanifest" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="/monitoring/css/style.css">
 </head>
@@ -12,15 +17,14 @@
   <nav class="side-navigation" id="sideNav">
     <div class="nav-title">목차</div>
     <ul class="nav-list">
-      <li><a href="#overview" class="nav-link">📊 Overview</a></li>
-      <li><a href="#services" class="nav-link">📋 Services</a></li>
-      <li><a href="#service-detail" class="nav-link">🔍 Service Detail</a></li>
-      <li><a href="#pods" class="nav-link">🐳 Pods</a></li>
-      <li><a href="#logs" class="nav-link">📝 Logs</a></li>
-      <li><a href="#traces" class="nav-link">🔗 Traces</a></li>
-      <li><a href="#ai-analysis" class="nav-link">🤖 AI 분석</a></li>
-      <li><a href="#alerts" class="nav-link">🔔 Alerts</a></li>
-      <li><a href="#links" class="nav-link">🔗 Links</a></li>
+      <li><a href="#overview" class="nav-link">Overview</a></li>
+      <li><a href="#services" class="nav-link">Services</a></li>
+      <li><a href="#pods" class="nav-link">Pods</a></li>
+      <li><a href="#logs" class="nav-link">Logs</a></li>
+      <li><a href="#traces" class="nav-link">Traces</a></li>
+      <li><a href="#ai-analysis" class="nav-link">AI 분석</a></li>
+      <li><a href="#alerts" class="nav-link">Alerts</a></li>
+      <li><a href="#links" class="nav-link">Links</a></li>
     </ul>
   </nav>
 
@@ -28,7 +32,7 @@
     <header>
       <h1>HIKER 인프라 모니터링 대시보드</h1>
       <div class="header-warning">
-        ⚠️ EKS 클러스터 내부 기준 모니터링 (외부 리소스 제외)
+        EKS 클러스터 내부 기준 모니터링 (외부 리소스 제외)
       </div>
       <div class="header-actions">
         <button id="refreshBtn" class="btn btn-primary">새로고침</button>
@@ -38,9 +42,9 @@
 
     <!-- 1. Overview (메인 요약) -->
     <section class="overview-section" id="overview">
-      <h2>📊 Overview - EKS 클러스터 내부 기준</h2>
+      <h2>Overview - EKS 클러스터 내부 기준</h2>
       <div class="overview-warning">
-        ⚠️ 외부 트래픽(ALB) 및 AWS 관리형 서비스(RDS/S3) 제외
+        외부 트래픽(ALB) 및 AWS 관리형 서비스(RDS/S3) 제외
       </div>
       
       <!-- 주요 지표 카드 -->
@@ -67,7 +71,7 @@
           <h3>트래픽</h3>
           <p class="stat-value" id="rps">-</p>
           <p class="stat-label">RPS: <span id="rpsValue">-</span></p>
-          <p class="stat-sub-label warning">⚠️ 내부만</p>
+          <p class="stat-sub-label warning">내부만</p>
         </div>
       </div>
 
@@ -99,21 +103,21 @@
 
       <!-- 현재 알람 -->
       <div class="overview-alerts">
-        <h3>🔔 현재 알람 (FIRING) - Prometheus 기준</h3>
+        <h3>현재 알람 (FIRING) - Prometheus 기준</h3>
         <div id="firingAlertsList" class="alerts-list"></div>
         <button id="viewAllAlerts" class="btn-link">모든 알람 보기 →</button>
       </div>
 
       <!-- 주요 지표 추이 -->
       <div class="overview-trends">
-        <h3>📈 주요 지표 추이 (최근 1시간)</h3>
+        <h3>주요 지표 추이 (최근 1시간)</h3>
         <canvas id="overviewTrendsChart"></canvas>
       </div>
     </section>
 
     <!-- 2. Services (서비스별 요약 테이블) -->
     <section class="services-section" id="services">
-      <h2>📋 Services - EKS 내부 서비스 요약</h2>
+      <h2>Services - EKS 내부 서비스 요약</h2>
       <div class="services-filters">
         <select id="servicesNamespaceFilter">
           <option value="">전체</option>
@@ -132,6 +136,7 @@
         <table class="services-table" id="servicesTable">
           <thead>
             <tr>
+              <th>네임스페이스</th>
               <th>서비스</th>
               <th>RPS<br/>(내부)</th>
               <th>p95<br/>latency</th>
@@ -152,9 +157,9 @@
 
     <!-- 3. Service Detail (서비스 상세) -->
     <section class="service-detail-section" id="service-detail" style="display: none;">
-      <h2>🔍 Service Detail: <span id="serviceDetailName">-</span></h2>
+      <h2>Service Detail: <span id="serviceDetailName">-</span></h2>
       <div class="service-detail-warning">
-        ⚠️ EKS 내부 서비스 기준 (외부 의존성 제외)
+        EKS 내부 서비스 기준 (외부 의존성 제외)
       </div>
       <div class="service-detail-namespace">
         Namespace: <span id="serviceDetailNamespace">-</span>
@@ -162,25 +167,25 @@
 
       <!-- 골든 시그널 -->
       <div class="service-detail-golden-signals">
-        <h3>📊 골든 시그널 추이 (최근 24시간)</h3>
+        <h3>골든 시그널 추이 (최근 24시간)</h3>
         <canvas id="serviceDetailGoldenSignalsChart"></canvas>
       </div>
 
       <!-- 느린 API Top 5 -->
       <div class="service-detail-slow-apis">
-        <h3>🐌 느린 API Top 5 (p95 기준)</h3>
+        <h3>느린 API Top 5 (p95 기준)</h3>
         <div id="slowApisList" class="api-list"></div>
       </div>
 
       <!-- 에러 API Top 5 -->
       <div class="service-detail-error-apis">
-        <h3>❌ 에러 API Top 5 (5xx/4xx 기준)</h3>
+        <h3>에러 API Top 5 (5xx/4xx 기준)</h3>
         <div id="errorApisList" class="api-list"></div>
       </div>
 
       <!-- Replica/Pod 상태 -->
       <div class="service-detail-replica">
-        <h3>📦 Replica/Pod 상태</h3>
+        <h3>Replica/Pod 상태</h3>
         <div class="replica-status-detail">
           <span>Desired: <strong id="replicaDesired">-</strong></span>
           <span>Available: <strong id="replicaAvailable">-</strong></span>
@@ -193,7 +198,7 @@
 
       <!-- 리소스 사용량 -->
       <div class="service-detail-resources">
-        <h3>💻 리소스 사용량</h3>
+        <h3>리소스 사용량</h3>
         <div class="resource-summary">
           <span>CPU 평균: <strong id="serviceCpuAvg">-</strong>%</span>
           <span>Mem 평균: <strong id="serviceMemAvg">-</strong>%</span>
@@ -204,7 +209,7 @@
 
       <!-- 로그 -->
       <div class="service-detail-logs">
-        <h3>📝 로그 (Loki - EKS Pod 로그)</h3>
+        <h3>로그 (Loki - EKS Pod 로그)</h3>
         <canvas id="serviceErrorLogCountChart"></canvas>
         <h4>Top Exception:</h4>
         <div id="serviceTopExceptions" class="exception-list"></div>
@@ -212,7 +217,7 @@
 
       <!-- 요청 추적 -->
       <div class="service-detail-traces">
-        <h3>🔗 요청 추적 (Tempo - EKS 내부 트레이스)</h3>
+        <h3>요청 추적 (Tempo - EKS 내부 트레이스)</h3>
         <div class="trace-search">
           <input type="text" id="transactionIdSearch" placeholder="transaction_id 검색">
           <button id="searchTransactionId" class="btn btn-primary">검색</button>
@@ -231,19 +236,19 @@
 
       <!-- 외부 의존성 -->
       <div class="service-detail-external">
-        <h3>⚠️ 외부 의존성 (EKS 외부 리소스)</h3>
+        <h3>외부 의존성 (EKS 외부 리소스)</h3>
         <div class="external-dependencies">
           <div>• AWS Bedrock: <a href="#" target="_blank" class="external-link">CloudWatch 링크</a></div>
           <div>• RDS (예상): <a href="#" target="_blank" class="external-link">CloudWatch 링크</a></div>
           <div>• S3 (예상): <a href="#" target="_blank" class="external-link">CloudWatch 링크</a></div>
         </div>
-        <p class="warning-text">⚠️ 외부 의존성 모니터링은 CloudWatch에서 확인하세요</p>
+        <p class="warning-text">외부 의존성 모니터링은 CloudWatch에서 확인하세요</p>
       </div>
     </section>
 
     <!-- 4. Pods (파드 상태/Top N) -->
     <section class="pods-section" id="pods">
-      <h2>🐳 Pods - EKS 파드 상태</h2>
+      <h2>Pods - EKS 파드 상태</h2>
       <div class="pods-filters">
         <select id="podsStatusFilter">
           <option value="">전체</option>
@@ -275,10 +280,10 @@
         <table class="pods-table" id="podsTable">
           <thead>
             <tr>
-              <th>Pod 이름</th>
-              <th>Ready</th>
+              <th>네임스페이스</th>
+              <th>서비스</th>
+              <th>상태</th>
               <th>Restart<br/>(1h/24h)</th>
-              <th>OOM</th>
               <th>CPU%</th>
               <th>Mem%</th>
             </tr>
@@ -292,14 +297,14 @@
 
     <!-- 5. Logs (Loki) -->
     <section class="logs-section" id="logs">
-      <h2>📝 Logs - EKS Pod 로그 (Loki)</h2>
+      <h2>Logs - EKS Pod 로그 (Loki)</h2>
       <div class="logs-warning">
-        ⚠️ EKS Pod 로그만 표시 (ALB/CloudWatch 로그 제외)
+        EKS Pod 로그만 표시 (ALB/CloudWatch 로그 제외)
       </div>
 
       <!-- 서비스별 Error Log Count 추이 -->
       <div class="logs-error-trend">
-        <h3>📈 서비스별 Error Log Count 추이 (최근 24시간)</h3>
+        <h3>서비스별 Error Log Count 추이 (최근 24시간)</h3>
         <canvas id="logsErrorTrendChart"></canvas>
       </div>
 
@@ -325,13 +330,13 @@
 
       <!-- Top Exception -->
       <div class="logs-top-exception">
-        <h3>📊 Top Exception (그룹핑 Top 10)</h3>
+        <h3>Top Exception (그룹핑 Top 10)</h3>
         <div id="topExceptionsList" class="exception-list"></div>
       </div>
 
       <!-- 최근 에러 로그 -->
       <div class="logs-recent">
-        <h3>📋 최근 에러 로그</h3>
+        <h3>최근 에러 로그</h3>
         <table class="logs-table" id="logsTable">
           <thead>
             <tr>
@@ -350,7 +355,7 @@
 
       <!-- 외부 로그 -->
       <div class="logs-external">
-        <h3>⚠️ 외부 로그 (EKS 외부)</h3>
+        <h3>외부 로그 (EKS 외부)</h3>
         <div class="external-logs-links">
           <div>• ALB 액세스 로그: <a href="#" target="_blank" class="external-link">CloudWatch 링크</a></div>
           <div>• CloudWatch Logs: <a href="#" target="_blank" class="external-link">CloudWatch 링크</a></div>
@@ -361,9 +366,9 @@
 
     <!-- 6. Traces (Tempo) -->
     <section class="traces-section" id="traces">
-      <h2>🔗 Traces - EKS 내부 트레이스 (Tempo)</h2>
+      <h2>Traces - EKS 내부 트레이스 (Tempo)</h2>
       <div class="traces-warning">
-        ⚠️ EKS 내부 트레이스만 표시
+        EKS 내부 트레이스만 표시
       </div>
 
       <!-- 검색 -->
@@ -383,46 +388,46 @@
 
       <!-- Slow Trace Top 10 -->
       <div class="traces-slow">
-        <h3>🐌 Slow Trace Top 10 (Duration 기준)</h3>
+        <h3>Slow Trace Top 10 (Duration 기준)</h3>
         <div id="slowTracesTop10List" class="trace-list"></div>
       </div>
 
       <!-- Error Trace Top 10 -->
       <div class="traces-error">
-        <h3>❌ Error Trace Top 10</h3>
+        <h3>Error Trace Top 10</h3>
         <div id="errorTracesTop10List" class="trace-list"></div>
       </div>
 
       <!-- Trace 상세 -->
       <div class="traces-detail" id="tracesDetail" style="display: none;">
-        <h3>📊 Trace 상세</h3>
+        <h3>Trace 상세</h3>
         <div id="traceDetailContent"></div>
       </div>
 
       <!-- 외부 트레이스 -->
       <div class="traces-external">
-        <h3>⚠️ 외부 트레이스 (EKS 외부)</h3>
+        <h3>외부 트레이스 (EKS 외부)</h3>
         <div class="external-traces-links">
           <div>• CloudWatch Traces: <a href="#" target="_blank" class="external-link">CloudWatch 링크</a></div>
-          <p class="warning-text">⚠️ 외부 트레이스는 CloudWatch에서 확인하세요</p>
+          <p class="warning-text">외부 트레이스는 CloudWatch에서 확인하세요</p>
         </div>
       </div>
     </section>
 
     <!-- 7. AI 분석 (기존 상태 유지) -->
     <section class="ai-section" id="ai-analysis">
-      <h2>🤖 AI 분석</h2>
+      <h2>AI 분석</h2>
       <button id="analyzeBtn" class="btn btn-primary">현재 상태 분석</button>
       <div id="aiAnalysisResult" class="ai-result"></div>
     </section>
 
     <!-- 8. Alerts (알람 현황) -->
     <section class="alerts-section" id="alerts">
-      <h2>🔔 Alerts - Prometheus 알람 (EKS 내부 기준)</h2>
+      <h2>Alerts - Prometheus 알람 (EKS 내부 기준)</h2>
 
       <!-- 현재 FIRING 알람 -->
       <div class="alerts-firing">
-        <h3>🔴 현재 FIRING 알람</h3>
+        <h3>현재 FIRING 알람</h3>
         <table class="alerts-table" id="firingAlertsTable">
           <thead>
             <tr>
@@ -440,7 +445,7 @@
 
       <!-- 최근 24시간 알람 히스토리 -->
       <div class="alerts-history">
-        <h3>📊 최근 24시간 알람 히스토리</h3>
+        <h3>최근 24시간 알람 히스토리</h3>
         <div class="alerts-chart-container" style="height: 300px; max-height: 300px; overflow: hidden;">
           <canvas id="alertsHistoryChart"></canvas>
         </div>
@@ -453,7 +458,7 @@
 
       <!-- 알람 정책 -->
       <div class="alerts-policy">
-        <h3>ℹ️ 알람 정책</h3>
+        <h3>알람 정책</h3>
         <ul>
           <li>가용성 급락 (P1): 성공률 급락 또는 5xx 비율 증가 (5분)</li>
           <li>Replica 부족 (P1): available < desired (5분)</li>
@@ -465,11 +470,11 @@
 
     <!-- 9. Links (운영 링크) -->
     <section class="links-section" id="links">
-      <h2>🔗 Links - 운영 링크</h2>
+      <h2>Links - 운영 링크</h2>
 
       <!-- 모니터링 (EC2 내부) -->
       <div class="links-monitoring-internal">
-        <h3>📊 모니터링 (EC2 내부)</h3>
+        <h3>모니터링 (EC2 내부)</h3>
         <div class="links-container">
           <a href="#" id="grafanaLink" target="_blank" class="link-btn">Grafana</a>
           <a href="#" id="prometheusLink" target="_blank" class="link-btn">Prometheus</a>
@@ -478,7 +483,7 @@
 
       <!-- AWS 모니터링 (EKS 외부) -->
       <div class="links-monitoring-external">
-        <h3>☁️ AWS 모니터링 (EKS 외부)</h3>
+        <h3>AWS 모니터링 (EKS 외부)</h3>
         <div class="links-container">
           <a href="#" id="cloudwatchLink" target="_blank" class="link-btn">CloudWatch</a>
           <a href="#" id="albTargetGroupLink" target="_blank" class="link-btn">ALB 타겟 그룹</a>
@@ -489,7 +494,7 @@
 
       <!-- 배포/릴리즈 -->
       <div class="links-deployment">
-        <h3>🚀 배포/릴리즈</h3>
+        <h3>배포/릴리즈</h3>
         <div class="links-container">
           <a href="#" id="gitlabLink" target="_blank" class="link-btn">GitLab</a>
           <a href="#" id="ecrLink" target="_blank" class="link-btn">ECR</a>

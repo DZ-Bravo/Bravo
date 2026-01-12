@@ -23,6 +23,9 @@ spec:
     metadata:
       annotations:
         kubectl.kubernetes.io/restartedAt: "2025-12-22T21:37:30+09:00"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3010"
+        prometheus.io/path: "/metrics"
       labels:
         app: stamp-service
     spec:

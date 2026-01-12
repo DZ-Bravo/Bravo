@@ -148,12 +148,61 @@ async function getPromtailErrors(start, end, limit = 50) {
 }
 
 // 앱 에러 로그 (namespace 기반)
-async function getAppErrors(start, end, namespace, limit = 50) {
+async function getAppErrors(start, end, namespace, limit = 50, transactionId = null) {
   const namespaceFilter = namespace ? `namespace="${namespace}"` : 'namespace=~"bravo-.*"'
-  const query = `{${namespaceFilter}} |= "error" | json | level="error"`
+  
+  // transaction_id 필터 추가
+  let query = `{${namespaceFilter}}`
+  
+  if (transactionId) {
+    // transaction_id가 로그 메시지에 포함된 경우를 검색
+    // LogQL의 |= 연산자는 메시지에 문자열이 포함되어 있는지 확인
+    query += ` |= "${transactionId}"`
+  }
+  
+  query += ` |= "error" | json | level="error"`
+  
   const results = await queryLoki(query, start, end)
   const parsed = parseLogResults(results)
-  return parsed.slice(0, limit)
+  
+  // transaction_id가 있으면 파싱된 로그에서 추가 필터링 (더 정확한 매칭)
+  let filtered = parsed
+  if (transactionId) {
+    filtered = parsed.filter(log => {
+      const message = log.message || ''
+      const lowerMessage = message.toLowerCase()
+      const lowerTransactionId = transactionId.toLowerCase()
+      
+      // 1. 메시지에 transaction_id가 직접 포함되어 있는지 확인
+      if (lowerMessage.includes(lowerTransactionId)) {
+        // JSON 형식의 transaction_id 필드 확인
+        try {
+          const logObj = typeof message === 'string' ? JSON.parse(message) : message
+          if (logObj.transaction_id) {
+            const logTransactionId = String(logObj.transaction_id).toLowerCase()
+            return logTransactionId.includes(lowerTransactionId)
+          }
+        } catch (e) {
+          // JSON 파싱 실패 시 원본 메시지에서 검색
+        }
+        
+        // 2. 일반 문자열 패턴 확인 (transaction_id:xxx, "transaction_id":"xxx" 등)
+        const patterns = [
+          `transaction_id:${lowerTransactionId}`,
+          `"transaction_id":"${lowerTransactionId}"`,
+          `'transaction_id':'${lowerTransactionId}'`,
+          `transaction_id=${lowerTransactionId}`,
+          lowerTransactionId
+        ]
+        
+        return patterns.some(pattern => lowerMessage.includes(pattern))
+      }
+      
+      return false
+    })
+  }
+  
+  return filtered.slice(0, limit)
 }
 
 // 시간별 에러 로그 수 (그래프용)

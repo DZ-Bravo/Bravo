@@ -25,32 +25,60 @@ async function sendSlackAlert(level, alertData) {
   
   const color = level === 'CRITICAL' ? 'danger' : 'warning'
   
+  // 서비스 정보 구성
+  const serviceInfo = alertData.service 
+    ? `${alertData.service}${alertData.namespace ? ` (${alertData.namespace})` : ''}`
+    : 'N/A'
+  
+  // 필드 배열 구성
+  const fields = [
+    {
+      title: '발생 시간',
+      value: new Date().toISOString(),
+      short: true
+    },
+    {
+      title: '서비스',
+      value: serviceInfo,
+      short: true
+    },
+    {
+      title: '발생 원인',
+      value: `${alertData.metric}: ${alertData.currentValue} (임계치: ${alertData.threshold})`,
+      short: false
+    }
+  ]
+  
+  // 상세 메시지가 있으면 추가
+  if (alertData.message) {
+    fields.push({
+      title: '상세 설명',
+      value: alertData.message,
+      short: false
+    })
+  }
+  
+  // 노드/Pod 정보가 있으면 추가 (서비스 정보가 없을 때만 우선 표시)
+  if (serviceInfo === 'N/A' && (alertData.node || alertData.pod)) {
+    fields.push({
+      title: '노드/Pod',
+      value: alertData.node || alertData.pod,
+      short: true
+    })
+  }
+  
+  // Grafana 링크 추가
+  fields.push({
+    title: 'Grafana 링크',
+    value: alertData.grafanaLink || 'N/A',
+    short: false
+  })
+  
   const payload = {
     attachments: [{
       color: color,
       title: `[${level}] HIKER 인프라 모니터링 알람`,
-      fields: [
-        {
-          title: '발생 시간',
-          value: new Date().toISOString(),
-          short: true
-        },
-        {
-          title: '노드/Pod',
-          value: alertData.node || alertData.pod || 'N/A',
-          short: true
-        },
-        {
-          title: '메트릭',
-          value: `${alertData.metric}: ${alertData.currentValue} (임계치: ${alertData.threshold})`,
-          short: false
-        },
-        {
-          title: 'Grafana 링크',
-          value: alertData.grafanaLink || 'N/A',
-          short: false
-        }
-      ],
+      fields: fields,
       footer: 'HIKER 인프라 모니터링',
       ts: Math.floor(Date.now() / 1000)
     }]

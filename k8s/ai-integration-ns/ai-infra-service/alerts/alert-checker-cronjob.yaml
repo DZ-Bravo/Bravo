@@ -1,0 +1,46 @@
+# =================================================
+# Alert Checker CronJob
+# =================================================
+# 1분마다 실행하여 알람 조건 체크 및 Slack 전송
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: alert-checker
+  namespace: bravo-ai-integration-ns
+spec:
+  schedule: "*/1 * * * *"  # 매분 실행
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 300  # 5분 타임아웃
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: ai-infra-service
+          containers:
+          - name: alert-checker
+            image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-ai-infra-service:2.1767930776
+            imagePullPolicy: Always
+            command: ["node", "/app/services/alert-checker.js"]
+            env:
+            - name: PROMETHEUS_URL
+              value: "http://10.0.0.40:9090"
+            - name: TEMPO_URL
+              value: "http://10.0.0.40:3200"
+            - name: LOKI_URL
+              value: "http://10.0.0.40:3100"
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ai-integration-secrets
+                  key: SLACK_WEBHOOK_URL
+                  optional: true
+            resources:
+              requests:
+                memory: "128Mi"
+                cpu: "100m"
+              limits:
+                memory: "256Mi"
+                cpu: "200m"
+          restartPolicy: OnFailure

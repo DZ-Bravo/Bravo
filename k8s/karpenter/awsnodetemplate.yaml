@@ -1,0 +1,24 @@
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: default
+spec:
+  # AMI Family 지정 (Karpenter가 자동으로 올바른 User Data 생성)
+  amiFamily: AL2023
+  
+  # Subnet 선택
+  subnetSelector:
+    karpenter.sh/discovery: bravo-eks
+  
+  # Security Group 선택
+  securityGroupSelector:
+    karpenter.sh/discovery: bravo-eks
+  
+  # IAM Role (노드에 부여할 역할)
+  instanceProfile: KarpenterNodeInstanceProfile-bravo-eks
+  
+  # 태그
+  tags:
+    Environment: production
+    ManagedBy: Karpenter
+

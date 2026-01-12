@@ -1,0 +1,14 @@
+serviceAccount:
+  create: false
+  name: karpenter
+
+controller:
+  env:
+    - name: CLUSTER_NAME
+      value: bravo-eks
+    - name: CLUSTER_ENDPOINT
+      value: https://CD954D03FD7521324954E667CB2450E9.yl4.ap-northeast-2.eks.amazonaws.com
+    - name: INTERRUPTION_QUEUE
+      value: karpenter-interruption-queue
+    - name: KUBERNETES_VERSION
+      value: "1.34"

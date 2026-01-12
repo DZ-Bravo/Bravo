@@ -7,16 +7,16 @@ RUN apk add --no-cache tzdata && \
     ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
     echo "Asia/Seoul" > /etc/timezone
 
-# 공유 리소스 복사
-COPY services/shared ./shared
+# 공유 리소스 복사 (빌드 컨텍스트가 services/일 때)
+COPY shared ./shared
 
 # package.json 복사 및 의존성 설치 (프로덕션만)
-COPY services/backend-services/auth-service/package*.json ./
+COPY backend-services/auth-service/package*.json ./
 RUN npm install --omit=dev && \
     npm cache clean --force
 
 # 애플리케이션 코드 복사
-COPY services/backend-services/auth-service/ .
+COPY backend-services/auth-service/ .
 
 # uploads 디렉토리 생성
 RUN mkdir -p uploads/profiles uploads/posts

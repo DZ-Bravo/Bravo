@@ -1,0 +1,51 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  # 노드 수 제한
+  limits:
+    cpu: 1000  # 최대 1000 CPU 코어
+  # 노드 템플릿
+  template:
+    metadata:
+      annotations:
+        node.gpu.accelerator: nvidia
+    spec:
+      # 노드 클래스 참조
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: al2
+      
+      # 요구사항 (인스턴스 타입 선택)
+      requirements:
+        # 아키텍처
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        
+        # 인스턴스 타입 (m6i 계열 사용, 현재 노드와 동일)
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values:
+            - m6i.large
+            - m6i.xlarge
+            - m6i.2xlarge
+            - m6i.4xlarge
+        
+        # 용량 유형 (On-Demand 또는 Spot)
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand", "spot"]
+        
+        # 가용 영역
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values: ["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c"]
+  
+  # 노드 삭제 정책
+  disruption:
+    # 노드 삭제 시 대기 시간
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 30s

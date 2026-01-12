@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const TEMPO_URL = process.env.TEMPO_URL || 'http://43.200.143.174:3200'
+const TEMPO_URL = process.env.TEMPO_URL || 'http://tempo.bravo-monitoring-ns:3200'
 
 // 특정 트레이스 조회
 async function getTrace(traceId) {
