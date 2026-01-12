@@ -181,6 +181,7 @@ async function getPods({ namespace, node, status } = {}) {
     return pods.map(pod => ({
       name: pod.metadata.name,
       namespace: pod.metadata.namespace,
+      service: pod.metadata.labels?.app || pod.metadata.labels?.['app.kubernetes.io/name'] || null,
       node: pod.spec.nodeName,
       status: pod.status.phase,
       restartCount: pod.status.containerStatuses?.reduce((sum, cs) => sum + cs.restartCount, 0) || 0,

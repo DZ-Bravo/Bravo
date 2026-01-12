@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: auth-service
-        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-auth-service:2.99
+        image: 940482451773.dkr.ecr.ap-northeast-2.amazonaws.com/bravo/hiking-auth-service:otel-test
         ports:
         - containerPort: 3001
           name: http

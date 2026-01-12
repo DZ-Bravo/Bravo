@@ -23,6 +23,9 @@ spec:
     metadata:
       annotations:
         kubectl.kubernetes.io/restartedAt: "2025-12-22T23:56:53+09:00"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3002"
+        prometheus.io/path: "/metrics"
       labels:
         app: community-service
     spec:

@@ -89,8 +89,8 @@ router.get('/promtail', async (req, res) => {
 // 앱 에러 로그
 router.get('/app', async (req, res) => {
   try {
-    const { start, end, namespace, limit = 50 } = req.query
-    const errors = await lokiService.getAppErrors(start, end, namespace, parseInt(limit))
+    const { start, end, namespace, limit = 50, transaction_id } = req.query
+    const errors = await lokiService.getAppErrors(start, end, namespace, parseInt(limit), transaction_id || null)
     res.json(errors)
   } catch (error) {
     console.error('Error getting app errors:', error)

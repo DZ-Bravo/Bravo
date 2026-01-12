@@ -1,0 +1,30 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: al2
+spec:
+  # AMI Family - AL2 사용 (이전에 작동하던 설정)
+  amiFamily: AL2
+  
+  # AMI 선택 - AL2용
+  amiSelectorTerms:
+    - tags:
+        karpenter.k8s.aws/instance-family: al2
+  
+  # Subnet 선택 (EKS 클러스터와 동일한 서브넷)
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: bravo-eks
+  
+  # Security Group 선택 (EKS 클러스터 보안 그룹)
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: bravo-eks
+  
+  # IAM Role (노드에 부여할 역할)
+  role: KarpenterNodeRole-bravo-eks
+  
+  # 태그
+  tags:
+    Environment: production
+    ManagedBy: Karpenter

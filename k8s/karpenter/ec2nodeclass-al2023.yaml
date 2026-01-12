@@ -1,0 +1,31 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: al2023
+spec:
+  # AMI Family - AL2023 사용 (EKS Node Group과 동일)
+  amiFamily: AL2023
+  
+  # AMI 선택 - AL2023용 (EKS Node Group이 사용하는 AMI ID 직접 지정)
+  # EKS Node Group과 동일한 AMI를 사용하여 버전 일치 보장
+  amiSelectorTerms:
+    - id: ami-0475b9540bc084f87  # amazon-eks-node-al2023-x86_64-standard-1.34-v20251217 (k8s: 1.34.2)
+  
+  # Subnet 선택 (EKS 클러스터와 동일한 서브넷)
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: bravo-eks
+  
+  # Security Group 선택 (EKS 클러스터 보안 그룹)
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: bravo-eks
+  
+  # IAM Role (노드에 부여할 역할)
+  role: KarpenterNodeRole-bravo-eks
+  
+  # 태그
+  tags:
+    Environment: production
+    ManagedBy: Karpenter
+

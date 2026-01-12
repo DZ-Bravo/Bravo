@@ -1,3 +1,6 @@
+// OpenTelemetry tracing 초기화 (모든 import보다 먼저)
+import './tracing.js'
+
 // CI/CD 테스트용 주석 - 재추가 3
 import express from 'express'
 import cors from 'cors'

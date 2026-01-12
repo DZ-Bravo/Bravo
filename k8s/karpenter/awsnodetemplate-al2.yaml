@@ -1,0 +1,26 @@
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: al2
+spec:
+  # AMI Family - AL2 사용 (더 안정적)
+  amiFamily: AL2
+  
+  # Launch Template 사용 (AMI 직접 지정)
+  launchTemplate: karpenter-bravo-eks-al2
+  
+  # Subnet 선택
+  subnetSelector:
+    karpenter.sh/discovery: bravo-eks
+  
+  # Security Group 선택
+  securityGroupSelector:
+    karpenter.sh/discovery: bravo-eks
+  
+  # IAM Role (노드에 부여할 역할)
+  instanceProfile: KarpenterNodeInstanceProfile-bravo-eks
+  
+  # 태그
+  tags:
+    Environment: production
+    ManagedBy: Karpenter
