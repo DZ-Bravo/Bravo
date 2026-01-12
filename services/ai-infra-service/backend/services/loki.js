@@ -160,15 +160,22 @@ async function getAppErrors(start, end, namespace, limit = 50, transactionId = n
     query += ` |= "${transactionId}"`
   }
   
-  query += ` |= "error" | json | level="error"`
+  // 에러 로그 필터링: "error" 문자열이 포함된 로그 (JSON 파싱 실패해도 포함)
+  query += ` |= "error"`
   
   const results = await queryLoki(query, start, end)
   const parsed = parseLogResults(results)
   
+  // 파싱된 로그에서 level="error"인 것만 필터링 (JSON 파싱 성공한 경우)
+  const errorLogs = parsed.filter(log => {
+    // level이 명시적으로 "error"인 경우 또는 level이 없지만 메시지에 "error"가 포함된 경우
+    return log.level === 'error' || (!log.level && (log.message || '').toLowerCase().includes('error'))
+  })
+  
   // transaction_id가 있으면 파싱된 로그에서 추가 필터링 (더 정확한 매칭)
-  let filtered = parsed
+  let filtered = errorLogs
   if (transactionId) {
-    filtered = parsed.filter(log => {
+    filtered = errorLogs.filter(log => {
       const message = log.message || ''
       const lowerMessage = message.toLowerCase()
       const lowerTransactionId = transactionId.toLowerCase()

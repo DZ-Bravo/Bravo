@@ -217,9 +217,15 @@ app.use((req, res, next) => {
   // - mountain-service: 직접 라우트 정의 (/api/courses, /api/mountains, /api/utils) → 경로 그대로 전달
   // - notification-service: 직접 라우트 정의 → 경로 그대로 전달
   // - notice-service: /api/notices prefix로 마운트 → 경로 그대로 전달
+  // - chatbot-service: /api/chatbot prefix로 마운트, 단 /api/chatbot/health는 /health로 변환
   // - 기타 서비스: path를 제거하고 나머지만 전달
-  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/utils', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/notices', '/api/schedules', '/api/chatbot', '/api/ai', '/api/stamp', '/api/stamps']
-  const backendPath = servicesWithFullPath.some(path => req.path.startsWith(path)) ? req.path : (req.path.replace(backend.path, '') || '/')
+  const servicesWithFullPath = ['/api/auth', '/api/posts', '/api/community', '/api/store', '/api/utils', '/api/mountains', '/api/mountain', '/api/courses', '/api/course', '/api/cctv', '/api/notifications', '/api/notification', '/api/notices', '/api/schedules', '/api/ai', '/api/stamp', '/api/stamps']
+  let backendPath = servicesWithFullPath.some(path => req.path.startsWith(path)) ? req.path : (req.path.replace(backend.path, '') || '/')
+  
+  // chatbot-service의 /api/chatbot/health는 /health로 변환
+  if (req.path === '/api/chatbot/health') {
+    backendPath = '/health'
+  }
   const queryString = req.url.includes('?') ? '?' + req.url.split('?')[1] : ''
   
   console.log(`[프록시] ${req.method} ${req.path} -> ${backend.host}:${backend.port}${backendPath}${queryString}`)
